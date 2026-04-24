@@ -73,8 +73,9 @@ Publishing behavior:
 
 - If the audit pass changes any files, commit the verified audit fixes and push them before reporting `RLP_STATUS: COMPLETED`.
 - If the audit pass changes no files, do not create an empty commit.
-- Use the configured local Git identity only.
-- Do not mention Codex, OpenAI, Claude, AI, or agents in commits, PRs, issues, comments, or generated metadata.
+- Make repository changes, commits, and pushes as the configured human user only.
+- Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to an AI or agent identity.
+- References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.
 - Stage files explicitly by path.
 - Use a Conventional Commit message.
 - Push the current branch directly.

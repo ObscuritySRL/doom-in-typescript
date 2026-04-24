@@ -13,8 +13,9 @@ describe('Ralph-loop PowerShell scripts', () => {
     const agentsText = await Bun.file(AGENTS_PATH).text();
 
     expect(agentsText).toContain('## GitHub and Publishing Authority');
-    expect(agentsText).toContain('Do not do anything as Codex, OpenAI, Claude, or any other AI or agent identity.');
-    expect(agentsText).toContain('All GitHub actions must be done by Stev Peifer through the configured human account and repository permissions.');
+    expect(agentsText).toContain('Make repository changes, commits, pushes, and GitHub repository actions as Stev Peifer through the configured human account and repository permissions.');
+    expect(agentsText).toContain('Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to Codex, OpenAI, Claude, or any other AI or agent identity.');
+    expect(agentsText).toContain('References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.');
     expect(agentsText).toContain('When publishing changes, commit and push directly. Do not open pull requests.');
     expect(agentsText).toContain('Every completed Ralph-loop step must end with a verified commit and push before the step is considered complete.');
   });
@@ -59,7 +60,9 @@ describe('Ralph-loop PowerShell scripts', () => {
 
     expect(promptText).toContain('Work on exactly one step.');
     expect(promptText).toContain('After the step is verified and logs/checklist are updated, commit the step and push it before stopping.');
-    expect(promptText).toContain('Use the configured local Git identity only.');
+    expect(promptText).toContain('Make repository changes, commits, and pushes as the configured human user only.');
+    expect(promptText).toContain('Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to an AI or agent identity.');
+    expect(promptText).toContain('References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.');
     expect(promptText).toContain('Stage files explicitly by path.');
     expect(promptText).toContain('Do not open a pull request.');
     expect(promptText).toContain('Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.');

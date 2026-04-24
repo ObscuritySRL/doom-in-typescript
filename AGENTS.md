@@ -20,8 +20,9 @@ Any rule below that mentions "when the project uses Bun" applies here unconditio
 
 ## GitHub and Publishing Authority
 
-- Do not do anything as Codex, OpenAI, Claude, or any other AI or agent identity.
-- All GitHub actions must be done by Stev Peifer through the configured human account and repository permissions.
+- Make repository changes, commits, pushes, and GitHub repository actions as Stev Peifer through the configured human account and repository permissions.
+- Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to Codex, OpenAI, Claude, or any other AI or agent identity.
+- References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.
 - Use only local Git commands for publishing repository changes. Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows unless the human owner explicitly changes this rule.
 - When publishing changes, commit and push directly. Do not open pull requests.
 - Every completed Ralph-loop step must end with a verified commit and push before the step is considered complete.

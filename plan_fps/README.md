@@ -41,9 +41,10 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 
 - Every completed Ralph-loop step requires a commit and push before it is considered complete.
 - Every audit pass that changes files requires a commit and push before it is considered complete.
-- Use the configured local Git identity only.
+- Make repository changes, commits, and pushes as the configured human user only.
+- Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to an AI or agent identity.
+- References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.
 - Stage files explicitly by path.
-- Do not mention Codex, OpenAI, Claude, AI, or agents in commits, PRs, issues, comments, or generated metadata.
 - Do not open pull requests.
 - Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.
 
