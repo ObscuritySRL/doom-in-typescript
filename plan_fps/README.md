@@ -64,6 +64,8 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 
 - `RALPH_LOOP_CLAUDE_CODE.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md`.
 - `RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md`.
+- `RALPH_LOOP_CODEX.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md` through `codex exec`.
+- `RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.
 - Both scripts default to `D:\Projects\doom-in-typescript` as the working directory and write loop output under `plan_fps/loop_logs/`.
 
 ## Boundaries

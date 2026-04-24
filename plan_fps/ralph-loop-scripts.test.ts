@@ -4,9 +4,12 @@ import { existsSync } from 'node:fs';
 
 const AGENTS_PATH = 'AGENTS.md';
 const AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE.ps1';
+const CODEX_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX.ps1';
+const CODEX_NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX_NO_AUDIT.ps1';
 const NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1';
 const PRE_PROMPT_PATH = 'plan_fps/PRE_PROMPT.md';
 const PROMPT_PATH = 'plan_fps/PROMPT.md';
+const README_PATH = 'plan_fps/README.md';
 
 describe('Ralph-loop PowerShell scripts', () => {
   test('repository instructions require human-owned direct commit and push publishing', async () => {
@@ -40,6 +43,52 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(scriptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
   });
 
+  test('codex audit script defaults to the playable plan control center', async () => {
+    const scriptText = await Bun.file(CODEX_AUDIT_SCRIPT_PATH).text();
+
+    expect(scriptText).toContain('[string]$PromptPath = "D:\\Projects\\doom-in-typescript\\plan_fps\\PROMPT.md"');
+    expect(scriptText).toContain('[string]$PrePromptPath = "D:\\Projects\\doom-in-typescript\\plan_fps\\PRE_PROMPT.md"');
+    expect(scriptText).toContain('[string]$WorkingDirectory = "D:\\Projects\\doom-in-typescript"');
+    expect(scriptText).toContain('[string]$LogDirectory = "D:\\Projects\\doom-in-typescript\\plan_fps\\loop_logs"');
+    expect(scriptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
+  });
+
+  test('codex no-audit script defaults to the playable plan control center', async () => {
+    const scriptText = await Bun.file(CODEX_NO_AUDIT_SCRIPT_PATH).text();
+
+    expect(scriptText).toContain('[string]$PromptPath = "D:\\Projects\\doom-in-typescript\\plan_fps\\PROMPT.md"');
+    expect(scriptText).toContain('[string]$WorkingDirectory = "D:\\Projects\\doom-in-typescript"');
+    expect(scriptText).toContain('[string]$LogDirectory = "D:\\Projects\\doom-in-typescript\\plan_fps\\loop_logs"');
+    expect(scriptText).not.toContain('$PrePromptPath');
+    expect(scriptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
+  });
+
+  test('codex scripts use non-interactive exec with explicit automation permissions', async () => {
+    for (const scriptPath of [CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
+      const scriptText = await Bun.file(scriptPath).text();
+
+      expect(scriptText).toContain('[ValidateSet("minimal", "low", "medium", "high", "xhigh", "max")]');
+      expect(scriptText).toContain('[string]$Effort = "xhigh"');
+      expect(scriptText).toContain('[string]$Model = ""');
+      expect(scriptText).toContain('[string]$CodexCommand = "codex"');
+      expect(scriptText).toContain('function ConvertTo-CodexReasoningEffort');
+      expect(scriptText).toContain('if ($Value -eq "max")');
+      expect(scriptText).toContain('return "xhigh"');
+      expect(scriptText).toContain('"exec"');
+      expect(scriptText).toContain('"--color", "never"');
+      expect(scriptText).toContain('"--ask-for-approval", "never"');
+      expect(scriptText).toContain('"--sandbox", "danger-full-access"');
+      expect(scriptText).toContain('"-c", "model_reasoning_effort=$codexReasoningEffort"');
+      expect(scriptText).toContain('$codexArguments += "-"');
+      expect(scriptText).toContain('| & $CodexCommand @codexArguments 2>&1 | Out-String');
+      expect(scriptText).not.toContain('--dangerously-skip-permissions');
+      expect(scriptText).not.toContain('--effort');
+      expect(scriptText).not.toContain('--output-format');
+      expect(scriptText).not.toContain('--print');
+      expect(scriptText).not.toContain('Codex-opus-4-7');
+    }
+  });
+
   test('audit pre-prompt targets completed plan_fps steps without advancing the checklist', async () => {
     const promptText = await Bun.file(PRE_PROMPT_PATH).text();
 
@@ -71,5 +120,14 @@ describe('Ralph-loop PowerShell scripts', () => {
   test('loop log directory exists for script output', async () => {
     expect(existsSync('plan_fps/loop_logs')).toBe(true);
     expect(await Bun.file('plan_fps/loop_logs/.gitkeep').exists()).toBe(true);
+  });
+
+  test('readme documents both Claude and Codex Ralph-loop scripts', async () => {
+    const readmeText = await Bun.file(README_PATH).text();
+
+    expect(readmeText).toContain('`RALPH_LOOP_CLAUDE_CODE.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md`.');
+    expect(readmeText).toContain('`RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md`.');
+    expect(readmeText).toContain('`RALPH_LOOP_CODEX.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md` through `codex exec`.');
+    expect(readmeText).toContain('`RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.');
   });
 });
