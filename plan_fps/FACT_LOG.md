@@ -113,3 +113,9 @@
 - date: 2026-04-24
 - fact: Within the 01-011 read scope, `src/main.ts` launches `runLauncherWindow` without any exposed live audio host, mixer, music, sound-effect, volume, or audio hash surfaces; only the package-level `@bun-win32/winmm` dependency is visible as an audio-adjacent capability.
 - source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-011-audit-missing-live-audio.json`
+
+## F-FPS-020
+
+- date: 2026-04-24
+- fact: Within the 01-012 read scope, `src/main.ts` exposes only rendering-adjacent launch text, scale/title options, and delegation to `runLauncherWindow`; no live renderer, framebuffer, presentation blit, palette/gamma, status bar, menu overlay, title screen, automap renderer, wipe transition, or framebuffer hash surface is exposed.
+- source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-012-audit-missing-live-rendering.json`

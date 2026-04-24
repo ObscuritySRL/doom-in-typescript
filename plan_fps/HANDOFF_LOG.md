@@ -455,3 +455,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-012 audit-missing-live-rendering
 - open_risks: The selected step did not permit opening host, audio, mixer, music, menu, or renderer implementation files, so actual live audio implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-012 audit-missing-live-rendering
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-012
+- step_title: audit-missing-live-rendering
+- summary: Audited the missing live-rendering surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-012-audit-missing-live-rendering.json` (schema v1) locking current and target command contracts, package and TypeScript source hashes, source-catalog evidence, observed rendering-adjacent launcher surfaces, and explicit nulls for automap rendering, framebuffer hash capture, gameplay rendering, live framebuffer ownership, menu overlay composition, palette/gamma application, presentation blit, status bar rendering, title rendering, viewport borders, and wipe transitions. Added focused test `test/plan_fps/01-012-audit-missing-live-rendering.test.ts` that deep-locks the manifest, cross-checks live package and TypeScript values, recomputes source hashes, verifies ordered launcher transition fragments and observed evidence, verifies explicit null surfaces, and verifies the durable fact entry.
+- files_changed: plan_fps/manifests/01-012-audit-missing-live-rendering.json; test/plan_fps/01-012-audit-missing-live-rendering.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-012-audit-missing-live-rendering.test.ts (6 pass, 0 fail, 76 expect() calls); bun test (6570 pass, 0 fail, 690154 expect() calls across 196 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-020 (visible `src/main.ts` rendering-adjacent launch text, scale/title options, and delegation to `runLauncherWindow`; missing live renderer/framebuffer/presentation/palette/status/menu/title/automap/wipe/hash surfaces)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-013 audit-missing-save-load-ui
+- open_risks: The selected step did not permit opening host, renderer, menu, status bar, automap, palette, or framebuffer implementation files, so actual live rendering implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
