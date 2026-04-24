@@ -13,7 +13,7 @@
 - [x] `00-004` `reject-compiled-exe-target` | prereqs: `00-003` | file: `plan_fps/steps/00-004-reject-compiled-exe-target.md`
 - [x] `00-005` `pin-bun-runtime-and-package-manager` | prereqs: `00-004` | file: `plan_fps/steps/00-005-pin-bun-runtime-and-package-manager.md`
 - [x] `00-006` `record-bun-native-api-preference` | prereqs: `00-005` | file: `plan_fps/steps/00-006-record-bun-native-api-preference.md`
-- [ ] `00-007` `pin-writable-workspace-boundaries` | prereqs: `00-006` | file: `plan_fps/steps/00-007-pin-writable-workspace-boundaries.md`
+- [x] `00-007` `pin-writable-workspace-boundaries` | prereqs: `00-006` | file: `plan_fps/steps/00-007-pin-writable-workspace-boundaries.md`
 - [ ] `00-008` `pin-read-only-reference-boundaries` | prereqs: `00-007` | file: `plan_fps/steps/00-008-pin-read-only-reference-boundaries.md`
 - [ ] `00-009` `pin-asset-license-boundaries` | prereqs: `00-008` | file: `plan_fps/steps/00-009-pin-asset-license-boundaries.md`
 - [ ] `00-010` `pin-windowed-only-difference` | prereqs: `00-009` | file: `plan_fps/steps/00-010-pin-windowed-only-difference.md`

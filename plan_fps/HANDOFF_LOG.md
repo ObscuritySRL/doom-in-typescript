@@ -113,3 +113,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-007 pin-writable-workspace-boundaries
 - open_risks: none
+
+## 2026-04-24 - 00-007 pin-writable-workspace-boundaries
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-007
+- step_title: pin-writable-workspace-boundaries
+- summary: Pinned the writable workspace boundary for the playable parity effort to exactly `D:/Projects/doom-in-typescript` and forbade writes outside that root. Added decision D-FPS-008 and wrote `plan_fps/manifests/00-007-pin-writable-workspace-boundaries.json` (schema v1) locking the exact workspace root path, canonical path formatting, workspace markers (`package.json`, `tsconfig.json`, `plan_fps/README.md`), README boundary lines for the workspace root and oracle artifact placement, write-policy flags plus scope, relative writable-artifact examples, and the `bun run doom.ts` runtime-target cross-reference. Added focused test `test/plan_fps/00-007-pin-writable-workspace-boundaries.test.ts` (14 tests, 55 expects) that locks every manifest field by exact value, cross-checks the live workspace root on disk, requires all marker and evidence paths to stay inside the workspace root, verifies the README boundary lines verbatim, cross-checks root-anchored `package.json` and `tsconfig.json`, and verifies D-FPS-008 is recorded in `DECISION_LOG.md`.
+- files_changed: plan_fps/manifests/00-007-pin-writable-workspace-boundaries.json; test/plan_fps/00-007-pin-writable-workspace-boundaries.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first append patch for D-FPS-008 matched the first `- supersedes: none` line in `DECISION_LOG.md`, which inserted the new decision after `D-FPS-001`. Moved the entry to the end of the file so decision ids remain ordered.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/00-007-pin-writable-workspace-boundaries.test.ts (14 pass, 0 fail, 55 expects); bun test (6470 pass, 0 fail, 689546 expects across 178 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: added D-FPS-008 accepted, citing `plan_fps/README.md`, `plan_fps/manifests/00-007-pin-writable-workspace-boundaries.json`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-008 pin-read-only-reference-boundaries
+- open_risks: none

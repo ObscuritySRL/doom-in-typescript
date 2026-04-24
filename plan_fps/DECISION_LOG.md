@@ -69,3 +69,13 @@
 - evidence: AGENTS.md, plan_fps/README.md, plan_fps/manifests/00-002-declare-plan-fps-control-center.json, plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json, plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json, plan_fps/manifests/00-006-record-bun-native-api-preference.json, package.json, tsconfig.json
 - affected_steps: 00-006, 03-004, 03-005, 03-006
 - supersedes: none
+
+## D-FPS-008
+
+- status: accepted
+- date: 2026-04-24
+- decision: All writable product, test, tool, plan, and generated artifacts for the playable parity effort must remain under `D:/Projects/doom-in-typescript`; no Ralph-loop step may write outside that workspace root.
+- rationale: The active control center already lives under the repository root and the runtime target is exactly `bun run doom.ts` (D-FPS-003). Pinning the writable boundary prevents accidental writes into neighboring repositories or system paths while still allowing later steps to define narrower read-only roots inside the workspace.
+- evidence: plan_fps/README.md, plan_fps/manifests/00-007-pin-writable-workspace-boundaries.json, package.json, tsconfig.json
+- affected_steps: 00-007, 00-008, 02-001, 15-001
+- supersedes: none

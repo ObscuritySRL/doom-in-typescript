@@ -1,0 +1,48 @@
+{
+  "controlCenterPath": "plan_fps",
+  "decisionId": "D-FPS-008",
+  "evidencePaths": ["plan_fps/DECISION_LOG.md", "plan_fps/README.md", "package.json", "tsconfig.json"],
+  "readmeOracleBoundaryLine": "- Oracle artifacts must be generated under writable project paths such as `test/oracles/fixtures/` or `plan_fps/manifests/`.",
+  "readmeWorkspaceBoundaryLine": "- Writable workspace root: `D:/Projects/doom-in-typescript`",
+  "requiredRuntimeTarget": {
+    "command": "bun run doom.ts",
+    "decisionId": "D-FPS-003",
+    "entryFile": "doom.ts",
+    "manifestPath": "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json"
+  },
+  "schemaVersion": 1,
+  "workspaceMarkers": [
+    {
+      "kind": "package-manifest",
+      "path": "package.json",
+      "requiredAtWorkspaceRoot": true
+    },
+    {
+      "kind": "typescript-config",
+      "path": "tsconfig.json",
+      "requiredAtWorkspaceRoot": true
+    },
+    {
+      "kind": "active-control-center-readme",
+      "path": "plan_fps/README.md",
+      "requiredAtWorkspaceRoot": true
+    }
+  ],
+  "workspaceRelativeWritableArtifactExamples": ["plan_fps/manifests/", "test/oracles/fixtures/"],
+  "writePolicy": {
+    "allowWritesOutsideWorkspaceRoot": false,
+    "appliesTo": ["generated-artifacts", "plan-files", "product-files", "test-files", "tool-files"],
+    "disallowAbsolutePathsOutsideWorkspaceRoot": true,
+    "disallowParentTraversalOutsideWorkspaceRoot": true,
+    "readOnlyReferenceRootsHandledByStepId": "00-008",
+    "summary": "Write product, test, tool, plan, and generated artifacts only under the workspace root."
+  },
+  "writableWorkspaceRoot": {
+    "absolutePath": "D:/Projects/doom-in-typescript",
+    "canonicalPath": "D:/Projects/doom-in-typescript",
+    "directoryName": "doom-in-typescript",
+    "hasTrailingSlash": false,
+    "pathSeparator": "/",
+    "relativePathFromDriveRoot": "Projects/doom-in-typescript"
+  }
+}
