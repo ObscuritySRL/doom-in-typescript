@@ -79,3 +79,13 @@
 - evidence: plan_fps/README.md, plan_fps/manifests/00-007-pin-writable-workspace-boundaries.json, package.json, tsconfig.json
 - affected_steps: 00-007, 00-008, 02-001, 15-001
 - supersedes: none
+
+## D-FPS-009
+
+- status: accepted
+- date: 2026-04-24
+- decision: The only read-only reference roots for the playable parity effort are `D:/Projects/doom-in-typescript/doom`, `D:/Projects/doom-in-typescript/iwad`, and `D:/Projects/doom-in-typescript/reference`; no Ralph-loop step may write inside those roots.
+- rationale: D-FPS-008 already pins the writable workspace root to `D:/Projects/doom-in-typescript` and D-FPS-003 pins the runtime target to `bun run doom.ts`. This step narrows that workspace into three in-repo reference roots that remain readable for parity work but never writable, while oracle and manifest outputs stay under writable project paths such as `test/oracles/fixtures/` and `plan_fps/manifests/`.
+- evidence: doom, iwad, plan_fps/README.md, plan_fps/manifests/00-008-pin-read-only-reference-boundaries.json, reference, package.json, tsconfig.json
+- affected_steps: 00-008, 00-009, 02-001, 02-002, 15-001
+- supersedes: none

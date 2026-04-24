@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "stepId": "00-008",
+  "stepSlug": "pin-read-only-reference-boundaries",
+  "decisionId": "D-FPS-009",
+  "runtimeTarget": "bun run doom.ts",
+  "deterministicReplayCompatible": true,
+  "workspaceRoot": "D:/Projects/doom-in-typescript",
+  "readOnlyReferenceRoots": [
+    {
+      "rootId": "doom",
+      "relativePath": "doom",
+      "absolutePath": "D:/Projects/doom-in-typescript/doom",
+      "existsOnDisk": true,
+      "writeAllowed": false
+    },
+    {
+      "rootId": "iwad",
+      "relativePath": "iwad",
+      "absolutePath": "D:/Projects/doom-in-typescript/iwad",
+      "existsOnDisk": true,
+      "writeAllowed": false
+    },
+    {
+      "rootId": "reference",
+      "relativePath": "reference",
+      "absolutePath": "D:/Projects/doom-in-typescript/reference",
+      "existsOnDisk": true,
+      "writeAllowed": false
+    }
+  ],
+  "writePolicy": {
+    "forbidCreate": true,
+    "forbidDelete": true,
+    "forbidModify": true,
+    "oracleArtifactsMustStayOutsideReadOnlyRoots": true,
+    "readOnlyRootsAreExclusive": true,
+    "writableArtifactExamples": ["plan_fps/manifests", "test/oracles/fixtures"]
+  },
+  "readmeBoundaries": {
+    "readOnlyReferenceRootsLine": "- Read-only reference roots: `doom/`, `iwad/`, and `reference/`",
+    "oracleArtifactsLine": "- Oracle artifacts must be generated under writable project paths such as `test/oracles/fixtures/` or `plan_fps/manifests/`.",
+    "noWriteLine": "- Do not write inside `doom/`, `iwad/`, or `reference/`."
+  },
+  "toolingScope": {
+    "packageJsonScripts": {
+      "format": "bun run tools/format-changed.ts",
+      "start": "bun run src/main.ts"
+    },
+    "readOnlyRootsIncludedInTypeScriptInputs": false,
+    "tsconfigIncludes": ["src", "test", "tools"]
+  },
+  "rationale": "D-FPS-008 already pins the writable workspace root to `D:/Projects/doom-in-typescript` and D-FPS-003 pins the runtime target to `bun run doom.ts`. This step narrows that workspace into three in-repo reference roots that remain readable for parity work but never writable, while oracle and manifest outputs stay under writable project paths such as `test/oracles/fixtures/` and `plan_fps/manifests/`.",
+  "evidencePaths": ["doom", "iwad", "package.json", "plan_fps/README.md", "reference", "tsconfig.json"]
+}

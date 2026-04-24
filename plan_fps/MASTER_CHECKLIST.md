@@ -14,7 +14,7 @@
 - [x] `00-005` `pin-bun-runtime-and-package-manager` | prereqs: `00-004` | file: `plan_fps/steps/00-005-pin-bun-runtime-and-package-manager.md`
 - [x] `00-006` `record-bun-native-api-preference` | prereqs: `00-005` | file: `plan_fps/steps/00-006-record-bun-native-api-preference.md`
 - [x] `00-007` `pin-writable-workspace-boundaries` | prereqs: `00-006` | file: `plan_fps/steps/00-007-pin-writable-workspace-boundaries.md`
-- [ ] `00-008` `pin-read-only-reference-boundaries` | prereqs: `00-007` | file: `plan_fps/steps/00-008-pin-read-only-reference-boundaries.md`
+- [x] `00-008` `pin-read-only-reference-boundaries` | prereqs: `00-007` | file: `plan_fps/steps/00-008-pin-read-only-reference-boundaries.md`
 - [ ] `00-009` `pin-asset-license-boundaries` | prereqs: `00-008` | file: `plan_fps/steps/00-009-pin-asset-license-boundaries.md`
 - [ ] `00-010` `pin-windowed-only-difference` | prereqs: `00-009` | file: `plan_fps/steps/00-010-pin-windowed-only-difference.md`
 - [ ] `00-011` `define-side-by-side-acceptance-standard` | prereqs: `00-010` | file: `plan_fps/steps/00-011-define-side-by-side-acceptance-standard.md`

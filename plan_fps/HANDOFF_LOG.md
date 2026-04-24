@@ -131,3 +131,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-008 pin-read-only-reference-boundaries
 - open_risks: none
+
+## 2026-04-24 - 00-008 pin-read-only-reference-boundaries
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-008
+- step_title: pin-read-only-reference-boundaries
+- summary: Pinned the only in-workspace read-only reference roots for the playable parity effort to exactly `D:/Projects/doom-in-typescript/doom`, `D:/Projects/doom-in-typescript/iwad`, and `D:/Projects/doom-in-typescript/reference`, and forbade create/delete/modify operations under those roots. Added decision D-FPS-009 and wrote `plan_fps/manifests/00-008-pin-read-only-reference-boundaries.json` (schema v1) locking the exact root ids and absolute paths, runtime target `bun run doom.ts`, deterministic replay compatibility, write-policy flags, writable oracle/manifest output examples, README boundary lines, tooling scope from `package.json` and `tsconfig.json`, and evidence paths. Added focused test `test/plan_fps/00-008-pin-read-only-reference-boundaries.test.ts` (10 tests, 44 expects) that locks the manifest by exact value, cross-checks the live workspace root and root directories on disk, verifies writable artifact examples stay outside the read-only roots, verifies the README boundary lines verbatim, verifies the live package scripts and TypeScript include scope, verifies evidence paths exist, and verifies the D-FPS-009 section in `DECISION_LOG.md` by exact text.
+- files_changed: plan_fps/manifests/00-008-pin-read-only-reference-boundaries.json; test/plan_fps/00-008-pin-read-only-reference-boundaries.test.ts; plan_fps/FACT_LOG.md; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-008-pin-read-only-reference-boundaries.test.ts (10 pass, 0 fail, 44 expects); bun test (6480 pass, 0 fail, 689590 expects across 179 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-008 (three top-level in-workspace reference roots exist at `doom/`, `iwad/`, and `reference/`)
+- decision_changes: added D-FPS-009 accepted, citing `doom`, `iwad`, `plan_fps/README.md`, `plan_fps/manifests/00-008-pin-read-only-reference-boundaries.json`, `reference`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-009 pin-asset-license-boundaries
+- open_risks: none

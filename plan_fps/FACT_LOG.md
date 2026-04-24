@@ -41,3 +41,9 @@
 - date: 2026-04-24
 - fact: The active Bun lockfile name on disk is `bun.lock` (text format), not the older binary `bun.lockb`. AGENTS.md previously referenced `bun.lockb`; the audit pass for 00-005 corrected the rule to match the actual lockfile name and the manifest pinned in `plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json` (`allowedLockfile.path = "bun.lock"`).
 - source: filesystem inspection (`bun.lock` exists at workspace root; no `bun.lockb` present), `plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json`, `AGENTS.md`
+
+## F-FPS-008
+
+- date: 2026-04-24
+- fact: The repository contains three top-level in-workspace reference roots at `doom/`, `iwad/`, and `reference/`; all three currently exist as directories on disk under `D:/Projects/doom-in-typescript`.
+- source: filesystem inspection
