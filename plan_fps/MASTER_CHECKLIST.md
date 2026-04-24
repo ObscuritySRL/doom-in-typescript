@@ -33,7 +33,7 @@
 - [x] `01-007` `audit-missing-bun-run-doom-entrypoint` | prereqs: `01-006` | file: `plan_fps/steps/01-007-audit-missing-bun-run-doom-entrypoint.md`
 - [x] `01-008` `audit-missing-launch-to-menu` | prereqs: `01-007` | file: `plan_fps/steps/01-008-audit-missing-launch-to-menu.md`
 - [x] `01-009` `audit-missing-menu-to-e1m1` | prereqs: `01-008` | file: `plan_fps/steps/01-009-audit-missing-menu-to-e1m1.md`
-- [ ] `01-010` `audit-missing-live-input` | prereqs: `01-009` | file: `plan_fps/steps/01-010-audit-missing-live-input.md`
+- [x] `01-010` `audit-missing-live-input` | prereqs: `01-009` | file: `plan_fps/steps/01-010-audit-missing-live-input.md`
 - [ ] `01-011` `audit-missing-live-audio` | prereqs: `01-010` | file: `plan_fps/steps/01-011-audit-missing-live-audio.md`
 - [ ] `01-012` `audit-missing-live-rendering` | prereqs: `01-011` | file: `plan_fps/steps/01-012-audit-missing-live-rendering.md`
 - [ ] `01-013` `audit-missing-save-load-ui` | prereqs: `01-012` | file: `plan_fps/steps/01-013-audit-missing-save-load-ui.md`

@@ -101,3 +101,9 @@
 - date: 2026-04-24
 - fact: Within the 01-009 read scope, `src/main.ts` defaults directly to `E1M1`, creates a gameplay launcher session before `runLauncherWindow`, and exposes gameplay-first help/console text; no menu-to-E1M1 route is exposed.
 - source: `src/main.ts`, `package.json`, `plan_fps/manifests/01-009-audit-missing-menu-to-e1m1.json`
+
+## F-FPS-018
+
+- date: 2026-04-24
+- fact: Within the 01-010 read scope, `src/main.ts` documents live controls in help text and delegates to `runLauncherWindow`, but no live keyboard/mouse event source, key translation table, gameplay input router, menu input router, mouse capture policy, input trace recorder, or per-tic input accumulator is exposed.
+- source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-010-audit-missing-live-input.json`

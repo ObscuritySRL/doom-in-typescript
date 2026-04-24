@@ -419,3 +419,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-010 audit-missing-live-input
 - open_risks: The selected step did not permit opening menu, host, or renderer implementation files, so broader menu inventory and actual menu-to-gameplay wiring remain intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-010 audit-missing-live-input
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-010
+- step_title: audit-missing-live-input
+- summary: Audited the missing live-input surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-010-audit-missing-live-input.json` (schema v1) locking current and target command contracts, live package and TypeScript source hashes, documented gameplay/automap/quit controls from `src/main.ts`, launcher transition ordering through `createLauncherSession` and `runLauncherWindow`, source-catalog rows, and explicit nulls for gameplay command routing, live keyboard/mouse event source, input trace recording, key translation, live input event loop, menu input routing, mouse capture policy, and per-tic input accumulation. Added focused test `test/plan_fps/01-010-audit-missing-live-input.test.ts` that deep-locks the manifest, cross-checks live command contracts, recomputes source hashes, verifies transition ordering and documented controls, asserts sorted explicit null surfaces, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-010-audit-missing-live-input.json; test/plan_fps/01-010-audit-missing-live-input.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, No fixes applied); bun test test/plan_fps/01-010-audit-missing-live-input.test.ts (6 pass, 0 fail, 53 expect() calls); bun test (6559 pass, 0 fail, 690050 expect() calls); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-018 (visible `src/main.ts` live-control help text delegates to `runLauncherWindow`, with no exposed live input event source, translation table, routing, capture policy, recorder, or per-tic accumulator in the 01-010 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-011 audit-missing-live-audio
+- open_risks: The selected step did not permit opening host, input, menu, or renderer implementation files, so actual live input implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
