@@ -491,3 +491,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-014 audit-missing-config-persistence
 - open_risks: The selected step did not permit opening host, menu, save, persistence, or game-state implementation files, so actual save/load implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-014 audit-missing-config-persistence
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-014
+- step_title: audit-missing-config-persistence
+- summary: Audited the missing config persistence surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-014-audit-missing-config-persistence.json` (schema v1) locking current and target command contracts, package and TypeScript source hashes, source-catalog evidence, transient CLI config-adjacent launcher surfaces, and explicit nulls for config read/write, config schema/path policy, default.cfg/chocolate-doom.cfg compatibility, key/mouse/sound/screen persistence, vanilla compatibility flags, and user-local config test isolation. Added focused test `test/plan_fps/01-014-audit-missing-config-persistence.test.ts` that deep-locks the manifest, recomputes source hashes with Bun, cross-checks live package and TypeScript command contracts, verifies the visible launcher transition, verifies explicit null surfaces, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-014-audit-missing-config-persistence.json; test/plan_fps/01-014-audit-missing-config-persistence.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-014-audit-missing-config-persistence.test.ts (6 pass, 0 fail, 78 expect() calls); bun test (6581 pass, 0 fail, 690268 expect() calls); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-022 (visible `src/main.ts` transient IWAD/map/skill/scale CLI values and `Bun.file` default IWAD probe; missing config persistence surfaces in the 01-014 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-015 audit-missing-side-by-side-replay
+- open_risks: The selected step did not permit opening config, launcher, host, menu, input, save, or persistence implementation files beyond `src/main.ts`, so actual config persistence implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.

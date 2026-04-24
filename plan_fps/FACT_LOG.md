@@ -125,3 +125,9 @@
 - date: 2026-04-24
 - fact: Within the 01-013 read scope, `src/main.ts` exposes gameplay-first launch and delegates to `runLauncherWindow`, but no save/load menu route, save slot UI, load slot UI, save description entry, save path policy, or live save/load roundtrip surface is exposed.
 - source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-013-audit-missing-save-load-ui.json`
+
+## F-FPS-022
+
+- date: 2026-04-24
+- fact: Within the 01-014 read scope, `src/main.ts` exposes transient command-line values for IWAD, map, skill, and scale plus a `Bun.file` default IWAD probe, but no config file read/write path, default.cfg or chocolate-doom.cfg bridge, key/mouse/sound/screen setting persistence, vanilla compatibility flag persistence, or user-local config test isolation surface is exposed.
+- source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-014-audit-missing-config-persistence.json`
