@@ -11,6 +11,33 @@ const PRE_PROMPT_PATH = 'plan_fps/PRE_PROMPT.md';
 const PROMPT_PATH = 'plan_fps/PROMPT.md';
 const README_PATH = 'plan_fps/README.md';
 
+async function runPowerShellScript(scriptPath: string, additionalArguments: string[]) {
+  const subprocess = Bun.spawn({
+    cmd: [
+      'powershell',
+      '-NoProfile',
+      '-ExecutionPolicy',
+      'Bypass',
+      '-File',
+      scriptPath,
+      ...additionalArguments,
+    ],
+    stderr: 'pipe',
+    stdout: 'pipe',
+  });
+
+  const [standardErrorText, standardOutputText, exitCode] = await Promise.all([
+    new Response(subprocess.stderr).text(),
+    new Response(subprocess.stdout).text(),
+    subprocess.exited,
+  ]);
+
+  return {
+    combinedOutput: `${standardOutputText}\n${standardErrorText}`,
+    exitCode,
+  };
+}
+
 describe('Ralph-loop PowerShell scripts', () => {
   test('repository instructions require human-owned direct commit and push publishing', async () => {
     const agentsText = await Bun.file(AGENTS_PATH).text();
@@ -72,20 +99,42 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('[string]$Model = ""');
       expect(scriptText).toContain('[string]$CodexCommand = "codex"');
       expect(scriptText).toContain('function ConvertTo-CodexReasoningEffort');
+      expect(scriptText).toContain('function Resolve-CodexCommand');
+      expect(scriptText).toContain('function Test-CodexCommand');
       expect(scriptText).toContain('if ($Value -eq "max")');
       expect(scriptText).toContain('return "xhigh"');
+      expect(scriptText).toContain('Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex CLI command not found: $CodexCommand.');
+      expect(scriptText).toContain('$codexCommandError = Test-CodexCommand -Value $resolvedCodexCommand');
       expect(scriptText).toContain('"exec"');
       expect(scriptText).toContain('"--color", "never"');
       expect(scriptText).toContain('"--ask-for-approval", "never"');
       expect(scriptText).toContain('"--sandbox", "danger-full-access"');
       expect(scriptText).toContain('"-c", "model_reasoning_effort=$codexReasoningEffort"');
       expect(scriptText).toContain('$codexArguments += "-"');
-      expect(scriptText).toContain('| & $CodexCommand @codexArguments 2>&1 | Out-String');
+      expect(scriptText).toContain('| & $resolvedCodexCommand @codexArguments 2>&1 | Out-String');
       expect(scriptText).not.toContain('--dangerously-skip-permissions');
       expect(scriptText).not.toContain('--effort');
       expect(scriptText).not.toContain('--output-format');
       expect(scriptText).not.toContain('--print');
       expect(scriptText).not.toContain('Codex-opus-4-7');
+    }
+  });
+
+  test('codex scripts report a missing CLI before the loop starts', async () => {
+    for (const scriptPath of [CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
+      const result = await runPowerShellScript(scriptPath, [
+        '-MaxIterations',
+        '1',
+        '-CodexCommand',
+        '__missing_codex_command_for_test__',
+      ]);
+
+      expect(result.exitCode).toBe(2);
+      expect(result.combinedOutput).toContain('LOOP_STATUS: CLI_ERROR');
+      expect(result.combinedOutput).toContain('Codex CLI command not found: __missing_codex_command_for_test__.');
+      expect(result.combinedOutput).toContain('pass -CodexCommand with the full CLI path');
+      expect(result.combinedOutput).not.toContain('ObjectNotFound');
+      expect(result.combinedOutput).not.toContain('CommandNotFoundException');
     }
   });
 
@@ -129,5 +178,6 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(readmeText).toContain('`RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md`.');
     expect(readmeText).toContain('`RALPH_LOOP_CODEX.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md` through `codex exec`.');
     expect(readmeText).toContain('`RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.');
+    expect(readmeText).toContain('The Codex scripts require the Codex CLI terminal command on `PATH`, or `-CodexCommand <full CLI path>`.');
   });
 });

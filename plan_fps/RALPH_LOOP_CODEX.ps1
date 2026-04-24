@@ -182,6 +182,45 @@ function ConvertTo-CodexReasoningEffort {
     return $Value
 }
 
+function Resolve-CodexCommand {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Value
+    )
+
+    if (Test-Path -LiteralPath $Value -PathType Leaf) {
+        return (Resolve-Path -LiteralPath $Value).Path
+    }
+
+    $command = Get-Command $Value -ErrorAction SilentlyContinue
+    if ($command) {
+        return $command.Source
+    }
+
+    return ""
+}
+
+function Test-CodexCommand {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Value
+    )
+
+    try {
+        $versionResponse = & $Value --version 2>&1 | Out-String
+        $versionExitCode = $LASTEXITCODE
+    }
+    catch {
+        return "Codex CLI preflight failed for '$Value': $($_.Exception.Message)"
+    }
+
+    if ($versionExitCode -ne 0) {
+        return "Codex CLI preflight failed for '$Value' with exit code $versionExitCode. Output: $($versionResponse.Trim())"
+    }
+
+    return ""
+}
+
 function Get-ResolvedReason {
     param(
         [string]$ExplicitReason = "",
@@ -298,6 +337,18 @@ if ($MaxIterations -eq 0) {
     exit 0
 }
 
+$resolvedCodexCommand = Resolve-CodexCommand -Value $CodexCommand
+if (-not $resolvedCodexCommand) {
+    Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex CLI command not found: $CodexCommand. Install the Codex CLI and restart PowerShell so codex is on PATH, or pass -CodexCommand with the full CLI path."
+    exit 2
+}
+
+$codexCommandError = Test-CodexCommand -Value $resolvedCodexCommand
+if ($codexCommandError) {
+    Write-LoopSummary -Status "CLI_ERROR" -Reason "$codexCommandError Install the Codex CLI terminal command and restart PowerShell, or pass -CodexCommand with the full CLI path."
+    exit 2
+}
+
 $codexReasoningEffort = ConvertTo-CodexReasoningEffort -Value $Effort
 $codexArguments = @(
     "exec",
@@ -327,11 +378,11 @@ try {
         Write-Host "Pre-prompt: $PrePromptPath"
         Write-Host "Prompt: $PromptPath"
         Write-Host "Working directory: $WorkingDirectory"
-        Write-Host "Codex command: $CodexCommand"
+        Write-Host "Codex command: $resolvedCodexCommand"
         Write-Host "Codex arguments: $($codexArguments -join ' ')"
 
         Write-Host "--- Audit pass (PRE_PROMPT.md) ---"
-        $preResponse = $prePrompt | & $CodexCommand @codexArguments 2>&1 | Out-String
+        $preResponse = $prePrompt | & $resolvedCodexCommand @codexArguments 2>&1 | Out-String
         $preExitCode = $LASTEXITCODE
 
         Set-Content -LiteralPath $prePath -Value $preResponse -Encoding utf8
@@ -360,7 +411,7 @@ try {
         }
 
         Write-Host "--- Forward step (PROMPT.md) ---"
-        $response = $prompt | & $CodexCommand @codexArguments 2>&1 | Out-String
+        $response = $prompt | & $resolvedCodexCommand @codexArguments 2>&1 | Out-String
         $exitCode = $LASTEXITCODE
 
         Set-Content -LiteralPath $responsePath -Value $response -Encoding utf8
@@ -428,7 +479,7 @@ Response to convert:
 $response
 "@
 
-            $repairResponse = $repairPrompt | & $CodexCommand @codexArguments 2>&1 | Out-String
+            $repairResponse = $repairPrompt | & $resolvedCodexCommand @codexArguments 2>&1 | Out-String
             $repairExitCode = $LASTEXITCODE
 
             Set-Content -LiteralPath $repairPath -Value $repairResponse -Encoding utf8
