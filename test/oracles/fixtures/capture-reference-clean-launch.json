@@ -1,0 +1,99 @@
+{
+  "captureCommand": {
+    "arguments": [],
+    "description": "Clean-launch reference capture from the local DOS binary authority with the shareware IWAD available in the same reference directory.",
+    "effectiveCommand": "cd doom && DOOMD.EXE",
+    "program": "DOOMD.EXE",
+    "workingDirectory": "doom",
+    "writesInsideReferenceRoots": false
+  },
+  "captureWindow": {
+    "endFrame": 0,
+    "endTic": 0,
+    "frameCount": 1,
+    "inputTrace": [],
+    "startFrame": 0,
+    "startTic": 0
+  },
+  "expectedHashes": [
+    {
+      "algorithm": "sha256",
+      "sha256": "d757bf195f2002df8b103deee4f8d81e117a99c5a15e476ca8196e25b32e3a1a",
+      "surface": "expectedTrace-json"
+    }
+  ],
+  "expectedTrace": [
+    {
+      "event": "select-primary-reference-binary",
+      "ordinal": 1,
+      "value": "doom/DOOMD.EXE"
+    },
+    {
+      "event": "select-primary-iwad-data",
+      "ordinal": 2,
+      "value": "doom/DOOM1.WAD"
+    },
+    {
+      "event": "launch-reference-clean-command",
+      "ordinal": 3,
+      "value": "cd doom && DOOMD.EXE"
+    },
+    {
+      "event": "capture-window",
+      "ordinal": 4,
+      "value": "tic 0 frame 0"
+    }
+  ],
+  "refreshCommand": "bun test test/oracles/capture-reference-clean-launch.test.ts",
+  "schemaVersion": 1,
+  "sourceAuthority": {
+    "authorityOrder": ["OR-FPS-001", "OR-FPS-003", "OR-FPS-002", "OR-FPS-005"],
+    "primaryData": {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "role": "shareware IWAD data"
+    },
+    "primaryExecutable": {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "role": "local DOS binary authority when usable"
+    },
+    "secondaryExecutable": {
+      "authority": "local-secondary-binary",
+      "id": "S-FPS-004",
+      "path": "doom/DOOM.EXE",
+      "role": "local Windows executable fallback where appropriate"
+    }
+  },
+  "sourceCatalogEvidence": [
+    {
+      "authority": "local-secondary-binary",
+      "id": "S-FPS-004",
+      "path": "doom/DOOM.EXE",
+      "source": "local Windows executable"
+    },
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "source": "local DOS executable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "source": "local IWAD"
+    }
+  ],
+  "sourceManifestEvidence": {
+    "currentLauncherEntryFile": "src/main.ts",
+    "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "schemaVersion": 1,
+    "stepId": "01-015",
+    "targetRuntimeCommand": "bun run doom.ts"
+  },
+  "stepId": "02-002",
+  "stepTitle": "capture-reference-clean-launch"
+}
