@@ -38,7 +38,7 @@
 - [x] `01-012` `audit-missing-live-rendering` | prereqs: `01-011` | file: `plan_fps/steps/01-012-audit-missing-live-rendering.md`
 - [x] `01-013` `audit-missing-save-load-ui` | prereqs: `01-012` | file: `plan_fps/steps/01-013-audit-missing-save-load-ui.md`
 - [x] `01-014` `audit-missing-config-persistence` | prereqs: `01-013` | file: `plan_fps/steps/01-014-audit-missing-config-persistence.md`
-- [ ] `01-015` `audit-missing-side-by-side-replay` | prereqs: `01-014` | file: `plan_fps/steps/01-015-audit-missing-side-by-side-replay.md`
+- [x] `01-015` `audit-missing-side-by-side-replay` | prereqs: `01-014` | file: `plan_fps/steps/01-015-audit-missing-side-by-side-replay.md`
 
 ## Phase 02: Reference / Oracle Expansion
 

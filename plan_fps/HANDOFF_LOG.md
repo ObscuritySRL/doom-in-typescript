@@ -509,3 +509,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-015 audit-missing-side-by-side-replay
 - open_risks: The selected step did not permit opening config, launcher, host, menu, input, save, or persistence implementation files beyond `src/main.ts`, so actual config persistence implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-015 audit-missing-side-by-side-replay
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-015
+- step_title: audit-missing-side-by-side-replay
+- summary: Audited the missing side-by-side replay surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json` (schema v1) locking current and target command contracts, package and TypeScript workspace values, source hashes, source-catalog evidence, observed gameplay-first launcher surfaces, and explicit nulls for audio/framebuffer/state hash comparison, paired reference/implementation replay running, input trace replay loading, reference oracle capture, synchronized tic stepping, side-by-side command surface, video pairing, and final report output. Added focused test `test/plan_fps/01-015-audit-missing-side-by-side-replay.test.ts` that deep-locks the manifest, cross-checks live command contracts and TypeScript settings, recomputes hashes with Bun file reads, verifies the launcher transition ordering, verifies explicit null surfaces remain sorted, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json; test/plan_fps/01-015-audit-missing-side-by-side-replay.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-015-audit-missing-side-by-side-replay.test.ts (6 pass, 0 fail, 70 expect() calls); bun test (6587 pass, 0 fail, 690338 expect() calls across 199 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-023 (visible `src/main.ts` gameplay-first launch, map listing, and `runLauncherWindow` delegation; missing side-by-side replay command, synchronized reference/implementation runner, input trace loader, frame/state/audio hash comparison, and final side-by-side report surface in the 01-015 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 02-001 capture-implementation-clean-launch-expectations
+- open_risks: The selected step did not permit opening host, replay, input, audio, renderer, oracle, or reference implementation files beyond `src/main.ts`, so actual side-by-side replay implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.

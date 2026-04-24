@@ -131,3 +131,9 @@
 - date: 2026-04-24
 - fact: Within the 01-014 read scope, `src/main.ts` exposes transient command-line values for IWAD, map, skill, and scale plus a `Bun.file` default IWAD probe, but no config file read/write path, default.cfg or chocolate-doom.cfg bridge, key/mouse/sound/screen setting persistence, vanilla compatibility flag persistence, or user-local config test isolation surface is exposed.
 - source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-014-audit-missing-config-persistence.json`
+
+## F-FPS-023
+
+- date: 2026-04-24
+- fact: Within the 01-015 read scope, `src/main.ts` exposes gameplay-first launch, map listing, and `runLauncherWindow` delegation, but no side-by-side replay command, synchronized reference/implementation runner, input trace loader, frame/state/audio hash comparison, or final side-by-side report surface is exposed.
+- source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json`
