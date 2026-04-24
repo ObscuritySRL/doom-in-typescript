@@ -29,7 +29,7 @@
 - [x] `01-003` `audit-existing-oracle-fixtures` | prereqs: `01-002` | file: `plan_fps/steps/01-003-audit-existing-oracle-fixtures.md`
 - [x] `01-004` `audit-existing-manifests` | prereqs: `01-003` | file: `plan_fps/steps/01-004-audit-existing-manifests.md`
 - [x] `01-005` `audit-pure-engine-surface` | prereqs: `01-004` | file: `plan_fps/steps/01-005-audit-pure-engine-surface.md`
-- [ ] `01-006` `audit-playable-host-surface` | prereqs: `01-005` | file: `plan_fps/steps/01-006-audit-playable-host-surface.md`
+- [x] `01-006` `audit-playable-host-surface` | prereqs: `01-005` | file: `plan_fps/steps/01-006-audit-playable-host-surface.md`
 - [ ] `01-007` `audit-missing-bun-run-doom-entrypoint` | prereqs: `01-006` | file: `plan_fps/steps/01-007-audit-missing-bun-run-doom-entrypoint.md`
 - [ ] `01-008` `audit-missing-launch-to-menu` | prereqs: `01-007` | file: `plan_fps/steps/01-008-audit-missing-launch-to-menu.md`
 - [ ] `01-009` `audit-missing-menu-to-e1m1` | prereqs: `01-008` | file: `plan_fps/steps/01-009-audit-missing-menu-to-e1m1.md`

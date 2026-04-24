@@ -77,3 +77,9 @@
 - date: 2026-04-24
 - fact: Within the 01-005 read scope, `src/main.ts` exposes no direct pure-engine entry point or deterministic engine API; it imports bootstrap, launcher session, Win32 host, and reference policy/target modules, so broader pure-engine inventory remains outside the 01-005 read scope and is recorded as explicit nulls.
 - source: `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-005-audit-pure-engine-surface.json`
+
+## F-FPS-014
+
+- date: 2026-04-24
+- fact: Within the 01-006 read scope, `src/main.ts` directly transitions from loaded launcher resources to `runLauncherWindow` imported from `src/launcher/win32.ts`, starts in the gameplay view, exposes a Tab automap toggle in help text, and leaves the host implementation inventory itself outside the read scope as an explicit null.
+- source: `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-006-audit-playable-host-surface.json`

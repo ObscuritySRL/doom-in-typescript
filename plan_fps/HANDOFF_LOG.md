@@ -347,3 +347,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-006 audit-playable-host-surface
 - open_risks: The selected step does not permit enumerating `src/` beyond `src/main.ts`, so broader pure-engine module inventory and API surfaces are intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-006 audit-playable-host-surface
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-006
+- step_title: audit-playable-host-surface
+- summary: Audited the playable host surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-006-audit-playable-host-surface.json` (schema v1) locking current and target command contracts, live package/TypeScript workspace values, source hashes, direct launcher imports, the observed transition from loaded launcher resources to `runLauncherWindow`, gameplay-first launch/help text, Tab automap toggle evidence, window title/scale surfaces, source-catalog rows, and explicit nulls for host implementation, title/menu, input, audio, save/load, config persistence, replay, and final root-entrypoint surfaces outside this read scope. Added focused test `test/plan_fps/01-006-audit-playable-host-surface.test.ts` that deep-locks the manifest, recomputes hashes with Bun, cross-checks package and TypeScript command/config values, verifies the `src/main.ts` host transition, verifies sorted observed/null surfaces, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-006-audit-playable-host-surface.json; test/plan_fps/01-006-audit-playable-host-surface.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Removed readonly literal narrowing from the focused test's expected manifest after `bun x tsc --noEmit --project tsconfig.json` rejected a readonly expected dependency array against Bun test matcher overloads.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-006-audit-playable-host-surface.test.ts (4 pass, 0 fail, 45 expect() calls); bun test (6538 pass, 0 fail, 689907 expect() calls across 190 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on readonly literal array matcher typing); bun run format (recovery rerun, No fixes applied); bun test test/plan_fps/01-006-audit-playable-host-surface.test.ts (recovery rerun, 4 pass, 0 fail, 45 expect() calls); bun test (recovery rerun, 6538 pass, 0 fail, 689907 expect() calls across 190 files); bun x tsc --noEmit --project tsconfig.json (recovery rerun, clean)
+- new_facts: F-FPS-014 (visible `src/main.ts` playable host transition to `runLauncherWindow`, gameplay-first launch, Tab automap toggle, and explicit null for host implementation inventory outside the 01-006 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-007 audit-missing-bun-run-doom-entrypoint
+- open_risks: The selected step did not permit reading `src/launcher/win32.ts`, so the host implementation inventory remains an explicit null for later broader-scope steps.
