@@ -59,3 +59,13 @@
 - evidence: AGENTS.md, plan_fps/README.md, plan_fps/manifests/00-002-declare-plan-fps-control-center.json, plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json, plan_fps/manifests/00-004-reject-compiled-exe-target.json, plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json, package.json, bun.lock
 - affected_steps: 00-005, 00-006, 03-006
 - supersedes: none
+
+## D-FPS-007
+
+- status: accepted
+- date: 2026-04-24
+- decision: Prefer Bun-native APIs (`Bun.file`, `Bun.write`, `Bun.serve`, `Bun.argv`, `Bun.env`, `Bun.sleep`, `Bun.spawn`, `bun:test`, `bun:ffi`, `bun:sqlite`) over their Node standard-library equivalents whenever both exist, and enforce the import group order `bun:*` → `node:*` → third-party → relative with a blank line between groups.
+- rationale: The C1 runtime command is exactly `bun run doom.ts` (D-FPS-003) and Bun is the only runtime, package manager, script runner, and test runner (D-FPS-006). Pinning the Bun-native API preference prevents downstream steps from reaching for Node polyfills, Node FFI shims (`ffi-napi`, `node-ffi`, `node-addon-api`), or Node-only SQLite bindings (`better-sqlite3`, `sqlite3`) when an equivalent Bun API already exists. The import group order (`bun:*` → `node:*` → third-party → relative) flows directly from the preference: `bun:*` comes first because Bun builtins are the first-party runtime surface.
+- evidence: AGENTS.md, plan_fps/README.md, plan_fps/manifests/00-002-declare-plan-fps-control-center.json, plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json, plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json, plan_fps/manifests/00-006-record-bun-native-api-preference.json, package.json, tsconfig.json
+- affected_steps: 00-006, 03-004, 03-005, 03-006
+- supersedes: none

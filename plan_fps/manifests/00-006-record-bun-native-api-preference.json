@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "decisionId": "D-FPS-007",
+  "rationale": "Records the Bun-native API preference for the C1 playable parity product. Every downstream step must prefer Bun-native APIs (`Bun.file`, `Bun.write`, `Bun.serve`, `Bun.argv`, `Bun.env`, `Bun.sleep`, `Bun.spawn`, `bun:test`, `bun:ffi`, `bun:sqlite`) over their Node standard-library equivalents whenever both exist. Pins the import group order (`bun:*` → `node:*` → third-party → relative) that follows from that preference. Cross-references D-FPS-003 runtime command `bun run doom.ts`, D-FPS-006 Bun-only runtime policy, and the 00-002 control center. Records the current workspace posture: `tsconfig.json` declares `types: [\"bun\"]`, `package.json` declares no Node-only FFI shim (ffi-napi, node-ffi, node-addon-api) or Node-only SQLite binding (better-sqlite3, sqlite3) as a dependency, and the FFI provider is the `@bun-win32` scope (`@bun-win32/core`, `@bun-win32/gdi32`, `@bun-win32/kernel32`, `@bun-win32/user32`, `@bun-win32/winmm`).",
+  "preferredBunApis": [
+    {
+      "name": "Bun.file",
+      "kind": "global-namespace",
+      "purpose": "Read files lazily through a BunFile handle.",
+      "nodeAlternatives": ["fs.readFile", "fs.readFileSync", "fs.promises.readFile"]
+    },
+    {
+      "name": "Bun.write",
+      "kind": "global-namespace",
+      "purpose": "Write files through a BunFile handle or Response/Blob input.",
+      "nodeAlternatives": ["fs.writeFile", "fs.writeFileSync", "fs.promises.writeFile"]
+    },
+    {
+      "name": "Bun.serve",
+      "kind": "global-namespace",
+      "purpose": "Run an HTTP/WebSocket server on Bun's native server.",
+      "nodeAlternatives": ["http.createServer", "https.createServer"]
+    },
+    {
+      "name": "Bun.argv",
+      "kind": "global-namespace",
+      "purpose": "Read the Bun process argv without Node `process.argv`.",
+      "nodeAlternatives": ["process.argv"]
+    },
+    {
+      "name": "Bun.env",
+      "kind": "global-namespace",
+      "purpose": "Read the Bun process environment without Node `process.env`.",
+      "nodeAlternatives": ["process.env"]
+    },
+    {
+      "name": "Bun.sleep",
+      "kind": "global-namespace",
+      "purpose": "Await a promise-based sleep without wrapping Node `setTimeout`.",
+      "nodeAlternatives": ["setTimeout"]
+    },
+    {
+      "name": "Bun.spawn",
+      "kind": "global-namespace",
+      "purpose": "Spawn a subprocess with Bun's native spawn.",
+      "nodeAlternatives": ["child_process.spawn", "child_process.exec", "child_process.execFile"]
+    },
+    {
+      "name": "bun:test",
+      "kind": "builtin-module",
+      "purpose": "Bun's built-in test runner (`describe`, `test`, `expect`).",
+      "nodeAlternatives": ["vitest", "jest", "mocha", "node:test"]
+    },
+    {
+      "name": "bun:ffi",
+      "kind": "builtin-module",
+      "purpose": "Bun's built-in FFI surface (`dlopen`, `FFIType`, `toArrayBuffer`).",
+      "nodeAlternatives": ["ffi-napi", "node-ffi", "node-addon-api"]
+    },
+    {
+      "name": "bun:sqlite",
+      "kind": "builtin-module",
+      "purpose": "Bun's built-in SQLite binding.",
+      "nodeAlternatives": ["better-sqlite3", "sqlite3"]
+    }
+  ],
+  "importGroupOrder": [
+    { "ordinal": 1, "group": "bun", "prefix": "bun:", "description": "Bun builtin modules imported via the `bun:` scheme." },
+    { "ordinal": 2, "group": "node", "prefix": "node:", "description": "Node standard library modules imported via the `node:` scheme." },
+    { "ordinal": 3, "group": "third-party", "prefix": "", "description": "Third-party packages installed via `bun add`." },
+    { "ordinal": 4, "group": "relative", "prefix": "", "description": "Relative workspace imports (`./`, `../`)." }
+  ],
+  "forbiddenNodeOnlyDependencies": ["ffi-napi", "node-ffi", "node-addon-api", "better-sqlite3", "sqlite3"],
+  "requiredRuntimeTarget": {
+    "runtimeCommand": "bun run doom.ts",
+    "decisionId": "D-FPS-003",
+    "manifestPath": "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json"
+  },
+  "bunOnlyManifestPath": "plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json",
+  "controlCenterManifestPath": "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+  "currentWorkspace": {
+    "tsconfigJsonPath": "tsconfig.json",
+    "tsconfigCompilerOptionsTypes": ["bun"],
+    "packageJsonPath": "package.json",
+    "ffiProviderScope": "@bun-win32",
+    "ffiProviderDependencies": ["@bun-win32/core", "@bun-win32/gdi32", "@bun-win32/kernel32", "@bun-win32/user32", "@bun-win32/winmm"]
+  },
+  "evidencePaths": [
+    "plan_fps/README.md",
+    "plan_fps/MASTER_CHECKLIST.md",
+    "plan_fps/DECISION_LOG.md",
+    "plan_fps/FACT_LOG.md",
+    "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+    "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json",
+    "plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json",
+    "package.json",
+    "tsconfig.json",
+    "AGENTS.md"
+  ]
+}
