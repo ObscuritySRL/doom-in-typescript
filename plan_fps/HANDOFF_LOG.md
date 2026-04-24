@@ -437,3 +437,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-011 audit-missing-live-audio
 - open_risks: The selected step did not permit opening host, input, menu, or renderer implementation files, so actual live input implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-011 audit-missing-live-audio
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-011
+- step_title: audit-missing-live-audio
+- summary: Audited the missing live-audio surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-011-audit-missing-live-audio.json` (schema v1) locking current and target command contracts, package and TypeScript source hashes, the visible `@bun-win32/winmm` dependency as audio-adjacent evidence, documented controls without audio/volume controls, launcher transition ordering through `createLauncherSession` and `runLauncherWindow`, source-catalog rows, observed surfaces, and explicit nulls for audio event queue, audio hash capture, live audio host, live music playback, live sound-effect mixer, menu sound events, audio shutdown, and volume control routes. Added focused test `test/plan_fps/01-011-audit-missing-live-audio.test.ts` that deep-locks the manifest, cross-checks live package and TypeScript values, recomputes source hashes, verifies the visible launcher transition, verifies sorted null surfaces, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-011-audit-missing-live-audio.json; test/plan_fps/01-011-audit-missing-live-audio.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-011-audit-missing-live-audio.test.ts (5 pass, 0 fail, 28 expect() calls); bun test (6564 pass, 0 fail, 690078 expect() calls across 195 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-019 (visible `src/main.ts` launches `runLauncherWindow` without live audio host, mixer, music, sound-effect, volume, or audio hash surfaces; `@bun-win32/winmm` is visible only as an audio-adjacent package dependency)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-012 audit-missing-live-rendering
+- open_risks: The selected step did not permit opening host, audio, mixer, music, menu, or renderer implementation files, so actual live audio implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.

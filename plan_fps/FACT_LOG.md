@@ -107,3 +107,9 @@
 - date: 2026-04-24
 - fact: Within the 01-010 read scope, `src/main.ts` documents live controls in help text and delegates to `runLauncherWindow`, but no live keyboard/mouse event source, key translation table, gameplay input router, menu input router, mouse capture policy, input trace recorder, or per-tic input accumulator is exposed.
 - source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-010-audit-missing-live-input.json`
+
+## F-FPS-019
+
+- date: 2026-04-24
+- fact: Within the 01-011 read scope, `src/main.ts` launches `runLauncherWindow` without any exposed live audio host, mixer, music, sound-effect, volume, or audio hash surfaces; only the package-level `@bun-win32/winmm` dependency is visible as an audio-adjacent capability.
+- source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-011-audit-missing-live-audio.json`
