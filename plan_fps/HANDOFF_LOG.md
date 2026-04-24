@@ -77,3 +77,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-005 pin-bun-runtime-and-package-manager
 - open_risks: none
+
+## 2026-04-24 - 00-005 pin-bun-runtime-and-package-manager
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 00-005
+- step_title: pin-bun-runtime-and-package-manager
+- summary: Locked Bun as the only runtime, package manager, script runner, and test runner for the C1 playable parity product. Created decision D-FPS-006 ("Bun is the only runtime, package manager, script runner, and test runner for the C1 playable parity product. No Node.js runtime, no `npm`, `yarn`, or `pnpm` package managers, no `npx`, `ts-node`, or `tsx` script runners, and no `vitest`, `jest`, or `mocha` test runners."), affected_steps 00-005/00-006/03-006, evidence list citing AGENTS.md, plan_fps/README.md, the 00-002/00-003/00-004/00-005 manifests, package.json, and bun.lock. Wrote `plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json` (schema v1) pinning six bunRoles (runtime=`bun`, package-manager=`bun install`, package-adder=`bun add`, script-runner=`bun run`, test-runner=`bun test`, builder=`bun build`) in canonical order, forbiddenRuntimePrograms (node), forbiddenPackageManagers (npm, yarn, pnpm), forbiddenScriptRunners (npx, ts-node, tsx), forbiddenTestRunners (vitest, jest, mocha), allowedLockfile (bun.lock, expectedPresentOnDisk=true), forbiddenLockfiles (package-lock.json, yarn.lock, pnpm-lock.yaml, all expectedPresentOnDisk=false), requiredRuntimeTarget linking D-FPS-003 + the 00-003 manifest, currentWorkspace pinning package.json script names (format, start) each starting with the `bun run` script-runner prefix and everyScriptUsesBun=true, controlCenterManifestPath + rejectCompiledExeManifestPath cross-references, and ten evidencePaths. Added focused test `test/plan_fps/00-005-pin-bun-runtime-and-package-manager.test.ts` (22 tests, 235 expects) that locks schemaVersion/decisionId, bunRoles length/order/per-role commandPrefix, uniqueness across bunRoles fields, commandPrefix-starts-with-bun invariant, forbidden-list equality and uniqueness for each role, lockfile presence (bun.lock present, forbidden lockfiles absent) and path-collision check, requiredRuntimeTarget cross-check against 00-003 manifest plus runtime/script-runner prefix invariant, currentWorkspace cross-check against live package.json scripts, a "no script value starts with a forbidden token" invariant, a "no dependency name equals any forbidden tool" invariant, control-center and reject-compiled-exe manifest cross-references, evidencePaths shape/existence/no-duplicates/outside-read-only-roots, rationale key-token presence, DECISION_LOG.md D-FPS-006 section assertions (accepted status, exact Bun-only sentence, cites this manifest), and AGENTS.md presence of every forbidden-alternative token.
+- files_changed: plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json; test/plan_fps/00-005-pin-bun-runtime-and-package-manager.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/plan_fps/00-005-pin-bun-runtime-and-package-manager.test.ts (22 pass, 0 fail, 235 expects); bun test (6434 pass, 0 fail, 688555 expects across 176 files); bun x tsc --noEmit --project tsconfig.json (clean); bun test plan_fps/validate-plan.test.ts (2 pass, 0 fail, 6 expects); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps, First step: 00-001)
+- new_facts: none
+- decision_changes: added D-FPS-006 accepted, citing the new 00-005 manifest alongside AGENTS.md, plan_fps/README.md, the 00-002/00-003/00-004 manifests, package.json, and bun.lock as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-006 record-bun-native-api-preference
+- open_risks: none

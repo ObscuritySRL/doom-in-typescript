@@ -49,3 +49,13 @@
 - evidence: plan_fps/README.md, plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json, plan_fps/manifests/00-004-reject-compiled-exe-target.json, package.json, tsconfig.json
 - affected_steps: 00-004, 03-001, 03-002, 15-010
 - supersedes: none
+
+## D-FPS-006
+
+- status: accepted
+- date: 2026-04-24
+- decision: Bun is the only runtime, package manager, script runner, and test runner for the C1 playable parity product. No Node.js runtime, no `npm`, `yarn`, or `pnpm` package managers, no `npx`, `ts-node`, or `tsx` script runners, and no `vitest`, `jest`, or `mocha` test runners.
+- rationale: The runtime command is exactly `bun run doom.ts` (D-FPS-003) and compiled-binary delivery is rejected (D-FPS-005). Pinning every Bun role here prevents downstream steps from drifting to a non-Bun tool through a package dependency, script, or lockfile. Lockfile policy: `bun.lock` is the only allowed lockfile; `package-lock.json`, `yarn.lock`, and `pnpm-lock.yaml` must not appear on disk.
+- evidence: AGENTS.md, plan_fps/README.md, plan_fps/manifests/00-002-declare-plan-fps-control-center.json, plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json, plan_fps/manifests/00-004-reject-compiled-exe-target.json, plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json, package.json, bun.lock
+- affected_steps: 00-005, 00-006, 03-006
+- supersedes: none

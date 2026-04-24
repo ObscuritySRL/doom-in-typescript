@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "decisionId": "D-FPS-006",
+  "rationale": "Pins Bun as the only runtime, package manager, script runner, and test runner for the C1 playable parity product. Decomposes each Bun role into its exact command prefix so downstream steps can cross-check wiring by role rather than by parsing README prose. Locks the forbidden alternatives per role (Node.js, npm, yarn, pnpm, npx, ts-node, tsx, vitest, jest, mocha) and the lockfile policy (`bun.lock` is the one allowed lockfile; `package-lock.json`, `yarn.lock`, and `pnpm-lock.yaml` are forbidden on disk). Cross-references the 00-002 control-center runtime target and the 00-003 runtime command (`bun run doom.ts`, D-FPS-003) so the Bun roles remain consistent with the product command contract. Records the current workspace posture: `package.json` only wires the `format` and `start` scripts, both invoke `bun run`, and the workspace contains `bun.lock` with none of the forbidden lockfiles present.",
+  "bunRoles": [
+    {
+      "role": "runtime",
+      "commandPrefix": "bun",
+      "description": "Bun is the only JavaScript/TypeScript runtime. No Node.js path, no fallback runtime."
+    },
+    {
+      "role": "package-manager",
+      "commandPrefix": "bun install",
+      "description": "Bun is the only package manager. `bun install` replaces `npm install`, `yarn`, and `pnpm install`."
+    },
+    {
+      "role": "package-adder",
+      "commandPrefix": "bun add",
+      "description": "Bun is the only dependency adder. `bun add` replaces `npm install <pkg>`, `yarn add`, and `pnpm add`."
+    },
+    {
+      "role": "script-runner",
+      "commandPrefix": "bun run",
+      "description": "Bun is the only script runner. `bun run` replaces `npm run`, `yarn`, and `pnpm run`. No `npx`, `ts-node`, or `tsx` shims."
+    },
+    {
+      "role": "test-runner",
+      "commandPrefix": "bun test",
+      "description": "Bun is the only test runner. `bun test` + `bun:test` replaces `vitest`, `jest`, and `mocha`."
+    },
+    {
+      "role": "builder",
+      "commandPrefix": "bun build",
+      "description": "Bun is the only builder. Compiled-binary output remains rejected by D-FPS-005."
+    }
+  ],
+  "forbiddenRuntimePrograms": ["node"],
+  "forbiddenPackageManagers": ["npm", "yarn", "pnpm"],
+  "forbiddenScriptRunners": ["npx", "ts-node", "tsx"],
+  "forbiddenTestRunners": ["vitest", "jest", "mocha"],
+  "allowedLockfile": {
+    "path": "bun.lock",
+    "expectedPresentOnDisk": true
+  },
+  "forbiddenLockfiles": [{ "path": "package-lock.json", "expectedPresentOnDisk": false }, { "path": "yarn.lock", "expectedPresentOnDisk": false }, { "path": "pnpm-lock.yaml", "expectedPresentOnDisk": false }],
+  "requiredRuntimeTarget": {
+    "runtimeCommand": "bun run doom.ts",
+    "decisionId": "D-FPS-003",
+    "manifestPath": "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json"
+  },
+  "currentWorkspace": {
+    "packageJsonPath": "package.json",
+    "scriptNames": ["format", "start"],
+    "scriptCommandPrefixes": {
+      "format": "bun run",
+      "start": "bun run"
+    },
+    "everyScriptUsesBun": true
+  },
+  "controlCenterManifestPath": "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+  "rejectCompiledExeManifestPath": "plan_fps/manifests/00-004-reject-compiled-exe-target.json",
+  "evidencePaths": [
+    "plan_fps/README.md",
+    "plan_fps/MASTER_CHECKLIST.md",
+    "plan_fps/DECISION_LOG.md",
+    "plan_fps/FACT_LOG.md",
+    "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+    "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json",
+    "plan_fps/manifests/00-004-reject-compiled-exe-target.json",
+    "package.json",
+    "bun.lock",
+    "AGENTS.md"
+  ]
+}
