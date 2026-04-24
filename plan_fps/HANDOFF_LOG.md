@@ -329,3 +329,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-005 audit-pure-engine-surface
 - open_risks: The selected step does not permit enumerating `reference/manifests/` or `plan_fps/manifests/`, so both inventories are intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-005 audit-pure-engine-surface
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-005
+- step_title: audit-pure-engine-surface
+- summary: Audited the pure-engine surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-005-audit-pure-engine-surface.json` (schema v1) locking the read scope, current `bun run src/main.ts` launcher command, target `bun run doom.ts` runtime contract, live package and TypeScript workspace values, `src/main.ts` SHA-256 hash, direct launcher import classifications, zero direct pure-engine imports, and explicit nulls for broader pure-engine surfaces outside the 01-005 read scope. Added focused test `test/plan_fps/01-005-audit-pure-engine-surface.test.ts` that deep-locks the manifest, cross-checks live hashes and command contracts, verifies launcher imports/defaults, verifies source-catalog evidence, asserts every explicit null surface, and verifies the durable fact entry.
+- files_changed: plan_fps/manifests/01-005-audit-pure-engine-surface.json; test/plan_fps/01-005-audit-pure-engine-surface.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, No fixes applied); bun test test/plan_fps/01-005-audit-pure-engine-surface.test.ts (5 pass, 0 fail, 35 expect() calls); bun test (6534 pass, 0 fail, 689862 expect() calls across 189 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-013 (visible `src/main.ts` launcher surface exposes no direct pure-engine entry point or deterministic engine API in the 01-005 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-006 audit-playable-host-surface
+- open_risks: The selected step does not permit enumerating `src/` beyond `src/main.ts`, so broader pure-engine module inventory and API surfaces are intentionally recorded as explicit nulls for later broader-scope steps.

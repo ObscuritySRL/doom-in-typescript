@@ -71,3 +71,9 @@
 - date: 2026-04-24
 - fact: The 01-004 read scope exposes `reference/manifests/` only as a catalog-visible prior-art directory and does not permit enumerating `reference/manifests/` or `plan_fps/manifests/`.
 - source: `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-004-audit-existing-manifests.json`
+
+## F-FPS-013
+
+- date: 2026-04-24
+- fact: Within the 01-005 read scope, `src/main.ts` exposes no direct pure-engine entry point or deterministic engine API; it imports bootstrap, launcher session, Win32 host, and reference policy/target modules, so broader pure-engine inventory remains outside the 01-005 read scope and is recorded as explicit nulls.
+- source: `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-005-audit-pure-engine-surface.json`
