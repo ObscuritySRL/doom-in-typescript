@@ -12,7 +12,7 @@ Rules for working in this repository. Follow them exactly.
 - Prefer Bun-native APIs (`Bun.file`, `Bun.write`, `Bun.serve`, `Bun.argv`, `Bun.env`, `Bun.sleep`, `Bun.spawn`, `bun:test`, `bun:ffi`, `bun:sqlite`, etc.) over Node equivalents whenever both exist.
 - Import order: `bun:*` first, then `node:*` standard library, then third-party, then relative imports. Blank line between groups. Separate type imports with `import type`.
 - Do not add Node-only tooling, polyfills, or test runners. Do not introduce `ts-node`, `tsx`, `vitest`, `jest`, `mocha`, or similar — `bun` and `bun:test` cover all of it.
-- `bun.lockb` is the lockfile. Do not commit `package-lock.json`, `yarn.lock`, or `pnpm-lock.yaml`.
+- `bun.lock` is the lockfile. Do not commit `package-lock.json`, `yarn.lock`, or `pnpm-lock.yaml`.
 
 Any rule below that mentions "when the project uses Bun" applies here unconditionally.
 

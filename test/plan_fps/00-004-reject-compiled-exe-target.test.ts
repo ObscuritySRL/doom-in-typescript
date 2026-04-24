@@ -130,12 +130,14 @@ describe('reject-compiled-exe-target manifest', () => {
     }
   });
 
-  test('package.json script values do not contain any forbidden build command string', async () => {
+  test('package.json script values do not invoke any forbidden build command at a token boundary', async () => {
     const packageJson = (await Bun.file(PACKAGE_JSON_PATH).json()) as { scripts?: Record<string, string> };
     const scriptValues = Object.values(packageJson.scripts ?? {});
     for (const forbiddenCommand of manifest.forbiddenBuildCommands) {
+      const escapedCommand = forbiddenCommand.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const tokenPattern = new RegExp(`(^|[\\s|&;])${escapedCommand}([\\s]|$)`);
       for (const scriptValue of scriptValues) {
-        expect(scriptValue.includes(forbiddenCommand)).toBe(false);
+        expect(tokenPattern.test(scriptValue)).toBe(false);
       }
     }
   });

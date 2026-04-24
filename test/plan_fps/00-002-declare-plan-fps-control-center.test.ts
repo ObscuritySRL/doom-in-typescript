@@ -32,8 +32,16 @@ describe('plan_fps control-center declaration manifest', () => {
     for (const activePath of Object.values(manifest.activeControlCenter)) {
       expect(existsSync(activePath)).toBe(true);
     }
+    expect(statSync(manifest.activeControlCenter.directory).isDirectory()).toBe(true);
     expect(statSync(manifest.activeControlCenter.stepsDirectory).isDirectory()).toBe(true);
     expect(statSync(manifest.activeControlCenter.manifestsDirectory).isDirectory()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.readmePath).isFile()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.checklistPath).isFile()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.promptPath).isFile()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.prePromptPath).isFile()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.stepTemplatePath).isFile()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.validatorScriptPath).isFile()).toBe(true);
+    expect(statSync(manifest.activeControlCenter.validatorTestPath).isFile()).toBe(true);
   });
 
   test('pins plan_engine as prior-art-only and inherits the mixed classification from the 00-001 manifest', () => {
@@ -177,6 +185,14 @@ describe('plan_fps control-center declaration manifest', () => {
       stepFileCount += 1;
     }
     expect(stepFileCount).toBe(manifest.totalSteps);
+  });
+
+  test('MASTER_CHECKLIST.md contains exactly totalSteps checklist row entries that match the canonical id pattern', async () => {
+    const checklistText = await Bun.file(CHECKLIST_PATH).text();
+    const checklistRowPattern = /^- \[[ x]\] `\d{2}-\d{3}` /gm;
+    const checklistRowMatches = checklistText.match(checklistRowPattern);
+    expect(checklistRowMatches).not.toBeNull();
+    expect(checklistRowMatches!.length).toBe(manifest.totalSteps);
   });
 
   test('README.md Ralph-Loop Workflow section has exactly ralphLoopWorkflowStepCount numbered items', async () => {

@@ -230,19 +230,37 @@ describe('pin-bun-runtime-and-package-manager manifest', () => {
     expect(sectionBody).toContain('plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json');
   });
 
-  test('AGENTS.md Runtime section agrees with the manifest forbidden-alternatives lists', async () => {
+  test('AGENTS.md Runtime section pins every forbidden alternative and the canonical lockfile names at a word boundary', async () => {
     const agentsText = await Bun.file(AGENTS_MD_PATH).text();
+    const runtimeSectionStart = agentsText.indexOf('## Runtime\n');
+    expect(runtimeSectionStart).toBeGreaterThanOrEqual(0);
+    const afterHeader = agentsText.slice(runtimeSectionStart);
+    const nextSectionIndex = afterHeader.indexOf('\n## ', 1);
+    const runtimeSection = nextSectionIndex === -1 ? afterHeader : afterHeader.slice(0, nextSectionIndex);
+
+    for (const runtimeProgram of manifest.forbiddenRuntimePrograms) {
+      expect(runtimeSection).toContain(runtimeProgram);
+    }
     for (const packageManager of manifest.forbiddenPackageManagers) {
-      expect(agentsText).toContain(packageManager);
+      expect(runtimeSection).toContain(packageManager);
     }
     for (const scriptRunner of manifest.forbiddenScriptRunners) {
-      expect(agentsText).toContain(scriptRunner);
+      expect(runtimeSection).toContain(scriptRunner);
     }
     for (const testRunner of manifest.forbiddenTestRunners) {
-      expect(agentsText).toContain(testRunner);
+      expect(runtimeSection).toContain(testRunner);
     }
-    for (const runtimeProgram of manifest.forbiddenRuntimePrograms) {
-      expect(agentsText).toContain(runtimeProgram);
+
+    const allowedLockfilePattern = buildLockfileWordBoundaryPattern(manifest.allowedLockfile.path);
+    expect(allowedLockfilePattern.test(runtimeSection)).toBe(true);
+    for (const forbiddenLockfile of manifest.forbiddenLockfiles) {
+      const forbiddenLockfilePattern = buildLockfileWordBoundaryPattern(forbiddenLockfile.path);
+      expect(forbiddenLockfilePattern.test(runtimeSection)).toBe(true);
     }
   });
 });
+
+function buildLockfileWordBoundaryPattern(lockfilePath: string): RegExp {
+  const escapedPath = lockfilePath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\b${escapedPath}\\b`);
+}
