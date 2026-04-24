@@ -9,6 +9,8 @@ export interface ValidationResult {
   readonly totalSteps: number;
 }
 
+type OutputWriter = (line: string) => void;
+
 interface ChecklistStep {
   readonly filePath: string;
   readonly id: string;
@@ -33,8 +35,11 @@ const REQUIRED_SECTIONS = [
 const READ_ONLY_ROOTS = ['doom/', 'iwad/', 'reference/'] as const;
 const RUNTIME_TARGET = 'bun run doom.ts';
 const STEP_PROGRESS_LOG_PATTERN = 'plan_fps/loop_logs/step_<step-id>_progress.txt';
+const DEFAULT_PLAN_DIRECTORY = import.meta.dir;
 
-export async function validatePlan(planDirectory = import.meta.dir): Promise<ValidationResult> {
+export const PLAN_VALIDATION_COMMAND = 'bun run plan_fps/validate-plan.ts';
+
+export async function validatePlan(planDirectory = DEFAULT_PLAN_DIRECTORY): Promise<ValidationResult> {
   const errors: ValidationError[] = [];
   const checklistPath = `${planDirectory}/MASTER_CHECKLIST.md`;
   const checklistText = await Bun.file(checklistPath).text();
@@ -97,6 +102,21 @@ export async function validatePlan(planDirectory = import.meta.dir): Promise<Val
     firstStep: checklistSteps[0]?.id ?? null,
     totalSteps: checklistSteps.length,
   };
+}
+
+export async function runValidationCli(planDirectory = DEFAULT_PLAN_DIRECTORY, stdout: OutputWriter = (line) => console.log(line), stderr: OutputWriter = (line) => console.error(line)): Promise<number> {
+  const result = await validatePlan(planDirectory);
+
+  if (result.errors.length > 0) {
+    for (const error of result.errors) {
+      stderr(`${error.file}: ${error.message}`);
+    }
+
+    return 1;
+  }
+
+  stdout(`Validated ${result.totalSteps} playable parity steps. First step: ${result.firstStep ?? 'NONE'}.`);
+  return 0;
 }
 
 export function parseChecklist(checklistText: string): readonly ChecklistStep[] {
@@ -294,14 +314,5 @@ function titleFromSlug(titleSlug: string): string {
 }
 
 if (import.meta.main) {
-  const result = await validatePlan();
-
-  if (result.errors.length > 0) {
-    for (const error of result.errors) {
-      console.error(`${error.file}: ${error.message}`);
-    }
-    process.exit(1);
-  }
-
-  console.log(`Validated ${result.totalSteps} playable parity steps. First step: ${result.firstStep ?? 'NONE'}.`);
+  process.exit(await runValidationCli());
 }

@@ -221,3 +221,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-013 create-plan-validation-script
 - open_risks: none
+
+## 2026-04-24 - 00-013 create-plan-validation-script
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-013
+- step_title: create-plan-validation-script
+- summary: Made `plan_fps/validate-plan.ts` the explicit canonical Bun validator CLI by exporting the exact command contract `bun run plan_fps/validate-plan.ts` and a reusable `runValidationCli` entrypoint while preserving the existing validation rules. Added focused test `test/plan_fps/plan-validation-script.test.ts` that locks the exact normalized success line from the Bun CLI against the live 223-step plan and a single deterministic failure diagnostic for a minimal invalid final-gate fixture.
+- files_changed: plan_fps/validate-plan.ts; test/plan_fps/plan-validation-script.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/plan-validation-script.test.ts (2 pass, 0 fail, 7 expect() calls); bun test (6507 pass, 0 fail, 689713 expect() calls across 184 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: added D-FPS-013 accepted, citing `plan_fps/validate-plan.ts`, `test/plan_fps/plan-validation-script.test.ts`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-014 test-plan-validation-script
+- open_risks: none

@@ -119,3 +119,13 @@
 - evidence: plan_fps/README.md, plan_fps/manifests/00-012-define-step-validation-rules.json, package.json, tsconfig.json
 - affected_steps: 00-012, 00-013, 00-014, 15-001
 - supersedes: none
+
+## D-FPS-013
+
+- status: accepted
+- date: 2026-04-24
+- decision: `plan_fps/validate-plan.ts` is the canonical Bun validation script for the playable parity control center. It runs as `bun run plan_fps/validate-plan.ts`, exits nonzero when plan validation errors are present, and on success prints `Validated <totalSteps> playable parity steps. First step: <firstStep>.`.
+- rationale: D-FPS-003 pins the runtime target to Bun, D-FPS-006 pins Bun as the only script runner and test toolchain, and D-FPS-012 defines the step schema and verification rules that now need an executable validator. Locking the script command and success/error contract prevents later steps from drifting to a non-Bun validation path or a vague validator output format.
+- evidence: plan_fps/validate-plan.ts, test/plan_fps/plan-validation-script.test.ts, package.json, tsconfig.json
+- affected_steps: 00-013, 00-014, 15-001
+- supersedes: none
