@@ -563,3 +563,21 @@
 - oracle_changes: OR-FPS-007 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-reference-clean-launch.json` with refresh command `bun test test/oracles/capture-reference-clean-launch.test.ts`
 - next_eligible_steps: 02-003 capture-startup-sequence
 - open_risks: The selected step did not permit opening or executing reference binary files directly, so this oracle locks the reference capture contract and exact trace/hash derived from allowed authority records; later capture steps remain responsible for live reference frame, state, and audio artifacts.
+
+## 2026-04-24 - 02-003 capture-startup-sequence
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-003
+- step_title: capture-startup-sequence
+- summary: Added the startup sequence oracle fixture at `test/oracles/fixtures/capture-startup-sequence.json`, derived from the allowed source authority records and 01-015 launch-surface manifest. The fixture records local reference authority, current and target command contracts, a tic/frame capture window, the exact startup trace, the deterministic SHA-256 trace hash, and source hashes inherited from the allowed manifest. Added focused test `test/oracles/capture-startup-sequence.test.ts` to lock the fixture exactly, cross-check command contracts and source hashes against the 01-015 manifest, recompute the trace hash, verify launcher transition ordering, verify trace evidence against manifest observations, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-startup-sequence.json; test/oracles/capture-startup-sequence.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun run format (rerun, No fixes applied); bun test test/oracles/capture-startup-sequence.test.ts (5 pass, 0 fail, 35 expect() calls); bun test (6602 pass, 0 fail, 690400 expect() calls across 202 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-008 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-startup-sequence.json` with refresh command `bun test test/oracles/capture-startup-sequence.test.ts`
+- next_eligible_steps: 02-004 capture-initial-title-frame
+- open_risks: The selected step did not permit opening or executing reference binary files directly, so this oracle locks a static startup-sequence contract and trace/hash derived from allowed authority records; later capture steps remain responsible for live reference frame, state, and audio artifacts.
