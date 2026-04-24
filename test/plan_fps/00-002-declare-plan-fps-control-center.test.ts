@@ -178,13 +178,23 @@ describe('plan_fps control-center declaration manifest', () => {
     expect(validatorText).toContain(`const RUNTIME_TARGET = '${manifest.runtimeTarget}';`);
   });
 
-  test('plan_fps/steps directory contains exactly totalSteps step files', async () => {
+  test('every plan_fps/steps file matches the canonical <id>-<slug>.md pattern, step ids are unique, and the total equals manifest.totalSteps', async () => {
+    const stepFilenamePattern = /^(?<stepId>\d{2}-\d{3})-(?<titleSlug>[a-z0-9]+(?:-[a-z0-9]+)*)\.md$/;
     const stepsGlob = new Bun.Glob('*.md');
+    const collectedStepIds = new Set<string>();
     let stepFileCount = 0;
-    for await (const _ of stepsGlob.scan({ cwd: manifest.activeControlCenter.stepsDirectory })) {
+    for await (const stepFilename of stepsGlob.scan({ cwd: manifest.activeControlCenter.stepsDirectory })) {
       stepFileCount += 1;
+      const match = stepFilenamePattern.exec(stepFilename);
+      expect(match?.groups).toBeDefined();
+      const stepId = match!.groups!.stepId!;
+      expect(collectedStepIds.has(stepId)).toBe(false);
+      collectedStepIds.add(stepId);
     }
     expect(stepFileCount).toBe(manifest.totalSteps);
+    expect(collectedStepIds.size).toBe(manifest.totalSteps);
+    expect(collectedStepIds.has(manifest.firstStepId)).toBe(true);
+    expect(collectedStepIds.has(manifest.finalGateStepId)).toBe(true);
   });
 
   test('MASTER_CHECKLIST.md contains exactly totalSteps checklist row entries that match the canonical id pattern', async () => {
