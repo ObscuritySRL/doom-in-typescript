@@ -1,0 +1,213 @@
+{
+  "binaryAnchors": {
+    "requiredStrings": ["snd_channels", "snd_musicdevice", "snd_sfxdevice"]
+  },
+  "description": "Parity fixture for Doom 1.9 sound and music integration: same-origin SFX replacement, music lifecycle dispatch, and the SFX/music oracle split.",
+  "musicIsolation": {
+    "silentBaseline": {
+      "activeChannels": 0,
+      "eventCount": 0,
+      "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+      "tic": 0
+    },
+    "silentWithMusic": {
+      "activeChannels": 0,
+      "eventCount": 20,
+      "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+      "tic": 0
+    },
+    "streamHash": "2A6DD802C3E13CCDD1DA91AD0D80A007C534B38438CA2E9784B81BFD90818A33"
+  },
+  "musicLifecycle": {
+    "actionTrace": [
+      {
+        "step": "set-volume",
+        "actions": [
+          {
+            "kind": "set-volume",
+            "volume": 12
+          }
+        ]
+      },
+      {
+        "step": "change-music",
+        "actions": [
+          {
+            "kind": "play-song",
+            "looping": true,
+            "musicNum": 1
+          }
+        ]
+      },
+      {
+        "step": "same-track-noop",
+        "actions": []
+      },
+      {
+        "step": "pause-music",
+        "actions": [
+          {
+            "kind": "pause-song"
+          }
+        ]
+      },
+      {
+        "step": "resume-music",
+        "actions": [
+          {
+            "kind": "resume-song"
+          }
+        ]
+      },
+      {
+        "step": "stop-music",
+        "actions": [
+          {
+            "kind": "stop-song",
+            "musicNum": 1
+          }
+        ]
+      }
+    ],
+    "ticSummaries": [
+      {
+        "activeChannels": 0,
+        "eventCount": 20,
+        "eventHash": "64A8E7FDA7AF21374FE069D99B76CD3374E07BEF08469F8C50E02CC10CFC171E",
+        "firstEvent": {
+          "musQuicktick": 0,
+          "event": {
+            "kind": "controller-change",
+            "channel": 0,
+            "controller": 0,
+            "delay": 0,
+            "value": 30
+          }
+        },
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "lastEvent": {
+          "musQuicktick": 0,
+          "event": {
+            "kind": "play-note",
+            "channel": 1,
+            "delay": 6,
+            "note": 40,
+            "velocity": 108
+          }
+        },
+        "tic": 0
+      },
+      {
+        "activeChannels": 0,
+        "eventCount": 1,
+        "eventHash": "C5CACD37F05D4EF7A07F155CD23E4DDF5B6CF5857002F8C0A4F1479115C0E3A8",
+        "firstEvent": {
+          "musQuicktick": 6,
+          "event": {
+            "kind": "release-note",
+            "channel": 1,
+            "delay": 7,
+            "note": 40
+          }
+        },
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "lastEvent": {
+          "musQuicktick": 6,
+          "event": {
+            "kind": "release-note",
+            "channel": 1,
+            "delay": 7,
+            "note": 40
+          }
+        },
+        "tic": 1
+      },
+      {
+        "activeChannels": 0,
+        "eventCount": 0,
+        "eventHash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945",
+        "firstEvent": null,
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "lastEvent": null,
+        "tic": 2
+      },
+      {
+        "activeChannels": 0,
+        "eventCount": 0,
+        "eventHash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945",
+        "firstEvent": null,
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "lastEvent": null,
+        "tic": 3
+      },
+      {
+        "activeChannels": 0,
+        "eventCount": 1,
+        "eventHash": "4FEA5A4DED52576C8E88222D048308BA6976D7D0EAEDC49660E71216C98844A2",
+        "firstEvent": {
+          "musQuicktick": 13,
+          "event": {
+            "kind": "release-note",
+            "channel": 2,
+            "delay": 4,
+            "note": 40
+          }
+        },
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "lastEvent": {
+          "musQuicktick": 13,
+          "event": {
+            "kind": "release-note",
+            "channel": 2,
+            "delay": 4,
+            "note": 40
+          }
+        },
+        "tic": 4
+      },
+      {
+        "activeChannels": 0,
+        "eventCount": 0,
+        "eventHash": "4F53CDA18C2BAA0C0354BB5F9A3ECBE5ED12AB4D8E11BA873C2F11161202B945",
+        "firstEvent": null,
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "lastEvent": null,
+        "tic": 5
+      }
+    ],
+    "streamHash": "123BCD7E769EFECC8D970135719CCAE86F6A05EA39B3657A566F9FAAD18278B1"
+  },
+  "soundReplacement": {
+    "initialStart": {
+      "kind": "started",
+      "cnum": 0,
+      "separation": 129,
+      "volume": 10
+    },
+    "replacementStart": {
+      "kind": "started",
+      "cnum": 0,
+      "separation": 128,
+      "volume": 12
+    },
+    "stopChannel": 0,
+    "entries": [
+      {
+        "activeChannels": 1,
+        "hash": "F28CF817003E5B0B2FF12121ACB2C8041643F254FDF7A7DF850BEE78FACC5D82",
+        "tic": 0
+      },
+      {
+        "activeChannels": 1,
+        "hash": "685ECC911F6CA5504AFCAA0585EB6C498DE911E0389399DC77237CB5DB3FC037",
+        "tic": 1
+      },
+      {
+        "activeChannels": 0,
+        "hash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E",
+        "tic": 2
+      }
+    ],
+    "streamHash": "4045BB0DBA7B9D34EB40E4FF69FEB79C64BECCF34CAD32C76D1137A7854A9616"
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "referenceExecutables": ["DOOM.EXE", "DOOMD.EXE"],
+  "cases": [
+    {
+      "id": "Q-001",
+      "category": "reference-binaries",
+      "module": "reference-binaries",
+      "title": "bundled DOS executables retain the shared parity anchor strings",
+      "anchors": [
+        "Bad savegame",
+        "Demo is from a different game version!",
+        "game saved.",
+        "High detail",
+        "Low detail",
+        "Messages OFF",
+        "Messages ON",
+        "press a key.",
+        "Savegame",
+        "snd_channels",
+        "snd_musicdevice",
+        "snd_sfxdevice",
+        "You need a blue key to activate this object",
+        "You need a blue key to open this door"
+      ]
+    },
+    {
+      "id": "Q-002",
+      "category": "player-flags",
+      "module": "src/player/movement.ts",
+      "title": "godmode and no-momentum cheat bits stay distinct",
+      "expected": {
+        "cfGodmode": 2,
+        "cfNoMomentum": 4
+      }
+    },
+    {
+      "id": "Q-003",
+      "category": "sector-specials",
+      "module": "src/specials/sectorSpecials.ts",
+      "title": "secret sectors credit once and clear their special immediately",
+      "expected": {
+        "damageCalls": 0,
+        "exitCalls": 0,
+        "floorheight": 0,
+        "leveltime": 1,
+        "playerZ": 0,
+        "randomCalls": 0,
+        "secretcountAfter": 1,
+        "sectorSpecialAfter": 0,
+        "special": 9
+      }
+    },
+    {
+      "id": "Q-004",
+      "category": "sector-specials",
+      "module": "src/specials/sectorSpecials.ts",
+      "title": "airborne players do not trigger secret-sector collection",
+      "expected": {
+        "damageCalls": 0,
+        "exitCalls": 0,
+        "floorheight": 0,
+        "leveltime": 1,
+        "playerZ": 1,
+        "randomCalls": 0,
+        "secretcountAfter": 0,
+        "sectorSpecialAfter": 9,
+        "special": 9
+      }
+    },
+    {
+      "id": "Q-005",
+      "category": "sector-specials",
+      "module": "src/specials/sectorSpecials.ts",
+      "title": "E1M8 exit sectors strip godmode and exit even off the damage cadence",
+      "expected": {
+        "cheatsAfter": 0,
+        "damageCalls": 0,
+        "exitCalls": 1,
+        "floorheight": 0,
+        "healthAfter": 10,
+        "initialCheats": 2,
+        "initialHealth": 10,
+        "leveltime": 1,
+        "playerZ": 0,
+        "special": 11
+      }
+    },
+    {
+      "id": "Q-006",
+      "category": "sector-specials",
+      "module": "src/specials/sectorSpecials.ts",
+      "title": "suited strobe sectors still consume RNG on non-damage tics",
+      "expected": {
+        "damageCalls": 0,
+        "exitCalls": 0,
+        "floorheight": 0,
+        "ironFeetIndex": 3,
+        "ironFeetValue": 1,
+        "leveltime": 1,
+        "playerZ": 0,
+        "randomCalls": 1,
+        "randomValues": [0],
+        "special": 4
+      }
+    },
+    {
+      "id": "Q-007",
+      "category": "pcm-mixer",
+      "module": "src/audio/pcmMixer.ts",
+      "title": "DMX midpoint byte stays at plus 128 rather than zero",
+      "expected": {
+        "int16": 128,
+        "sampleByte": 128
+      }
+    },
+    {
+      "id": "Q-008",
+      "category": "pcm-mixer",
+      "module": "src/audio/pcmMixer.ts",
+      "title": "the stereo endpoint math stays unclamped at separation 255",
+      "expected": {
+        "left": -1,
+        "right": 255,
+        "separation": 255,
+        "volume": 127
+      }
+    },
+    {
+      "id": "Q-009",
+      "category": "pcm-mixer",
+      "module": "src/audio/pcmMixer.ts",
+      "title": "clipToInt16 normalizes negative zero back to positive zero",
+      "expected": {
+        "accumulator": -0.5,
+        "normalizedZero": 0
+      }
+    },
+    {
+      "id": "Q-010",
+      "category": "pcm-mixer",
+      "module": "src/audio/pcmMixer.ts",
+      "title": "mixVoices zero-fills a reused caller buffer before mixing",
+      "expected": {
+        "frameCount": 1,
+        "mixed": [0, 0],
+        "prefill": [111, -222]
+      }
+    },
+    {
+      "id": "Q-011",
+      "category": "opl-registers",
+      "module": "src/audio/oplRegisters.ts",
+      "title": "channel three uses the non-contiguous YM3812 operator offsets",
+      "expected": {
+        "carrier": 11,
+        "channel": 3,
+        "modulator": 8
+      }
+    },
+    {
+      "id": "Q-012",
+      "category": "opl-registers",
+      "module": "src/audio/oplRegisters.ts",
+      "title": "operator waveform decode stays masked to the OPL2 range",
+      "expected": {
+        "channel": 0,
+        "decodedWaveform": 3,
+        "operator": 0,
+        "rawWaveformRegister": 255
+      }
+    },
+    {
+      "id": "Q-013",
+      "category": "opl-synth",
+      "module": "src/audio/oplSynth.ts",
+      "title": "the YM3812 multiplier table keeps its duplicate tail entries",
+      "expected": {
+        "startIndex": 10,
+        "tail": [20, 20, 24, 24, 30, 30]
+      }
+    },
+    {
+      "id": "Q-014",
+      "category": "opl-synth",
+      "module": "src/audio/oplSynth.ts",
+      "title": "algorithm zero still returns the carrier only and keeps the 20-bit phase width",
+      "expected": {
+        "algorithm": 0,
+        "carrierSample": 456,
+        "modulatorSample": 123,
+        "phaseBits": 20,
+        "result": 456
+      }
+    },
+    {
+      "id": "Q-015",
+      "category": "opl-synth",
+      "module": "src/audio/oplSynth.ts",
+      "title": "negative phase deltas wrap to modulo minus one instead of clamping",
+      "expected": {
+        "delta": -1,
+        "phase": 0,
+        "result": "modulo-minus-one"
+      }
+    },
+    {
+      "id": "Q-016",
+      "category": "opl-synth",
+      "module": "src/audio/oplSynth.ts",
+      "title": "applyTotalLevel also normalizes negative zero back to positive zero",
+      "expected": {
+        "result": 0,
+        "sample": -1,
+        "totalLevel": 63
+      }
+    }
+  ]
+}

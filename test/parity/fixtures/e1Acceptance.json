@@ -1,0 +1,169 @@
+{
+  "audio": {
+    "musicDispatchCounts": [20, 1, 0, 0, 1, 0],
+    "musicLump": "D_E1M1",
+    "replacementHashes": ["F28CF817003E5B0B2FF12121ACB2C8041643F254FDF7A7DF850BEE78FACC5D82", "685ECC911F6CA5504AFCAA0585EB6C498DE911E0389399DC77237CB5DB3FC037", "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E"],
+    "silentHash": "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E"
+  },
+  "binaryAnchors": {
+    "episodeMapTitles": ["E1M1: Hangar", "E1M2: Nuclear Plant", "E1M3: Toxin Refinery", "E1M4: Command Control", "E1M5: Phobos Lab", "E1M6: Central Processing", "E1M7: Computer Station", "E1M8: Phobos Anomaly", "E1M9: Military Base"],
+    "sharewareStrings": [
+      "TITLEPIC",
+      "demo1",
+      "CREDIT",
+      "demo2",
+      "HELP2",
+      "demo3",
+      "this is the shareware version of doom.",
+      "High detail",
+      "Low detail",
+      "Messages OFF",
+      "Messages ON",
+      "press a key.",
+      "Savegame buffer overrun",
+      "game saved."
+    ]
+  },
+  "episode": {
+    "maps": [
+      {
+        "lump": "E1M1",
+        "prngIndex": 92,
+        "thinkerCount": 92,
+        "title": "Hangar"
+      },
+      {
+        "lump": "E1M2",
+        "prngIndex": 200,
+        "thinkerCount": 200,
+        "title": "Nuclear Plant"
+      },
+      {
+        "lump": "E1M3",
+        "prngIndex": 54,
+        "thinkerCount": 310,
+        "title": "Toxin Refinery"
+      },
+      {
+        "lump": "E1M4",
+        "prngIndex": 201,
+        "thinkerCount": 201,
+        "title": "Command Control"
+      },
+      {
+        "lump": "E1M5",
+        "prngIndex": 216,
+        "thinkerCount": 216,
+        "title": "Phobos Lab"
+      },
+      {
+        "lump": "E1M6",
+        "prngIndex": 114,
+        "thinkerCount": 370,
+        "title": "Central Processing"
+      },
+      {
+        "lump": "E1M7",
+        "prngIndex": 11,
+        "thinkerCount": 267,
+        "title": "Computer Station"
+      },
+      {
+        "lump": "E1M8",
+        "prngIndex": 99,
+        "thinkerCount": 99,
+        "title": "Phobos Anomaly"
+      },
+      {
+        "lump": "E1M9",
+        "prngIndex": 192,
+        "thinkerCount": 192,
+        "title": "Military Base"
+      }
+    ]
+  },
+  "oracle": {
+    "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\e1Acceptance.json",
+    "id": "O-030"
+  },
+  "priorOracles": [
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\levelStartHashes.json",
+      "id": "O-022",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\demoSync.json",
+      "id": "O-023",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\scriptedMechanics.json",
+      "id": "O-024",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\framebufferHashes.json",
+      "id": "O-025",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\menuTiming.json",
+      "id": "O-026",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\audioHashes.json",
+      "id": "O-027",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\saveLoad.json",
+      "id": "O-028",
+      "trustLevel": "high"
+    },
+    {
+      "artifactPath": "d:\\Projects\\bun-win32\\doom_codex\\test\\parity\\fixtures\\quirkCases.json",
+      "id": "O-029",
+      "trustLevel": "high"
+    }
+  ],
+  "sharewareAttractLoop": {
+    "demoCoverage": [
+      {
+        "demoLump": "DEMO1",
+        "map": "E1M5",
+        "streamSha256": "4999C550517A7FD8B9AF32D14DFB0127B8F9B71433DEF6AC0EE34EAD3A67898F",
+        "ticCount": 5026
+      },
+      {
+        "demoLump": "DEMO2",
+        "map": "E1M3",
+        "streamSha256": "603B0BA73993197906480404135584699542A4FC0A6DBB6F7CEE3C33CDEB1FB5",
+        "ticCount": 3836
+      },
+      {
+        "demoLump": "DEMO3",
+        "map": "E1M7",
+        "streamSha256": "401E86077B4F39444175A4862C6CB4D2F1058B0A519FCEDE0FF58A602D2EE394",
+        "ticCount": 2134
+      }
+    ],
+    "pageDurations": [
+      {
+        "lump": "TITLEPIC",
+        "tics": 170
+      },
+      {
+        "lump": "CREDIT",
+        "tics": 200
+      },
+      {
+        "lump": "HELP2",
+        "tics": 200
+      }
+    ],
+    "sequence": ["TITLEPIC", "demo1", "CREDIT", "demo2", "HELP2", "demo3"]
+  },
+  "version": 1
+}

@@ -1,0 +1,79 @@
+{
+  "description": "Title/demo loop sequence for shareware Doom (gamemode shareware, Chocolate Doom 2.2.1).",
+  "source": "Chocolate Doom d_main.c D_DoAdvanceDemo, cross-referenced with DOOM1.WAD lump directory",
+  "generatedAt": "2026-04-12",
+  "gameMode": "shareware",
+  "cycleLength": 6,
+  "ticRate": 35,
+  "states": [
+    {
+      "index": 0,
+      "type": "page",
+      "lumpName": "TITLEPIC",
+      "durationTics": 170,
+      "durationSeconds": 4.857142857142857,
+      "musicLump": "D_INTRO",
+      "musicChange": "explicit"
+    },
+    {
+      "index": 1,
+      "type": "demo",
+      "demoLump": "DEMO1",
+      "episode": 1,
+      "map": 5,
+      "durationTics": 5026,
+      "durationSeconds": 143.6,
+      "musicLump": "D_E1M5",
+      "musicChange": "level-init"
+    },
+    {
+      "index": 2,
+      "type": "page",
+      "lumpName": "CREDIT",
+      "durationTics": 200,
+      "durationSeconds": 5.714285714285714,
+      "musicLump": null,
+      "musicChange": "inherited"
+    },
+    {
+      "index": 3,
+      "type": "demo",
+      "demoLump": "DEMO2",
+      "episode": 1,
+      "map": 3,
+      "durationTics": 3836,
+      "durationSeconds": 109.6,
+      "musicLump": "D_E1M3",
+      "musicChange": "level-init"
+    },
+    {
+      "index": 4,
+      "type": "page",
+      "lumpName": "HELP2",
+      "durationTics": 200,
+      "durationSeconds": 5.714285714285714,
+      "musicLump": null,
+      "musicChange": "inherited"
+    },
+    {
+      "index": 5,
+      "type": "demo",
+      "demoLump": "DEMO3",
+      "episode": 1,
+      "map": 7,
+      "durationTics": 2134,
+      "durationSeconds": 60.97142857142857,
+      "musicLump": "D_E1M7",
+      "musicChange": "level-init"
+    }
+  ],
+  "totalCycleTics": 11566,
+  "totalCycleSeconds": 330.45714285714286,
+  "notes": [
+    "D_DoAdvanceDemo uses demosequence modulo 6 for shareware (not retail or commercial).",
+    "Only state 0 (TITLEPIC) explicitly starts music via S_StartMusic. States 2 and 4 inherit the music from the preceding demo level.",
+    "Demo music is started implicitly by G_DoPlayDemo → G_InitNew → S_Start → S_ChangeMusic.",
+    "Shareware shows HELP2 at state 4; retail shows CREDIT; commercial shows TITLEPIC with mus_dm2ttl.",
+    "pagetic values (170 and 200) are hardcoded in D_DoAdvanceDemo, not configurable."
+  ]
+}

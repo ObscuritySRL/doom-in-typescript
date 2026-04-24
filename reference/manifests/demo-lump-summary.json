@@ -1,0 +1,72 @@
+{
+  "description": "Demo lump metadata for the three built-in demos in the shareware DOOM1.WAD.",
+  "source": "D:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD",
+  "generatedAt": "2026-04-12",
+  "format": {
+    "demoVersion": 109,
+    "versionLabel": "Doom 1.9",
+    "headerSize": 13,
+    "bytesPerTicPerPlayer": 4,
+    "endMarker": 128,
+    "ticRate": 35
+  },
+  "demos": [
+    {
+      "name": "DEMO1",
+      "directoryIndex": 3,
+      "offset": 23468,
+      "sizeBytes": 20118,
+      "sha256": "7F32ED06308FC14D7FBE87BAF9E318F3500516D724CE69A32B339D588BA1FE1B",
+      "skill": 2,
+      "episode": 1,
+      "map": 5,
+      "deathmatch": 0,
+      "respawn": 0,
+      "fast": 0,
+      "nomonsters": 0,
+      "consoleplayer": 0,
+      "playersPresent": [true, false, false, false],
+      "activePlayers": 1,
+      "ticCount": 5026,
+      "durationSeconds": 143.6
+    },
+    {
+      "name": "DEMO2",
+      "directoryIndex": 4,
+      "offset": 43588,
+      "sizeBytes": 15358,
+      "sha256": "74EE530C2C35046469BAFD92D0CD49AB0A5DEE76872C1A91E682AEF9BC4410E9",
+      "skill": 2,
+      "episode": 1,
+      "map": 3,
+      "deathmatch": 0,
+      "respawn": 0,
+      "fast": 0,
+      "nomonsters": 0,
+      "consoleplayer": 0,
+      "playersPresent": [true, false, false, false],
+      "activePlayers": 1,
+      "ticCount": 3836,
+      "durationSeconds": 109.6
+    },
+    {
+      "name": "DEMO3",
+      "directoryIndex": 5,
+      "offset": 58948,
+      "sizeBytes": 8550,
+      "sha256": "61850B2201E283FA0A946CF091101A321E7A6219800A4F66448C949BC6144BCE",
+      "skill": 2,
+      "episode": 1,
+      "map": 7,
+      "deathmatch": 0,
+      "respawn": 0,
+      "fast": 0,
+      "nomonsters": 0,
+      "consoleplayer": 0,
+      "playersPresent": [true, false, false, false],
+      "activePlayers": 1,
+      "ticCount": 2134,
+      "durationSeconds": 60.97142857142857
+    }
+  ]
+}

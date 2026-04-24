@@ -1,0 +1,67 @@
+{
+  "generatedOn": "2026-04-11",
+  "schemas": {
+    "ReferenceManifest": {
+      "required": ["targetId", "referenceFiles", "version", "wadHash"],
+      "notes": "Stable identity for a captured reference configuration.",
+      "fields": {
+        "targetId": "string",
+        "version": "string",
+        "wadHash": "string",
+        "referenceFiles": "array",
+        "notes": "string?"
+      }
+    },
+    "OracleInputScript": {
+      "required": ["name", "initialTics", "commands"],
+      "notes": "Deterministic input script for oracle playback.",
+      "fields": {
+        "name": "string",
+        "initialTics": "number",
+        "commands": "array",
+        "expectedDurationTics": "number?"
+      }
+    },
+    "StateHashRecord": {
+      "required": ["tic", "hash", "scope"],
+      "notes": "Deterministic simulation hash at a specific tic.",
+      "fields": {
+        "tic": "number",
+        "scope": "string",
+        "hash": "string",
+        "notes": "string?"
+      }
+    },
+    "FramebufferHashRecord": {
+      "required": ["tic", "hash", "width", "height", "palette"],
+      "notes": "Hash of a fully rendered frame.",
+      "fields": {
+        "tic": "number",
+        "width": "number",
+        "height": "number",
+        "palette": "string",
+        "hash": "string"
+      }
+    },
+    "AudioHashRecord": {
+      "required": ["startTic", "endTic", "hash", "sampleRate"],
+      "notes": "Hash over a deterministic audio window.",
+      "fields": {
+        "startTic": "number",
+        "endTic": "number",
+        "sampleRate": "number",
+        "channels": "number",
+        "hash": "string"
+      }
+    },
+    "MusicEventLog": {
+      "required": ["track", "events"],
+      "notes": "Ordered register or note events emitted by the music path.",
+      "fields": {
+        "track": "string",
+        "events": "array",
+        "device": "string?"
+      }
+    }
+  }
+}

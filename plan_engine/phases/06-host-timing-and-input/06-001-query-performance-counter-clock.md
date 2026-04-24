@@ -1,0 +1,51 @@
+# [x] STEP 06-001: query-performance-counter-clock
+
+## Goal
+
+Implement query performance counter clock so it matches the canonical reference behavior and is locked by the listed test coverage.
+
+## Prerequisites
+
+- 05-010
+
+## Read Only
+
+- d:\Projects\bun-win32\doom_codex\plans\FACT_LOG.md
+- d:\Projects\bun-win32\doom_codex\plans\PACKAGE_CAPABILITY_MATRIX.md
+- d:\Projects\bun-win32\packages\kernel32\AI.md
+- d:\Projects\bun-win32\packages\user32\AI.md
+
+## Consult Only If Blocked
+
+- 06-002
+
+## Expected Changes
+
+- d:\Projects\bun-win32\doom_codex\src\host\win32\clock.ts
+
+## Test Files
+
+- d:\Projects\bun-win32\doom_codex\test\host\clock.test.ts
+
+## Verification
+
+- `bun test test/host/clock.test.ts`
+- `bun test`
+- `bun x tsc --noEmit --project d:\Projects\bun-win32\doom_codex\tsconfig.json`
+
+## Completion Criteria
+
+- The implementation files listed for this step match the listed reference behavior without widening the agreed interface or behavior surface.
+- The targeted test file `test/host/clock.test.ts` covers the normal path and at least one parity-sensitive edge case, and every listed verification command passes.
+
+## Required Log Updates
+
+- `FACT_LOG.md`: add any newly discovered constants, quirks, or file-format facts with future step IDs before leaving the step.
+- `DECISION_LOG.md`: update only if this step changes a chosen interface, host boundary, or parity rule.
+- `REFERENCE_ORACLES.md`: add or update the oracle record if this step creates or refreshes a capture, manifest, or replay fixture.
+- `HANDOFF_LOG.md`: append the completion summary, verification commands, results, next eligible steps, and open risks.
+
+## Later Steps That May Benefit
+
+- 06-002
+- 17-010

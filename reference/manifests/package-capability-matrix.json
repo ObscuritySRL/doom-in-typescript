@@ -1,0 +1,405 @@
+{
+  "description": "Package capability matrix for the bun-win32 repository. Only packages marked usedInC1:true are in scope for the C1 Doom implementation.",
+  "generatedAt": "2026-04-22",
+  "entries": [
+    {
+      "package": "@bun-win32/advapi32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/bcrypt",
+      "usedInC1": false,
+      "capabilities": "Cryptography Next Gen (CNG) ciphers, hashes, HMAC, PBKDF2, signatures, random bytes, and key agreement.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/bluetoothapis",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/cfgmgr32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/comctl32",
+      "usedInC1": false,
+      "capabilities": "Common controls, image lists, property sheets, DPA/DSA dynamic arrays, flat scroll bars, and window subclassing.",
+      "blockedCapabilities": "Keep out of C1; the vanilla host does not use common-control widgets.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/core",
+      "usedInC1": true,
+      "capabilities": "Shared Win32 base class, pointer helpers, and type aliases used by every C1 host binding.",
+      "blockedCapabilities": "No known blocker; treat as foundational.",
+      "proofStep": "03-001"
+    },
+    {
+      "package": "@bun-win32/credui",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/crypt32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/d3d11",
+      "usedInC1": false,
+      "capabilities": "Direct3D 11 device and swap-chain creation, D3D11-on-12 interop, and WinRT IDirect3DDevice / IDirect3DSurface bridges.",
+      "blockedCapabilities": "Disallowed for C1 under the chosen GDI presentation decision.",
+      "proofStep": "later-target-only"
+    },
+    {
+      "package": "@bun-win32/dbghelp",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/dwmapi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/dxgi",
+      "usedInC1": false,
+      "capabilities": "DXGI adapter enumeration, factory creation, and debug interface (CreateDXGIFactory*, DXGIGetDebugInterface1).",
+      "blockedCapabilities": "Disallowed for C1 under the chosen GDI presentation decision.",
+      "proofStep": "later-target-only"
+    },
+    {
+      "package": "@bun-win32/gdi32",
+      "usedInC1": true,
+      "capabilities": "DIB creation and blit path for exact software-framebuffer presentation.",
+      "blockedCapabilities": "Need a dedicated proof step if any scaling or color-conversion path diverges from parity needs.",
+      "proofStep": "06-008"
+    },
+    {
+      "package": "@bun-win32/glu32",
+      "usedInC1": false,
+      "capabilities": "OpenGL utility helpers available with opengl32.",
+      "blockedCapabilities": "No C1 need under the chosen GDI presentation decision.",
+      "proofStep": "later-target-only"
+    },
+    {
+      "package": "@bun-win32/hid",
+      "usedInC1": false,
+      "capabilities": "Potential future raw HID input or device work.",
+      "blockedCapabilities": "Not needed for C1 keyboard and mouse parity.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/iphlpapi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/kernel32",
+      "usedInC1": true,
+      "capabilities": "File I/O, timing, process, mapping, and basic OS primitives needed for reference sandboxes and the host loop.",
+      "blockedCapabilities": "Confirm exact timer and sandbox behavior before leaning on less common APIs.",
+      "proofStep": "06-001"
+    },
+    {
+      "package": "@bun-win32/mfplat",
+      "usedInC1": false,
+      "capabilities": "Media Foundation platform lifecycle, work queues, MFT registry, and media type / sample / byte-stream factories.",
+      "blockedCapabilities": "Keep out of C1; winmm waveOut is the chosen audio boundary.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/mfreadwrite",
+      "usedInC1": false,
+      "capabilities": "Media Foundation source-reader and sink-writer activation helpers for Windows multimedia I/O.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/mi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/mmdevapi",
+      "usedInC1": false,
+      "capabilities": "MMDevice / Core Audio class factory and WASAPI async activation (DllGetClassObject, ActivateAudioInterfaceAsync).",
+      "blockedCapabilities": "Keep out of C1; winmm waveOut is the chosen audio boundary.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/mpr",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/msi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/netapi32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/normaliz",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/ntdll",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/ole32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/opengl32",
+      "usedInC1": false,
+      "capabilities": "OpenGL presentation path available as a contingency only.",
+      "blockedCapabilities": "Disallowed for C1 unless a later decision-log exception is approved.",
+      "proofStep": "later-target-only"
+    },
+    {
+      "package": "@bun-win32/pdh",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/powrprof",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/psapi",
+      "usedInC1": false,
+      "capabilities": "Process inspection helpers that could aid advanced oracle capture diagnostics.",
+      "blockedCapabilities": "No current C1 requirement.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/rstrtmgr",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/secur32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/sensapi",
+      "usedInC1": false,
+      "capabilities": "System Event Notification Service connectivity checks (IsNetworkAlive, IsDestinationReachable).",
+      "blockedCapabilities": "Keep out of C1; networking is out of scope.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/setupapi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/shcore",
+      "usedInC1": false,
+      "capabilities": "DPI awareness, scale factors, AppUserModelID, random access streams, registry helpers, isolated-container detection, and threading refs.",
+      "blockedCapabilities": "Keep out of C1; parity host runs at fixed vanilla resolution without DPI-aware scaling.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/shell32",
+      "usedInC1": false,
+      "capabilities": "Shell-folder and shell-integration helpers.",
+      "blockedCapabilities": "Avoid in C1; keep config and save path logic explicit.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/shlwapi",
+      "usedInC1": false,
+      "capabilities": "Path helper APIs that may simplify later Windows host integration.",
+      "blockedCapabilities": "Avoid unless core path handling proves insufficient.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/sspicli",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/taskschd",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/template",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/uiautomationcore",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/user32",
+      "usedInC1": true,
+      "capabilities": "Window creation, message pump, keyboard and mouse input, cursor control, and raw-input-adjacent APIs.",
+      "blockedCapabilities": "Validate message ordering and scan-code mapping before gameplay integration.",
+      "proofStep": "06-003"
+    },
+    {
+      "package": "@bun-win32/userenv",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/uxtheme",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/version",
+      "usedInC1": false,
+      "capabilities": "Version-resource inspection for reference executables and diagnostics.",
+      "blockedCapabilities": "Not required at runtime once hashes are recorded.",
+      "proofStep": "00-002"
+    },
+    {
+      "package": "@bun-win32/virtdisk",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/wevtapi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/winmm",
+      "usedInC1": true,
+      "capabilities": "waveOut, MIDI-related exports, and timer helpers for the host audio boundary.",
+      "blockedCapabilities": "Treat host MIDI as diagnostic only; waveOut timing and buffer semantics still need proof.",
+      "proofStep": "15-011"
+    },
+    {
+      "package": "@bun-win32/winscard",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/winspool",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/winusb",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/wlanapi",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/ws2_32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/wtsapi32",
+      "usedInC1": false,
+      "capabilities": "Repository Win32 binding package present in inventory; no direct C1 Doom dependency identified during planning.",
+      "blockedCapabilities": "Keep out of C1 unless a dedicated proof step demonstrates a concrete need.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/xinput1_4",
+      "usedInC1": false,
+      "capabilities": "Modern XInput controller bindings.",
+      "blockedCapabilities": "Controller support is out of C1.",
+      "proofStep": null
+    },
+    {
+      "package": "@bun-win32/xinput9_1_0",
+      "usedInC1": false,
+      "capabilities": "Legacy XInput controller bindings.",
+      "blockedCapabilities": "Controller support is out of C1.",
+      "proofStep": null
+    }
+  ]
+}

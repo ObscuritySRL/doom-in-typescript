@@ -1,0 +1,83 @@
+{
+  "generatedOn": "2026-04-11",
+  "limits": [
+    {
+      "name": "TICRATE",
+      "value": "35",
+      "source": "doomdef.h",
+      "notes": "Core simulation cadence."
+    },
+    {
+      "name": "SAVEGAMESIZE",
+      "value": "0x2c000",
+      "source": "g_game.c",
+      "notes": "Vanilla savegame size ceiling."
+    },
+    {
+      "name": "MAXVISPLANES",
+      "value": "128",
+      "source": "r_plane.c",
+      "notes": "Visplane overflow compatibility limit."
+    },
+    {
+      "name": "MAXOPENINGS",
+      "value": "SCREENWIDTH * 64",
+      "source": "r_plane.c",
+      "notes": "Openings buffer limit."
+    },
+    {
+      "name": "snd_channels",
+      "value": "8",
+      "source": "default.cfg and s_sound.c",
+      "notes": "Default digital sound channels."
+    },
+    {
+      "name": "step_height",
+      "value": "24 * FRACUNIT",
+      "source": "p_map.c",
+      "notes": "Step-up height limit."
+    },
+    {
+      "name": "S_CLIPPING_DIST",
+      "value": "1200 * FRACUNIT",
+      "source": "s_sound.c",
+      "notes": "Maximum attenuated sound distance."
+    },
+    {
+      "name": "S_CLOSE_DIST",
+      "value": "200 * FRACUNIT",
+      "source": "s_sound.c",
+      "notes": "Near-field sound distance."
+    },
+    {
+      "name": "S_STEREO_SWING",
+      "value": "96 * FRACUNIT",
+      "source": "s_sound.c",
+      "notes": "Stereo panning swing."
+    },
+    {
+      "name": "NORM_SEP",
+      "value": "128",
+      "source": "s_sound.c",
+      "notes": "Neutral stereo separation."
+    },
+    {
+      "name": "DEFAULT_SPECHIT_MAGIC",
+      "value": "0x01C09C98",
+      "source": "p_map.c",
+      "notes": "Vanilla spechit overrun emulation value."
+    },
+    {
+      "name": "vanilla_demo_limit",
+      "value": "1",
+      "source": "chocolate-doom.cfg",
+      "notes": "Local oracle flag for demo size behavior."
+    },
+    {
+      "name": "vanilla_savegame_limit",
+      "value": "1",
+      "source": "chocolate-doom.cfg",
+      "notes": "Local oracle flag for savegame size behavior."
+    }
+  ]
+}

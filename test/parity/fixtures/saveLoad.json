@@ -1,0 +1,539 @@
+{
+  "description": "Synthetic C1 save/load roundtrip parity fixture with canonical section hashes and bundled DOS save-string anchors.",
+  "expected": {
+    "anchors": {
+      "DOOM.EXE": {
+        "Bad savegame": 697532,
+        "Savegame": 697600,
+        "doomsav": 696616,
+        "game saved.": 697624
+      },
+      "DOOMD.EXE": {
+        "Bad savegame": 696956,
+        "Savegame": 697024,
+        "doomsav": 696040,
+        "game saved.": 697048
+      }
+    },
+    "byteLengths": {
+      "header": 50,
+      "mobjs": 313,
+      "players": 282,
+      "specials": 3025,
+      "total": 3741,
+      "world": 70
+    },
+    "hashes": {
+      "header": "6A5C8351D102F53374A501246E9D11E3B41A709B4C0F4CBA68C1C2845E7F25A0",
+      "mobjs": "4D232C79DBFEFF134BA0E9CE82088F939EC4DBD0B198F200514BA5B9BD7FFE69",
+      "players": "A47B74C218E63930F4EBC70530056112E2F86B2A2BADF060E51C808D01E45B7F",
+      "specials": "51B7B582949B7AF80BBBFF2CDFD69EB7369BC9498CEF1478970DE6E3169A3874",
+      "total": "027C8DAB34C3DEFEA02FA374BC249651DF7CA2DD8625D1EAB831FB0D9EB3D323",
+      "world": "FCEE0D1CF716B95ED6A4DC76F1588DD74163B674C1DDE20C15D0D0E421C5D7EE"
+    },
+    "loaded": {
+      "bytesRead": 3741,
+      "nextOffset": 3741,
+      "value": {
+        "header": {
+          "description": "PARITY SAVE SLOT 1",
+          "gameepisode": 1,
+          "gamemap": 3,
+          "gameskill": 2,
+          "leveltime": 1193046,
+          "playeringame": [1, 0, 0, 0]
+        },
+        "mobjs": [
+          {
+            "angle": 1073741824,
+            "blockNextPointer": 0,
+            "blockPreviousPointer": 0,
+            "ceilingz": 8388608,
+            "flags": 4,
+            "floorz": 0,
+            "frame": 0,
+            "health": 87,
+            "height": 3670016,
+            "infoPointer": 4369,
+            "lastlook": 3,
+            "momx": 8192,
+            "momy": -4096,
+            "momz": 0,
+            "moveCount": 5,
+            "moveDirection": 2,
+            "playerSlot": 0,
+            "radius": 1048576,
+            "reactiontime": 8,
+            "sectorNextPointer": 0,
+            "sectorPreviousPointer": 0,
+            "spawnpoint": {
+              "angle": 90,
+              "options": 7,
+              "type": 1,
+              "x": 128,
+              "y": 256
+            },
+            "sprite": 4,
+            "stateIndex": 12,
+            "subsectorPointer": 8738,
+            "targetPointer": 0,
+            "thinker": {
+              "functionPointer": 13107,
+              "nextPointer": 0,
+              "previousPointer": 0
+            },
+            "threshold": 9,
+            "tics": -1,
+            "tracerPointer": 0,
+            "type": 1,
+            "validcount": 123,
+            "x": 1179648,
+            "y": 2359296,
+            "z": 0
+          },
+          {
+            "angle": 536870912,
+            "blockNextPointer": 17476,
+            "blockPreviousPointer": 21845,
+            "ceilingz": 16777216,
+            "flags": 1024,
+            "floorz": -1048576,
+            "frame": 3,
+            "health": 150,
+            "height": 4194304,
+            "infoPointer": 26214,
+            "lastlook": 1,
+            "momx": 0,
+            "momy": 0,
+            "momz": 2048,
+            "moveCount": 0,
+            "moveDirection": 8,
+            "playerSlot": 0,
+            "radius": 1572864,
+            "reactiontime": 0,
+            "sectorNextPointer": 30583,
+            "sectorPreviousPointer": 34952,
+            "spawnpoint": {
+              "angle": 180,
+              "options": 16,
+              "type": 3004,
+              "x": -64,
+              "y": 96
+            },
+            "sprite": 18,
+            "stateIndex": 27,
+            "subsectorPointer": 39321,
+            "targetPointer": 43690,
+            "thinker": {
+              "functionPointer": 48059,
+              "nextPointer": 52428,
+              "previousPointer": 56797
+            },
+            "threshold": 0,
+            "tics": 12,
+            "tracerPointer": 61166,
+            "type": 3004,
+            "validcount": 456,
+            "x": -524288,
+            "y": 393216,
+            "z": 262144
+          }
+        ],
+        "players": {
+          "playeringame": [1, 0, 0, 0],
+          "players": [
+            {
+              "ammo": [50, 4, 0, 12],
+              "armorpoints": 25,
+              "armortype": 1,
+              "attackdown": 0,
+              "attackerPointer": 0,
+              "backpack": 1,
+              "bob": 65536,
+              "bonuscount": 3,
+              "cards": [1, 0, 1, 0, 0, 0],
+              "cheats": 0,
+              "colormap": 0,
+              "damagecount": 7,
+              "deltaviewheight": -32768,
+              "didsecret": 1,
+              "extralight": 2,
+              "fixedcolormap": 0,
+              "frags": [0, 2, 0, 0],
+              "health": 87,
+              "itemcount": 2,
+              "killcount": 4,
+              "maxammo": [200, 50, 50, 300],
+              "messagePointer": 0,
+              "mobjPointer": 16384,
+              "pendingweapon": 3,
+              "playerstate": 0,
+              "powers": [0, 14, 0, 0, 0, 0],
+              "psprites": [
+                {
+                  "stateIndex": 7,
+                  "sx": 5767168,
+                  "sy": 2097152,
+                  "tics": 1
+                },
+                {
+                  "stateIndex": null,
+                  "sx": 0,
+                  "sy": 0,
+                  "tics": 0
+                }
+              ],
+              "readyweapon": 2,
+              "refire": 1,
+              "secretcount": 1,
+              "ticcmd": {
+                "angleturn": 4608,
+                "buttons": 1,
+                "chatchar": 0,
+                "consistancy": 515,
+                "forwardmove": 25,
+                "sidemove": -8
+              },
+              "usedown": 1,
+              "viewheight": 2686976,
+              "viewz": 3407872,
+              "weaponowned": [1, 1, 1, 0, 0, 0, 0, 0, 0]
+            },
+            null,
+            null,
+            null
+          ]
+        },
+        "specials": {
+          "activeCeilings": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+          "activePlats": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+          "buttons": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+          "thinkers": []
+        },
+        "world": {
+          "lines": [
+            {
+              "flags": 1,
+              "sides": [
+                {
+                  "bottomtexture": 31,
+                  "midtexture": 32,
+                  "rowoffset": 131072,
+                  "textureoffset": 524288,
+                  "toptexture": 33
+                },
+                null
+              ],
+              "sidenum": [0, -1],
+              "special": 26,
+              "tag": 44
+            },
+            {
+              "flags": 4,
+              "sides": [
+                {
+                  "bottomtexture": 41,
+                  "midtexture": 42,
+                  "rowoffset": -65536,
+                  "textureoffset": 262144,
+                  "toptexture": 43
+                },
+                {
+                  "bottomtexture": 51,
+                  "midtexture": 52,
+                  "rowoffset": 65536,
+                  "textureoffset": -196608,
+                  "toptexture": 53
+                }
+              ],
+              "sidenum": [1, 2],
+              "special": 97,
+              "tag": 77
+            }
+          ],
+          "sectors": [
+            {
+              "ceilingheight": 8388608,
+              "ceilingpic": 11,
+              "floorheight": 0,
+              "floorpic": 8,
+              "lightlevel": 160,
+              "special": 9,
+              "tag": 12
+            },
+            {
+              "ceilingheight": 16777216,
+              "ceilingpic": 22,
+              "floorheight": -1048576,
+              "floorpic": 14,
+              "lightlevel": 96,
+              "special": 5,
+              "tag": 99
+            }
+          ]
+        }
+      }
+    },
+    "offsets": {
+      "eofIndex": 3740,
+      "firstMobjRecordStart": 404,
+      "firstPlayerRecordStart": 52,
+      "headerStart": 0,
+      "mobjsStart": 402,
+      "playersStart": 50,
+      "specialThinkerEndMarkerIndex": 3739,
+      "specialsStart": 715,
+      "worldStart": 332
+    }
+  },
+  "input": {
+    "header": {
+      "description": "PARITY SAVE SLOT 1",
+      "gameepisode": 1,
+      "gamemap": 3,
+      "gameskill": 2,
+      "leveltime": 1193046,
+      "playeringame": [1, 0, 0, 0]
+    },
+    "mobjs": [
+      {
+        "angle": 1073741824,
+        "blockNextPointer": 0,
+        "blockPreviousPointer": 0,
+        "ceilingz": 8388608,
+        "flags": 4,
+        "floorz": 0,
+        "frame": 0,
+        "health": 87,
+        "height": 3670016,
+        "infoPointer": 4369,
+        "lastlook": 3,
+        "momx": 8192,
+        "momy": -4096,
+        "momz": 0,
+        "moveCount": 5,
+        "moveDirection": 2,
+        "playerSlot": 0,
+        "radius": 1048576,
+        "reactiontime": 8,
+        "sectorNextPointer": 0,
+        "sectorPreviousPointer": 0,
+        "spawnpoint": {
+          "angle": 90,
+          "options": 7,
+          "type": 1,
+          "x": 128,
+          "y": 256
+        },
+        "sprite": 4,
+        "stateIndex": 12,
+        "subsectorPointer": 8738,
+        "targetPointer": 0,
+        "thinker": {
+          "functionPointer": 13107,
+          "nextPointer": 0,
+          "previousPointer": 0
+        },
+        "threshold": 9,
+        "tics": -1,
+        "tracerPointer": 0,
+        "type": 1,
+        "validcount": 123,
+        "x": 1179648,
+        "y": 2359296,
+        "z": 0
+      },
+      {
+        "angle": 536870912,
+        "blockNextPointer": 17476,
+        "blockPreviousPointer": 21845,
+        "ceilingz": 16777216,
+        "flags": 1024,
+        "floorz": -1048576,
+        "frame": 3,
+        "health": 150,
+        "height": 4194304,
+        "infoPointer": 26214,
+        "lastlook": 1,
+        "momx": 0,
+        "momy": 0,
+        "momz": 2048,
+        "moveCount": 0,
+        "moveDirection": 8,
+        "playerSlot": 0,
+        "radius": 1572864,
+        "reactiontime": 0,
+        "sectorNextPointer": 30583,
+        "sectorPreviousPointer": 34952,
+        "spawnpoint": {
+          "angle": 180,
+          "options": 16,
+          "type": 3004,
+          "x": -64,
+          "y": 96
+        },
+        "sprite": 18,
+        "stateIndex": 27,
+        "subsectorPointer": 39321,
+        "targetPointer": 43690,
+        "thinker": {
+          "functionPointer": 48059,
+          "nextPointer": 52428,
+          "previousPointer": 56797
+        },
+        "threshold": 0,
+        "tics": 12,
+        "tracerPointer": 61166,
+        "type": 3004,
+        "validcount": 456,
+        "x": -524288,
+        "y": 393216,
+        "z": 262144
+      }
+    ],
+    "players": {
+      "playeringame": [1, 0, 0, 0],
+      "players": [
+        {
+          "ammo": [50, 4, 0, 12],
+          "armorpoints": 25,
+          "armortype": 1,
+          "attackdown": 0,
+          "attackerPointer": 0,
+          "backpack": 1,
+          "bob": 65536,
+          "bonuscount": 3,
+          "cards": [1, 0, 1, 0, 0, 0],
+          "cheats": 0,
+          "colormap": 0,
+          "damagecount": 7,
+          "deltaviewheight": -32768,
+          "didsecret": 1,
+          "extralight": 2,
+          "fixedcolormap": 0,
+          "frags": [0, 2, 0, 0],
+          "health": 87,
+          "itemcount": 2,
+          "killcount": 4,
+          "maxammo": [200, 50, 50, 300],
+          "messagePointer": 0,
+          "mobjPointer": 16384,
+          "pendingweapon": 3,
+          "playerstate": 0,
+          "powers": [0, 14, 0, 0, 0, 0],
+          "psprites": [
+            {
+              "stateIndex": 7,
+              "sx": 5767168,
+              "sy": 2097152,
+              "tics": 1
+            },
+            {
+              "stateIndex": null,
+              "sx": 0,
+              "sy": 0,
+              "tics": 0
+            }
+          ],
+          "readyweapon": 2,
+          "refire": 1,
+          "secretcount": 1,
+          "ticcmd": {
+            "angleturn": 4608,
+            "buttons": 1,
+            "chatchar": 0,
+            "consistancy": 515,
+            "forwardmove": 25,
+            "sidemove": -8
+          },
+          "usedown": 1,
+          "viewheight": 2686976,
+          "viewz": 3407872,
+          "weaponowned": [1, 1, 1, 0, 0, 0, 0, 0, 0]
+        },
+        null,
+        null,
+        null
+      ]
+    },
+    "specials": {
+      "activeCeilings": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "activePlats": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "buttons": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
+      "thinkers": []
+    },
+    "world": {
+      "lines": [
+        {
+          "flags": 1,
+          "sidenum": [0, -1],
+          "sides": [
+            {
+              "bottomtexture": 31,
+              "midtexture": 32,
+              "rowoffset": 131072,
+              "textureoffset": 524288,
+              "toptexture": 33
+            },
+            null
+          ],
+          "special": 26,
+          "tag": 44
+        },
+        {
+          "flags": 4,
+          "sidenum": [1, 2],
+          "sides": [
+            {
+              "bottomtexture": 41,
+              "midtexture": 42,
+              "rowoffset": -65536,
+              "textureoffset": 262144,
+              "toptexture": 43
+            },
+            {
+              "bottomtexture": 51,
+              "midtexture": 52,
+              "rowoffset": 65536,
+              "textureoffset": -196608,
+              "toptexture": 53
+            }
+          ],
+          "special": 97,
+          "tag": 77
+        }
+      ],
+      "sectors": [
+        {
+          "ceilingheight": 8388608,
+          "ceilingpic": 11,
+          "floorheight": 0,
+          "floorpic": 8,
+          "lightlevel": 160,
+          "special": 9,
+          "tag": 12
+        },
+        {
+          "ceilingheight": 16777216,
+          "ceilingpic": 22,
+          "floorheight": -1048576,
+          "floorpic": 14,
+          "lightlevel": 96,
+          "special": 5,
+          "tag": 99
+        }
+      ]
+    },
+    "worldLayout": {
+      "lines": [
+        {
+          "sidenum": [0, -1]
+        },
+        {
+          "sidenum": [1, 2]
+        }
+      ],
+      "sectorCount": 2
+    }
+  }
+}

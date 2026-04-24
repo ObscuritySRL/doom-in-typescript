@@ -1,0 +1,350 @@
+{
+  "description": "Authoritative source inventory for the DOOM Codex project. Prefer local bundle and upstream source before community explanations.",
+  "generatedAt": "2026-04-12",
+  "entries": [
+    {
+      "id": "S-001",
+      "source": "local bundle README",
+      "kind": "file",
+      "authority": "local-primary",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\README.md",
+      "notes": "Primary local packaging note for the universal build and its Chocolate Doom 2.2.1 Windows half."
+    },
+    {
+      "id": "S-002",
+      "source": "local runtime stdout log",
+      "kind": "file",
+      "authority": "local-primary",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\stdout.txt",
+      "notes": "Confirms the local Windows oracle reports Chocolate Doom 2.2.1 and Doom 1.9 emulation."
+    },
+    {
+      "id": "S-003",
+      "source": "local vanilla config",
+      "kind": "file",
+      "authority": "local-primary",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\default.cfg",
+      "notes": "Vanilla control, audio, and UI defaults bundled beside the reference binaries."
+    },
+    {
+      "id": "S-004",
+      "source": "local Chocolate config",
+      "kind": "file",
+      "authority": "local-secondary",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\chocolate-doom.cfg",
+      "notes": "Host-side oracle configuration, including vanilla compatibility flags."
+    },
+    {
+      "id": "S-005",
+      "source": "local IWAD",
+      "kind": "file",
+      "authority": "local-primary-data",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD",
+      "notes": "Canonical shareware data set for C1."
+    },
+    {
+      "id": "S-006",
+      "source": "local DOS executable",
+      "kind": "file",
+      "authority": "local-primary-binary",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOMD.EXE",
+      "notes": "Behavioral authority for vanilla shareware Doom 1.9 semantics."
+    },
+    {
+      "id": "S-007",
+      "source": "local Windows executable",
+      "kind": "file",
+      "authority": "local-secondary-binary",
+      "pathOrUrl": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM.EXE",
+      "notes": "Practical Windows-side oracle when it agrees with vanilla."
+    },
+    {
+      "id": "S-008",
+      "source": "Chocolate Doom upstream repo",
+      "kind": "repo",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom",
+      "notes": "Secondary reference for code structure, bug compatibility notes, and parity-oriented behavior."
+    },
+    {
+      "id": "S-009",
+      "source": "Chocolate Doom src/doom/d_main.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/d_main.c",
+      "notes": "Startup, title loop, init order, and main Doom loop."
+    },
+    {
+      "id": "S-010",
+      "source": "Chocolate Doom src/doom/doomdef.h",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/doomdef.h",
+      "notes": "Core constants including TICRATE and game version markers."
+    },
+    {
+      "id": "S-011",
+      "source": "Chocolate Doom src/doom/g_game.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/g_game.c",
+      "notes": "Input, ticcmd generation, savegame size limit, demos, and game flow."
+    },
+    {
+      "id": "S-012",
+      "source": "Chocolate Doom src/doom/p_map.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_map.c",
+      "notes": "Movement, collision, intercepts, and special-line edge cases."
+    },
+    {
+      "id": "S-013",
+      "source": "Chocolate Doom src/doom/p_spec.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_spec.c",
+      "notes": "World specials, sector effects, and donut/animation behavior."
+    },
+    {
+      "id": "S-014",
+      "source": "Chocolate Doom src/doom/p_enemy.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_enemy.c",
+      "notes": "AI, sound propagation, missile checks, and monster action flow."
+    },
+    {
+      "id": "S-015",
+      "source": "Chocolate Doom src/doom/r_bsp.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_bsp.c",
+      "notes": "BSP traversal, clipping ranges, and subsector walk order."
+    },
+    {
+      "id": "S-016",
+      "source": "Chocolate Doom src/doom/r_plane.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_plane.c",
+      "notes": "Visplanes, openings, and sky/light handling."
+    },
+    {
+      "id": "S-017",
+      "source": "Chocolate Doom src/doom/s_sound.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/s_sound.c",
+      "notes": "Sound attenuation, channel rules, and music selection."
+    },
+    {
+      "id": "S-018",
+      "source": "Chocolate Doom src/doom/p_saveg.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_saveg.c",
+      "notes": "Savegame layout, versioning, and EOF marker handling."
+    },
+    {
+      "id": "S-019",
+      "source": "Chocolate Doom project README",
+      "kind": "doc",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom",
+      "notes": "Project-level rationale and scope."
+    },
+    {
+      "id": "S-020",
+      "source": "DoomWiki community references",
+      "kind": "doc-set",
+      "authority": "community-secondary",
+      "pathOrUrl": "https://doomwiki.org",
+      "notes": "Community reference only; never primary authority over binaries or source."
+    },
+    {
+      "id": "S-021",
+      "source": "Chocolate Doom src/m_fixed.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/m_fixed.c",
+      "notes": "Fixed-point multiply and divide behavior."
+    },
+    {
+      "id": "S-022",
+      "source": "Chocolate Doom src/tables.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/tables.c",
+      "notes": "Trig and angle lookup tables."
+    },
+    {
+      "id": "S-023",
+      "source": "Chocolate Doom src/doom/r_draw.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_draw.c",
+      "notes": "Column and span drawers, fuzz, and screen detail paths."
+    },
+    {
+      "id": "S-024",
+      "source": "Chocolate Doom src/doom/r_things.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_things.c",
+      "notes": "Sprite projection, clipping, and masked drawing."
+    },
+    {
+      "id": "S-025",
+      "source": "Chocolate Doom src/doom/r_main.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_main.c",
+      "notes": "View setup, lighting, and render loop glue."
+    },
+    {
+      "id": "S-026",
+      "source": "Chocolate Doom src/doom/st_stuff.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/st_stuff.c",
+      "notes": "Status bar widgets, palette flashes, and face logic."
+    },
+    {
+      "id": "S-027",
+      "source": "Chocolate Doom src/doom/am_map.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/am_map.c",
+      "notes": "Automap behavior, scrolling, and zoom controls."
+    },
+    {
+      "id": "S-028",
+      "source": "Chocolate Doom src/doom/m_menu.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/m_menu.c",
+      "notes": "Menus, repeat timing, and front-end input."
+    },
+    {
+      "id": "S-029",
+      "source": "Chocolate Doom src/doom/wi_stuff.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/wi_stuff.c",
+      "notes": "Intermission stats flow."
+    },
+    {
+      "id": "S-030",
+      "source": "Chocolate Doom src/doom/f_finale.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/f_finale.c",
+      "notes": "Finale text and screen sequencing."
+    },
+    {
+      "id": "S-031",
+      "source": "Chocolate Doom src/doom/hu_stuff.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/hu_stuff.c",
+      "notes": "HUD messages and chat behavior."
+    },
+    {
+      "id": "S-032",
+      "source": "Chocolate Doom src/doom/p_mobj.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_mobj.c",
+      "notes": "Mobj spawn, thinker setup, XY and Z movement helpers."
+    },
+    {
+      "id": "S-033",
+      "source": "Chocolate Doom src/doom/p_pspr.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_pspr.c",
+      "notes": "Weapon state machine and player weapon actions."
+    },
+    {
+      "id": "S-034",
+      "source": "Chocolate Doom src/doom/p_user.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/p_user.c",
+      "notes": "Player movement, bob, thrust, and viewheight behavior."
+    },
+    {
+      "id": "S-035",
+      "source": "Chocolate Doom src/doom/r_segs.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_segs.c",
+      "notes": "Wall segment rendering details and clipping."
+    },
+    {
+      "id": "S-036",
+      "source": "Chocolate Doom src/doom/r_data.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_data.c",
+      "notes": "Texture, flat, and patch data preparation."
+    },
+    {
+      "id": "S-037",
+      "source": "Chocolate Doom src/doom/r_sky.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/doom/r_sky.c",
+      "notes": "Sky selection and draw constants."
+    },
+    {
+      "id": "S-038",
+      "source": "Chocolate Doom src/i_sound.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/i_sound.c",
+      "notes": "Host audio device behavior and music backend integration."
+    },
+    {
+      "id": "S-039",
+      "source": "Chocolate Doom src/i_timer.c",
+      "kind": "source",
+      "authority": "upstream-secondary",
+      "pathOrUrl": "https://github.com/chocolate-doom/chocolate-doom/blob/master/src/i_timer.c",
+      "notes": "Timer behavior and frame pacing host layer."
+    },
+    {
+      "id": "S-040",
+      "source": "DoomWiki WAD format",
+      "kind": "doc",
+      "authority": "community-secondary",
+      "pathOrUrl": "https://doomwiki.org/wiki/WAD",
+      "notes": "Community explanation of WAD structure; use only as a convenience reference."
+    },
+    {
+      "id": "S-041",
+      "source": "DoomWiki Demo",
+      "kind": "doc",
+      "authority": "community-secondary",
+      "pathOrUrl": "https://doomwiki.org/wiki/Demo",
+      "notes": "Community explanation of demo concepts and compatibility."
+    },
+    {
+      "id": "S-042",
+      "source": "DoomWiki MUS",
+      "kind": "doc",
+      "authority": "community-secondary",
+      "pathOrUrl": "https://doomwiki.org/wiki/MUS",
+      "notes": "Community explanation of MUS music format."
+    },
+    {
+      "id": "S-043",
+      "source": "DoomWiki Savegame",
+      "kind": "doc",
+      "authority": "community-secondary",
+      "pathOrUrl": "https://doomwiki.org/wiki/Savegame",
+      "notes": "Community explanation of savegame behavior."
+    }
+  ]
+}

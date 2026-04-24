@@ -1,0 +1,115 @@
+{
+  "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD",
+  "identification": "IWAD",
+  "numLumps": 1264,
+  "infoTableOffset": 4175796,
+  "maps": ["E1M1", "E1M2", "E1M3", "E1M4", "E1M5", "E1M6", "E1M7", "E1M8", "E1M9"],
+  "keyLumps": {
+    "PLAYPAL": {
+      "index": 0,
+      "name": "PLAYPAL",
+      "offset": 12,
+      "size": 10752
+    },
+    "COLORMAP": {
+      "index": 1,
+      "name": "COLORMAP",
+      "offset": 10764,
+      "size": 8704
+    },
+    "TEXTURE1": {
+      "index": 105,
+      "name": "TEXTURE1",
+      "offset": 915712,
+      "size": 9234
+    },
+    "TEXTURE2Present": false,
+    "DEMO": [
+      {
+        "index": 3,
+        "name": "DEMO1",
+        "offset": 23468,
+        "size": 20118
+      },
+      {
+        "index": 4,
+        "name": "DEMO2",
+        "offset": 43588,
+        "size": 15358
+      },
+      {
+        "index": 5,
+        "name": "DEMO3",
+        "offset": 58948,
+        "size": 8550
+      }
+    ],
+    "MUSIC": ["D_E1M1", "D_E1M2", "D_E1M3", "D_E1M4", "D_E1M5", "D_E1M6", "D_E1M7", "D_E1M8", "D_E1M9", "D_INTER", "D_INTRO", "D_VICTOR", "D_INTROA"],
+    "SOUND": [
+      "DSPISTOL",
+      "DSSHOTGN",
+      "DSSGCOCK",
+      "DSSAWUP",
+      "DSSAWIDL",
+      "DSSAWFUL",
+      "DSSAWHIT",
+      "DSRLAUNC",
+      "DSRXPLOD",
+      "DSFIRSHT",
+      "DSFIRXPL",
+      "DSPSTART",
+      "DSPSTOP",
+      "DSDOROPN",
+      "DSDORCLS",
+      "DSSTNMOV",
+      "DSSWTCHN",
+      "DSSWTCHX",
+      "DSPLPAIN",
+      "DSDMPAIN",
+      "DSPOPAIN",
+      "DSSLOP",
+      "DSITEMUP",
+      "DSWPNUP",
+      "DSOOF",
+      "DSTELEPT",
+      "DSPOSIT1",
+      "DSPOSIT2",
+      "DSPOSIT3",
+      "DSBGSIT1",
+      "DSBGSIT2",
+      "DSSGTSIT",
+      "DSBRSSIT",
+      "DSSGTATK",
+      "DSCLAW",
+      "DSPLDETH",
+      "DSPDIEHI",
+      "DSPODTH1",
+      "DSPODTH2",
+      "DSPODTH3",
+      "DSBGDTH1",
+      "DSBGDTH2",
+      "DSSGTDTH",
+      "DSBRSDTH",
+      "DSPOSACT",
+      "DSBGACT",
+      "DSDMACT",
+      "DSNOWAY",
+      "DSBAREXP",
+      "DSPUNCH",
+      "DSTINK",
+      "DSBDOPN",
+      "DSBDCLS",
+      "DSITMBK",
+      "DSGETPOW"
+    ]
+  },
+  "markerCounts": {
+    "sprites": 483,
+    "patches": 167,
+    "flats": 56
+  },
+  "mapBundleOrder": {
+    "E1M1": ["E1M1", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"],
+    "E1M9": ["E1M9", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+  }
+}

@@ -1,0 +1,728 @@
+{
+  "defaultCfg": {
+    "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\default.cfg",
+    "count": 43,
+    "entries": [
+      {
+        "name": "mouse_sensitivity",
+        "value": "5"
+      },
+      {
+        "name": "sfx_volume",
+        "value": "8"
+      },
+      {
+        "name": "music_volume",
+        "value": "8"
+      },
+      {
+        "name": "show_messages",
+        "value": "1"
+      },
+      {
+        "name": "key_right",
+        "value": "77"
+      },
+      {
+        "name": "key_left",
+        "value": "75"
+      },
+      {
+        "name": "key_up",
+        "value": "72"
+      },
+      {
+        "name": "key_down",
+        "value": "80"
+      },
+      {
+        "name": "key_strafeleft",
+        "value": "51"
+      },
+      {
+        "name": "key_straferight",
+        "value": "52"
+      },
+      {
+        "name": "key_fire",
+        "value": "29"
+      },
+      {
+        "name": "key_use",
+        "value": "57"
+      },
+      {
+        "name": "key_strafe",
+        "value": "56"
+      },
+      {
+        "name": "key_speed",
+        "value": "54"
+      },
+      {
+        "name": "use_mouse",
+        "value": "1"
+      },
+      {
+        "name": "mouseb_fire",
+        "value": "0"
+      },
+      {
+        "name": "mouseb_strafe",
+        "value": "1"
+      },
+      {
+        "name": "mouseb_forward",
+        "value": "2"
+      },
+      {
+        "name": "use_joystick",
+        "value": "0"
+      },
+      {
+        "name": "joyb_fire",
+        "value": "0"
+      },
+      {
+        "name": "joyb_strafe",
+        "value": "1"
+      },
+      {
+        "name": "joyb_use",
+        "value": "3"
+      },
+      {
+        "name": "joyb_speed",
+        "value": "2"
+      },
+      {
+        "name": "screenblocks",
+        "value": "9"
+      },
+      {
+        "name": "detaillevel",
+        "value": "0"
+      },
+      {
+        "name": "snd_channels",
+        "value": "8"
+      },
+      {
+        "name": "snd_musicdevice",
+        "value": "3"
+      },
+      {
+        "name": "snd_sfxdevice",
+        "value": "3"
+      },
+      {
+        "name": "snd_sbport",
+        "value": "0"
+      },
+      {
+        "name": "snd_sbirq",
+        "value": "0"
+      },
+      {
+        "name": "snd_sbdma",
+        "value": "0"
+      },
+      {
+        "name": "snd_mport",
+        "value": "0"
+      },
+      {
+        "name": "usegamma",
+        "value": "0"
+      },
+      {
+        "name": "chatmacro0",
+        "value": "\"No\""
+      },
+      {
+        "name": "chatmacro1",
+        "value": "\"I'm ready to kick butt!\""
+      },
+      {
+        "name": "chatmacro2",
+        "value": "\"I'm OK.\""
+      },
+      {
+        "name": "chatmacro3",
+        "value": "\"I'm not looking too good!\""
+      },
+      {
+        "name": "chatmacro4",
+        "value": "\"Help!\""
+      },
+      {
+        "name": "chatmacro5",
+        "value": "\"You suck!\""
+      },
+      {
+        "name": "chatmacro6",
+        "value": "\"Next time, scumbag...\""
+      },
+      {
+        "name": "chatmacro7",
+        "value": "\"Come here!\""
+      },
+      {
+        "name": "chatmacro8",
+        "value": "\"I'll take care of it.\""
+      },
+      {
+        "name": "chatmacro9",
+        "value": "\"Yes\""
+      }
+    ]
+  },
+  "chocolateCfg": {
+    "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\chocolate-doom.cfg",
+    "count": 113,
+    "entries": [
+      {
+        "name": "autoadjust_video_settings",
+        "value": "1"
+      },
+      {
+        "name": "fullscreen",
+        "value": "1"
+      },
+      {
+        "name": "aspect_ratio_correct",
+        "value": "1"
+      },
+      {
+        "name": "startup_delay",
+        "value": "1000"
+      },
+      {
+        "name": "screen_width",
+        "value": "640"
+      },
+      {
+        "name": "screen_height",
+        "value": "480"
+      },
+      {
+        "name": "screen_bpp",
+        "value": "32"
+      },
+      {
+        "name": "grabmouse",
+        "value": "1"
+      },
+      {
+        "name": "novert",
+        "value": "0"
+      },
+      {
+        "name": "mouse_acceleration",
+        "value": "2.000000"
+      },
+      {
+        "name": "mouse_threshold",
+        "value": "10"
+      },
+      {
+        "name": "snd_samplerate",
+        "value": "44100"
+      },
+      {
+        "name": "snd_cachesize",
+        "value": "67108864"
+      },
+      {
+        "name": "snd_maxslicetime_ms",
+        "value": "28"
+      },
+      {
+        "name": "snd_musiccmd",
+        "value": "\"\""
+      },
+      {
+        "name": "snd_dmxoption",
+        "value": "\"\""
+      },
+      {
+        "name": "opl_io_port",
+        "value": "0x388"
+      },
+      {
+        "name": "show_endoom",
+        "value": "1"
+      },
+      {
+        "name": "png_screenshots",
+        "value": "0"
+      },
+      {
+        "name": "vanilla_savegame_limit",
+        "value": "1"
+      },
+      {
+        "name": "vanilla_demo_limit",
+        "value": "1"
+      },
+      {
+        "name": "vanilla_keyboard_mapping",
+        "value": "1"
+      },
+      {
+        "name": "video_driver",
+        "value": "\"\""
+      },
+      {
+        "name": "window_position",
+        "value": "\"\""
+      },
+      {
+        "name": "player_name",
+        "value": "\"stevp\""
+      },
+      {
+        "name": "joystick_index",
+        "value": "-1"
+      },
+      {
+        "name": "joystick_x_axis",
+        "value": "0"
+      },
+      {
+        "name": "joystick_x_invert",
+        "value": "0"
+      },
+      {
+        "name": "joystick_y_axis",
+        "value": "1"
+      },
+      {
+        "name": "joystick_y_invert",
+        "value": "0"
+      },
+      {
+        "name": "joystick_strafe_axis",
+        "value": "-1"
+      },
+      {
+        "name": "joystick_strafe_invert",
+        "value": "0"
+      },
+      {
+        "name": "joystick_physical_button0",
+        "value": "0"
+      },
+      {
+        "name": "joystick_physical_button1",
+        "value": "1"
+      },
+      {
+        "name": "joystick_physical_button2",
+        "value": "2"
+      },
+      {
+        "name": "joystick_physical_button3",
+        "value": "3"
+      },
+      {
+        "name": "joystick_physical_button4",
+        "value": "4"
+      },
+      {
+        "name": "joystick_physical_button5",
+        "value": "5"
+      },
+      {
+        "name": "joystick_physical_button6",
+        "value": "6"
+      },
+      {
+        "name": "joystick_physical_button7",
+        "value": "7"
+      },
+      {
+        "name": "joystick_physical_button8",
+        "value": "8"
+      },
+      {
+        "name": "joystick_physical_button9",
+        "value": "9"
+      },
+      {
+        "name": "joyb_strafeleft",
+        "value": "-1"
+      },
+      {
+        "name": "joyb_straferight",
+        "value": "-1"
+      },
+      {
+        "name": "joyb_menu_activate",
+        "value": "-1"
+      },
+      {
+        "name": "joyb_prevweapon",
+        "value": "-1"
+      },
+      {
+        "name": "joyb_nextweapon",
+        "value": "-1"
+      },
+      {
+        "name": "mouseb_strafeleft",
+        "value": "-1"
+      },
+      {
+        "name": "mouseb_straferight",
+        "value": "-1"
+      },
+      {
+        "name": "mouseb_use",
+        "value": "-1"
+      },
+      {
+        "name": "mouseb_backward",
+        "value": "-1"
+      },
+      {
+        "name": "mouseb_prevweapon",
+        "value": "-1"
+      },
+      {
+        "name": "mouseb_nextweapon",
+        "value": "-1"
+      },
+      {
+        "name": "dclick_use",
+        "value": "1"
+      },
+      {
+        "name": "use_libsamplerate",
+        "value": "0"
+      },
+      {
+        "name": "libsamplerate_scale",
+        "value": "0.650000"
+      },
+      {
+        "name": "timidity_cfg_path",
+        "value": "\"\""
+      },
+      {
+        "name": "gus_patch_path",
+        "value": "\"\""
+      },
+      {
+        "name": "gus_ram_kb",
+        "value": "1024"
+      },
+      {
+        "name": "key_pause",
+        "value": "69"
+      },
+      {
+        "name": "key_menu_activate",
+        "value": "1"
+      },
+      {
+        "name": "key_menu_up",
+        "value": "72"
+      },
+      {
+        "name": "key_menu_down",
+        "value": "80"
+      },
+      {
+        "name": "key_menu_left",
+        "value": "75"
+      },
+      {
+        "name": "key_menu_right",
+        "value": "77"
+      },
+      {
+        "name": "key_menu_back",
+        "value": "14"
+      },
+      {
+        "name": "key_menu_forward",
+        "value": "28"
+      },
+      {
+        "name": "key_menu_confirm",
+        "value": "21"
+      },
+      {
+        "name": "key_menu_abort",
+        "value": "49"
+      },
+      {
+        "name": "key_menu_help",
+        "value": "59"
+      },
+      {
+        "name": "key_menu_save",
+        "value": "60"
+      },
+      {
+        "name": "key_menu_load",
+        "value": "61"
+      },
+      {
+        "name": "key_menu_volume",
+        "value": "62"
+      },
+      {
+        "name": "key_menu_detail",
+        "value": "63"
+      },
+      {
+        "name": "key_menu_qsave",
+        "value": "64"
+      },
+      {
+        "name": "key_menu_endgame",
+        "value": "65"
+      },
+      {
+        "name": "key_menu_messages",
+        "value": "66"
+      },
+      {
+        "name": "key_menu_qload",
+        "value": "67"
+      },
+      {
+        "name": "key_menu_quit",
+        "value": "68"
+      },
+      {
+        "name": "key_menu_gamma",
+        "value": "87"
+      },
+      {
+        "name": "key_spy",
+        "value": "88"
+      },
+      {
+        "name": "key_menu_incscreen",
+        "value": "13"
+      },
+      {
+        "name": "key_menu_decscreen",
+        "value": "12"
+      },
+      {
+        "name": "key_menu_screenshot",
+        "value": "0"
+      },
+      {
+        "name": "key_map_toggle",
+        "value": "15"
+      },
+      {
+        "name": "key_map_north",
+        "value": "72"
+      },
+      {
+        "name": "key_map_south",
+        "value": "80"
+      },
+      {
+        "name": "key_map_east",
+        "value": "77"
+      },
+      {
+        "name": "key_map_west",
+        "value": "75"
+      },
+      {
+        "name": "key_map_zoomin",
+        "value": "13"
+      },
+      {
+        "name": "key_map_zoomout",
+        "value": "12"
+      },
+      {
+        "name": "key_map_maxzoom",
+        "value": "11"
+      },
+      {
+        "name": "key_map_follow",
+        "value": "33"
+      },
+      {
+        "name": "key_map_grid",
+        "value": "34"
+      },
+      {
+        "name": "key_map_mark",
+        "value": "50"
+      },
+      {
+        "name": "key_map_clearmark",
+        "value": "46"
+      },
+      {
+        "name": "key_weapon1",
+        "value": "2"
+      },
+      {
+        "name": "key_weapon2",
+        "value": "3"
+      },
+      {
+        "name": "key_weapon3",
+        "value": "4"
+      },
+      {
+        "name": "key_weapon4",
+        "value": "5"
+      },
+      {
+        "name": "key_weapon5",
+        "value": "6"
+      },
+      {
+        "name": "key_weapon6",
+        "value": "7"
+      },
+      {
+        "name": "key_weapon7",
+        "value": "8"
+      },
+      {
+        "name": "key_weapon8",
+        "value": "9"
+      },
+      {
+        "name": "key_prevweapon",
+        "value": "0"
+      },
+      {
+        "name": "key_nextweapon",
+        "value": "0"
+      },
+      {
+        "name": "key_message_refresh",
+        "value": "28"
+      },
+      {
+        "name": "key_demo_quit",
+        "value": "16"
+      },
+      {
+        "name": "key_multi_msg",
+        "value": "20"
+      },
+      {
+        "name": "key_multi_msgplayer1",
+        "value": "34"
+      },
+      {
+        "name": "key_multi_msgplayer2",
+        "value": "23"
+      },
+      {
+        "name": "key_multi_msgplayer3",
+        "value": "48"
+      },
+      {
+        "name": "key_multi_msgplayer4",
+        "value": "19"
+      }
+    ]
+  },
+  "importantFlags": {
+    "vanillaFlags": [
+      {
+        "name": "vanilla_savegame_limit",
+        "value": "1"
+      },
+      {
+        "name": "vanilla_demo_limit",
+        "value": "1"
+      },
+      {
+        "name": "vanilla_keyboard_mapping",
+        "value": "1"
+      }
+    ],
+    "inputDefaults": [
+      {
+        "name": "mouse_sensitivity",
+        "value": "5"
+      },
+      {
+        "name": "key_right",
+        "value": "77"
+      },
+      {
+        "name": "key_left",
+        "value": "75"
+      },
+      {
+        "name": "key_up",
+        "value": "72"
+      },
+      {
+        "name": "key_down",
+        "value": "80"
+      },
+      {
+        "name": "key_strafeleft",
+        "value": "51"
+      },
+      {
+        "name": "key_straferight",
+        "value": "52"
+      },
+      {
+        "name": "key_fire",
+        "value": "29"
+      },
+      {
+        "name": "key_use",
+        "value": "57"
+      },
+      {
+        "name": "key_strafe",
+        "value": "56"
+      },
+      {
+        "name": "key_speed",
+        "value": "54"
+      },
+      {
+        "name": "mouseb_fire",
+        "value": "0"
+      },
+      {
+        "name": "mouseb_strafe",
+        "value": "1"
+      },
+      {
+        "name": "mouseb_forward",
+        "value": "2"
+      },
+      {
+        "name": "joyb_fire",
+        "value": "0"
+      },
+      {
+        "name": "joyb_strafe",
+        "value": "1"
+      },
+      {
+        "name": "joyb_use",
+        "value": "3"
+      },
+      {
+        "name": "joyb_speed",
+        "value": "2"
+      }
+    ]
+  }
+}

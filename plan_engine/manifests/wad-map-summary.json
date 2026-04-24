@@ -1,0 +1,50 @@
+{
+  "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD",
+  "maps": [
+    {
+      "name": "E1M1",
+      "markerIndex": 6,
+      "bundleOrder": ["E1M1", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M2",
+      "markerIndex": 17,
+      "bundleOrder": ["E1M2", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M3",
+      "markerIndex": 28,
+      "bundleOrder": ["E1M3", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M4",
+      "markerIndex": 39,
+      "bundleOrder": ["E1M4", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M5",
+      "markerIndex": 50,
+      "bundleOrder": ["E1M5", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M6",
+      "markerIndex": 61,
+      "bundleOrder": ["E1M6", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M7",
+      "markerIndex": 72,
+      "bundleOrder": ["E1M7", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M8",
+      "markerIndex": 83,
+      "bundleOrder": ["E1M8", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    },
+    {
+      "name": "E1M9",
+      "markerIndex": 94,
+      "bundleOrder": ["E1M9", "THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+    }
+  ]
+}

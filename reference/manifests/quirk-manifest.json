@@ -1,0 +1,284 @@
+{
+  "description": "Rendering and audio behavioral quirks from vanilla Doom 1.9 that Chocolate Doom 2.2.1 preserves for parity. A re-implementation must match each quirk to ensure demo and framebuffer compatibility.",
+  "sources": [
+    "Doom 1.9 source code (linuxdoom-1.10, id Software)",
+    "Chocolate Doom 2.2.1 vanilla compatibility behavior",
+    "D:\\Projects\\bun-win32\\doom\\universal-doom\\default.cfg",
+    "D:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD"
+  ],
+  "generatedAt": "2026-04-12",
+  "totalQuirks": 22,
+  "categories": [
+    { "name": "audio", "count": 6 },
+    { "name": "music", "count": 3 },
+    { "name": "palette", "count": 3 },
+    { "name": "renderer", "count": 10 }
+  ],
+  "referenceConfig": {
+    "detaillevel": 0,
+    "music_volume": 8,
+    "screenblocks": 9,
+    "sfx_volume": 8,
+    "snd_channels": 8,
+    "snd_musicdevice": 3,
+    "snd_sfxdevice": 3,
+    "usegamma": 0
+  },
+  "quirks": [
+    {
+      "id": "column-detail-pixel-doubling",
+      "name": "Low Detail Pixel Doubling",
+      "category": "renderer",
+      "sourceFile": "r_draw.c",
+      "description": "When detaillevel is 1 (low detail), every other column is skipped and the drawn column is doubled to fill the gap. This halves the horizontal rendering resolution from 320 to 160 effective columns.",
+      "parityImpact": "low",
+      "constants": {
+        "detaillevel_default": 0,
+        "low_detail_effective_columns": 160
+      }
+    },
+    {
+      "id": "damage-pickup-palette-shift",
+      "name": "Damage and Pickup Palette Shift",
+      "category": "palette",
+      "sourceFile": "st_stuff.c",
+      "description": "Damage and berserk contribute to a red tint counter that selects from PLAYPAL palettes 1-8. If no red tint is active, item pickup selects from bonus palettes 9-12. If neither is active, radiation suit uses palette 13. Palette 0 is the normal palette. The palette index is set per-tic based on this strict precedence chain.",
+      "parityImpact": "medium",
+      "constants": {
+        "NUMREDPALS": 8,
+        "NUMBONUSPALS": 4,
+        "RADIATIONPAL": 13,
+        "STARTBONUSPALS": 9,
+        "STARTREDPALS": 1,
+        "normal_palette": 0,
+        "playpal_count": 14
+      }
+    },
+    {
+      "id": "dmx-sound-lump-header",
+      "name": "DMX Sound Lump Format",
+      "category": "audio",
+      "sourceFile": "i_sound.c",
+      "description": "Sound effect lumps use an 8-byte header: uint16LE format marker (0x0003), uint16LE sample rate (typically 11025 Hz), uint32LE sample count. Sample data is unsigned 8-bit PCM. The first and last sample bytes are padding bytes that should not be audible.",
+      "parityImpact": "high",
+      "constants": {
+        "format_marker": 3,
+        "header_size_bytes": 8,
+        "padding_bytes": 2,
+        "sample_depth_bits": 8,
+        "typical_sample_rate": 11025
+      }
+    },
+    {
+      "id": "drawseg-overflow-corruption",
+      "name": "Drawseg Overflow",
+      "category": "renderer",
+      "sourceFile": "r_segs.c",
+      "description": "The engine pre-allocates a fixed MAXDRAWSEGS (256) array for wall segment records during BSP traversal. If a frame requires more than 256 drawsegs, subsequent segments overwrite unrelated memory, causing rendering corruption.",
+      "parityImpact": "low",
+      "constants": {
+        "MAXDRAWSEGS": 256
+      }
+    },
+    {
+      "id": "fuzz-column-adjacent-row",
+      "name": "Fuzz Column Drawing",
+      "category": "renderer",
+      "sourceFile": "r_draw.c",
+      "description": "The spectre and partial-invisibility fuzz effect copies pixels from adjacent screen rows using a hardcoded FUZZOFF table of 50 signed offsets (each ±SCREENWIDTH). The table index wraps modulo 50. At screen edges, the offset is clamped to prevent reading outside the framebuffer.",
+      "parityImpact": "medium",
+      "constants": {
+        "FUZZTABLE": 50,
+        "SCREENWIDTH": 320
+      }
+    },
+    {
+      "id": "gamma-palette-swap",
+      "name": "Gamma Correction via Palette Swap",
+      "category": "palette",
+      "sourceFile": "r_main.c",
+      "description": "Gamma correction is implemented by swapping the entire 256-color palette to a pre-brightened variant, not by per-pixel adjustment. Five gamma levels (0-4) are available. Level 0 is the original palette; levels 1-4 apply increasing brightness. The gamma table is hardcoded in the engine.",
+      "parityImpact": "low",
+      "constants": {
+        "gamma_levels": 5,
+        "usegamma_default": 0
+      }
+    },
+    {
+      "id": "hall-of-mirrors-no-clear",
+      "name": "Hall of Mirrors Effect",
+      "category": "renderer",
+      "sourceFile": "r_main.c",
+      "description": "The framebuffer is never cleared between frames. Any screen region not covered by a wall, floor, ceiling, sky, or sprite retains the previous frame's pixel data, creating a characteristic flickering mosaic called the Hall of Mirrors (HOM) effect. This is intentional behavior that must be preserved for vanilla parity.",
+      "parityImpact": "high"
+    },
+    {
+      "id": "invulnerability-inverse-colormap",
+      "name": "Invulnerability Inverse Colormap",
+      "category": "palette",
+      "sourceFile": "r_draw.c",
+      "description": "The invulnerability powerup activates colormap index 32 from the COLORMAP lump, which remaps all colors to an inverse grayscale. This is a per-pixel colormap remap applied during column and span drawing, not a palette-level change. The COLORMAP lump contains 34 entries: 0-31 are light levels, 32 is the invulnerability map, and 33 is all-black.",
+      "parityImpact": "medium",
+      "constants": {
+        "all_black_index": 33,
+        "colormap_count": 34,
+        "invulnerability_index": 32,
+        "light_level_maps": 32
+      }
+    },
+    {
+      "id": "light-diminishing-discrete",
+      "name": "Discrete Light Diminishing",
+      "category": "renderer",
+      "sourceFile": "r_main.c",
+      "description": "Light diminishes in LIGHTLEVELS (16) discrete steps. Wall columns compute light from column distance using LIGHTSEGSHIFT; floor and ceiling spans compute light from row distance. Both are clamped to MAXLIGHTSCALE (48) entries and MAXLIGHTZ (128) distance entries. The result selects one of 32 colormaps from the COLORMAP lump.",
+      "parityImpact": "high",
+      "constants": {
+        "LIGHTLEVELS": 16,
+        "LIGHTSEGSHIFT": 4,
+        "MAXLIGHTSCALE": 48,
+        "MAXLIGHTZ": 128,
+        "colormaps_for_light": 32
+      }
+    },
+    {
+      "id": "medusa-multi-patch-midtexture",
+      "name": "Medusa Effect",
+      "category": "renderer",
+      "sourceFile": "r_data.c",
+      "description": "Multi-patch composite textures used as midtextures on two-sided linedefs trigger the Medusa effect. The renderer draws columns using patch offsets that are not composited correctly for masked (mid) textures, causing visual corruption and severe frame rate degradation. Single-patch textures are immune.",
+      "parityImpact": "low"
+    },
+    {
+      "id": "mus-to-midi-runtime",
+      "name": "MUS to MIDI Runtime Conversion",
+      "category": "music",
+      "sourceFile": "mus2mid.c",
+      "description": "Music lumps are stored in MUS format (4-byte header 'MUS\\x1a'). The engine converts MUS events to standard MIDI events at runtime before passing them to the music device. MUS supports up to 16 channels; channel 15 is reserved for percussion (mapped to MIDI channel 9). The GENMIDI lump provides OPL instrument definitions.",
+      "parityImpact": "high",
+      "constants": {
+        "max_channels": 16,
+        "midi_percussion_channel": 9,
+        "mus_header": "MUS\\x1a",
+        "percussion_channel": 15
+      }
+    },
+    {
+      "id": "music-device-selection",
+      "name": "Music Device Selection",
+      "category": "music",
+      "sourceFile": "i_sound.c",
+      "description": "The snd_musicdevice config variable selects the music synthesis method. Value 3 selects General MIDI (the reference default). OPL (Adlib) synthesis uses the GENMIDI lump for instrument definitions. GUS (Gravis Ultrasound) uses the DMXGUS lump for patch mappings. The selected device affects the timbre of all music playback.",
+      "parityImpact": "medium",
+      "constants": {
+        "snd_musicdevice_default": 3
+      }
+    },
+    {
+      "id": "music-volume-independent",
+      "name": "Independent Music and SFX Volume",
+      "category": "music",
+      "sourceFile": "s_sound.c",
+      "description": "Music volume (music_volume) and sound effect volume (sfx_volume) are independently controlled on a 0-15 integer scale. Both default to 8. The menu enforces the 0-15 range. Volume changes take effect immediately without restart.",
+      "parityImpact": "low",
+      "constants": {
+        "music_volume_default": 8,
+        "sfx_volume_default": 8,
+        "volume_range_max": 15,
+        "volume_range_min": 0
+      }
+    },
+    {
+      "id": "screenblocks-viewport-scaling",
+      "name": "Screenblocks Viewport Scaling",
+      "category": "renderer",
+      "sourceFile": "r_main.c",
+      "description": "The screenblocks variable (3-11) controls the game viewport size. Values 3-9 draw the 32-pixel-tall status bar below the viewport. Value 10 is fullscreen without the status bar. Value 11 is fullscreen without any HUD overlay. The viewport width and height scale linearly with the screenblocks value.",
+      "parityImpact": "medium",
+      "constants": {
+        "screenblocks_default": 9,
+        "screenblocks_max": 11,
+        "screenblocks_min": 3,
+        "status_bar_height": 32
+      }
+    },
+    {
+      "id": "sfx-angle-stereo-separation",
+      "name": "Angle-Based Stereo Separation",
+      "category": "audio",
+      "sourceFile": "s_sound.c",
+      "description": "Stereo panning for sound effects is computed from the angle between the listener's facing direction and the sound source. Separation is centered at 128 and offset by S_STEREO_SWING (96) based on the sine of the relative angle. The hardware interface accepts separation values 0-255 where 128 is center.",
+      "parityImpact": "medium",
+      "constants": {
+        "S_STEREO_SWING": 96,
+        "separation_center": 128
+      }
+    },
+    {
+      "id": "sfx-fixed-channel-count",
+      "name": "Fixed Sound Channel Count",
+      "category": "audio",
+      "sourceFile": "s_sound.c",
+      "description": "The engine uses a fixed number of sound channels set by snd_channels (default 8). Channels are not allocated per-source but from a global pool. When all channels are in use, the lowest-priority channel is a candidate for eviction. The channel count cannot change during gameplay.",
+      "parityImpact": "medium",
+      "constants": {
+        "snd_channels_default": 8
+      }
+    },
+    {
+      "id": "sfx-linear-distance-rolloff",
+      "name": "Linear Distance Rolloff",
+      "category": "audio",
+      "sourceFile": "s_sound.c",
+      "description": "Sound effect volume attenuates linearly from S_CLOSE_DIST (200 map units, full volume) to S_CLIPPING_DIST (1200 map units, silent). Sounds closer than S_CLOSE_DIST play at full volume. Sounds beyond S_CLIPPING_DIST are not started. The attenuation curve is strictly linear with no falloff exponent.",
+      "parityImpact": "medium",
+      "constants": {
+        "S_CLIPPING_DIST": 1200,
+        "S_CLOSE_DIST": 200
+      }
+    },
+    {
+      "id": "sfx-priority-eviction",
+      "name": "Sound Priority Eviction",
+      "category": "audio",
+      "sourceFile": "s_sound.c",
+      "description": "Each sound effect has a hardcoded priority value. When a new sound is started and all channels are occupied, the engine scans for the lowest-priority playing sound and replaces it if the new sound has higher priority. Sounds from the same origin (mobj) update in place rather than stacking. If no lower-priority channel exists, the new sound is dropped.",
+      "parityImpact": "high"
+    },
+    {
+      "id": "sky-first-column-wins",
+      "name": "Sky Column First-Wins Rule",
+      "category": "renderer",
+      "sourceFile": "r_sky.c",
+      "description": "Sky-textured columns are drawn directly to the framebuffer without depth or clip tracking. If two sky-textured walls are both visible in the same column, only the first one encountered during BSP traversal renders correctly. The second sky column is handled by the enclosing wall's clip range rather than by sky-specific depth logic.",
+      "parityImpact": "medium"
+    },
+    {
+      "id": "sound-reject-table-propagation",
+      "name": "Sound Propagation via REJECT Table",
+      "category": "audio",
+      "sourceFile": "p_enemy.c",
+      "description": "Monster sound awareness uses the REJECT table to determine if sound can travel between sectors. The REJECT table, originally designed for line-of-sight optimization, doubles as an acoustic barrier. If the REJECT bit between two sectors is set, monsters in one sector cannot hear sounds originating in the other. This affects game state (monster activation) and must match for demo parity.",
+      "parityImpact": "high"
+    },
+    {
+      "id": "tutti-frutti-column-overflow",
+      "name": "Tutti-Frutti Effect",
+      "category": "renderer",
+      "sourceFile": "r_draw.c",
+      "description": "When a wall column is taller than the texture height, the engine reads column pixel data past the end of the texture's column buffer. The resulting garbage pixels form a characteristic colorful noise pattern. This occurs because vanilla Doom does not wrap or clamp texture column reads for non-power-of-two or short textures on tall walls.",
+      "parityImpact": "low"
+    },
+    {
+      "id": "visplane-split-on-overlap",
+      "name": "Visplane Split on Column Overlap",
+      "category": "renderer",
+      "sourceFile": "r_plane.c",
+      "description": "When a floor or ceiling surface matches an existing visplane's height, texture, and light level but overlaps its screen column range, the visplane must be split into two entries. R_CheckPlane allocates a new visplane for the non-overlapping portion. This splitting can cascade in complex scenes, consuming visplane slots faster than expected and approaching the MAXVISPLANES (128) crash limit.",
+      "parityImpact": "medium",
+      "constants": {
+        "MAXVISPLANES": 128
+      }
+    }
+  ]
+}

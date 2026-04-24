@@ -1,0 +1,174 @@
+{
+  "description": "Map and lump inventory for the shareware DOOM1.WAD reference IWAD.",
+  "source": "D:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD",
+  "generatedAt": "2026-04-12",
+  "wadType": "IWAD",
+  "totalLumps": 1264,
+  "maps": [
+    {
+      "name": "E1M1",
+      "directoryIndex": 6,
+      "lumps": [
+        { "name": "THINGS", "offset": 67500, "size": 1380 },
+        { "name": "LINEDEFS", "offset": 68880, "size": 6650 },
+        { "name": "SIDEDEFS", "offset": 75532, "size": 19440 },
+        { "name": "VERTEXES", "offset": 94972, "size": 1868 },
+        { "name": "SEGS", "offset": 96840, "size": 8784 },
+        { "name": "SSECTORS", "offset": 105624, "size": 948 },
+        { "name": "NODES", "offset": 106572, "size": 6608 },
+        { "name": "SECTORS", "offset": 113180, "size": 2210 },
+        { "name": "REJECT", "offset": 115392, "size": 904 },
+        { "name": "BLOCKMAP", "offset": 116296, "size": 6922 }
+      ]
+    },
+    {
+      "name": "E1M2",
+      "directoryIndex": 17,
+      "lumps": [
+        { "name": "THINGS", "offset": 123220, "size": 2620 },
+        { "name": "LINEDEFS", "offset": 125840, "size": 14462 },
+        { "name": "SIDEDEFS", "offset": 140304, "size": 39690 },
+        { "name": "VERTEXES", "offset": 179996, "size": 3768 },
+        { "name": "SEGS", "offset": 183764, "size": 17556 },
+        { "name": "SSECTORS", "offset": 201320, "size": 1792 },
+        { "name": "NODES", "offset": 203112, "size": 12516 },
+        { "name": "SECTORS", "offset": 215628, "size": 5200 },
+        { "name": "REJECT", "offset": 220828, "size": 5000 },
+        { "name": "BLOCKMAP", "offset": 225828, "size": 11870 }
+      ]
+    },
+    {
+      "name": "E1M3",
+      "directoryIndex": 28,
+      "lumps": [
+        { "name": "THINGS", "offset": 237700, "size": 3800 },
+        { "name": "LINEDEFS", "offset": 241500, "size": 14364 },
+        { "name": "SIDEDEFS", "offset": 255864, "size": 39780 },
+        { "name": "VERTEXES", "offset": 295644, "size": 3784 },
+        { "name": "SEGS", "offset": 299428, "size": 17340 },
+        { "name": "SSECTORS", "offset": 316768, "size": 1844 },
+        { "name": "NODES", "offset": 318612, "size": 12880 },
+        { "name": "SECTORS", "offset": 331492, "size": 4602 },
+        { "name": "REJECT", "offset": 336096, "size": 3917 },
+        { "name": "BLOCKMAP", "offset": 340016, "size": 8894 }
+      ]
+    },
+    {
+      "name": "E1M4",
+      "directoryIndex": 39,
+      "lumps": [
+        { "name": "THINGS", "offset": 348912, "size": 2540 },
+        { "name": "LINEDEFS", "offset": 351452, "size": 11620 },
+        { "name": "SIDEDEFS", "offset": 363072, "size": 31620 },
+        { "name": "VERTEXES", "offset": 394692, "size": 3120 },
+        { "name": "SEGS", "offset": 397812, "size": 14064 },
+        { "name": "SSECTORS", "offset": 411876, "size": 1420 },
+        { "name": "NODES", "offset": 413296, "size": 9912 },
+        { "name": "SECTORS", "offset": 423208, "size": 3614 },
+        { "name": "REJECT", "offset": 426824, "size": 2416 },
+        { "name": "BLOCKMAP", "offset": 429240, "size": 7218 }
+      ]
+    },
+    {
+      "name": "E1M5",
+      "directoryIndex": 50,
+      "lumps": [
+        { "name": "THINGS", "offset": 436460, "size": 2930 },
+        { "name": "LINEDEFS", "offset": 439392, "size": 11550 },
+        { "name": "SIDEDEFS", "offset": 450944, "size": 31590 },
+        { "name": "VERTEXES", "offset": 482536, "size": 2984 },
+        { "name": "SEGS", "offset": 485520, "size": 13692 },
+        { "name": "SSECTORS", "offset": 499212, "size": 1536 },
+        { "name": "NODES", "offset": 500748, "size": 10724 },
+        { "name": "SECTORS", "offset": 511472, "size": 3718 },
+        { "name": "REJECT", "offset": 515192, "size": 2557 },
+        { "name": "BLOCKMAP", "offset": 517752, "size": 8032 }
+      ]
+    },
+    {
+      "name": "E1M6",
+      "directoryIndex": 61,
+      "lumps": [
+        { "name": "THINGS", "offset": 525784, "size": 4630 },
+        { "name": "LINEDEFS", "offset": 530416, "size": 18928 },
+        { "name": "SIDEDEFS", "offset": 549344, "size": 51810 },
+        { "name": "VERTEXES", "offset": 601156, "size": 4828 },
+        { "name": "SEGS", "offset": 605984, "size": 22344 },
+        { "name": "SSECTORS", "offset": 628328, "size": 2424 },
+        { "name": "NODES", "offset": 630752, "size": 16940 },
+        { "name": "SECTORS", "offset": 647692, "size": 6500 },
+        { "name": "REJECT", "offset": 654192, "size": 7813 },
+        { "name": "BLOCKMAP", "offset": 662008, "size": 15804 }
+      ]
+    },
+    {
+      "name": "E1M7",
+      "directoryIndex": 72,
+      "lumps": [
+        { "name": "THINGS", "offset": 677812, "size": 3580 },
+        { "name": "LINEDEFS", "offset": 681392, "size": 13412 },
+        { "name": "SIDEDEFS", "offset": 694804, "size": 36690 },
+        { "name": "VERTEXES", "offset": 731496, "size": 3584 },
+        { "name": "SEGS", "offset": 735080, "size": 16452 },
+        { "name": "SSECTORS", "offset": 751532, "size": 1868 },
+        { "name": "NODES", "offset": 753400, "size": 13048 },
+        { "name": "SECTORS", "offset": 766448, "size": 4420 },
+        { "name": "REJECT", "offset": 770868, "size": 3613 },
+        { "name": "BLOCKMAP", "offset": 774484, "size": 8846 }
+      ]
+    },
+    {
+      "name": "E1M8",
+      "directoryIndex": 83,
+      "lumps": [
+        { "name": "THINGS", "offset": 783332, "size": 1260 },
+        { "name": "LINEDEFS", "offset": 784592, "size": 4662 },
+        { "name": "SIDEDEFS", "offset": 789256, "size": 15330 },
+        { "name": "VERTEXES", "offset": 804588, "size": 1312 },
+        { "name": "SEGS", "offset": 805900, "size": 7032 },
+        { "name": "SSECTORS", "offset": 812932, "size": 708 },
+        { "name": "NODES", "offset": 813640, "size": 4928 },
+        { "name": "SECTORS", "offset": 818568, "size": 1924 },
+        { "name": "REJECT", "offset": 820492, "size": 685 },
+        { "name": "BLOCKMAP", "offset": 821180, "size": 19400 }
+      ]
+    },
+    {
+      "name": "E1M9",
+      "directoryIndex": 94,
+      "lumps": [
+        { "name": "THINGS", "offset": 840580, "size": 2370 },
+        { "name": "LINEDEFS", "offset": 842952, "size": 9142 },
+        { "name": "SIDEDEFS", "offset": 852096, "size": 27060 },
+        { "name": "VERTEXES", "offset": 879156, "size": 2324 },
+        { "name": "SEGS", "offset": 881480, "size": 11736 },
+        { "name": "SSECTORS", "offset": 893216, "size": 1152 },
+        { "name": "NODES", "offset": 894368, "size": 8036 },
+        { "name": "SECTORS", "offset": 902404, "size": 3822 },
+        { "name": "REJECT", "offset": 906228, "size": 2702 },
+        { "name": "BLOCKMAP", "offset": 908932, "size": 6780 }
+      ]
+    }
+  ],
+  "lumpCategories": {
+    "audio-config": 1,
+    "colormap": 1,
+    "demo": 3,
+    "endoom": 1,
+    "flat": 56,
+    "graphic": 320,
+    "map-data": 90,
+    "map-marker": 9,
+    "marker": 8,
+    "midi-instrument": 1,
+    "music": 13,
+    "palette": 1,
+    "patch": 165,
+    "patch-names": 1,
+    "pc-speaker-sound": 55,
+    "sound-effect": 55,
+    "sprite": 483,
+    "texture-definition": 1
+  },
+  "mapLumpOrder": ["THINGS", "LINEDEFS", "SIDEDEFS", "VERTEXES", "SEGS", "SSECTORS", "NODES", "SECTORS", "REJECT", "BLOCKMAP"]
+}

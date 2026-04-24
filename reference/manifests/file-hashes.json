@@ -1,0 +1,56 @@
+{
+  "description": "SHA-256 hash manifest for all files in the universal-doom reference bundle.",
+  "source": "D:\\Projects\\bun-win32\\doom\\universal-doom",
+  "generatedAt": "2026-04-12",
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "filename": "DOOM.EXE",
+      "sha256": "5CA97717FD79F833B248AE5985FFFADBEE39533F5E0529BC9D7B439E08B8F1D2",
+      "sizeBytes": 1893888,
+      "role": "merged-polyglot-executable"
+    },
+    {
+      "filename": "DOOM1.WAD",
+      "sha256": "1D7D43BE501E67D927E415E0B8F3E29C3BF33075E859721816F652A526CAC771",
+      "sizeBytes": 4196020,
+      "role": "shareware-iwad"
+    },
+    {
+      "filename": "DOOMD.EXE",
+      "sha256": "9D3216605417888D5A699FA3794E46638EB4CB8634501AE748D74F9C2CFAE37B",
+      "sizeBytes": 709753,
+      "role": "dos-executable"
+    },
+    {
+      "filename": "DOOMDUPX.EXE",
+      "sha256": "051868114DF076FD0BAE8632D0D565B11EF85BB714B12D453F84F2E2E45E4764",
+      "sizeBytes": 379638,
+      "role": "dos-executable-upx"
+    },
+    {
+      "filename": "DOOMWUPX.exe",
+      "sha256": "6D19555FE98F36F70246D1178ABF6B69D78473B36EC79E409D6E8032BC3FB8B3",
+      "sizeBytes": 475648,
+      "role": "windows-executable-upx"
+    },
+    {
+      "filename": "chocolate-doom.cfg",
+      "sha256": "A4FB5E9C3EB88091E41F088AFC885F628812A4A1EBD37A71B08474229A8CB770",
+      "sizeBytes": 3838,
+      "role": "engine-config"
+    },
+    {
+      "filename": "default.cfg",
+      "sha256": "0E1854B8109FE9D3C3BBDC1407F2AA0F75BA7A89807CB7EE21E146AF6CFAFABC",
+      "sizeBytes": 1565,
+      "role": "default-config"
+    },
+    {
+      "filename": "smash.py",
+      "sha256": "D0F6E5E2BA469F739AFE3902432191A511119C3EA639486D79E41605CB46A993",
+      "sizeBytes": 3191,
+      "role": "merge-tool"
+    }
+  ]
+}

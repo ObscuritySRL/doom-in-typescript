@@ -1,0 +1,45 @@
+{
+  "description": "Synthetic scripted-input parity fixture covering attack latch, use latch, and blue-key denial branches against core Doom 1.9 mechanics.",
+  "scenarios": {
+    "attackLatch": {
+      "description": "Holding attack from respawn does not fire the rocket launcher until a ready-state release clears attackdown, after which held input re-enters MISSILE1 on a fixed 20-tic cadence.",
+      "fireTics": [19, 39, 59, 79],
+      "finalAttackdown": true,
+      "finalMoStateIndex": 155,
+      "finalRefire": 3,
+      "finalWeaponStateIndex": 60,
+      "finalWeaponSy": 2097152,
+      "streamHash": "E26B25613D0188709AF721DB5468C9EDC1CAFDDDEE62EE8002EB55B1A02811E7",
+      "ticCount": 80
+    },
+    "manualBlueDenied": {
+      "description": "Manual blue-door specials use the -K denial string and sfx_oof when the player lacks both blue key variants.",
+      "doorCreated": false,
+      "lineSpecial": 26,
+      "message": "You need a blue key to open this door",
+      "playerSoundSequence": [34],
+      "result": 0,
+      "summaryHash": "8B9D7D896C57BED13E7A6E7C40E5ACBD502F51E8ABBA2C4C9D53141A5B625E8C"
+    },
+    "taggedBlueDenied": {
+      "description": "Tagged locked-door specials use the distinct -O denial string and the same sfx_oof branch when no blue key is present.",
+      "doorCreated": false,
+      "lineSpecial": 99,
+      "message": "You need a blue key to activate this object",
+      "playerSoundSequence": [34],
+      "result": 0,
+      "summaryHash": "6488C803DD4182DC03AABB58ED44523E0229679E6C5C332F046CE02D8081E575"
+    },
+    "useLatch": {
+      "activationTics": [3, 6],
+      "description": "usedown starts true after reborn, so held use is ignored until release; repeatable door special 1 then opens on the first re-press and closes on the next re-press without replaying the open sound.",
+      "directionAfterActivation": [1, -1],
+      "finalDoorDirection": -1,
+      "finalUsedown": true,
+      "lineSpecial": 1,
+      "sectorSoundSequence": [20],
+      "streamHash": "D9F79D78E6AB62BE3039A4FA65A5FC6C9400F9480F737F8FCFB3AA23E17FE77D",
+      "ticCount": 7
+    }
+  }
+}

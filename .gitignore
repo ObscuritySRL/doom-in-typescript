@@ -1,0 +1,17 @@
+.cache/
+.sandboxes/
+node_modules/
+
+.env
+.env.*
+!.env.example
+
+bun-test-nocolor.txt
+bun-test-output.txt
+
+doom/
+iwad/
+
+plan_engine/loop_logs/*.txt
+plan_fps/loop_logs/*.txt
+!plan_fps/loop_logs/.gitkeep

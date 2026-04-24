@@ -1,0 +1,142 @@
+{
+  "binaryAnchors": {
+    "requiredStrings": ["High detail", "Low detail", "Messages OFF", "Messages ON", "press a key."]
+  },
+  "description": "Parity fixture for Doom 1.9 menu/UI timing: skull blink cadence, strict repeat gating, and front-end page countdown while the menu overlay is open.",
+  "frontEndTiming": {
+    "advanceLump": "DEMO1",
+    "firstPageLump": "TITLEPIC",
+    "firstPageMusic": "D_INTRO",
+    "firstPagePagetic": 170,
+    "idleTicksBeforeAdvance": 171,
+    "menuActiveTrace": [
+      {
+        "actionKind": "idle",
+        "pagetic": 169,
+        "tic": 1
+      },
+      {
+        "actionKind": "idle",
+        "pagetic": 168,
+        "tic": 2
+      },
+      {
+        "actionKind": "idle",
+        "pagetic": 167,
+        "tic": 3
+      },
+      {
+        "actionKind": "idle",
+        "pagetic": 166,
+        "tic": 4
+      },
+      {
+        "actionKind": "idle",
+        "pagetic": 165,
+        "tic": 5
+      }
+    ],
+    "menuClosedTrace": [
+      {
+        "actionKind": "idle",
+        "pagetic": 164,
+        "tic": 6
+      },
+      {
+        "actionKind": "idle",
+        "pagetic": 163,
+        "tic": 7
+      },
+      {
+        "actionKind": "idle",
+        "pagetic": 162,
+        "tic": 8
+      }
+    ],
+    "streamHash": "3D98DEB92DD9A51ECF44D14E449DA25BDF81430014405DB36D9AB1A89C097758"
+  },
+  "menuAnimation": {
+    "initialWhichSkull": 0,
+    "initialSkullAnimCounter": 8,
+    "ticCount": 16,
+    "checkpoints": [
+      {
+        "tic": 1,
+        "whichSkull": 0,
+        "skullAnimCounter": 7
+      },
+      {
+        "tic": 7,
+        "whichSkull": 0,
+        "skullAnimCounter": 1
+      },
+      {
+        "tic": 8,
+        "whichSkull": 1,
+        "skullAnimCounter": 8
+      },
+      {
+        "tic": 16,
+        "whichSkull": 0,
+        "skullAnimCounter": 8
+      }
+    ],
+    "streamHash": "DDE30F2AA1998001EE3457057C27EF330861DEBDBC8CABC818A402BB827B6CE0"
+  },
+  "repeatGates": {
+    "armedAtTic": 100,
+    "deadlineTic": 105,
+    "firstAcceptedTic": 106,
+    "initialTrace": [
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 0
+      },
+      {
+        "joyAccepted": true,
+        "mouseAccepted": true,
+        "tic": 1
+      }
+    ],
+    "armedTrace": [
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 100
+      },
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 101
+      },
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 102
+      },
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 103
+      },
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 104
+      },
+      {
+        "joyAccepted": false,
+        "mouseAccepted": false,
+        "tic": 105
+      },
+      {
+        "joyAccepted": true,
+        "mouseAccepted": true,
+        "tic": 106
+      }
+    ],
+    "mouseJoyRepeatDelay": 5,
+    "streamHash": "3B3BA339655E15CDB78AD66F380D8E5E14A1F23A5D9007E269290FBACB92CF08"
+  }
+}

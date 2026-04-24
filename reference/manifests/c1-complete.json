@@ -1,0 +1,68 @@
+{
+  "c1": {
+    "acceptanceOracleId": "O-030",
+    "compatibilityTarget": "C1",
+    "completedByStep": "17-010",
+    "demoHashes": [
+      {
+        "demo": "DEMO1",
+        "map": "E1M5",
+        "sha256": "4999C550517A7FD8B9AF32D14DFB0127B8F9B71433DEF6AC0EE34EAD3A67898F"
+      },
+      {
+        "demo": "DEMO2",
+        "map": "E1M3",
+        "sha256": "603B0BA73993197906480404135584699542A4FC0A6DBB6F7CEE3C33CDEB1FB5"
+      },
+      {
+        "demo": "DEMO3",
+        "map": "E1M7",
+        "sha256": "401E86077B4F39444175A4862C6CB4D2F1058B0A519FCEDE0FF58A602D2EE394"
+      }
+    ],
+    "highTrustDependencyOracleIds": ["O-022", "O-023", "O-024", "O-025", "O-026", "O-027", "O-028", "O-029"],
+    "mapSet": ["E1M1", "E1M2", "E1M3", "E1M4", "E1M5", "E1M6", "E1M7", "E1M8", "E1M9"],
+    "sameOriginAudioHashes": ["F28CF817003E5B0B2FF12121ACB2C8041643F254FDF7A7DF850BEE78FACC5D82", "685ECC911F6CA5504AFCAA0585EB6C498DE911E0389399DC77237CB5DB3FC037", "12E60E57A8B4BF8E87650B0267E755BF8F32EF2EB93F2426B08A286E64231E8E"],
+    "sharewareAttractSequence": ["TITLEPIC", "DEMO1", "CREDIT", "DEMO2", "HELP2", "DEMO3"],
+    "status": "complete",
+    "stepCount": 167
+  },
+  "c2Open": {
+    "compatibilityTarget": "C2",
+    "iwad": "DOOM.WAD",
+    "newEpisodes": [2, 3],
+    "prerequisiteTarget": "C1",
+    "status": "open",
+    "totalMaps": 27
+  },
+  "requiredOracleIds": ["O-001", "O-002", "O-012", "O-022", "O-023", "O-024", "O-025", "O-026", "O-027", "O-028", "O-029", "O-030"],
+  "sideBySide": {
+    "executables": [
+      {
+        "fileName": "DOOM.EXE",
+        "sha256": "5CA97717FD79F833B248AE5985FFFADBEE39533F5E0529BC9D7B439E08B8F1D2"
+      },
+      {
+        "fileName": "DOOMD.EXE",
+        "sha256": "9D3216605417888D5A699FA3794E46638EB4CB8634501AE748D74F9C2CFAE37B"
+      }
+    ],
+    "sharedAnchorCount": 13,
+    "sharedAnchorStrings": [
+      "Demo is from a different game version!",
+      "High detail",
+      "Low detail",
+      "Messages OFF",
+      "Messages ON",
+      "Savegame",
+      "Savegame buffer overrun",
+      "game saved.",
+      "press a key.",
+      "snd_channels",
+      "snd_musicdevice",
+      "snd_sfxdevice",
+      "this is the shareware version of doom."
+    ]
+  },
+  "sourceFactIds": ["F-003", "F-004", "F-025", "F-029", "F-030", "F-181", "F-190", "F-195"]
+}

@@ -1,0 +1,96 @@
+{
+  "demos": {
+    "DEMO1": {
+      "checkpoints": [
+        {
+          "hash": "64CF2D9EA4BE89619EC925844817CB04E18FBA046E9722796BA585FDC79A9AAD",
+          "tic": 0
+        },
+        {
+          "hash": "3298FD702081D09EEE9A9EA8FE816F708F3666EBACA4A43173F2C62318B8AC62",
+          "tic": 1256
+        },
+        {
+          "hash": "ED3F5891950BCB1833C4E2CEFB11D8B9A3117E9E07FE4FDE0329EE64E88C2505",
+          "tic": 2513
+        },
+        {
+          "hash": "862C2EFBE64CA1E29BA294CC4E88ECFE3216414715CC62A91E9403EB2EBD60E9",
+          "tic": 3769
+        },
+        {
+          "hash": "4999C550517A7FD8B9AF32D14DFB0127B8F9B71433DEF6AC0EE34EAD3A67898F",
+          "tic": 5025
+        }
+      ],
+      "completionAction": "advance-demo",
+      "map": "E1M5",
+      "nonZeroCommandCount": 4698,
+      "skill": 2,
+      "streamHash": "4999C550517A7FD8B9AF32D14DFB0127B8F9B71433DEF6AC0EE34EAD3A67898F",
+      "ticCount": 5026
+    },
+    "DEMO2": {
+      "checkpoints": [
+        {
+          "hash": "87E8B4DADB5390074C34829F175094F6E5863D04F5F3520CA365084397B970BE",
+          "tic": 0
+        },
+        {
+          "hash": "702558BCA4F19032B7D2F1D0C86411A12E00F05AA76F193D075E9A270445B15A",
+          "tic": 959
+        },
+        {
+          "hash": "02C75B23A3F730C719F975E520454EC1A12E683EC162FE01D58A2DDF53AAA1DF",
+          "tic": 1918
+        },
+        {
+          "hash": "AD61153BC0113C9FE1A7BA5B4EB65442A2B5887EE403D944F098E6CEC97374C6",
+          "tic": 2877
+        },
+        {
+          "hash": "603B0BA73993197906480404135584699542A4FC0A6DBB6F7CEE3C33CDEB1FB5",
+          "tic": 3835
+        }
+      ],
+      "completionAction": "advance-demo",
+      "map": "E1M3",
+      "nonZeroCommandCount": 3587,
+      "skill": 2,
+      "streamHash": "603B0BA73993197906480404135584699542A4FC0A6DBB6F7CEE3C33CDEB1FB5",
+      "ticCount": 3836
+    },
+    "DEMO3": {
+      "checkpoints": [
+        {
+          "hash": "EC50BFA508EAAACD10F95ABE28D1E3723309E563404F3D09C42C5B92C35418C2",
+          "tic": 0
+        },
+        {
+          "hash": "7BCEDA00662CB67E6CE00C8FAE2EC0AE5F4C90B66FE37432A105E75FE723CD32",
+          "tic": 533
+        },
+        {
+          "hash": "3692D784D3BA60C1DE161087097F9EAFA62F4447C66A043D28BADF89A4DFE332",
+          "tic": 1067
+        },
+        {
+          "hash": "E8AB5B8D111F0DE437DF8ADAB40FC20B4F3C3874ABAB4E456F91DA9B78633CC1",
+          "tic": 1600
+        },
+        {
+          "hash": "401E86077B4F39444175A4862C6CB4D2F1058B0A519FCEDE0FF58A602D2EE394",
+          "tic": 2133
+        }
+      ],
+      "completionAction": "advance-demo",
+      "map": "E1M7",
+      "nonZeroCommandCount": 1854,
+      "skill": 2,
+      "streamHash": "401E86077B4F39444175A4862C6CB4D2F1058B0A519FCEDE0FF58A602D2EE394",
+      "ticCount": 2134
+    }
+  },
+  "description": "Canonical single-player ticcmd stream hashes for the bundled shareware demos after Doom 1.9 playback conversion.",
+  "versionByte": 109
+}

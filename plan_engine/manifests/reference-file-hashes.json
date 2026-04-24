@@ -1,0 +1,34 @@
+{
+  "algorithm": "sha256",
+  "generatedOn": "2026-04-11",
+  "files": [
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\README.md",
+      "hash": "29AD907F1A4CFAB3A3CFBD8615E18E1D786F916751600C9E1F44C175B5E09E93"
+    },
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\stdout.txt",
+      "hash": "AC40714D3088DA7CFC6A63E23D226CB6C0B03978FB1A0778868C0B0E72A24681"
+    },
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\default.cfg",
+      "hash": "0E1854B8109FE9D3C3BBDC1407F2AA0F75BA7A89807CB7EE21E146AF6CFAFABC"
+    },
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\chocolate-doom.cfg",
+      "hash": "A4FB5E9C3EB88091E41F088AFC885F628812A4A1EBD37A71B08474229A8CB770"
+    },
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM1.WAD",
+      "hash": "1D7D43BE501E67D927E415E0B8F3E29C3BF33075E859721816F652A526CAC771"
+    },
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOMD.EXE",
+      "hash": "9D3216605417888D5A699FA3794E46638EB4CB8634501AE748D74F9C2CFAE37B"
+    },
+    {
+      "path": "d:\\Projects\\bun-win32\\doom\\universal-doom\\DOOM.EXE",
+      "hash": "5CA97717FD79F833B248AE5985FFFADBEE39533F5E0529BC9D7B439E08B8F1D2"
+    }
+  ]
+}

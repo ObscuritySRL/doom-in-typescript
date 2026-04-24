@@ -1,0 +1,52 @@
+# [ ] STEP 03-001: scaffold-doom-codex-package
+
+## Goal
+
+Implement scaffold doom codex package so it matches the canonical reference behavior and is locked by the listed test coverage.
+
+## Prerequisites
+
+- 02-010
+
+## Read Only
+
+- d:\Projects\bun-win32\doom_codex\plans\README.md
+- d:\Projects\bun-win32\doom_codex\plans\PACKAGE_CAPABILITY_MATRIX.md
+- d:\Projects\bun-win32\packages\core\README.md
+- d:\Projects\bun-win32\packages\user32\AI.md
+
+## Consult Only If Blocked
+
+- 03-002
+
+## Expected Changes
+
+- d:\Projects\bun-win32\doom_codex\package.json
+- d:\Projects\bun-win32\doom_codex\tsconfig.json
+
+## Test Files
+
+- d:\Projects\bun-win32\doom_codex\test\scaffold\package.test.ts
+
+## Verification
+
+- `bun test test/scaffold/package.test.ts`
+- `bun test`
+- `bun x tsc --noEmit --project d:\Projects\bun-win32\doom_codex\tsconfig.json`
+
+## Completion Criteria
+
+- The derived artifact or tooling described for this step is reproducible from the listed reference material and remains confined to doom_codex.
+- The targeted test file `test/scaffold/package.test.ts` covers the normal path and at least one parity-sensitive edge case, and every listed verification command passes.
+
+## Required Log Updates
+
+- `FACT_LOG.md`: add any newly discovered constants, quirks, or file-format facts with future step IDs before leaving the step.
+- `DECISION_LOG.md`: update only if this step changes a chosen interface, host boundary, or parity rule.
+- `REFERENCE_ORACLES.md`: add or update the oracle record if this step creates or refreshes a capture, manifest, or replay fixture.
+- `HANDOFF_LOG.md`: append the completion summary, verification commands, results, next eligible steps, and open risks.
+
+## Later Steps That May Benefit
+
+- 03-002
+- 17-010

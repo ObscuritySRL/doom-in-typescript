@@ -1,0 +1,168 @@
+{
+  "description": "Vanilla Doom 1.9 engine limits enforced by Chocolate Doom 2.2.1 in vanilla compatibility mode.",
+  "sources": ["Doom 1.9 source code (linuxdoom-1.10, id Software)", "Chocolate Doom 2.2.1 vanilla compatibility enforcement", "D:\\Projects\\bun-win32\\doom\\universal-doom\\chocolate-doom.cfg"],
+  "generatedAt": "2026-04-12",
+  "vanillaCompatFlags": {
+    "vanilla_demo_limit": true,
+    "vanilla_keyboard_mapping": true,
+    "vanilla_savegame_limit": true
+  },
+  "totalLimits": 16,
+  "categories": [
+    { "name": "demo", "count": 1 },
+    { "name": "game", "count": 1 },
+    { "name": "renderer", "count": 4 },
+    { "name": "save", "count": 2 },
+    { "name": "screen", "count": 2 },
+    { "name": "specials", "count": 6 }
+  ],
+  "limits": [
+    {
+      "name": "MAXANIMS",
+      "value": 32,
+      "unit": "entries",
+      "category": "specials",
+      "sourceFile": "p_spec.c",
+      "description": "Maximum animation definitions for animated textures and flats.",
+      "overflowBehavior": "buffer overrun if animation definitions exceed array size"
+    },
+    {
+      "name": "MAXBUTTONS",
+      "value": 16,
+      "unit": "entries",
+      "category": "specials",
+      "sourceFile": "p_spec.c",
+      "description": "Maximum simultaneously active switch/button timers.",
+      "overflowBehavior": "silent drop, button activation not registered"
+    },
+    {
+      "name": "MAXCEILINGS",
+      "value": 30,
+      "unit": "entries",
+      "category": "specials",
+      "sourceFile": "p_ceilng.c",
+      "description": "Maximum simultaneously active ceiling thinkers.",
+      "overflowBehavior": "I_Error: no more ceilings"
+    },
+    {
+      "name": "MAXDEMOSIZE",
+      "value": 131072,
+      "hexValue": "0x20000",
+      "unit": "bytes",
+      "category": "demo",
+      "sourceFile": "g_game.c",
+      "description": "Default demo recording buffer size.",
+      "overflowBehavior": "buffer overrun during demo recording"
+    },
+    {
+      "name": "MAXDRAWSEGS",
+      "value": 256,
+      "unit": "entries",
+      "category": "renderer",
+      "sourceFile": "r_segs.c",
+      "description": "Maximum draw segments per frame.",
+      "overflowBehavior": "buffer overrun, memory corruption"
+    },
+    {
+      "name": "MAXINTERCEPTS",
+      "value": 128,
+      "unit": "entries",
+      "category": "specials",
+      "sourceFile": "p_maputl.c",
+      "description": "Maximum intercepts in line-of-sight and path traversal.",
+      "overflowBehavior": "buffer overrun, memory corruption"
+    },
+    {
+      "name": "MAXOPENINGS",
+      "value": 20480,
+      "derivation": "SCREENWIDTH * 64",
+      "unit": "entries",
+      "category": "renderer",
+      "sourceFile": "r_segs.c",
+      "description": "Maximum opening clips per frame, derived from screen width.",
+      "overflowBehavior": "buffer overrun, memory corruption"
+    },
+    {
+      "name": "MAXPLATS",
+      "value": 30,
+      "unit": "entries",
+      "category": "specials",
+      "sourceFile": "p_plats.c",
+      "description": "Maximum simultaneously active platform thinkers.",
+      "overflowBehavior": "I_Error: no more plats"
+    },
+    {
+      "name": "MAXPLAYERS",
+      "value": 4,
+      "unit": "players",
+      "category": "game",
+      "sourceFile": "doomdef.h",
+      "description": "Maximum number of players in a game session.",
+      "overflowBehavior": "compile-time constant, not exceeded at runtime"
+    },
+    {
+      "name": "MAXSPECIALCROSS",
+      "value": 8,
+      "unit": "entries",
+      "category": "specials",
+      "sourceFile": "p_map.c",
+      "description": "Maximum special lines crossed per tic in the spechit table.",
+      "overflowBehavior": "buffer overrun, spechit memory corruption bug"
+    },
+    {
+      "name": "MAXVISPLANES",
+      "value": 128,
+      "unit": "entries",
+      "category": "renderer",
+      "sourceFile": "r_plane.c",
+      "description": "Maximum visible floor/ceiling planes per frame.",
+      "overflowBehavior": "I_Error: no more visplanes"
+    },
+    {
+      "name": "MAXVISSPRITES",
+      "value": 128,
+      "unit": "entries",
+      "category": "renderer",
+      "sourceFile": "r_things.c",
+      "description": "Maximum visible sprites per frame.",
+      "overflowBehavior": "buffer overrun, rendering artifacts"
+    },
+    {
+      "name": "SAVEGAMESIZE",
+      "value": 180224,
+      "hexValue": "0x2C000",
+      "unit": "bytes",
+      "category": "save",
+      "sourceFile": "g_game.c",
+      "description": "Maximum savegame buffer size.",
+      "overflowBehavior": "buffer overrun during save"
+    },
+    {
+      "name": "SAVESTRINGSIZE",
+      "value": 24,
+      "unit": "characters",
+      "category": "save",
+      "sourceFile": "doomdef.h",
+      "description": "Maximum savegame description string length.",
+      "overflowBehavior": "truncation"
+    },
+    {
+      "name": "SCREENHEIGHT",
+      "value": 200,
+      "unit": "pixels",
+      "category": "screen",
+      "sourceFile": "doomdef.h",
+      "description": "Framebuffer height in pixels.",
+      "overflowBehavior": "compile-time constant"
+    },
+    {
+      "name": "SCREENWIDTH",
+      "value": 320,
+      "unit": "pixels",
+      "category": "screen",
+      "sourceFile": "doomdef.h",
+      "description": "Framebuffer width in pixels.",
+      "overflowBehavior": "compile-time constant"
+    }
+  ]
+}
