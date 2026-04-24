@@ -29,3 +29,9 @@
 - date: 2026-04-24
 - fact: The current package script launches `src/main.ts); the playable parity target still requires a root-level `doom.ts` command contract.
 - source: `package.json`, `src/main.ts`
+
+## F-FPS-006
+
+- date: 2026-04-24
+- fact: The old `plan_engine/` classification is `mixed`: 167 steps completed across 18 phases (00 Governance through 17 Parity And Acceptance) deliver deterministic engine, host timing/input, bootstrap, map/world, player/AI/specials, renderer, UI, audio, save/config/demo, and parity work, but do not lock the `bun run doom.ts` playable target or the side-by-side acceptance gate.
+- source: `plan_fps/manifests/existing-plan-classification.json`, `plan_engine/MASTER_CHECKLIST.md`, `plan_engine/README.md`, `plan_engine/PROMPT.md`, `package.json`, `src/main.ts`

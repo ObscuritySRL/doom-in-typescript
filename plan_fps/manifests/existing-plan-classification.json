@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "classification": "mixed",
+  "decisionId": "D-FPS-002",
+  "rationale": "The old plan_engine/ checklist finished 167 steps spanning deterministic engine, host timing/input, bootstrap, map/world, player/AI/specials, renderer, UI, audio, save/config/demo, and parity/acceptance work. It delivers substantial playable-adjacent scope but never locks the Bun-run playable target (bun run doom.ts), never wires a windowed host end-to-end from launch to gameplay, and never owns the side-by-side acceptance gate. That mix of delivered and missing scope is what classifies the old plan as mixed rather than purely engine-only or purely playable.",
+  "oldPlan": {
+    "root": "plan_engine",
+    "checklistPath": "plan_engine/MASTER_CHECKLIST.md",
+    "totalCompletedSteps": 167,
+    "totalPendingSteps": 0,
+    "phases": [
+      { "id": "00", "name": "Governance", "completedSteps": 6 },
+      { "id": "01", "name": "Reference Inventory", "completedSteps": 8 },
+      { "id": "02", "name": "Oracle Foundation", "completedSteps": 10 },
+      { "id": "03", "name": "Scaffold And Test Harness", "completedSteps": 8 },
+      { "id": "04", "name": "Core Math And Binary", "completedSteps": 8 },
+      { "id": "05", "name": "WAD And Assets", "completedSteps": 10 },
+      { "id": "06", "name": "Host Timing And Input", "completedSteps": 8 },
+      { "id": "07", "name": "Bootstrap And Main Loop", "completedSteps": 8 },
+      { "id": "08", "name": "Map Geometry And Spatial", "completedSteps": 10 },
+      { "id": "09", "name": "Thinkers And Physics", "completedSteps": 11 },
+      { "id": "10", "name": "Player, Weapons, Items", "completedSteps": 8 },
+      { "id": "11", "name": "AI And Monsters", "completedSteps": 8 },
+      { "id": "12", "name": "Specials And World Events", "completedSteps": 10 },
+      { "id": "13", "name": "Renderer World", "completedSteps": 14 },
+      { "id": "14", "name": "UI And Front-End Flow", "completedSteps": 8 },
+      { "id": "15", "name": "Audio And Music", "completedSteps": 12 },
+      { "id": "16", "name": "Save, Config, Demo", "completedSteps": 10 },
+      { "id": "17", "name": "Parity And Acceptance", "completedSteps": 10 }
+    ]
+  },
+  "evidencePaths": [
+    "plan_engine/MASTER_CHECKLIST.md",
+    "plan_engine/README.md",
+    "plan_engine/PROMPT.md",
+    "plan_engine/DECISION_LOG.md",
+    "plan_engine/FACT_LOG.md",
+    "plan_engine/HANDOFF_LOG.md",
+    "plan_engine/REFERENCE_ORACLES.md",
+    "plan_engine/SOURCE_CATALOG.md",
+    "plan_engine/PACKAGE_CAPABILITY_MATRIX.md",
+    "plan_engine/STEP_TEMPLATE.md",
+    "package.json",
+    "src/main.ts"
+  ],
+  "playableParityGaps": {
+    "requiredRuntimeCommand": "bun run doom.ts",
+    "currentPackageStartScript": "bun run src/main.ts",
+    "missingEntryPointFile": "doom.ts",
+    "currentEntryPointFile": "src/main.ts",
+    "includesPlayableScope": [
+      "Host timing (35 Hz tic accumulator)",
+      "Keyboard and mouse input mapping",
+      "UI subsystems (status bar, HUD, automap, menus, intermission, finale)",
+      "Audio subsystems (SFX, MUS/OPL, mixing)",
+      "Save/load serialization",
+      "Demo parse, record, and playback",
+      "Parity and acceptance suite"
+    ],
+    "missesPlayableScope": [
+      "bun run doom.ts runtime entry point",
+      "Windowed host wired from launch to gameplay",
+      "Live clean-launch-to-gameplay replay",
+      "Side-by-side acceptance gate",
+      "Config/window save-path policy for the playable product"
+    ]
+  }
+}

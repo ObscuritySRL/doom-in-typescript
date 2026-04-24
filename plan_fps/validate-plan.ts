@@ -99,9 +99,7 @@ export async function validatePlan(planDirectory = import.meta.dir): Promise<Val
 export function parseChecklist(checklistText: string): readonly ChecklistStep[] {
   const steps: ChecklistStep[] = [];
   const lines = checklistText.split(/\r?\n/);
-  const pattern = new RegExp(
-    '^- \\[ \\] `(?<id>\\d{2}-\\d{3})` `(?<titleSlug>[^`]+)` \\| prereqs: `(?<prereq>[^`]+)` \\| file: `(?<filePath>plan_fps/steps/[^`]+\\.md)`$',
-  );
+  const pattern = new RegExp('^- \\[[ x]\\] `(?<id>\\d{2}-\\d{3})` `(?<titleSlug>[^`]+)` \\| prereqs: `(?<prereq>[^`]+)` \\| file: `(?<filePath>plan_fps/steps/[^`]+\\.md)`$');
 
   for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
     const line = lines[lineIndex]!;
