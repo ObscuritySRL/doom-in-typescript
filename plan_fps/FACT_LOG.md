@@ -65,3 +65,9 @@
 - date: 2026-04-24
 - fact: Within the 01-003 read scope, the catalog-visible oracle fixture authorities are `doom/DOOM1.WAD`, `iwad/DOOM1.WAD`, and `reference/manifests/`; no generated playable oracle fixture inventory is visible, so the 01-003 manifest records explicit null surfaces for that missing inventory.
 - source: `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-003-audit-existing-oracle-fixtures.json`
+
+## F-FPS-012
+
+- date: 2026-04-24
+- fact: The 01-004 read scope exposes `reference/manifests/` only as a catalog-visible prior-art directory and does not permit enumerating `reference/manifests/` or `plan_fps/manifests/`.
+- source: `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-004-audit-existing-manifests.json`

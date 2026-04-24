@@ -311,3 +311,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-004 audit-existing-manifests
 - open_risks: The audit is intentionally scoped to `SOURCE_CATALOG.md`, `package.json`, `tsconfig.json`, and `src/main.ts`; the step did not permit enumerating generated fixture directories or `reference/manifests/`, so those inventories remain explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-004 audit-existing-manifests
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-004
+- step_title: audit-existing-manifests
+- summary: Audited the existing manifest surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-004-audit-existing-manifests.json` (schema v1) locking the catalog-visible prior-art manifest directory `reference/manifests/`, live package.json and tsconfig.json manifest values with SHA-256 hashes, current launcher context from `src/main.ts`, fact-log-visible manifest references, and explicit nulls for generated plan and prior reference manifest inventories outside the read scope. Added focused test `test/plan_fps/01-004-audit-existing-manifests.test.ts` that deep-locks the manifest, cross-checks source catalog rows, live workspace manifests, launcher context, hashes, and the durable fact entry.
+- files_changed: plan_fps/manifests/01-004-audit-existing-manifests.json; test/plan_fps/01-004-audit-existing-manifests.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-004-audit-existing-manifests.test.ts (5 pass, 0 fail, 32 expect() calls); bun test (6529 pass, 0 fail, 689827 expect() calls across 188 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-012 (01-004 read scope exposes `reference/manifests/` only as a catalog-visible prior-art directory and does not permit enumerating `reference/manifests/` or `plan_fps/manifests/`)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-005 audit-pure-engine-surface
+- open_risks: The selected step does not permit enumerating `reference/manifests/` or `plan_fps/manifests/`, so both inventories are intentionally recorded as explicit nulls for later broader-scope steps.
