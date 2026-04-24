@@ -59,3 +59,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-004 reject-compiled-exe-target
 - open_risks: none
+
+## 2026-04-24 - 00-004 reject-compiled-exe-target
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 00-004
+- step_title: reject-compiled-exe-target
+- summary: Locked the governance rejection of compiled-binary delivery targets for the C1 playable parity product. Created decision D-FPS-005 ("Reject compiled-binary delivery targets for the C1 playable parity product. No compiled executable, wrapper executable, installer, or packaged binary."), affected_steps 00-004/03-001/03-002/15-010, evidence list citing README.md, the 00-003 and 00-004 manifests, package.json, and tsconfig.json. Wrote `plan_fps/manifests/00-004-reject-compiled-exe-target.json` (schema v1) pinning four rejectedTargets kinds (compiled-executable, wrapper-executable, installer, packaged-binary) with descriptions, forbiddenArtifactExtensions (.exe, .msi, .appimage, .app, .dmg), forbiddenBuildCommands (bun build --compile, pkg, nexe), forbiddenPackageJsonScriptNames (build-exe, build:exe, compile-exe, compile:exe, make-exe, dist-exe, package-exe, bundle-exe), requiredRuntimeTarget linking D-FPS-003 + the 00-003 manifest, currentWorkspace pinning package.json + tsconfig.json with tsconfigNoEmit=true and four forbiddenArtifactChecks at the workspace root (doom.exe, doom-launcher.exe, doom-setup.exe, doom-bundle.exe, all expectedPresentOnDisk=false), the controlCenterManifestPath cross-reference, the exact README.md rejection line, and eight evidencePaths. Added focused test `test/plan_fps/00-004-reject-compiled-exe-target.test.ts` (17 tests, 239 expects) that locks every manifest field by exact value, asserts forbiddenArtifactChecks paths are absent on disk today and each ends with a recorded forbiddenArtifactExtension, cross-checks tsconfig.json.compilerOptions.noEmit against the manifest, verifies package.json scripts do not contain any forbidden script name or forbidden build command substring, cross-references the 00-002 control-center and 00-003 entry-point manifests, verifies README.md contains the rejection line verbatim, verifies the D-FPS-005 section in DECISION_LOG.md is accepted, pins the exact rejection sentence, and cites this manifest as evidence, and globs the workspace root to assert no file ends in any forbiddenArtifactExtension.
+- files_changed: plan_fps/manifests/00-004-reject-compiled-exe-target.json; test/plan_fps/00-004-reject-compiled-exe-target.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, No fixes applied); bun test test/plan_fps/00-004-reject-compiled-exe-target.test.ts (17 pass, 0 fail, 239 expects); bun test (6407 pass, 0 fail, 688286 expects across 175 files); bun x tsc --noEmit --project tsconfig.json (clean); bun test plan_fps/validate-plan.test.ts (2 pass, 0 fail, 6 expects); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps, First step: 00-001)
+- new_facts: none
+- decision_changes: added D-FPS-005 accepted, citing the new 00-004 manifest alongside README.md, the 00-003 manifest, package.json, and tsconfig.json as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-005 pin-bun-runtime-and-package-manager
+- open_risks: none

@@ -39,3 +39,13 @@
 - evidence: user request
 - affected_steps: 00-010, 04-004, 15-010
 - supersedes: none
+
+## D-FPS-005
+
+- status: accepted
+- date: 2026-04-24
+- decision: Reject compiled-binary delivery targets for the C1 playable parity product. No compiled executable, wrapper executable, installer, or packaged binary.
+- rationale: The C1 runtime target is exactly `bun run doom.ts` (D-FPS-003). Compiled-binary targets are out of scope and must not be introduced by downstream steps.
+- evidence: plan_fps/README.md, plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json, plan_fps/manifests/00-004-reject-compiled-exe-target.json, package.json, tsconfig.json
+- affected_steps: 00-004, 03-001, 03-002, 15-010
+- supersedes: none

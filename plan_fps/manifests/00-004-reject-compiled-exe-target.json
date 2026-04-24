@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "decisionId": "D-FPS-005",
+  "rationale": "Rejects compiled-binary delivery targets for the C1 playable parity product so no downstream step drifts toward a packaged `.exe`, installer, wrapper binary, or bundled redistributable. The required runtime target remains exactly `bun run doom.ts` (D-FPS-003, `plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json`). Locks the rejected target kinds, forbidden artifact file extensions, forbidden build commands, forbidden `package.json` script names, and the current-workspace posture: `package.json` only wires `format` and `start` scripts, `tsconfig.json` sets `noEmit: true`, and no forbidden artifact exists at the workspace root today.",
+  "rejectedTargets": [
+    {
+      "kind": "compiled-executable",
+      "description": "A standalone native executable produced by compiling or packaging TypeScript source into a platform binary (for example `doom.exe`)."
+    },
+    {
+      "kind": "wrapper-executable",
+      "description": "A native executable whose only job is to launch a Bun runtime or TypeScript source at start-up (for example a Windows `.exe` that shells out to `bun run`)."
+    },
+    {
+      "kind": "installer",
+      "description": "An installer or setup executable that deploys or registers the playable product on the host machine (for example an `.msi` or `setup.exe`)."
+    },
+    {
+      "kind": "packaged-binary",
+      "description": "A bundled, packed, or standalone redistributable produced by `bun build --compile`, `pkg`, `nexe`, or equivalent tooling."
+    }
+  ],
+  "forbiddenArtifactExtensions": [".exe", ".msi", ".appimage", ".app", ".dmg"],
+  "forbiddenBuildCommands": ["bun build --compile", "pkg", "nexe"],
+  "forbiddenPackageJsonScriptNames": ["build-exe", "build:exe", "compile-exe", "compile:exe", "make-exe", "dist-exe", "package-exe", "bundle-exe"],
+  "requiredRuntimeTarget": {
+    "runtimeCommand": "bun run doom.ts",
+    "decisionId": "D-FPS-003",
+    "manifestPath": "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json"
+  },
+  "currentWorkspace": {
+    "packageJsonPath": "package.json",
+    "tsconfigJsonPath": "tsconfig.json",
+    "tsconfigNoEmit": true,
+    "forbiddenArtifactChecks": [
+      { "path": "doom.exe", "expectedPresentOnDisk": false },
+      { "path": "doom-launcher.exe", "expectedPresentOnDisk": false },
+      { "path": "doom-setup.exe", "expectedPresentOnDisk": false },
+      { "path": "doom-bundle.exe", "expectedPresentOnDisk": false }
+    ]
+  },
+  "controlCenterManifestPath": "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+  "readmeRejectionLine": "Final target is not a compiled executable, wrapper executable, installer, or packaged binary.",
+  "evidencePaths": [
+    "plan_fps/README.md",
+    "plan_fps/MASTER_CHECKLIST.md",
+    "plan_fps/DECISION_LOG.md",
+    "plan_fps/FACT_LOG.md",
+    "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+    "plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json",
+    "package.json",
+    "tsconfig.json"
+  ]
+}
