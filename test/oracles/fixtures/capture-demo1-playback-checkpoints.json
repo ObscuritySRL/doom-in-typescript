@@ -1,0 +1,134 @@
+{
+  "artifactPath": "test/oracles/fixtures/capture-demo1-playback-checkpoints.json",
+  "captureCommand": {
+    "arguments": ["-iwad", "doom/DOOM1.WAD", "-playdemo", "demo1"],
+    "demoLump": "DEMO1",
+    "executable": "doom/DOOMD.EXE",
+    "status": "contract-only-not-executed-by-this-step",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "commandContracts": {
+    "currentLauncher": {
+      "entryFile": "src/main.ts",
+      "helpUsageLines": ["  bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]", "  bun run start -- [--iwad <path-to-iwad>] --list-maps"],
+      "packageScript": "start",
+      "packageScriptCommand": "bun run src/main.ts"
+    },
+    "targetPlayable": {
+      "entryFile": "doom.ts",
+      "runtimeCommand": "bun run doom.ts"
+    }
+  },
+  "expectedTrace": [
+    {
+      "event": "reference-process-start",
+      "frame": 0,
+      "index": 0,
+      "tic": 0,
+      "value": "doom/DOOMD.EXE -iwad doom/DOOM1.WAD -playdemo demo1"
+    },
+    {
+      "event": "demo-lump-selected",
+      "frame": 0,
+      "index": 1,
+      "tic": 0,
+      "value": "DEMO1"
+    },
+    {
+      "event": "checkpoint",
+      "frame": 0,
+      "index": 2,
+      "tic": 0,
+      "value": "demo1-checkpoint-tic-000000-frame-000000"
+    },
+    {
+      "event": "checkpoint",
+      "frame": 35,
+      "index": 3,
+      "tic": 35,
+      "value": "demo1-checkpoint-tic-000035-frame-000035"
+    },
+    {
+      "event": "checkpoint",
+      "frame": 70,
+      "index": 4,
+      "tic": 70,
+      "value": "demo1-checkpoint-tic-000070-frame-000070"
+    },
+    {
+      "event": "checkpoint",
+      "frame": 175,
+      "index": 5,
+      "tic": 175,
+      "value": "demo1-checkpoint-tic-000175-frame-000175"
+    },
+    {
+      "event": "checkpoint",
+      "frame": 350,
+      "index": 6,
+      "tic": 350,
+      "value": "demo1-checkpoint-tic-000350-frame-000350"
+    },
+    {
+      "event": "checkpoint",
+      "frame": 700,
+      "index": 7,
+      "tic": 700,
+      "value": "demo1-checkpoint-tic-000700-frame-000700"
+    },
+    {
+      "event": "live-hashes-pending",
+      "frame": 700,
+      "index": 8,
+      "tic": 700,
+      "value": "framebuffer/audio/state hashes require a later runnable reference capture surface"
+    }
+  ],
+  "expectedTraceSha256": "79e192143cb4f4a4ab5b16c5dd0cba2e0d6a45517a17968fa06d20d39e5aa194",
+  "pendingLiveHashes": [
+    {
+      "reason": "The selected step does not permit opening or executing reference binaries or audio capture surfaces.",
+      "surface": "audio"
+    },
+    {
+      "reason": "The selected step does not permit opening or executing reference binaries or framebuffer capture surfaces.",
+      "surface": "framebuffer"
+    },
+    {
+      "reason": "The selected step does not permit opening or executing reference binaries or synchronized state capture surfaces.",
+      "surface": "state"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "path": "doom/DOOMD.EXE",
+      "role": "preferred local reference executable when usable",
+      "sourceIdentifier": "S-FPS-005"
+    },
+    {
+      "authority": "local-primary-data",
+      "path": "doom/DOOM1.WAD",
+      "role": "shareware IWAD data containing bundled demo lumps",
+      "sourceIdentifier": "S-FPS-006"
+    },
+    {
+      "authority": "derived-launch-surface-audit",
+      "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+      "role": "allowed manifest evidence for current and target command contracts",
+      "sourceIdentifier": "M-FPS-01-015"
+    }
+  ],
+  "stepId": "02-007",
+  "stepTitle": "capture-demo1-playback-checkpoints",
+  "tickFrameWindow": {
+    "checkpointFrames": [0, 35, 70, 175, 350, 700],
+    "checkpointTics": [0, 35, 70, 175, 350, 700],
+    "clock": "vanilla tic checkpoint indexes",
+    "firstFrame": 0,
+    "firstTic": 0,
+    "lastFrame": 700,
+    "lastTic": 700
+  }
+}

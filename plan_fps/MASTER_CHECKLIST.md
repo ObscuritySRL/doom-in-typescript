@@ -48,7 +48,7 @@
 - [x] `02-004` `capture-initial-title-frame` | prereqs: `02-003` | file: `plan_fps/steps/02-004-capture-initial-title-frame.md`
 - [x] `02-005` `capture-first-menu-frame` | prereqs: `02-004` | file: `plan_fps/steps/02-005-capture-first-menu-frame.md`
 - [x] `02-006` `capture-full-attract-loop-cycle` | prereqs: `02-005` | file: `plan_fps/steps/02-006-capture-full-attract-loop-cycle.md`
-- [ ] `02-007` `capture-demo1-playback-checkpoints` | prereqs: `02-006` | file: `plan_fps/steps/02-007-capture-demo1-playback-checkpoints.md`
+- [x] `02-007` `capture-demo1-playback-checkpoints` | prereqs: `02-006` | file: `plan_fps/steps/02-007-capture-demo1-playback-checkpoints.md`
 - [ ] `02-008` `capture-demo2-playback-checkpoints` | prereqs: `02-007` | file: `plan_fps/steps/02-008-capture-demo2-playback-checkpoints.md`
 - [ ] `02-009` `capture-demo3-playback-checkpoints` | prereqs: `02-008` | file: `plan_fps/steps/02-009-capture-demo3-playback-checkpoints.md`
 - [ ] `02-010` `capture-menu-open-close-behavior` | prereqs: `02-009` | file: `plan_fps/steps/02-010-capture-menu-open-close-behavior.md`

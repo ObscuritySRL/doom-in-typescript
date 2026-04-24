@@ -635,3 +635,21 @@
 - oracle_changes: OR-FPS-011 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-full-attract-loop-cycle.json` with refresh command `bun test test/oracles/capture-full-attract-loop-cycle.test.ts`
 - next_eligible_steps: 02-007 capture-demo1-playback-checkpoints
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-24 - 02-007 capture-demo1-playback-checkpoints
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-007
+- step_title: capture-demo1-playback-checkpoints
+- summary: Added the demo1 playback checkpoints oracle fixture at `test/oracles/fixtures/capture-demo1-playback-checkpoints.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference capture command contract, DEMO1 playback argument, tick/frame checkpoint window, exact abstract checkpoint trace, deterministic trace SHA-256, source authority, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-demo1-playback-checkpoints.test.ts` to lock the fixture exactly, recompute the trace hash, verify source-catalog authority, cross-check the 01-015 command contract, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-demo1-playback-checkpoints.json; test/oracles/capture-demo1-playback-checkpoints.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Corrected the recorded trace SHA-256 after the first focused test exposed that the initial hash was computed before formatter-normalized trace object key order.
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-demo1-playback-checkpoints.test.ts (initial run failed: 4 pass, 1 fail, trace SHA-256 mismatch caused by pre-format object key order); bun run format (recovery rerun, No fixes applied); bun test test/oracles/capture-demo1-playback-checkpoints.test.ts (5 pass, 0 fail, 10 expect() calls); bun test (6622 pass, 0 fail, 690454 expect() calls across 206 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-012 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-demo1-playback-checkpoints.json` with refresh command `bun test test/oracles/capture-demo1-playback-checkpoints.test.ts`
+- next_eligible_steps: 02-008 capture-demo2-playback-checkpoints
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live demo1 framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
