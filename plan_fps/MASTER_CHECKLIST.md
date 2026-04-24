@@ -8,7 +8,7 @@
 ## Phase 00: Governance / Plan Foundation
 
 - [x] `00-001` `classify-existing-plan` | prereqs: `none` | file: `plan_fps/steps/00-001-classify-existing-plan.md`
-- [ ] `00-002` `declare-plan-fps-control-center` | prereqs: `00-001` | file: `plan_fps/steps/00-002-declare-plan-fps-control-center.md`
+- [x] `00-002` `declare-plan-fps-control-center` | prereqs: `00-001` | file: `plan_fps/steps/00-002-declare-plan-fps-control-center.md`
 - [ ] `00-003` `pin-bun-run-doom-entrypoint` | prereqs: `00-002` | file: `plan_fps/steps/00-003-pin-bun-run-doom-entrypoint.md`
 - [ ] `00-004` `reject-compiled-exe-target` | prereqs: `00-003` | file: `plan_fps/steps/00-004-reject-compiled-exe-target.md`
 - [ ] `00-005` `pin-bun-runtime-and-package-manager` | prereqs: `00-004` | file: `plan_fps/steps/00-005-pin-bun-runtime-and-package-manager.md`

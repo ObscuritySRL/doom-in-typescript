@@ -23,3 +23,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-002 declare-plan-fps-control-center
 - open_risks: none
+
+## 2026-04-24 - 00-002 declare-plan-fps-control-center
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 00-002
+- step_title: declare-plan-fps-control-center
+- summary: Declared `plan_fps/` as the active playable parity control center and locked `plan_engine/` as prior art only. Wrote `plan_fps/manifests/00-002-declare-plan-fps-control-center.json` (schema v1) pinning decision D-FPS-001, the active control-center directory plus nine subpaths (README, MASTER_CHECKLIST, PROMPT, PRE_PROMPT, STEP_TEMPLATE, validator script/test, steps/, manifests/), the prior-art plan directory and its inherited `mixed` classification with link to 00-001's classification manifest, the `bun run doom.ts` runtime target, totalSteps=223, firstStepId=00-001 firstStepTitleSlug=classify-existing-plan, the final gate 15-010 gate-final-side-by-side, writableWorkspaceRoot `D:/Projects/doom-in-typescript`, the three read-only reference roots, the nine shared plan files, ralphLoopWorkflowStepCount=10, and the five canonical validation commands. Added focused test `test/plan_fps/00-002-declare-plan-fps-control-center.test.ts` (15 tests, 103 expects) that locks every manifest field by exact value, verifies every path exists on disk, cross-references MASTER_CHECKLIST.md and README.md header text for totals/first-step/runtime-target, cross-references the classification manifest for schema alignment, and verifies the D-FPS-001 decision cites the new manifest artifact as evidence.
+- files_changed: plan_fps/manifests/00-002-declare-plan-fps-control-center.json; test/plan_fps/00-002-declare-plan-fps-control-center.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: First iteration of the focused test asserted `First eligible step: \`00-001\`` against MASTER_CHECKLIST.md, which failed because the checklist header reads `First eligible step: \`00-001 Classify Existing Plan\`` (id plus Title-Case slug). Widened the assertion to include the trailing `Classify Existing Plan` label so it matches both README.md and MASTER_CHECKLIST.md verbatim.
+- tests_run: bun run format (Formatted 2 files, then No fixes applied on rerun); bun test test/plan_fps/00-002-declare-plan-fps-control-center.test.ts (15 pass, 0 fail, 103 expects); bun test (6363 pass, 0 fail, 687911 expects across 173 files); bun x tsc --noEmit --project tsconfig.json (clean); bun test plan_fps/validate-plan.test.ts (2 pass, 0 fail, 6 expects); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps, First step: 00-001)
+- new_facts: none
+- decision_changes: D-FPS-001 evidence extended to cite `plan_fps/manifests/00-002-declare-plan-fps-control-center.json`; status remains accepted
+- oracle_changes: none
+- next_eligible_steps: 00-003 pin-bun-run-doom-entrypoint
+- open_risks: none

@@ -6,7 +6,7 @@
 - date: 2026-04-24
 - decision: Use `plan_fps/` as the active playable parity control center.
 - rationale: The playable parity effort needs a self-contained control center that does not rewrite the prior `plan_engine/` engine plan.
-- evidence: user request, repository inspection
+- evidence: user request, repository inspection, `plan_fps/manifests/00-002-declare-plan-fps-control-center.json`
 - affected_steps: 00-001, 00-002
 - supersedes: none
 

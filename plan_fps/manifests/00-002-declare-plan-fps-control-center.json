@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "decisionId": "D-FPS-001",
+  "rationale": "Declares plan_fps/ as the active playable parity control center and plan_engine/ as prior art only. Locks the Bun runtime target (bun run doom.ts), the total playable-plan step count (223), the first step id (00-001 classify-existing-plan), the writable workspace root, and the read-only reference roots so downstream steps can cross-check these governance invariants without reparsing README prose.",
+  "activeControlCenter": {
+    "directory": "plan_fps",
+    "readmePath": "plan_fps/README.md",
+    "checklistPath": "plan_fps/MASTER_CHECKLIST.md",
+    "promptPath": "plan_fps/PROMPT.md",
+    "prePromptPath": "plan_fps/PRE_PROMPT.md",
+    "stepTemplatePath": "plan_fps/STEP_TEMPLATE.md",
+    "validatorScriptPath": "plan_fps/validate-plan.ts",
+    "validatorTestPath": "plan_fps/validate-plan.test.ts",
+    "stepsDirectory": "plan_fps/steps",
+    "manifestsDirectory": "plan_fps/manifests"
+  },
+  "priorArtPlan": {
+    "directory": "plan_engine",
+    "role": "prior-art-only",
+    "classification": "mixed",
+    "classificationManifestPath": "plan_fps/manifests/existing-plan-classification.json"
+  },
+  "runtimeTarget": "bun run doom.ts",
+  "totalSteps": 223,
+  "firstStepId": "00-001",
+  "firstStepTitleSlug": "classify-existing-plan",
+  "firstStepFilePath": "plan_fps/steps/00-001-classify-existing-plan.md",
+  "finalGateStepId": "15-010",
+  "finalGateStepFilePath": "plan_fps/steps/15-010-gate-final-side-by-side.md",
+  "writableWorkspaceRoot": "D:/Projects/doom-in-typescript",
+  "readOnlyReferenceRoots": ["doom/", "iwad/", "reference/"],
+  "sharedFiles": [
+    "plan_fps/MASTER_CHECKLIST.md",
+    "plan_fps/DECISION_LOG.md",
+    "plan_fps/FACT_LOG.md",
+    "plan_fps/HANDOFF_LOG.md",
+    "plan_fps/PRE_PROMPT.md",
+    "plan_fps/REFERENCE_ORACLES.md",
+    "plan_fps/SOURCE_CATALOG.md",
+    "plan_fps/PACKAGE_CAPABILITY_MATRIX.md",
+    "plan_fps/STEP_TEMPLATE.md"
+  ],
+  "ralphLoopWorkflowStepCount": 10,
+  "validationCommands": ["bun run format", "bun test plan_fps/validate-plan.test.ts", "bun run plan_fps/validate-plan.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"]
+}
