@@ -383,3 +383,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-008 audit-missing-launch-to-menu
 - open_risks: The selected step did not permit opening or testing a root `doom.ts` file directly, so the missing root entrypoint is recorded from the allowed current launch surfaces rather than from a filesystem-wide entrypoint inventory.
+
+## 2026-04-24 - 01-008 audit-missing-launch-to-menu
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-008
+- step_title: audit-missing-launch-to-menu
+- summary: Audited the missing clean launch-to-menu surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-008-audit-missing-launch-to-menu.json` (schema v1) locking current and target command contracts, live package/TypeScript workspace values, source hashes, gameplay-first help and console evidence from `src/main.ts`, observed transitions from IWAD resolution to launcher resource loading to game session creation to `runLauncherWindow`, source-catalog rows, and explicit nulls for clean launch-to-menu entry, first visible main-menu state, launch-to-menu transition, and menu render/controller surfaces. Added focused test `test/plan_fps/01-008-audit-missing-launch-to-menu.test.ts` that deep-locks the manifest, cross-checks live command contracts and workspace settings, verifies the gameplay-first source transition, recomputes source hashes, verifies source-catalog evidence, asserts sorted explicit null surfaces, and verifies durable fact F-FPS-016.
+- files_changed: plan_fps/manifests/01-008-audit-missing-launch-to-menu.json; test/plan_fps/01-008-audit-missing-launch-to-menu.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-008-audit-missing-launch-to-menu.test.ts (5 pass, 0 fail, 37 expect() calls); bun test (6548 pass, 0 fail, 689968 expect() calls across 192 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-016 (visible `src/main.ts` launcher session creation calls `runLauncherWindow` directly with gameplay-first help and console text; no clean launch-to-menu entry or menu-first transition is exposed in the 01-008 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-009 audit-missing-menu-to-e1m1
+- open_risks: The selected step did not permit opening menu, host, or renderer implementation files, so broader menu inventory remains intentionally recorded as explicit nulls for later broader-scope steps.

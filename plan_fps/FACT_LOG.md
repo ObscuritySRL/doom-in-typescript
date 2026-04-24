@@ -89,3 +89,9 @@
 - date: 2026-04-24
 - fact: Within the 01-007 read scope, `package.json` exposes `scripts.start` as `bun run src/main.ts`, and the allowed launch surfaces expose no implemented root `doom.ts` command contract.
 - source: `package.json`, `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json`
+
+## F-FPS-016
+
+- date: 2026-04-24
+- fact: Within the 01-008 read scope, `src/main.ts` creates a launcher session and calls `runLauncherWindow` directly with help and console text that starts in gameplay view; no clean launch-to-menu entry or menu-first transition is exposed.
+- source: `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-008-audit-missing-launch-to-menu.json`

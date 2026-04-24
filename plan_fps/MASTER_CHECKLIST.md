@@ -31,7 +31,7 @@
 - [x] `01-005` `audit-pure-engine-surface` | prereqs: `01-004` | file: `plan_fps/steps/01-005-audit-pure-engine-surface.md`
 - [x] `01-006` `audit-playable-host-surface` | prereqs: `01-005` | file: `plan_fps/steps/01-006-audit-playable-host-surface.md`
 - [x] `01-007` `audit-missing-bun-run-doom-entrypoint` | prereqs: `01-006` | file: `plan_fps/steps/01-007-audit-missing-bun-run-doom-entrypoint.md`
-- [ ] `01-008` `audit-missing-launch-to-menu` | prereqs: `01-007` | file: `plan_fps/steps/01-008-audit-missing-launch-to-menu.md`
+- [x] `01-008` `audit-missing-launch-to-menu` | prereqs: `01-007` | file: `plan_fps/steps/01-008-audit-missing-launch-to-menu.md`
 - [ ] `01-009` `audit-missing-menu-to-e1m1` | prereqs: `01-008` | file: `plan_fps/steps/01-009-audit-missing-menu-to-e1m1.md`
 - [ ] `01-010` `audit-missing-live-input` | prereqs: `01-009` | file: `plan_fps/steps/01-010-audit-missing-live-input.md`
 - [ ] `01-011` `audit-missing-live-audio` | prereqs: `01-010` | file: `plan_fps/steps/01-011-audit-missing-live-audio.md`
