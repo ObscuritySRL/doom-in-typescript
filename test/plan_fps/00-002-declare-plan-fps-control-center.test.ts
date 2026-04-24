@@ -139,4 +139,41 @@ describe('plan_fps control-center declaration manifest', () => {
       expect(sharedFile.startsWith('reference/')).toBe(false);
     }
   });
+
+  test('plan_fps/steps directory contains exactly totalSteps step files', async () => {
+    const stepsGlob = new Bun.Glob('*.md');
+    let stepFileCount = 0;
+    for await (const _ of stepsGlob.scan({ cwd: manifest.activeControlCenter.stepsDirectory })) {
+      stepFileCount += 1;
+    }
+    expect(stepFileCount).toBe(manifest.totalSteps);
+  });
+
+  test('README.md Ralph-Loop Workflow section has exactly ralphLoopWorkflowStepCount numbered items', async () => {
+    const readmeText = await Bun.file(README_PATH).text();
+    const workflowSectionStart = readmeText.indexOf('## Ralph-Loop Workflow');
+    expect(workflowSectionStart).toBeGreaterThanOrEqual(0);
+
+    const afterHeader = readmeText.slice(workflowSectionStart);
+    const nextSectionIndex = afterHeader.indexOf('\n## ', 1);
+    const workflowBody = nextSectionIndex === -1 ? afterHeader : afterHeader.slice(0, nextSectionIndex);
+
+    const numberedItems = workflowBody.match(/^\d+\. /gm);
+    expect(numberedItems).not.toBeNull();
+    expect(numberedItems!.length).toBe(manifest.ralphLoopWorkflowStepCount);
+  });
+
+  test('README.md Validation section contains every command listed in validationCommands', async () => {
+    const readmeText = await Bun.file(README_PATH).text();
+    const validationSectionStart = readmeText.indexOf('## Validation');
+    expect(validationSectionStart).toBeGreaterThanOrEqual(0);
+
+    const afterHeader = readmeText.slice(validationSectionStart);
+    const nextSectionIndex = afterHeader.indexOf('\n## ', 1);
+    const validationBody = nextSectionIndex === -1 ? afterHeader : afterHeader.slice(0, nextSectionIndex);
+
+    for (const validationCommand of manifest.validationCommands) {
+      expect(validationBody).toContain(validationCommand);
+    }
+  });
 });

@@ -169,4 +169,24 @@ describe('existing plan classification manifest', () => {
     expect(misses).toContain('Windowed host wired from launch to gameplay');
     expect(misses).toContain('Side-by-side acceptance gate');
   });
+
+  test('totalCompletedSteps equals the sum of per-phase completedSteps in the manifest itself', () => {
+    const sumOfPhaseCounts = manifest.oldPlan.phases.reduce((accumulator, phase) => accumulator + phase.completedSteps, 0);
+    expect(sumOfPhaseCounts).toBe(manifest.oldPlan.totalCompletedSteps);
+  });
+
+  test('phase names in the manifest match the actual phase headers in plan_engine/MASTER_CHECKLIST.md', async () => {
+    const checklistText = await Bun.file(CHECKLIST_PATH).text();
+    const headerPattern = /^## Phase (\d{2}): (.+)$/gm;
+    const observedHeaders = new Map<string, string>();
+
+    for (const headerMatch of checklistText.matchAll(headerPattern)) {
+      observedHeaders.set(headerMatch[1]!, headerMatch[2]!.trim());
+    }
+
+    expect(observedHeaders.size).toBe(EXPECTED_PHASES.length);
+    for (const phase of EXPECTED_PHASES) {
+      expect(observedHeaders.get(phase.id)).toBe(phase.name);
+    }
+  });
 });
