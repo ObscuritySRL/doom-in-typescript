@@ -308,6 +308,7 @@ function Invoke-CodexCommand {
     function Write-CodexOutputDelta {
         param(
             [Parameter(Mandatory = $true)]
+            [AllowEmptyString()]
             [string]$Text
         )
 

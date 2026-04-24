@@ -176,6 +176,40 @@ describe('Ralph-loop PowerShell scripts', () => {
     }
   });
 
+  test('codex scripts tolerate silent polling intervals before CLI output', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-codex-ralph-loop-'));
+    const fakeCodexCommandPath = join(temporaryDirectory, 'codex.cmd');
+
+    await Bun.write(
+      fakeCodexCommandPath,
+      [
+        '@echo off',
+        'if "%~1"=="--version" (',
+        '  echo codex-fake 1.0',
+        '  exit /b 0',
+        ')',
+        'ping -n 2 127.0.0.1 >nul',
+        'echo RLP_STATUS: NO_ELIGIBLE_STEP',
+        'echo RLP_STEP_ID: NONE',
+        'echo RLP_STEP_TITLE: NONE',
+        'echo RLP_REASON: delayed fake done',
+        'exit /b 0',
+        '',
+      ].join('\r\n'),
+    );
+
+    try {
+      const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexCommandPath]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
+      expect(result.combinedOutput).not.toContain('Cannot bind argument to parameter');
+      expect(result.combinedOutput).not.toContain('ParameterArgumentValidationErrorEmptyStringNotAllowed');
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
+  });
+
   test('ralph-loop scripts inject execution metadata for handoff tracking', async () => {
     for (const scriptPath of [CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
       const scriptText = await Bun.file(scriptPath).text();
