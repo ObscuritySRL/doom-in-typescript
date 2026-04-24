@@ -1,0 +1,91 @@
+{
+  "auditScope": {
+    "evidencePaths": ["package.json", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+    "sourceCatalogIds": ["S-FPS-009", "S-FPS-010", "S-FPS-011"],
+    "sourceLimitation": "This audit is limited to the current launcher module surface exposed by src/main.ts and workspace metadata listed in the step read-only section."
+  },
+  "currentEntrypoint": {
+    "command": "bun run src/main.ts",
+    "defaultMapName": "E1M1",
+    "defaultScale": 2,
+    "defaultSkill": 2,
+    "helpUsage": ["bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]", "bun run start -- [--iwad <path-to-iwad>] --list-maps"],
+    "path": "src/main.ts",
+    "sourceTextSha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44"
+  },
+  "generatedDate": "2026-04-24",
+  "missingSurfaces": [
+    {
+      "actualPath": null,
+      "currentPath": "src/main.ts",
+      "evidence": "package.json scripts.start is bun run src/main.ts while the playable parity runtime target is bun run doom.ts.",
+      "requiredPath": "doom.ts",
+      "surface": "root-doom-ts-command-contract"
+    },
+    {
+      "actualPath": null,
+      "currentPath": "src/main.ts",
+      "evidence": "src/main.ts creates a launcher session and calls runLauncherWindow directly; it imports no title, menu, or attract-loop module.",
+      "requiredPath": null,
+      "surface": "title-menu-startup-flow"
+    }
+  ],
+  "moduleEntries": [
+    {
+      "path": "src/bootstrap/cmdline.ts",
+      "status": "present-imported",
+      "surface": "command-line parsing",
+      "symbols": ["CommandLine"],
+      "usedBy": ["src/main.ts"]
+    },
+    {
+      "path": "src/launcher/session.ts",
+      "status": "present-imported",
+      "surface": "launcher resource loading and session creation",
+      "symbols": ["createLauncherSession", "loadLauncherResources"],
+      "usedBy": ["src/main.ts"]
+    },
+    {
+      "path": "src/launcher/win32.ts",
+      "status": "present-imported",
+      "surface": "Win32 launcher window",
+      "symbols": ["runLauncherWindow"],
+      "usedBy": ["src/main.ts"]
+    },
+    {
+      "path": "src/main.ts",
+      "status": "present-entrypoint",
+      "surface": "current launcher entrypoint",
+      "symbols": ["DEFAULT_LOCAL_IWAD_PATH", "DEFAULT_MAP_NAME", "DEFAULT_SCALE", "DEFAULT_SKILL", "HELP_TEXT", "main", "parseIntegerParameter", "resolveDefaultIwadPath"],
+      "usedBy": ["package.json scripts.start"]
+    },
+    {
+      "path": "src/reference/policy.ts",
+      "status": "present-imported",
+      "surface": "reference bundle path policy",
+      "symbols": ["REFERENCE_BUNDLE_PATH"],
+      "usedBy": ["src/main.ts"]
+    },
+    {
+      "path": "src/reference/target.ts",
+      "status": "present-imported",
+      "surface": "primary reference target metadata",
+      "symbols": ["PRIMARY_TARGET"],
+      "usedBy": ["src/main.ts"]
+    }
+  ],
+  "schemaVersion": 1,
+  "stepId": "01-001",
+  "stepTitle": "audit-existing-modules",
+  "workspace": {
+    "formatScript": "bun run tools/format-changed.ts",
+    "packageName": "doom-codex",
+    "packagePrivate": true,
+    "packageType": "module",
+    "runtimeTarget": "bun run doom.ts",
+    "startScript": "bun run src/main.ts",
+    "tsconfigInclude": ["src", "test", "tools"],
+    "tsconfigNoEmit": true,
+    "tsconfigTypes": ["bun"]
+  }
+}

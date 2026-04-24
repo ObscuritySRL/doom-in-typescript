@@ -257,3 +257,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-001 audit-existing-modules
 - open_risks: none
+
+## 2026-04-24 - 01-001 audit-existing-modules
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-001
+- step_title: audit-existing-modules
+- summary: Audited the current launcher module surface exposed by `src/main.ts` within the selected step's read scope. Wrote `plan_fps/manifests/01-001-audit-existing-modules.json` (schema v1) locking the current `bun run src/main.ts` launcher command, default map/scale/skill, launcher help usage lines, `src/main.ts` SHA-256 digest, imported module surface entries sorted by path, explicit null entries for the missing root `doom.ts` command contract and title/menu startup flow exposed by the current entrypoint, and Bun workspace metadata from `package.json` and `tsconfig.json`. Added focused test `test/plan_fps/01-001-audit-existing-modules.test.ts` that deep-locks the manifest, cross-checks source imports and defaults against `src/main.ts`, cross-checks package and TypeScript workspace facts, verifies source catalog authorities, and asserts sorted module/missing-surface entries with explicit nulls.
+- files_changed: plan_fps/manifests/01-001-audit-existing-modules.json; test/plan_fps/01-001-audit-existing-modules.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-001-audit-existing-modules.test.ts (5 pass, 0 fail, 19 expect() calls); bun test (6515 pass, 0 fail, 689744 expect() calls across 185 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-009 (current launcher surface and imported modules exposed by `src/main.ts`)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-002 audit-existing-tests
+- open_risks: The audit is intentionally scoped to the current launcher entrypoint and workspace metadata allowed by the step; broader source-tree module inventory remains for later audit steps with broader read scopes.

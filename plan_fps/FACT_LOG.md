@@ -47,3 +47,9 @@
 - date: 2026-04-24
 - fact: The repository contains three top-level in-workspace reference roots at `doom/`, `iwad/`, and `reference/`; all three currently exist as directories on disk under `D:/Projects/doom-in-typescript`.
 - source: filesystem inspection
+
+## F-FPS-009
+
+- date: 2026-04-24
+- fact: The current launcher surface is `src/main.ts`; it imports `src/bootstrap/cmdline.ts`, `src/launcher/session.ts`, `src/launcher/win32.ts`, `src/reference/policy.ts`, and `src/reference/target.ts`, and the launcher help text states that it starts in the gameplay view and can switch to automap on demand.
+- source: `src/main.ts`, `plan_fps/manifests/01-001-audit-existing-modules.json`
