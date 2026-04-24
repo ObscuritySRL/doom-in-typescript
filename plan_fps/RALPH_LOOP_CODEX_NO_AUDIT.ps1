@@ -212,15 +212,83 @@ function Resolve-CodexCommand {
     )
 
     if (Test-Path -LiteralPath $Value -PathType Leaf) {
-        return (Resolve-Path -LiteralPath $Value).Path
+        $resolvedPath = (Resolve-Path -LiteralPath $Value).Path
+        if ($resolvedPath.EndsWith(".ps1", [System.StringComparison]::OrdinalIgnoreCase)) {
+            $cmdPath = [System.IO.Path]::ChangeExtension($resolvedPath, ".cmd")
+            if (Test-Path -LiteralPath $cmdPath -PathType Leaf) {
+                return $cmdPath
+            }
+        }
+
+        return $resolvedPath
     }
 
     $command = Get-Command $Value -ErrorAction SilentlyContinue
     if ($command) {
+        if ($command.Source.EndsWith(".ps1", [System.StringComparison]::OrdinalIgnoreCase)) {
+            $cmdPath = [System.IO.Path]::ChangeExtension($command.Source, ".cmd")
+            if (Test-Path -LiteralPath $cmdPath -PathType Leaf) {
+                return $cmdPath
+            }
+        }
+
         return $command.Source
     }
 
     return ""
+}
+
+function ConvertTo-ProcessArgument {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Value
+    )
+
+    if ($Value -notmatch '[\s"]') {
+        return $Value
+    }
+
+    return '"' + ($Value -replace '"', '\"') + '"'
+}
+
+function Invoke-CodexCommand {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Command,
+        [Parameter(Mandatory = $true)]
+        [string[]]$Arguments,
+        [Parameter(Mandatory = $true)]
+        [string]$InputText,
+        [Parameter(Mandatory = $true)]
+        [string]$WorkingDirectory
+    )
+
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = $Command
+    $startInfo.Arguments = ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
+    $startInfo.WorkingDirectory = $WorkingDirectory
+    $startInfo.UseShellExecute = $false
+    $startInfo.RedirectStandardInput = $true
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+    $startInfo.StandardOutputEncoding = [Console]::OutputEncoding
+    $startInfo.StandardErrorEncoding = [Console]::OutputEncoding
+
+    $process = New-Object System.Diagnostics.Process
+    $process.StartInfo = $startInfo
+    [void]$process.Start()
+
+    $process.StandardInput.Write($InputText)
+    $process.StandardInput.Close()
+
+    $standardOutput = $process.StandardOutput.ReadToEnd()
+    $standardError = $process.StandardError.ReadToEnd()
+    $process.WaitForExit()
+
+    return [PSCustomObject]@{
+        ExitCode = $process.ExitCode
+        Response = ($standardOutput + $standardError)
+    }
 }
 
 function Test-CodexCommand {
@@ -404,8 +472,9 @@ try {
         Write-Host "Execution model: $executionModel"
         Write-Host "Execution effort: $executionEffort"
 
-        $response = $prompt | & $resolvedCodexCommand @codexArguments 2>&1 | Out-String
-        $exitCode = $LASTEXITCODE
+        $result = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prompt -WorkingDirectory $WorkingDirectory
+        $response = $result.Response
+        $exitCode = $result.ExitCode
 
         Set-Content -LiteralPath $responsePath -Value $response -Encoding utf8
         Write-Host "Saved response to $responsePath"
@@ -475,8 +544,9 @@ Response to convert:
 $response
 "@
 
-            $repairResponse = $repairPrompt | & $resolvedCodexCommand @codexArguments 2>&1 | Out-String
-            $repairExitCode = $LASTEXITCODE
+            $repairResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $repairPrompt -WorkingDirectory $WorkingDirectory
+            $repairResponse = $repairResult.Response
+            $repairExitCode = $repairResult.ExitCode
 
             Set-Content -LiteralPath $repairPath -Value $repairResponse -Encoding utf8
             Write-Host "Saved repair response to $repairPath"

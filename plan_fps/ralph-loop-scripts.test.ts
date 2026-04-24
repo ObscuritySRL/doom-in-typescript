@@ -1,6 +1,9 @@
 import { describe, expect, test } from 'bun:test';
 
 import { existsSync } from 'node:fs';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const AGENTS_PATH = 'AGENTS.md';
 const AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE.ps1';
@@ -107,9 +110,13 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('[string]$Effort = "xhigh"');
       expect(scriptText).toContain('[string]$Model = ""');
       expect(scriptText).toContain('[string]$CodexCommand = "codex"');
+      expect(scriptText).toContain('function ConvertTo-ProcessArgument');
       expect(scriptText).toContain('function ConvertTo-CodexReasoningEffort');
+      expect(scriptText).toContain('function Invoke-CodexCommand');
       expect(scriptText).toContain('function Resolve-CodexCommand');
       expect(scriptText).toContain('function Test-CodexCommand');
+      expect(scriptText).toContain('[System.IO.Path]::ChangeExtension($command.Source, ".cmd")');
+      expect(scriptText).toContain('[System.IO.Path]::ChangeExtension($resolvedPath, ".cmd")');
       expect(scriptText).toContain('if ($Value -eq "max")');
       expect(scriptText).toContain('return "xhigh"');
       expect(scriptText).toContain('Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex CLI command not found: $CodexCommand.');
@@ -121,12 +128,51 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('"--sandbox", "danger-full-access"');
       expect(scriptText).toContain('"-c", "model_reasoning_effort=$codexReasoningEffort"');
       expect(scriptText).toContain('$codexArguments += "-"');
-      expect(scriptText).toContain('| & $resolvedCodexCommand @codexArguments 2>&1 | Out-String');
+      expect(scriptText).toContain('Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments');
+      expect(scriptText).not.toContain('| & $resolvedCodexCommand @codexArguments 2>&1 | Out-String');
       expect(scriptText).not.toContain('--dangerously-skip-permissions');
       expect(scriptText).not.toContain('--effort');
       expect(scriptText).not.toContain('--output-format');
       expect(scriptText).not.toContain('--print');
       expect(scriptText).not.toContain('Codex-opus-4-7');
+    }
+  });
+
+  test('codex scripts capture CLI stderr without PowerShell NativeCommandError', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-codex-ralph-loop-'));
+    const fakeCodexCommandPath = join(temporaryDirectory, 'codex.cmd');
+    const fakeCodexPowerShellPath = join(temporaryDirectory, 'codex.ps1');
+
+    await Bun.write(
+      fakeCodexCommandPath,
+      [
+        '@echo off',
+        'if "%~1"=="--version" (',
+        '  echo codex-fake 1.0',
+        '  exit /b 0',
+        ')',
+        'echo OpenAI Codex v0.124.0 (research preview) 1>&2',
+        'echo RLP_STATUS: NO_ELIGIBLE_STEP',
+        'echo RLP_STEP_ID: NONE',
+        'echo RLP_STEP_TITLE: NONE',
+        'echo RLP_REASON: fake done',
+        'exit /b 0',
+        '',
+      ].join('\r\n'),
+    );
+    await Bun.write(fakeCodexPowerShellPath, 'Write-Error "ps1 shim should not run"\r\nexit 9\r\n');
+
+    try {
+      const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexPowerShellPath]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.combinedOutput).toContain(`Codex command: ${fakeCodexCommandPath}`);
+      expect(result.combinedOutput).toContain('OpenAI Codex v0.124.0 (research preview)');
+      expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
+      expect(result.combinedOutput).not.toContain('NativeCommandError');
+      expect(result.combinedOutput).not.toContain('ps1 shim should not run');
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
     }
   });
 
