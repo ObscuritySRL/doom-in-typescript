@@ -108,7 +108,7 @@ describe('Ralph-loop PowerShell scripts', () => {
 
       expect(scriptText).toContain('[ValidateSet("minimal", "low", "medium", "high", "xhigh", "max")]');
       expect(scriptText).toContain('[string]$Effort = "xhigh"');
-      expect(scriptText).toContain('[string]$Model = ""');
+      expect(scriptText).toContain('[string]$Model = "gpt-5.5"');
       expect(scriptText).toContain('[string]$CodexCommand = "codex"');
       expect(scriptText).toContain('function ConvertTo-ProcessArgument');
       expect(scriptText).toContain('function ConvertTo-CodexReasoningEffort');
@@ -133,6 +133,7 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('"exec"');
       expect(scriptText).toContain('"--color", "never"');
       expect(scriptText).toContain('"--sandbox", "danger-full-access"');
+      expect(scriptText).toContain('$codexArguments += @("--model", $Model)');
       expect(scriptText).toContain('"-c", "model_reasoning_effort=$codexReasoningEffort"');
       expect(scriptText).toContain('$codexArguments += "-"');
       expect(scriptText).toContain('Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments');
@@ -175,6 +176,8 @@ describe('Ralph-loop PowerShell scripts', () => {
 
       expect(result.exitCode).toBe(0);
       expect(result.combinedOutput).toContain(`Codex command: ${fakeCodexCommandPath}`);
+      expect(result.combinedOutput).toContain('Codex arguments: --ask-for-approval never exec --color never --sandbox danger-full-access -c model_reasoning_effort=xhigh --model gpt-5.5 -');
+      expect(result.combinedOutput).toContain('Execution model: gpt-5.5');
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
       expect(result.combinedOutput).not.toContain('OpenAI Codex v0.124.0 (research preview)');
       expect(result.combinedOutput).not.toContain('NativeCommandError');
@@ -229,7 +232,8 @@ describe('Ralph-loop PowerShell scripts', () => {
 
       expect(scriptText).toContain('function Add-ExecutionMetadata');
       expect(scriptText).toContain('$executionAgent = "Codex"');
-      expect(scriptText).toContain('$executionModel = "codex-cli-default-unspecified"');
+      expect(scriptText).toContain('[string]$Model = "gpt-5.5"');
+      expect(scriptText).toContain('$executionModel = $Model');
       expect(scriptText).toContain('Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry');
       expect(scriptText).toContain('RLP_AGENT: $executionAgent');
       expect(scriptText).toContain('RLP_MODEL: $executionModel');

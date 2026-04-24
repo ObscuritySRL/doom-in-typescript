@@ -71,7 +71,7 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 - `RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.
 - Both scripts default to `D:\Projects\doom-in-typescript` as the working directory and write loop output under `plan_fps/loop_logs/`.
 - The Codex scripts require the Codex CLI terminal command on `PATH`, or `-CodexCommand <full CLI path>`.
-- Handoff entries must record `agent`, `model`, and `effort`. Codex launchers record `codex-cli-default-unspecified` when `-Model` is left blank; pass `-Model` to record an exact Codex model.
+- Handoff entries must record `agent`, `model`, and `effort`. Codex launchers default to `gpt-5.5`; pass `-Model` to override the exact Codex model.
 
 ## Boundaries
 

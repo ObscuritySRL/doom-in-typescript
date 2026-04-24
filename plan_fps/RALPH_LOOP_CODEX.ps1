@@ -5,7 +5,7 @@
     [string]$LogDirectory = "D:\Projects\doom-in-typescript\plan_fps\loop_logs",
     [ValidateSet("minimal", "low", "medium", "high", "xhigh", "max")]
     [string]$Effort = "xhigh",
-    [string]$Model = "",
+    [string]$Model = "gpt-5.5",
     [string]$CodexCommand = "codex",
     [int]$MaxIterations = 2147483647,
     [int]$SleepSeconds = 0
