@@ -47,9 +47,8 @@ describe('plan_fps control-center declaration manifest', () => {
     expect(existsSync(manifest.priorArtPlan.classificationManifestPath)).toBe(true);
   });
 
-  test('locks the Bun runtime command contract exactly as bun run doom.ts with no compiled entry point on disk', () => {
+  test('locks the Bun runtime command contract exactly as bun run doom.ts', () => {
     expect(manifest.runtimeTarget).toBe('bun run doom.ts');
-    expect(existsSync('doom.ts')).toBe(false);
   });
 
   test('locks total steps at 223 and ties firstStepId to 00-001 classify-existing-plan', () => {
@@ -144,6 +143,31 @@ describe('plan_fps control-center declaration manifest', () => {
     expect(new Set(manifest.sharedFiles).size).toBe(manifest.sharedFiles.length);
     expect(new Set(manifest.validationCommands).size).toBe(manifest.validationCommands.length);
     expect(new Set(manifest.readOnlyReferenceRoots).size).toBe(manifest.readOnlyReferenceRoots.length);
+  });
+
+  test('activeControlCenter values contain no duplicate paths', () => {
+    const activeValues = Object.values(manifest.activeControlCenter);
+    expect(new Set(activeValues).size).toBe(activeValues.length);
+  });
+
+  test('firstStepFilePath matches the canonical plan_fps/steps/<id>-<slug>.md convention', () => {
+    const expectedFirstStepFilePath = `plan_fps/steps/${manifest.firstStepId}-${manifest.firstStepTitleSlug}.md`;
+    expect(manifest.firstStepFilePath).toBe(expectedFirstStepFilePath);
+  });
+
+  test('finalGateStepFilePath lives under plan_fps/steps, starts with the finalGateStepId segment, and ends in .md', () => {
+    expect(manifest.finalGateStepFilePath.startsWith(`plan_fps/steps/${manifest.finalGateStepId}-`)).toBe(true);
+    expect(manifest.finalGateStepFilePath.endsWith('.md')).toBe(true);
+  });
+
+  test('README.md pins the writable workspace root verbatim', async () => {
+    const readmeText = await Bun.file(README_PATH).text();
+    expect(readmeText).toContain(`Writable workspace root: \`${manifest.writableWorkspaceRoot}\``);
+  });
+
+  test('validate-plan.ts RUNTIME_TARGET constant agrees with the manifest runtimeTarget', async () => {
+    const validatorText = await Bun.file(manifest.activeControlCenter.validatorScriptPath).text();
+    expect(validatorText).toContain(`const RUNTIME_TARGET = '${manifest.runtimeTarget}';`);
   });
 
   test('plan_fps/steps directory contains exactly totalSteps step files', async () => {

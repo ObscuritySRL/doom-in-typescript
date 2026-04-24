@@ -24,8 +24,9 @@ describe('reject-compiled-exe-target manifest', () => {
     expect(manifest.rejectedTargets.map((rejectedTarget) => rejectedTarget.kind)).toEqual(['compiled-executable', 'wrapper-executable', 'installer', 'packaged-binary']);
   });
 
-  test('every rejectedTargets entry has a non-empty string kind and description', () => {
+  test('every rejectedTargets entry has a non-empty string kind and description, with unique kinds and unique descriptions', () => {
     const seenKinds = new Set<string>();
+    const seenDescriptions = new Set<string>();
     for (const target of manifest.rejectedTargets) {
       expect(typeof target.kind).toBe('string');
       expect(target.kind.length).toBeGreaterThan(0);
@@ -33,8 +34,11 @@ describe('reject-compiled-exe-target manifest', () => {
       expect(target.description.length).toBeGreaterThan(0);
       expect(seenKinds.has(target.kind)).toBe(false);
       seenKinds.add(target.kind);
+      expect(seenDescriptions.has(target.description)).toBe(false);
+      seenDescriptions.add(target.description);
     }
     expect(seenKinds.size).toBe(manifest.rejectedTargets.length);
+    expect(seenDescriptions.size).toBe(manifest.rejectedTargets.length);
   });
 
   test('forbiddenArtifactExtensions starts each entry with a dot, contains .exe and .msi, and is unique', () => {
@@ -61,7 +65,7 @@ describe('reject-compiled-exe-target manifest', () => {
     expect(new Set(manifest.forbiddenBuildCommands).size).toBe(manifest.forbiddenBuildCommands.length);
   });
 
-  test('forbiddenPackageJsonScriptNames contains expected exe/compile/build/package variants and is unique', () => {
+  test('forbiddenPackageJsonScriptNames contains expected exe/compile/build/package variants, is all-lowercase, and is unique', () => {
     expect(manifest.forbiddenPackageJsonScriptNames).toContain('build-exe');
     expect(manifest.forbiddenPackageJsonScriptNames).toContain('build:exe');
     expect(manifest.forbiddenPackageJsonScriptNames).toContain('compile-exe');
@@ -70,6 +74,11 @@ describe('reject-compiled-exe-target manifest', () => {
     expect(manifest.forbiddenPackageJsonScriptNames).toContain('dist-exe');
     expect(manifest.forbiddenPackageJsonScriptNames).toContain('package-exe');
     expect(manifest.forbiddenPackageJsonScriptNames).toContain('bundle-exe');
+    for (const scriptName of manifest.forbiddenPackageJsonScriptNames) {
+      expect(typeof scriptName).toBe('string');
+      expect(scriptName.length).toBeGreaterThan(0);
+      expect(scriptName).toBe(scriptName.toLowerCase());
+    }
     expect(new Set(manifest.forbiddenPackageJsonScriptNames).size).toBe(manifest.forbiddenPackageJsonScriptNames.length);
   });
 
