@@ -115,10 +115,13 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('function Invoke-CodexCommand');
       expect(scriptText).toContain('function Resolve-CodexCommand');
       expect(scriptText).toContain('function Test-CodexCommand');
+      expect(scriptText).toContain('"--output-last-message"');
       expect(scriptText).toContain('$standardInputPath = [System.IO.Path]::GetTempFileName()');
       expect(scriptText).toContain('[System.IO.File]::WriteAllText($standardInputPath, $InputText, (New-Object System.Text.UTF8Encoding($false)))');
       expect(scriptText).toContain('Start-Process -FilePath $Command');
       expect(scriptText).toContain('-RedirectStandardInput $standardInputPath');
+      expect(scriptText).toContain('-NoNewWindow');
+      expect(scriptText).toContain('Codex is still running; final response will be saved to $ResponsePath');
       expect(scriptText).toContain('[System.IO.Path]::ChangeExtension($command.Source, ".cmd")');
       expect(scriptText).toContain('[System.IO.Path]::ChangeExtension($resolvedPath, ".cmd")');
       expect(scriptText).toContain('if ($Value -eq "max")');
@@ -134,7 +137,7 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('$codexArguments += "-"');
       expect(scriptText).toContain('Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments');
       expect(scriptText).not.toContain('| & $resolvedCodexCommand @codexArguments 2>&1 | Out-String');
-      expect(scriptText).not.toContain('$env:ComSpec');
+      expect(scriptText).not.toContain('$startInfo.FileName = $env:ComSpec');
       expect(scriptText).not.toContain('--dangerously-skip-permissions');
       expect(scriptText).not.toContain('--effort');
       expect(scriptText).not.toContain('--output-format');
@@ -172,10 +175,15 @@ describe('Ralph-loop PowerShell scripts', () => {
 
       expect(result.exitCode).toBe(0);
       expect(result.combinedOutput).toContain(`Codex command: ${fakeCodexCommandPath}`);
-      expect(result.combinedOutput).toContain('OpenAI Codex v0.124.0 (research preview)');
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
+      expect(result.combinedOutput).not.toContain('OpenAI Codex v0.124.0 (research preview)');
       expect(result.combinedOutput).not.toContain('NativeCommandError');
       expect(result.combinedOutput).not.toContain('ps1 shim should not run');
+
+      const responseLogMatch = result.combinedOutput.match(/LOOP_RESPONSE_LOG: (.+)/);
+      expect(responseLogMatch).not.toBeNull();
+      const responseLogText = await Bun.file(responseLogMatch?.[1]?.trim() ?? '').text();
+      expect(responseLogText).toContain('OpenAI Codex v0.124.0 (research preview)');
     } finally {
       await rm(temporaryDirectory, { force: true, recursive: true });
     }

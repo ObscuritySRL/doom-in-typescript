@@ -266,88 +266,70 @@ function Invoke-CodexCommand {
         [string]$ResponsePath
     )
 
-    $responseBuilder = New-Object System.Text.StringBuilder
-    $responseWriter = New-Object System.IO.StreamWriter($ResponsePath, $false, (New-Object System.Text.UTF8Encoding($false)))
-    $responseWriter.AutoFlush = $true
+    $diagnosticBuilder = New-Object System.Text.StringBuilder
     $standardInputPath = [System.IO.Path]::GetTempFileName()
     $standardOutputPath = [System.IO.Path]::GetTempFileName()
     $standardErrorPath = [System.IO.Path]::GetTempFileName()
-    $standardOutputOffset = 0
-    $standardErrorOffset = 0
-
-    function Read-FileDelta {
-        param(
-            [Parameter(Mandatory = $true)]
-            [string]$Path,
-            [Parameter(Mandatory = $true)]
-            [ref]$Offset
-        )
-
-        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
-            return ""
-        }
-
-        $stream = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
-        try {
-            if ($stream.Length -le $Offset.Value) {
-                return ""
-            }
-
-            $stream.Position = $Offset.Value
-            $byteCount = [int]($stream.Length - $Offset.Value)
-            $buffer = New-Object byte[] $byteCount
-            $bytesRead = $stream.Read($buffer, 0, $byteCount)
-            $Offset.Value = $stream.Position
-
-            return [Console]::OutputEncoding.GetString($buffer, 0, $bytesRead)
-        }
-        finally {
-            $stream.Dispose()
-        }
-    }
-
-    function Write-CodexOutputDelta {
-        param(
-            [Parameter(Mandatory = $true)]
-            [AllowEmptyString()]
-            [string]$Text
-        )
-
-        if ([string]::IsNullOrEmpty($Text)) {
-            return
-        }
-
-        [void]$responseBuilder.Append($Text)
-        $responseWriter.Write($Text)
-        Write-Host -NoNewline $Text
-    }
+    $lastHeartbeat = [datetime]::UtcNow
 
     [System.IO.File]::WriteAllText($standardInputPath, $InputText, (New-Object System.Text.UTF8Encoding($false)))
-    $argumentText = ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
+    $executionArguments = New-Object System.Collections.Generic.List[string]
+    foreach ($argument in $Arguments) {
+        $executionArguments.Add($argument)
+        if ($argument -eq "exec") {
+            $executionArguments.Add("--output-last-message")
+            $executionArguments.Add($ResponsePath)
+        }
+    }
+
+    $argumentText = ($executionArguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
     $process = $null
 
     try {
-        $process = Start-Process -FilePath $Command -ArgumentList $argumentText -WorkingDirectory $WorkingDirectory -RedirectStandardInput $standardInputPath -RedirectStandardOutput $standardOutputPath -RedirectStandardError $standardErrorPath -PassThru
+        $process = Start-Process -FilePath $Command -ArgumentList $argumentText -WorkingDirectory $WorkingDirectory -RedirectStandardInput $standardInputPath -RedirectStandardOutput $standardOutputPath -RedirectStandardError $standardErrorPath -NoNewWindow -PassThru
 
         while (-not $process.HasExited) {
-            Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardOutputPath -Offset ([ref]$standardOutputOffset))
-            Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardErrorPath -Offset ([ref]$standardErrorOffset))
+            if ((([datetime]::UtcNow) - $lastHeartbeat).TotalSeconds -ge 30) {
+                Write-Host "Codex is still running; final response will be saved to $ResponsePath"
+                $lastHeartbeat = [datetime]::UtcNow
+            }
             Start-Sleep -Milliseconds 200
         }
 
         $process.WaitForExit()
         $process.Refresh()
-        Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardOutputPath -Offset ([ref]$standardOutputOffset))
-        Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardErrorPath -Offset ([ref]$standardErrorOffset))
+        if (Test-Path -LiteralPath $standardOutputPath -PathType Leaf) {
+            [void]$diagnosticBuilder.Append((Get-Content -LiteralPath $standardOutputPath -Raw))
+        }
+        if (Test-Path -LiteralPath $standardErrorPath -PathType Leaf) {
+            [void]$diagnosticBuilder.Append((Get-Content -LiteralPath $standardErrorPath -Raw))
+        }
     }
     finally {
-        $responseWriter.Dispose()
         Remove-Item -LiteralPath $standardInputPath, $standardOutputPath, $standardErrorPath -Force -ErrorAction SilentlyContinue
     }
 
+    $response = ""
+    if (Test-Path -LiteralPath $ResponsePath -PathType Leaf) {
+        $response = Get-Content -LiteralPath $ResponsePath -Raw
+    }
+
+    if (-not $response.Trim()) {
+        $response = $diagnosticBuilder.ToString()
+        Set-Content -LiteralPath $ResponsePath -Value $response -Encoding utf8
+    }
+
+    $exitCode = 1
+    if ($null -ne $process -and $null -ne $process.ExitCode -and "$($process.ExitCode)" -ne "") {
+        $exitCode = $process.ExitCode
+    }
+    elseif ($response.Trim()) {
+        $exitCode = 0
+    }
+
     return [PSCustomObject]@{
-        ExitCode = $process.ExitCode
-        Response = $responseBuilder.ToString()
+        ExitCode = $exitCode
+        Response = $response
     }
 }
 
@@ -545,7 +527,7 @@ try {
         Write-Host "Execution effort: $executionEffort"
 
         Write-Host "--- Audit pass (PRE_PROMPT.md) ---"
-        Write-Host "Streaming pre-prompt response to $prePath"
+        Write-Host "Saving final pre-prompt response to $prePath"
         $preResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prePrompt -WorkingDirectory $WorkingDirectory -ResponsePath $prePath
         $preResponse = $preResult.Response
         $preExitCode = $preResult.ExitCode
@@ -574,7 +556,7 @@ try {
         }
 
         Write-Host "--- Forward step (PROMPT.md) ---"
-        Write-Host "Streaming response to $responsePath"
+        Write-Host "Saving final response to $responsePath"
         $result = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prompt -WorkingDirectory $WorkingDirectory -ResponsePath $responsePath
         $response = $result.Response
         $exitCode = $result.ExitCode
@@ -646,7 +628,7 @@ Response to convert:
 $response
 "@
 
-            Write-Host "Streaming repair response to $repairPath"
+            Write-Host "Saving final repair response to $repairPath"
             $repairResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $repairPrompt -WorkingDirectory $WorkingDirectory -ResponsePath $repairPath
             $repairResponse = $repairResult.Response
             $repairExitCode = $repairResult.ExitCode
