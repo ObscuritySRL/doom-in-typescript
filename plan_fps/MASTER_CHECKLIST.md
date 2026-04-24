@@ -42,7 +42,7 @@
 
 ## Phase 02: Reference / Oracle Expansion
 
-- [ ] `02-001` `capture-implementation-clean-launch-expectations` | prereqs: `01-015` | file: `plan_fps/steps/02-001-capture-implementation-clean-launch-expectations.md`
+- [x] `02-001` `capture-implementation-clean-launch-expectations` | prereqs: `01-015` | file: `plan_fps/steps/02-001-capture-implementation-clean-launch-expectations.md`
 - [ ] `02-002` `capture-reference-clean-launch` | prereqs: `02-001` | file: `plan_fps/steps/02-002-capture-reference-clean-launch.md`
 - [ ] `02-003` `capture-startup-sequence` | prereqs: `02-002` | file: `plan_fps/steps/02-003-capture-startup-sequence.md`
 - [ ] `02-004` `capture-initial-title-frame` | prereqs: `02-003` | file: `plan_fps/steps/02-004-capture-initial-title-frame.md`

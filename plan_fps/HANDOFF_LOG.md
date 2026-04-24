@@ -527,3 +527,21 @@
 - oracle_changes: none
 - next_eligible_steps: 02-001 capture-implementation-clean-launch-expectations
 - open_risks: The selected step did not permit opening host, replay, input, audio, renderer, oracle, or reference implementation files beyond `src/main.ts`, so actual side-by-side replay implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 02-001 capture-implementation-clean-launch-expectations
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-001
+- step_title: capture-implementation-clean-launch-expectations
+- summary: Added the implementation clean-launch expectations oracle fixture at `test/oracles/fixtures/capture-implementation-clean-launch-expectations.json`, derived from the allowed 01-015 launch-surface manifest. The fixture records the current and target command contracts, source authority, static tic/frame capture window, source hashes, and exact observed launch trace. Added focused test `test/oracles/capture-implementation-clean-launch-expectations.test.ts` to lock the fixture exactly, cross-check the 01-015 manifest schema/command/trace/hash evidence, verify source-catalog authority rows, and assert oracle registration in `plan_fps/REFERENCE_ORACLES.md`.
+- files_changed: test/oracles/fixtures/capture-implementation-clean-launch-expectations.json; test/oracles/capture-implementation-clean-launch-expectations.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-implementation-clean-launch-expectations.test.ts (5 pass, 0 fail, 7 expect() calls); bun test (6592 pass, 0 fail, 690345 expect() calls); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-006 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-implementation-clean-launch-expectations.json` with refresh command `bun test test/oracles/capture-implementation-clean-launch-expectations.test.ts`
+- next_eligible_steps: 02-002 capture-reference-clean-launch
+- open_risks: The fixture is a static implementation expectation artifact derived from the 01-015 allowed launch-surface evidence; live replay capture remains intentionally deferred to later oracle-capture steps.
