@@ -53,3 +53,9 @@
 - date: 2026-04-24
 - fact: The current launcher surface is `src/main.ts`; it imports `src/bootstrap/cmdline.ts`, `src/launcher/session.ts`, `src/launcher/win32.ts`, `src/reference/policy.ts`, and `src/reference/target.ts`, and the launcher help text states that it starts in the gameplay view and can switch to automap on demand.
 - source: `src/main.ts`, `plan_fps/manifests/01-001-audit-existing-modules.json`
+
+## F-FPS-010
+
+- date: 2026-04-24
+- fact: The visible test configuration is Bun-based: `tsconfig.json` includes the `test` root, `package.json` has no `test` script, and the 01-002 verification contract invokes `bun test` directly.
+- source: `package.json`, `tsconfig.json`, `plan_fps/steps/01-002-audit-existing-tests.md`

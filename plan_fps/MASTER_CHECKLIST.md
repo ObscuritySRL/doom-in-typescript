@@ -25,7 +25,7 @@
 ## Phase 01: Current Engine Audit
 
 - [x] `01-001` `audit-existing-modules` | prereqs: `00-014` | file: `plan_fps/steps/01-001-audit-existing-modules.md`
-- [ ] `01-002` `audit-existing-tests` | prereqs: `01-001` | file: `plan_fps/steps/01-002-audit-existing-tests.md`
+- [x] `01-002` `audit-existing-tests` | prereqs: `01-001` | file: `plan_fps/steps/01-002-audit-existing-tests.md`
 - [ ] `01-003` `audit-existing-oracle-fixtures` | prereqs: `01-002` | file: `plan_fps/steps/01-003-audit-existing-oracle-fixtures.md`
 - [ ] `01-004` `audit-existing-manifests` | prereqs: `01-003` | file: `plan_fps/steps/01-004-audit-existing-manifests.md`
 - [ ] `01-005` `audit-pure-engine-surface` | prereqs: `01-004` | file: `plan_fps/steps/01-005-audit-pure-engine-surface.md`

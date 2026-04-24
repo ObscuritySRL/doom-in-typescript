@@ -1,0 +1,118 @@
+{
+  "auditedScope": {
+    "allowedReadOnlyFiles": ["package.json", "plan_fps/FACT_LOG.md", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+    "existingTestDirectoryEnumeration": null,
+    "limitation": "The selected step does not permit opening existing test files or enumerating test directories; this manifest records only test surfaces exposed by the allowed files and uses explicit nulls for surfaces not visible in that scope."
+  },
+  "commandContracts": {
+    "focusedTestCommand": "bun test test/plan_fps/01-002-audit-existing-tests.test.ts",
+    "formatCommand": "bun run format",
+    "fullTestCommand": "bun test",
+    "runtimeTargetCommand": "bun run doom.ts",
+    "startCommand": "bun run src/main.ts",
+    "typecheckCommand": "bun x tsc --noEmit --project tsconfig.json"
+  },
+  "evidencePaths": ["package.json", "plan_fps/FACT_LOG.md", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+  "factDependencies": ["F-FPS-005", "F-FPS-009", "F-FPS-010"],
+  "missingTestSurfaces": [
+    {
+      "evidence": "src/main.ts HELP_TEXT states the launcher starts in gameplay view and can switch to automap.",
+      "id": "clean-launch-to-menu-test",
+      "path": null,
+      "reason": "No clean-launch title or menu startup surface is exposed by the current launcher entrypoint.",
+      "status": "not-present-in-visible-launcher-surface"
+    },
+    {
+      "evidence": "FACT_LOG.md F-FPS-005 records that the playable parity target still requires a root-level doom.ts command contract.",
+      "id": "direct-root-doom-ts-launch-test",
+      "path": null,
+      "reason": "The current package start command targets src/main.ts, not the final root doom.ts command.",
+      "status": "not-present-in-visible-command-surface"
+    },
+    {
+      "evidence": "tsconfig.json includes the test root but the selected step read scope does not permit test file enumeration.",
+      "id": "existing-test-file-inventory",
+      "path": null,
+      "reason": "Existing test files cannot be opened or enumerated within this step's Read Only boundary.",
+      "status": "not-visible-in-selected-read-scope"
+    },
+    {
+      "evidence": "src/main.ts defaults directly to E1M1 gameplay resources through DEFAULT_MAP_NAME.",
+      "id": "menu-to-e1m1-test",
+      "path": null,
+      "reason": "No visible title/menu route to E1M1 is exposed by the current launcher entrypoint.",
+      "status": "not-present-in-visible-launcher-surface"
+    }
+  ],
+  "packageJson": {
+    "description": "Vanilla Doom parity engine built on Bun FFI and @bun-win32 bindings.",
+    "hashSha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+    "hasTestScript": false,
+    "private": true,
+    "scripts": {
+      "format": "bun run tools/format-changed.ts",
+      "start": "bun run src/main.ts"
+    },
+    "testScript": null,
+    "type": "module"
+  },
+  "schemaVersion": 1,
+  "sourceCatalogAuthorities": [
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-009",
+      "path": "package.json",
+      "source": "package manifest"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-010",
+      "path": "tsconfig.json",
+      "source": "TypeScript config"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts",
+      "source": "current launcher entry"
+    }
+  ],
+  "stepId": "01-002",
+  "stepTitle": "audit-existing-tests",
+  "testExecution": {
+    "configuredRunner": "bun:test",
+    "fullSuiteCommand": "bun test",
+    "packageScriptTestCommand": null,
+    "testFilesIncludeRoot": "test"
+  },
+  "tsconfig": {
+    "hashSha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+    "include": ["src", "test", "tools"],
+    "noEmit": true,
+    "strict": true,
+    "types": ["bun"]
+  },
+  "visibleTestSurfaces": [
+    {
+      "command": "bun test",
+      "evidence": "The step verification contract and Bun-only repository rules use bun test as the test runner.",
+      "id": "bun-test-runner",
+      "path": null,
+      "status": "configured-command"
+    },
+    {
+      "command": "bun test test/plan_fps/01-002-audit-existing-tests.test.ts",
+      "evidence": "This step's Test Files section names the focused audit test.",
+      "id": "focused-audit-test",
+      "path": "test/plan_fps/01-002-audit-existing-tests.test.ts",
+      "status": "step-owned-test"
+    },
+    {
+      "command": null,
+      "evidence": "tsconfig.json includes the test root.",
+      "id": "test-include-root",
+      "path": "test",
+      "status": "configured-include-root"
+    }
+  ]
+}

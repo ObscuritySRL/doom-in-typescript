@@ -275,3 +275,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-002 audit-existing-tests
 - open_risks: The audit is intentionally scoped to the current launcher entrypoint and workspace metadata allowed by the step; broader source-tree module inventory remains for later audit steps with broader read scopes.
+
+## 2026-04-24 - 01-002 audit-existing-tests
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-002
+- step_title: audit-existing-tests
+- summary: Audited the existing test surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-002-audit-existing-tests.json` (schema v1) locking the Bun test runner command, package and TypeScript test configuration, exact hashes for `package.json` and `tsconfig.json`, visible test roots and step-owned focused test path, and explicit nulls for test inventory and launch/menu test surfaces not visible in this step's read scope. Added focused test `test/plan_fps/01-002-audit-existing-tests.test.ts` that deep-locks the manifest, cross-checks live package/tsconfig values and hashes, verifies current launcher facts from `src/main.ts`, and verifies fact/source-catalog evidence.
+- files_changed: plan_fps/manifests/01-002-audit-existing-tests.json; test/plan_fps/01-002-audit-existing-tests.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, Formatted 2 files, No fixes applied); bun test test/plan_fps/01-002-audit-existing-tests.test.ts (4 pass, 0 fail, 29 expect() calls); bun test (6519 pass, 0 fail, 689773 expect() calls across 186 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-010 (visible Bun-based test configuration through `package.json`, `tsconfig.json`, and the 01-002 verification contract)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-003 audit-existing-oracle-fixtures
+- open_risks: The selected step did not permit opening existing test files or enumerating test directories, so the manifest intentionally records visible configuration and explicit nulls instead of a broad file inventory.
