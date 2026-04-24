@@ -473,3 +473,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-013 audit-missing-save-load-ui
 - open_risks: The selected step did not permit opening host, renderer, menu, status bar, automap, palette, or framebuffer implementation files, so actual live rendering implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-013 audit-missing-save-load-ui
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-013
+- step_title: audit-missing-save-load-ui
+- summary: Audited the missing save/load UI surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-013-audit-missing-save-load-ui.json` (schema v1) locking current and target command contracts, package and TypeScript source hashes, source-catalog evidence, observed gameplay-first launcher surfaces, and explicit nulls for load-game menu UI, save/load live roundtrip, save description entry, save-file path policy, and save-slot menu UI. Added focused test `test/plan_fps/01-013-audit-missing-save-load-ui.test.ts` that deep-locks the manifest, cross-checks live package and TypeScript values, recomputes source hashes, verifies launcher transition ordering and missing save/load controls, verifies explicit null surfaces, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-013-audit-missing-save-load-ui.json; test/plan_fps/01-013-audit-missing-save-load-ui.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Corrected the recorded `tsconfig.json` SHA-256 after the first focused test recomputed the live hash and exposed a one-character transcription error.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-013-audit-missing-save-load-ui.test.ts (initial run failed: 4 pass, 1 fail, `tsconfig.json` SHA-256 expected value transcription error); bun run format (rerun, No fixes applied); bun test test/plan_fps/01-013-audit-missing-save-load-ui.test.ts (5 pass, 0 fail, 36 expect() calls); bun test (6575 pass, 0 fail, 690190 expect() calls across 197 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-021 (visible `src/main.ts` gameplay-first launch exposes no save/load menu route, save/load slot UI, save description entry, save path policy, or live save/load roundtrip surface in the 01-013 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-014 audit-missing-config-persistence
+- open_risks: The selected step did not permit opening host, menu, save, persistence, or game-state implementation files, so actual save/load implementation inventory remains intentionally recorded as explicit nulls for later broader-scope steps.

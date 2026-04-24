@@ -119,3 +119,9 @@
 - date: 2026-04-24
 - fact: Within the 01-012 read scope, `src/main.ts` exposes only rendering-adjacent launch text, scale/title options, and delegation to `runLauncherWindow`; no live renderer, framebuffer, presentation blit, palette/gamma, status bar, menu overlay, title screen, automap renderer, wipe transition, or framebuffer hash surface is exposed.
 - source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-012-audit-missing-live-rendering.json`
+
+## F-FPS-021
+
+- date: 2026-04-24
+- fact: Within the 01-013 read scope, `src/main.ts` exposes gameplay-first launch and delegates to `runLauncherWindow`, but no save/load menu route, save slot UI, load slot UI, save description entry, save path policy, or live save/load roundtrip surface is exposed.
+- source: `src/main.ts`, `package.json`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-013-audit-missing-save-load-ui.json`
