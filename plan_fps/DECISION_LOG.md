@@ -26,7 +26,7 @@
 - date: 2026-04-24
 - decision: The C1 runtime target is exactly `bun run doom.ts`.
 - rationale: Playable parity must be achieved through Bun and TypeScript directly, not through a wrapper executable or packaged binary.
-- evidence: user request
+- evidence: user request, `plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json`
 - affected_steps: 00-003, 03-001, 14-001, 15-010
 - supersedes: none
 

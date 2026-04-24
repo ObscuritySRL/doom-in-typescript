@@ -41,3 +41,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-003 pin-bun-run-doom-entrypoint
 - open_risks: none
+
+## 2026-04-24 - 00-003 pin-bun-run-doom-entrypoint
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 00-003
+- step_title: pin-bun-run-doom-entrypoint
+- summary: Pinned the C1 runtime command contract as exactly `bun run doom.ts` and decomposed it into program (`bun`), subcommand (`run`), and workspace-root entry file (`doom.ts`). Wrote `plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json` (schema v1) tying decision D-FPS-003, the literal runtimeCommand, the commandContract triple, the workspace-relative + absolute entry-point paths with `presentOnDisk=false`, the implementation owner step (03-002 wire-root-doom-ts-entrypoint), the current launcher (`package.json` `start` script value `bun run src/main.ts`, current entry `src/main.ts`, `matchesRuntimeCommand=false`), the cross-reference to the 00-002 control-center manifest, and an evidence-paths list. Added focused test `test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts` (16 tests, 91 expects) that locks every manifest field by exact value, asserts `runtimeCommand === program + " " + subcommand + " " + entryFile`, verifies `doom.ts` does not exist while `src/main.ts` does, cross-checks `package.json` scripts.start against the recorded scriptValue, cross-checks the 00-002 control-center manifest's runtimeTarget against this manifest's runtimeCommand, verifies README.md still pins `Final command: bun run doom.ts`, verifies MASTER_CHECKLIST.md still pins `Runtime target: bun run doom.ts`, and verifies the D-FPS-003 section in DECISION_LOG.md is accepted, pins the exact decision sentence, and now cites this manifest as evidence.
+- files_changed: plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json; test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, No fixes applied); bun test test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts (16 pass, 0 fail, 91 expects); bun test plan_fps/validate-plan.test.ts (2 pass, 0 fail, 6 expects); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps, First step: 00-001); bun test (6384 pass, 0 fail, 688032 expects across 174 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: D-FPS-003 evidence extended to cite `plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json`; status remains accepted
+- oracle_changes: none
+- next_eligible_steps: 00-004 reject-compiled-exe-target
+- open_risks: none

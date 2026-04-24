@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "decisionId": "D-FPS-003",
+  "rationale": "Pins the C1 runtime command contract as exactly `bun run doom.ts`. Decomposes the contract into the runtime program (`bun`), the runtime subcommand (`run`), and the workspace-root entry file (`doom.ts`) so downstream steps can cross-check the contract by part rather than by parsing README prose. Records that the entry file `doom.ts` does not yet exist on disk and that the current `package.json` start script (`bun run src/main.ts`) does not match the contract; the implementation gap is owned by step 03-002 wire-root-doom-ts-entrypoint.",
+  "runtimeCommand": "bun run doom.ts",
+  "commandContract": {
+    "kind": "bun-run-script",
+    "program": "bun",
+    "subcommand": "run",
+    "entryFile": "doom.ts"
+  },
+  "entryPoint": {
+    "workspaceRelativePath": "doom.ts",
+    "workspaceAbsolutePath": "D:/Projects/doom-in-typescript/doom.ts",
+    "presentOnDisk": false,
+    "ownerStepId": "03-002",
+    "ownerStepFilePath": "plan_fps/steps/03-002-wire-root-doom-ts-entrypoint.md"
+  },
+  "currentLauncher": {
+    "packageJsonPath": "package.json",
+    "scriptName": "start",
+    "scriptValue": "bun run src/main.ts",
+    "entryFile": "src/main.ts",
+    "entryFilePresentOnDisk": true,
+    "matchesRuntimeCommand": false
+  },
+  "controlCenterManifestPath": "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+  "evidencePaths": [
+    "plan_fps/README.md",
+    "plan_fps/MASTER_CHECKLIST.md",
+    "plan_fps/DECISION_LOG.md",
+    "plan_fps/manifests/00-002-declare-plan-fps-control-center.json",
+    "plan_fps/steps/03-002-wire-root-doom-ts-entrypoint.md",
+    "plan_fps/steps/15-010-gate-final-side-by-side.md",
+    "package.json",
+    "src/main.ts"
+  ]
+}
