@@ -99,3 +99,13 @@
 - evidence: plan_fps/FACT_LOG.md, plan_fps/README.md, plan_fps/manifests/00-009-pin-asset-license-boundaries.json, package.json, tsconfig.json
 - affected_steps: 00-009, 02-001, 02-002, 14-005, 15-010
 - supersedes: none
+
+## D-FPS-011
+
+- status: accepted
+- date: 2026-04-24
+- decision: Final acceptance is a side-by-side comparison between the Bun playable path and the local read-only reference path, started from clean launch and driven by identical deterministic input, with exact parity required for authoritative transition, framebuffer, audio, music, save/load, and state evidence outside the approved windowed-versus-fullscreen launch envelope.
+- rationale: D-FPS-003 pins the Bun runtime target to `bun run doom.ts`, D-FPS-004 limits presentation drift to windowed-versus-fullscreen launch, and D-FPS-009/D-FPS-010 constrain the local reference authority to read-only, non-redistributable DOOM assets. This step turns "side-by-side-verifiable" from a slogan into an exact acceptance standard for later oracle capture and final gating work.
+- evidence: plan_fps/README.md, plan_fps/manifests/00-011-define-side-by-side-acceptance-standard.json, package.json, tsconfig.json
+- affected_steps: 00-011, 00-012, 02-031, 15-010
+- supersedes: none

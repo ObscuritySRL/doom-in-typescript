@@ -185,3 +185,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-011 define-side-by-side-acceptance-standard
 - open_risks: none
+
+## 2026-04-24 - 00-011 define-side-by-side-acceptance-standard
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-011
+- step_title: define-side-by-side-acceptance-standard
+- summary: Defined the exact side-by-side acceptance standard for the playable parity plan. Added decision D-FPS-011 and wrote `plan_fps/manifests/00-011-define-side-by-side-acceptance-standard.json` (schema v1) locking the Bun-only runtime target, the allowed windowed-versus-fullscreen launch envelope, the ordered comparison pipeline, the final gate step `15-010`, and the eight exact-match evidence families that later oracle and gate steps must satisfy. Added focused test `test/plan_fps/00-011-define-side-by-side-acceptance-standard.test.ts` to lock the parsed manifest payload exactly, assert the ordered comparison pipeline and evidence-family standards, cross-check the README mission sentence plus live Bun/no-emit workspace settings, verify the exact D-FPS-011 decision block, and require every evidence path to exist on disk.
+- files_changed: plan_fps/manifests/00-011-define-side-by-side-acceptance-standard.json; test/plan_fps/00-011-define-side-by-side-acceptance-standard.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Replaced the initial raw manifest-text assertion in the focused test with an exact parsed-payload assertion after Biome reformatted several JSON arrays onto single lines.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/00-011-define-side-by-side-acceptance-standard.test.ts (initial run failed on the formatting-sensitive raw-text assertion); bun run format (rerun after recovery edit, No fixes applied); bun test test/plan_fps/00-011-define-side-by-side-acceptance-standard.test.ts (rerun, 5 pass, 0 fail, 15 expect() calls); bun test (6501 pass, 0 fail, 689663 expect() calls across 182 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (final publish pass, No fixes applied); bun test test/plan_fps/00-011-define-side-by-side-acceptance-standard.test.ts (final publish pass, 5 pass, 0 fail, 15 expect() calls); bun test (final publish pass, 6501 pass, 0 fail, 689663 expect() calls across 182 files); bun x tsc --noEmit --project tsconfig.json (final publish pass, clean)
+- new_facts: none
+- decision_changes: added D-FPS-011 accepted, citing `plan_fps/README.md`, `plan_fps/manifests/00-011-define-side-by-side-acceptance-standard.json`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-012 define-step-validation-rules
+- open_risks: none
