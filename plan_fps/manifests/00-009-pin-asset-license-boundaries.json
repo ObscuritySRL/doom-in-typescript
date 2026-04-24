@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "stepId": "00-009",
+  "stepTitleSlug": "pin-asset-license-boundaries",
+  "decisionId": "D-FPS-010",
+  "decisionDependencies": ["D-FPS-003", "D-FPS-008", "D-FPS-009"],
+  "factLogReferences": ["F-FPS-004", "F-FPS-008"],
+  "runtimeTarget": {
+    "bunOnly": true,
+    "command": "bun run doom.ts",
+    "deterministicReplayCompatible": true
+  },
+  "workspaceBoundaries": {
+    "workspaceRoot": "D:/Projects/doom-in-typescript",
+    "readOnlyReferenceRoots": [
+      {
+        "path": "D:/Projects/doom-in-typescript/doom",
+        "rootId": "doom"
+      },
+      {
+        "path": "D:/Projects/doom-in-typescript/iwad",
+        "rootId": "iwad"
+      },
+      {
+        "path": "D:/Projects/doom-in-typescript/reference",
+        "rootId": "reference"
+      }
+    ]
+  },
+  "localReferenceAssetInventory": [
+    {
+      "assetId": "chocolate-doom-config",
+      "category": "reference-config",
+      "path": "D:/Projects/doom-in-typescript/doom/chocolate-doom.cfg",
+      "redistributionAllowed": false
+    },
+    {
+      "assetId": "doom-debug-executable",
+      "category": "reference-binary",
+      "path": "D:/Projects/doom-in-typescript/doom/DOOMD.EXE",
+      "redistributionAllowed": false
+    },
+    {
+      "assetId": "shareware-iwad",
+      "category": "iwad",
+      "path": "D:/Projects/doom-in-typescript/doom/DOOM1.WAD",
+      "redistributionAllowed": false
+    },
+    {
+      "assetId": "vanilla-default-config",
+      "category": "reference-config",
+      "path": "D:/Projects/doom-in-typescript/doom/default.cfg",
+      "redistributionAllowed": false
+    },
+    {
+      "assetId": "vanilla-doom-executable",
+      "category": "reference-binary",
+      "path": "D:/Projects/doom-in-typescript/doom/DOOM.EXE",
+      "redistributionAllowed": false
+    }
+  ],
+  "licenseBoundary": {
+    "policySentence": "Local DOOM binaries, WADs, configs, and other reference assets under `doom/`, `iwad/`, and `reference/` are inputs for local playable-parity development and verification only; they are not cleared for redistribution.",
+    "allowCommittingCopiedReferenceAssets": false,
+    "allowCopyingReferenceAssetBytesIntoWritableOutputs": false,
+    "allowLocalOracleArtifactsUnderWorkspace": true,
+    "allowLocalReadOnlyReferenceUse": true,
+    "allowPackagingReferenceAssets": false,
+    "allowPublishingReferenceAssets": false,
+    "allowWritingInsideReadOnlyReferenceRoots": false,
+    "allowedWritableOracleExamples": ["D:/Projects/doom-in-typescript/plan_fps/manifests/", "D:/Projects/doom-in-typescript/test/oracles/fixtures/"],
+    "forbiddenActions": [
+      "commit copied proprietary assets into git-tracked workspace paths",
+      "copy reference asset bytes into writable product or test outputs",
+      "package reference assets for redistribution",
+      "publish reference assets outside the local workspace",
+      "write inside the read-only reference roots"
+    ]
+  },
+  "currentWorkspace": {
+    "packageJson": {
+      "path": "D:/Projects/doom-in-typescript/package.json",
+      "private": true
+    },
+    "tsconfigJson": {
+      "noEmit": true,
+      "path": "D:/Projects/doom-in-typescript/tsconfig.json"
+    }
+  },
+  "readmePolicyLine": "- Do not redistribute proprietary DOOM assets.",
+  "evidencePaths": [
+    "D:/Projects/doom-in-typescript/doom",
+    "D:/Projects/doom-in-typescript/iwad",
+    "D:/Projects/doom-in-typescript/package.json",
+    "D:/Projects/doom-in-typescript/plan_fps/FACT_LOG.md",
+    "D:/Projects/doom-in-typescript/plan_fps/README.md",
+    "D:/Projects/doom-in-typescript/reference",
+    "D:/Projects/doom-in-typescript/tsconfig.json"
+  ]
+}

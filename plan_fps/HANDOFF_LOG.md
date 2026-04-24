@@ -149,3 +149,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-009 pin-asset-license-boundaries
 - open_risks: none
+
+## 2026-04-24 - 00-009 pin-asset-license-boundaries
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-009
+- step_title: pin-asset-license-boundaries
+- summary: Pinned the local-reference-only license boundary for DOOM assets used by the playable parity effort. Added decision D-FPS-010 and wrote `plan_fps/manifests/00-009-pin-asset-license-boundaries.json` (schema v1) locking the Bun-only runtime target, deterministic replay compatibility, decision and fact dependencies, the three read-only reference roots, the protected local reference asset inventory (`doom/DOOM.EXE`, `doom/DOOMD.EXE`, `doom/DOOM1.WAD`, `doom/default.cfg`, `doom/chocolate-doom.cfg`), the explicit redistribution-forbidden policy, allowed local oracle-output examples under writable workspace paths, and the package/TypeScript distribution restrictions (`package.json` `private: true`, `tsconfig.json` `noEmit: true`). Added focused test `test/plan_fps/00-009-pin-asset-license-boundaries.test.ts` (9 tests, 36 expects) that deep-locks the manifest, verifies the protected inventory exists and stays under the declared read-only roots, verifies writable oracle examples stay inside the workspace and outside those roots, verifies the README redistribution line and FACT_LOG facts verbatim, cross-checks the live `package.json` and `tsconfig.json` restrictions, verifies every evidence path exists, and verifies the exact D-FPS-010 block in `DECISION_LOG.md`.
+- files_changed: plan_fps/manifests/00-009-pin-asset-license-boundaries.json; test/plan_fps/00-009-pin-asset-license-boundaries.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-009-pin-asset-license-boundaries.test.ts (9 pass, 0 fail, 36 expects); bun test (6489 pass, 0 fail, 689626 expects across 180 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (final publish pass, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-009-pin-asset-license-boundaries.test.ts (final publish pass, 9 pass, 0 fail, 36 expects); bun test (final publish pass, 6489 pass, 0 fail, 689626 expects across 180 files); bun x tsc --noEmit --project tsconfig.json (final publish pass, clean)
+- new_facts: none
+- decision_changes: added D-FPS-010 accepted, citing `plan_fps/FACT_LOG.md`, `plan_fps/README.md`, `plan_fps/manifests/00-009-pin-asset-license-boundaries.json`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-010 pin-windowed-only-difference
+- open_risks: none

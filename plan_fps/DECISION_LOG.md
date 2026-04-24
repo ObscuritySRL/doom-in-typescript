@@ -89,3 +89,13 @@
 - evidence: doom, iwad, plan_fps/README.md, plan_fps/manifests/00-008-pin-read-only-reference-boundaries.json, reference, package.json, tsconfig.json
 - affected_steps: 00-008, 00-009, 02-001, 02-002, 15-001
 - supersedes: none
+
+## D-FPS-010
+
+- status: accepted
+- date: 2026-04-24
+- decision: Local DOOM binaries, WADs, configs, and other reference assets under `doom/`, `iwad/`, and `reference/` are inputs for local playable-parity development and verification only; they are not cleared for redistribution.
+- rationale: D-FPS-008 pins the writable workspace root and D-FPS-009 pins the read-only reference roots. The README already says `Do not redistribute proprietary DOOM assets.`; this step turns that rule into an explicit local-use-only boundary so later oracle capture and packaging work cannot treat local possession of reference assets as redistribution permission.
+- evidence: plan_fps/FACT_LOG.md, plan_fps/README.md, plan_fps/manifests/00-009-pin-asset-license-boundaries.json, package.json, tsconfig.json
+- affected_steps: 00-009, 02-001, 02-002, 14-005, 15-010
+- supersedes: none

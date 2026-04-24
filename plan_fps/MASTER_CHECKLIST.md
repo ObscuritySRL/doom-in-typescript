@@ -15,7 +15,7 @@
 - [x] `00-006` `record-bun-native-api-preference` | prereqs: `00-005` | file: `plan_fps/steps/00-006-record-bun-native-api-preference.md`
 - [x] `00-007` `pin-writable-workspace-boundaries` | prereqs: `00-006` | file: `plan_fps/steps/00-007-pin-writable-workspace-boundaries.md`
 - [x] `00-008` `pin-read-only-reference-boundaries` | prereqs: `00-007` | file: `plan_fps/steps/00-008-pin-read-only-reference-boundaries.md`
-- [ ] `00-009` `pin-asset-license-boundaries` | prereqs: `00-008` | file: `plan_fps/steps/00-009-pin-asset-license-boundaries.md`
+- [x] `00-009` `pin-asset-license-boundaries` | prereqs: `00-008` | file: `plan_fps/steps/00-009-pin-asset-license-boundaries.md`
 - [ ] `00-010` `pin-windowed-only-difference` | prereqs: `00-009` | file: `plan_fps/steps/00-010-pin-windowed-only-difference.md`
 - [ ] `00-011` `define-side-by-side-acceptance-standard` | prereqs: `00-010` | file: `plan_fps/steps/00-011-define-side-by-side-acceptance-standard.md`
 - [ ] `00-012` `define-step-validation-rules` | prereqs: `00-011` | file: `plan_fps/steps/00-012-define-step-validation-rules.md`
