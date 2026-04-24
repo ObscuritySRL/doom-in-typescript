@@ -20,7 +20,7 @@
 - [x] `00-011` `define-side-by-side-acceptance-standard` | prereqs: `00-010` | file: `plan_fps/steps/00-011-define-side-by-side-acceptance-standard.md`
 - [x] `00-012` `define-step-validation-rules` | prereqs: `00-011` | file: `plan_fps/steps/00-012-define-step-validation-rules.md`
 - [x] `00-013` `create-plan-validation-script` | prereqs: `00-012` | file: `plan_fps/steps/00-013-create-plan-validation-script.md`
-- [ ] `00-014` `test-plan-validation-script` | prereqs: `00-013` | file: `plan_fps/steps/00-014-test-plan-validation-script.md`
+- [x] `00-014` `test-plan-validation-script` | prereqs: `00-013` | file: `plan_fps/steps/00-014-test-plan-validation-script.md`
 
 ## Phase 01: Current Engine Audit
 

@@ -129,3 +129,13 @@
 - evidence: plan_fps/validate-plan.ts, test/plan_fps/plan-validation-script.test.ts, package.json, tsconfig.json
 - affected_steps: 00-013, 00-014, 15-001
 - supersedes: none
+
+## D-FPS-014
+
+- status: accepted
+- date: 2026-04-24
+- decision: `plan_fps/validate-plan.test.ts` is the canonical focused validator test. It must lock the exact `PLAN_VALIDATION_COMMAND`, validate explicit `planDirectory` fixtures through `validatePlan`, and assert deterministic malformed-plan diagnostics through both `validatePlan` and `runValidationCli`.
+- rationale: D-FPS-012 defines the shared step-schema rules and D-FPS-013 defines the canonical Bun validator command. This step makes the validator testable without mutating the live repository plan by pinning the explicit `planDirectory` hook and the exact diagnostic lines that malformed fixtures must produce.
+- evidence: plan_fps/validate-plan.ts, plan_fps/validate-plan.test.ts, package.json, tsconfig.json
+- affected_steps: 00-014, 15-001
+- supersedes: none

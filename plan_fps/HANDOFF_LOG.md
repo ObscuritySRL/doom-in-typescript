@@ -239,3 +239,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-014 test-plan-validation-script
 - open_risks: none
+
+## 2026-04-24 - 00-014 test-plan-validation-script
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-014
+- step_title: test-plan-validation-script
+- summary: Expanded `plan_fps/validate-plan.test.ts` into the canonical focused validator test. The suite now locks the exact `PLAN_VALIDATION_COMMAND`, validates a minimal explicit `planDirectory` fixture through `validatePlan(planDirectory)`, and asserts the exact malformed-plan diagnostics returned by both `validatePlan` and `runValidationCli` without mutating the live repository plan.
+- files_changed: plan_fps/validate-plan.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Inspected `plan_fps/validate-plan.ts` after an initial temp-fixture probe kept resolving the repository plan. That inspection exposed the explicit `planDirectory` parameter needed for deterministic fixture-based tests; no production code change was required.
+- tests_run: bun run format (Formatted 1 file, Fixed 1 file); bun test plan_fps/validate-plan.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (6510 pass, 0 fail, 689719 expect() calls across 184 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (publish pass, No fixes applied); bun test plan_fps/validate-plan.test.ts (publish pass, 5 pass, 0 fail, 12 expect() calls); bun test (publish pass, 6510 pass, 0 fail, 689723 expect() calls across 184 files); bun x tsc --noEmit --project tsconfig.json (publish pass, clean)
+- new_facts: none
+- decision_changes: added D-FPS-014 accepted, citing `plan_fps/validate-plan.ts`, `plan_fps/validate-plan.test.ts`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 01-001 audit-existing-modules
+- open_risks: none
