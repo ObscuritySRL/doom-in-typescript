@@ -27,7 +27,7 @@
 ## F-FPS-005
 
 - date: 2026-04-24
-- fact: The current package script launches `src/main.ts); the playable parity target still requires a root-level `doom.ts` command contract.
+- fact: The current package script launches `src/main.ts`; the playable parity target still requires a root-level `doom.ts` command contract.
 - source: `package.json`, `src/main.ts`
 
 ## F-FPS-006

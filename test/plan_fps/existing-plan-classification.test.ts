@@ -128,4 +128,45 @@ describe('existing plan classification manifest', () => {
     expect(factLogText).toContain('plan_fps/manifests/existing-plan-classification.json');
     expect(factLogText).toContain('classification is `mixed`');
   });
+
+  test('rationale pins the key evidence that drives the mixed classification', () => {
+    expect(typeof manifest.rationale).toBe('string');
+    expect(manifest.rationale.length).toBeGreaterThan(0);
+    expect(manifest.rationale).toContain('167 steps');
+    expect(manifest.rationale).toContain('bun run doom.ts');
+    expect(manifest.rationale).toContain('side-by-side acceptance gate');
+    expect(manifest.rationale).toContain('mixed');
+  });
+
+  test('evidencePaths is a non-empty array whose entries all live outside read-only reference roots', () => {
+    expect(Array.isArray(manifest.evidencePaths)).toBe(true);
+    expect(manifest.evidencePaths.length).toBeGreaterThanOrEqual(10);
+    for (const evidencePath of manifest.evidencePaths) {
+      expect(typeof evidencePath).toBe('string');
+      expect(evidencePath.length).toBeGreaterThan(0);
+      expect(evidencePath.startsWith('doom/')).toBe(false);
+      expect(evidencePath.startsWith('iwad/')).toBe(false);
+      expect(evidencePath.startsWith('reference/')).toBe(false);
+    }
+  });
+
+  test('playable gap includesPlayableScope lists the delivered plan_engine/ scope items', () => {
+    const includes = manifest.playableParityGaps.includesPlayableScope;
+    expect(Array.isArray(includes)).toBe(true);
+    expect(includes.length).toBeGreaterThanOrEqual(5);
+    expect(includes).toContain('Host timing (35 Hz tic accumulator)');
+    expect(includes).toContain('Keyboard and mouse input mapping');
+    expect(includes).toContain('Save/load serialization');
+    expect(includes).toContain('Demo parse, record, and playback');
+    expect(includes).toContain('Parity and acceptance suite');
+  });
+
+  test('playable gap missesPlayableScope pins the bun-run and side-by-side anchors', () => {
+    const misses = manifest.playableParityGaps.missesPlayableScope;
+    expect(Array.isArray(misses)).toBe(true);
+    expect(misses.length).toBeGreaterThanOrEqual(3);
+    expect(misses).toContain('bun run doom.ts runtime entry point');
+    expect(misses).toContain('Windowed host wired from launch to gameplay');
+    expect(misses).toContain('Side-by-side acceptance gate');
+  });
 });
