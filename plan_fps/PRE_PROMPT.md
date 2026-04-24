@@ -2,6 +2,8 @@ Audit pass for `D:\Projects\doom-in-typescript`.
 
 This turn is NOT a new step implementation. Select 1 to 3 previously completed steps at random and perform a thorough correctness, performance, and improvement audit, then fix every issue you uncover inside the audited step scope.
 
+Use the execution metadata supplied at the top of this prompt. Do not infer or rewrite it. If no execution metadata is supplied, record `unknown` for agent, model, and effort in the final status block.
+
 Workspace boundaries:
 
 - Treat `D:\Projects\doom-in-typescript\` as the only active workspace.
@@ -55,8 +57,8 @@ For each selected step, perform the full audit below. Do not skip any subsection
    - Do NOT introduce backwards-compatibility shims, renamed `_vars`, or `// removed` markers for deleted code.
 
 5. Re-verify after every fix
-   - If you changed any file during this audit pass and the repo has a formatter command in `package.json`, run that formatter before the verification sequence below.
-   - If you make any additional edits while recovering from a failed verification command, rerun the formatter before rerunning verification.
+   - If you changed any file during this audit pass, run `bun run format` before the verification sequence below.
+   - Biome is the formatter. If you make any additional edits while recovering from a failed verification command, rerun `bun run format` before rerunning verification.
    - Run the focused test command listed on that step in `MASTER_CHECKLIST.md`.
    - Run `bun test` from `D:\Projects\doom-in-typescript`.
    - Run `bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json`.
@@ -99,6 +101,9 @@ Output requirements:
 
 RLP_STATUS: COMPLETED|BLOCKED|LIMIT_REACHED
 RLP_AUDITED_STEPS: <semicolon-separated step ids or NONE>
+RLP_AGENT: <execution metadata agent or unknown>
+RLP_MODEL: <execution metadata model or unknown>
+RLP_EFFORT: <execution metadata effort or unknown>
 RLP_FILES_CHANGED: <semicolon-separated absolute paths or NONE>
 RLP_TEST_COMMANDS: <semicolon-separated commands or NONE>
 RLP_REASON: <one-line reason>

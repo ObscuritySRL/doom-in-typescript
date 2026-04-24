@@ -14,6 +14,8 @@ Choose the first unchecked step whose prerequisites are complete.
 
 Work on exactly one step.
 
+Use the execution metadata supplied at the top of this prompt. Do not infer or rewrite it. If no execution metadata is supplied, record `unknown` for agent, model, and effort.
+
 Read only:
 - `plan_fps/README.md`
 - `plan_fps/MASTER_CHECKLIST.md`
@@ -27,16 +29,22 @@ Do not open related steps unless blocked.
 Implement only files listed in Expected Changes. The only standing exceptions are the required control updates to `plan_fps/MASTER_CHECKLIST.md`, `plan_fps/FACT_LOG.md`, `plan_fps/DECISION_LOG.md`, `plan_fps/REFERENCE_ORACLES.md`, and `plan_fps/HANDOFF_LOG.md`.
 
 Run verification in order:
-1. focused test command
-2. `bun test`
-3. `bun x tsc --noEmit --project tsconfig.json`
-4. extra commands listed by the step
+1. `bun run format`
+2. focused test command
+3. `bun test`
+4. `bun x tsc --noEmit --project tsconfig.json`
+5. extra commands listed by the step
 
-If the step changes files and the repo has a formatter command, run it before verification.
+Biome is the formatter. If the step changes files, run `bun run format` before verification and before publishing. If formatting changes files or any recovery edit is made, rerun `bun run format` before rerunning verification.
 
 Do not mark the step complete unless all required verification passes.
 
 Append `HANDOFF_LOG.md`.
+
+Each `HANDOFF_LOG.md` completion entry must include:
+- `agent`: exact execution metadata agent value
+- `model`: exact execution metadata model value
+- `effort`: exact execution metadata effort value
 
 After the step is verified and logs/checklist are updated, commit the step and push it before stopping.
 
@@ -52,3 +60,18 @@ Commit and push rules:
 - If the push fails, report the blocker and do not mark the loop successful.
 
 Stop after one step.
+
+End your response with exactly one machine-readable status block:
+
+RLP_STATUS: COMPLETED|BLOCKED|NO_ELIGIBLE_STEP|LIMIT_REACHED
+RLP_STEP_ID: <step id or NONE>
+RLP_STEP_TITLE: <title or NONE>
+RLP_AGENT: <execution metadata agent or unknown>
+RLP_MODEL: <execution metadata model or unknown>
+RLP_EFFORT: <execution metadata effort or unknown>
+RLP_FILES_CHANGED: <semicolon-separated absolute paths or NONE>
+RLP_TEST_COMMANDS: <semicolon-separated commands or NONE>
+RLP_CHECKLIST_UPDATED: YES|NO
+RLP_HANDOFF_UPDATED: YES|NO
+RLP_NEXT_STEP: <next eligible step id/title or NONE>
+RLP_REASON: <one-line reason>

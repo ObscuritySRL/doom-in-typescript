@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "description": "Vanilla Doom parity engine built on Bun FFI and @bun-win32 bindings.",
   "scripts": {
+    "format": "bun run tools/format-changed.ts",
     "start": "bun run src/main.ts"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "@bun-win32/winmm": "^1.0.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.13",
     "@types/bun": "latest"
   }
 }

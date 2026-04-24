@@ -4,33 +4,25 @@ import { existsSync } from 'node:fs';
 
 const AGENTS_PATH = 'AGENTS.md';
 const AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE.ps1';
+const BIOME_CONFIG_PATH = 'biome.json';
 const CODEX_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX.ps1';
 const CODEX_NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX_NO_AUDIT.ps1';
+const FORMAT_CHANGED_TOOL_PATH = 'tools/format-changed.ts';
 const NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1';
+const PACKAGE_PATH = 'package.json';
 const PRE_PROMPT_PATH = 'plan_fps/PRE_PROMPT.md';
+const PRETTIER_CONFIG_PATH = '.prettierrc.json';
 const PROMPT_PATH = 'plan_fps/PROMPT.md';
 const README_PATH = 'plan_fps/README.md';
 
 async function runPowerShellScript(scriptPath: string, additionalArguments: string[]) {
   const subprocess = Bun.spawn({
-    cmd: [
-      'powershell',
-      '-NoProfile',
-      '-ExecutionPolicy',
-      'Bypass',
-      '-File',
-      scriptPath,
-      ...additionalArguments,
-    ],
+    cmd: ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', scriptPath, ...additionalArguments],
     stderr: 'pipe',
     stdout: 'pipe',
   });
 
-  const [standardErrorText, standardOutputText, exitCode] = await Promise.all([
-    new Response(subprocess.stderr).text(),
-    new Response(subprocess.stdout).text(),
-    subprocess.exited,
-  ]);
+  const [standardErrorText, standardOutputText, exitCode] = await Promise.all([new Response(subprocess.stderr).text(), new Response(subprocess.stdout).text(), subprocess.exited]);
 
   return {
     combinedOutput: `${standardOutputText}\n${standardErrorText}`,
@@ -48,6 +40,23 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(agentsText).toContain('References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.');
     expect(agentsText).toContain('When publishing changes, commit and push directly. Do not open pull requests.');
     expect(agentsText).toContain('Every completed Ralph-loop step must end with a verified commit and push before the step is considered complete.');
+  });
+
+  test('repository uses Biome instead of Prettier for formatting', async () => {
+    const biomeText = await Bun.file(BIOME_CONFIG_PATH).text();
+    const formatChangedToolText = await Bun.file(FORMAT_CHANGED_TOOL_PATH).text();
+    const packageText = await Bun.file(PACKAGE_PATH).text();
+
+    expect(packageText).toContain('"format": "bun run tools/format-changed.ts"');
+    expect(packageText).toContain('"@biomejs/biome":');
+    expect(biomeText).toContain('"defaultBranch": "origin/main"');
+    expect(biomeText).toContain('"ignoreUnknown": true');
+    expect(biomeText).toContain('"!reference/**"');
+    expect(biomeText).toContain('"lineWidth": 240');
+    expect(biomeText).toContain('"quoteStyle": "single"');
+    expect(formatChangedToolText).toContain("cmd: ['bun', 'x', 'biome', 'format', '--write', '--no-errors-on-unmatched', ...formatPaths]");
+    expect(formatChangedToolText).toContain("const READ_ONLY_ROOTS = ['doom/', 'iwad/', 'reference/'] as const;");
+    expect(existsSync(PRETTIER_CONFIG_PATH)).toBe(false);
   });
 
   test('audit script defaults to the playable plan control center', async () => {
@@ -120,14 +129,35 @@ describe('Ralph-loop PowerShell scripts', () => {
     }
   });
 
+  test('ralph-loop scripts inject execution metadata for handoff tracking', async () => {
+    for (const scriptPath of [CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
+      const scriptText = await Bun.file(scriptPath).text();
+
+      expect(scriptText).toContain('function Add-ExecutionMetadata');
+      expect(scriptText).toContain('$executionAgent = "Codex"');
+      expect(scriptText).toContain('$executionModel = "codex-cli-default-unspecified"');
+      expect(scriptText).toContain('Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry');
+      expect(scriptText).toContain('RLP_AGENT: $executionAgent');
+      expect(scriptText).toContain('RLP_MODEL: $executionModel');
+      expect(scriptText).toContain('RLP_EFFORT: $executionEffort');
+    }
+
+    for (const scriptPath of [AUDIT_SCRIPT_PATH, NO_AUDIT_SCRIPT_PATH]) {
+      const scriptText = await Bun.file(scriptPath).text();
+
+      expect(scriptText).toContain('function Add-ExecutionMetadata');
+      expect(scriptText).toContain('$executionAgent = "Claude Code"');
+      expect(scriptText).toContain('$executionModel = "claude-cli-default-unspecified"');
+      expect(scriptText).toContain('Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry');
+      expect(scriptText).toContain('RLP_AGENT: $executionAgent');
+      expect(scriptText).toContain('RLP_MODEL: $executionModel');
+      expect(scriptText).toContain('RLP_EFFORT: $executionEffort');
+    }
+  });
+
   test('codex scripts report a missing CLI before the loop starts', async () => {
     for (const scriptPath of [CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
-      const result = await runPowerShellScript(scriptPath, [
-        '-MaxIterations',
-        '1',
-        '-CodexCommand',
-        '__missing_codex_command_for_test__',
-      ]);
+      const result = await runPowerShellScript(scriptPath, ['-MaxIterations', '1', '-CodexCommand', '__missing_codex_command_for_test__']);
 
       expect(result.exitCode).toBe(2);
       expect(result.combinedOutput).toContain('LOOP_STATUS: CLI_ERROR');
@@ -147,6 +177,12 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(promptText).toContain('Open the selected step file under `D:\\Projects\\doom-in-typescript\\plan_fps\\steps\\`.');
     expect(promptText).toContain('Do NOT modify `D:\\Projects\\doom-in-typescript\\plan_fps\\MASTER_CHECKLIST.md`.');
     expect(promptText).toContain('RLP_STATUS: COMPLETED|BLOCKED|LIMIT_REACHED');
+    expect(promptText).toContain('Use the execution metadata supplied at the top of this prompt.');
+    expect(promptText).toContain('Biome is the formatter.');
+    expect(promptText).toContain('run `bun run format` before the verification sequence below.');
+    expect(promptText).toContain('RLP_AGENT: <execution metadata agent or unknown>');
+    expect(promptText).toContain('RLP_MODEL: <execution metadata model or unknown>');
+    expect(promptText).toContain('RLP_EFFORT: <execution metadata effort or unknown>');
     expect(promptText).toContain('If the audit pass changes any files, commit the verified audit fixes and push them before reporting `RLP_STATUS: COMPLETED`.');
     expect(promptText).toContain('Do not open a pull request.');
     expect(promptText).toContain('Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.');
@@ -157,6 +193,13 @@ describe('Ralph-loop PowerShell scripts', () => {
     const promptText = await Bun.file(PROMPT_PATH).text();
 
     expect(promptText).toContain('Work on exactly one step.');
+    expect(promptText).toContain('Use the execution metadata supplied at the top of this prompt.');
+    expect(promptText).toContain('Biome is the formatter.');
+    expect(promptText).toContain('1. `bun run format`');
+    expect(promptText).toContain('Each `HANDOFF_LOG.md` completion entry must include:');
+    expect(promptText).toContain('RLP_AGENT: <execution metadata agent or unknown>');
+    expect(promptText).toContain('RLP_MODEL: <execution metadata model or unknown>');
+    expect(promptText).toContain('RLP_EFFORT: <execution metadata effort or unknown>');
     expect(promptText).toContain('After the step is verified and logs/checklist are updated, commit the step and push it before stopping.');
     expect(promptText).toContain('Make repository changes, commits, and pushes as the configured human user only.');
     expect(promptText).toContain('Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to an AI or agent identity.');
@@ -179,5 +222,7 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(readmeText).toContain('`RALPH_LOOP_CODEX.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md` through `codex exec`.');
     expect(readmeText).toContain('`RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.');
     expect(readmeText).toContain('The Codex scripts require the Codex CLI terminal command on `PATH`, or `-CodexCommand <full CLI path>`.');
+    expect(readmeText).toContain('Run `bun run format` with Biome, then run verification in the listed order.');
+    expect(readmeText).toContain('Handoff entries must record `agent`, `model`, and `effort`.');
   });
 });

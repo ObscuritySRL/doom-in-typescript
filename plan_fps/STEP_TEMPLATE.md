@@ -26,6 +26,7 @@
 
 ## Verification
 
+- `bun run format`
 - `bun test <exact test path>`
 - `bun test`
 - `bun x tsc --noEmit --project tsconfig.json`
@@ -42,7 +43,7 @@
 - `FACT_LOG.md`: <what to add if learned, otherwise "none unless new reusable fact is discovered">
 - `DECISION_LOG.md`: <what to add if decision changed, otherwise "none">
 - `REFERENCE_ORACLES.md`: <what to add if oracle created/refreshed, otherwise "none">
-- `HANDOFF_LOG.md`: append completion entry
+- `HANDOFF_LOG.md`: append completion entry with exact `agent`, `model`, and `effort` execution metadata
 
 ## Later Steps That May Benefit
 

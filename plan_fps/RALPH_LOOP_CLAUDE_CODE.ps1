@@ -168,6 +168,30 @@ function ConvertTo-CanonicalRlpStatus {
     }
 }
 
+function Add-ExecutionMetadata {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PromptText,
+        [Parameter(Mandatory = $true)]
+        [string]$Agent,
+        [Parameter(Mandatory = $true)]
+        [string]$Model,
+        [Parameter(Mandatory = $true)]
+        [string]$Effort
+    )
+
+    return @"
+Execution metadata for this Ralph-loop invocation:
+- agent: $Agent
+- model: $Model
+- effort: $Effort
+
+Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry and in the final `RLP_AGENT`, `RLP_MODEL`, and `RLP_EFFORT` fields.
+
+$PromptText
+"@
+}
+
 function Get-ResolvedReason {
     param(
         [string]$ExplicitReason = "",
@@ -279,6 +303,15 @@ if ([string]::IsNullOrWhiteSpace($prePrompt)) {
     throw "Pre-prompt file is empty: $PrePromptPath"
 }
 
+$executionAgent = "Claude Code"
+$executionModel = $Model
+if ([string]::IsNullOrWhiteSpace($executionModel)) {
+    $executionModel = "claude-cli-default-unspecified"
+}
+$executionEffort = $Effort
+$prompt = Add-ExecutionMetadata -PromptText $prompt -Agent $executionAgent -Model $executionModel -Effort $executionEffort
+$prePrompt = Add-ExecutionMetadata -PromptText $prePrompt -Agent $executionAgent -Model $executionModel -Effort $executionEffort
+
 if ($MaxIterations -eq 0) {
     Write-Host "Validated prompt path, working directory, and log directory. MaxIterations is 0, so no Claude invocation was made."
     exit 0
@@ -310,6 +343,9 @@ try {
         Write-Host "Prompt: $PromptPath"
         Write-Host "Working directory: $WorkingDirectory"
         Write-Host "Claude arguments: $($claudeArguments -join ' ')"
+        Write-Host "Execution agent: $executionAgent"
+        Write-Host "Execution model: $executionModel"
+        Write-Host "Execution effort: $executionEffort"
 
         Write-Host "--- Audit pass (PRE_PROMPT.md) ---"
         $preResponse = $prePrompt | & claude @claudeArguments 2>&1 | Out-String
@@ -389,6 +425,9 @@ Use exactly this format:
 RLP_STATUS: COMPLETED|BLOCKED|NO_ELIGIBLE_STEP|LIMIT_REACHED
 RLP_STEP_ID: <step id or NONE>
 RLP_STEP_TITLE: <title or NONE>
+RLP_AGENT: $executionAgent
+RLP_MODEL: $executionModel
+RLP_EFFORT: $executionEffort
 RLP_FILES_CHANGED: <semicolon-separated absolute paths or NONE>
 RLP_TEST_COMMANDS: <semicolon-separated commands or NONE>
 RLP_CHECKLIST_UPDATED: YES|NO

@@ -31,9 +31,9 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 3. Scan from the top and choose the first unchecked step whose prerequisites are complete.
 4. Read only the selected step file, the shared logs, and exact paths listed in the selected step's Read Only section.
 5. Change only files listed in Expected Changes, plus required control-log/checklist updates.
-6. Run verification in the listed order.
+6. Run `bun run format` with Biome, then run verification in the listed order.
 7. Mark the selected step complete only after verification passes.
-8. Append `plan_fps/HANDOFF_LOG.md`.
+8. Append `plan_fps/HANDOFF_LOG.md`, including the exact agent, model, and effort metadata supplied by the Ralph-loop launcher.
 9. Commit the verified step and push the current branch directly.
 10. Stop after one step.
 
@@ -68,6 +68,7 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 - `RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.
 - Both scripts default to `D:\Projects\doom-in-typescript` as the working directory and write loop output under `plan_fps/loop_logs/`.
 - The Codex scripts require the Codex CLI terminal command on `PATH`, or `-CodexCommand <full CLI path>`.
+- Handoff entries must record `agent`, `model`, and `effort`. Codex launchers record `codex-cli-default-unspecified` when `-Model` is left blank; pass `-Model` to record an exact Codex model.
 
 ## Boundaries
 
@@ -82,6 +83,7 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 Run:
 
 ```sh
+bun run format
 bun test plan_fps/validate-plan.test.ts
 bun run plan_fps/validate-plan.ts
 bun test
