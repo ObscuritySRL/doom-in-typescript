@@ -365,3 +365,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-007 audit-missing-bun-run-doom-entrypoint
 - open_risks: The selected step did not permit reading `src/launcher/win32.ts`, so the host implementation inventory remains an explicit null for later broader-scope steps.
+
+## 2026-04-24 - 01-007 audit-missing-bun-run-doom-entrypoint
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-007
+- step_title: audit-missing-bun-run-doom-entrypoint
+- summary: Audited the missing root Bun entrypoint surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json` (schema v1) locking the current package launch command `bun run src/main.ts`, target command `bun run doom.ts`, source hashes, live workspace values, help usage lines, and explicit nulls for the root `doom.ts` entry file, root entrypoint transition, and target command in the current launch surface. Added focused test `test/plan_fps/01-007-audit-missing-bun-run-doom-entrypoint.test.ts` that deep-locks the manifest, cross-checks live package/tsconfig command contracts, verifies the `src/main.ts` transition to `runLauncherWindow`, verifies source-catalog and fact-log evidence, and recomputes recorded hashes.
+- files_changed: plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json; test/plan_fps/01-007-audit-missing-bun-run-doom-entrypoint.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, No fixes applied); bun test test/plan_fps/01-007-audit-missing-bun-run-doom-entrypoint.test.ts (5 pass, 0 fail, 24 expect() calls); bun test (6543 pass, 0 fail, 689931 expect() calls across 191 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-015 (current package start script remains `bun run src/main.ts`; allowed launch surfaces expose no implemented root `doom.ts` command contract)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-008 audit-missing-launch-to-menu
+- open_risks: The selected step did not permit opening or testing a root `doom.ts` file directly, so the missing root entrypoint is recorded from the allowed current launch surfaces rather than from a filesystem-wide entrypoint inventory.

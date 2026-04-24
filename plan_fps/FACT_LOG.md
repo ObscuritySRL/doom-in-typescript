@@ -83,3 +83,9 @@
 - date: 2026-04-24
 - fact: Within the 01-006 read scope, `src/main.ts` directly transitions from loaded launcher resources to `runLauncherWindow` imported from `src/launcher/win32.ts`, starts in the gameplay view, exposes a Tab automap toggle in help text, and leaves the host implementation inventory itself outside the read scope as an explicit null.
 - source: `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-006-audit-playable-host-surface.json`
+
+## F-FPS-015
+
+- date: 2026-04-24
+- fact: Within the 01-007 read scope, `package.json` exposes `scripts.start` as `bun run src/main.ts`, and the allowed launch surfaces expose no implemented root `doom.ts` command contract.
+- source: `package.json`, `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json`
