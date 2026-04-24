@@ -384,9 +384,9 @@ if ($codexCommandError) {
 
 $codexReasoningEffort = ConvertTo-CodexReasoningEffort -Value $Effort
 $codexArguments = @(
+    "--ask-for-approval", "never",
     "exec",
     "--color", "never",
-    "--ask-for-approval", "never",
     "--sandbox", "danger-full-access",
     "-c", "model_reasoning_effort=$codexReasoningEffort"
 )

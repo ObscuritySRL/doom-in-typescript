@@ -114,9 +114,10 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('return "xhigh"');
       expect(scriptText).toContain('Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex CLI command not found: $CodexCommand.');
       expect(scriptText).toContain('$codexCommandError = Test-CodexCommand -Value $resolvedCodexCommand');
+      expect(scriptText).toContain('"--ask-for-approval", "never",');
+      expect(scriptText).toMatch(/"--ask-for-approval", "never",\s+"exec"/);
       expect(scriptText).toContain('"exec"');
       expect(scriptText).toContain('"--color", "never"');
-      expect(scriptText).toContain('"--ask-for-approval", "never"');
       expect(scriptText).toContain('"--sandbox", "danger-full-access"');
       expect(scriptText).toContain('"-c", "model_reasoning_effort=$codexReasoningEffort"');
       expect(scriptText).toContain('$codexArguments += "-"');
