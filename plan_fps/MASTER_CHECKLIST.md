@@ -45,7 +45,7 @@
 - [x] `02-001` `capture-implementation-clean-launch-expectations` | prereqs: `01-015` | file: `plan_fps/steps/02-001-capture-implementation-clean-launch-expectations.md`
 - [x] `02-002` `capture-reference-clean-launch` | prereqs: `02-001` | file: `plan_fps/steps/02-002-capture-reference-clean-launch.md`
 - [x] `02-003` `capture-startup-sequence` | prereqs: `02-002` | file: `plan_fps/steps/02-003-capture-startup-sequence.md`
-- [ ] `02-004` `capture-initial-title-frame` | prereqs: `02-003` | file: `plan_fps/steps/02-004-capture-initial-title-frame.md`
+- [x] `02-004` `capture-initial-title-frame` | prereqs: `02-003` | file: `plan_fps/steps/02-004-capture-initial-title-frame.md`
 - [ ] `02-005` `capture-first-menu-frame` | prereqs: `02-004` | file: `plan_fps/steps/02-005-capture-first-menu-frame.md`
 - [ ] `02-006` `capture-full-attract-loop-cycle` | prereqs: `02-005` | file: `plan_fps/steps/02-006-capture-full-attract-loop-cycle.md`
 - [ ] `02-007` `capture-demo1-playback-checkpoints` | prereqs: `02-006` | file: `plan_fps/steps/02-007-capture-demo1-playback-checkpoints.md`

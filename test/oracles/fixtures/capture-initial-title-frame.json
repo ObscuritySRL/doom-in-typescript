@@ -1,0 +1,112 @@
+{
+  "captureCommand": {
+    "arguments": ["-iwad", "doom/DOOM1.WAD"],
+    "mode": "reference-initial-title-frame-capture",
+    "program": "doom/DOOMD.EXE",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "captureWindow": {
+    "endFrame": 0,
+    "endTic": 0,
+    "frameName": "initial-title-frame",
+    "startFrame": 0,
+    "startTic": 0
+  },
+  "commandContracts": {
+    "currentLauncher": {
+      "entryFile": "src/main.ts",
+      "helpUsageLines": ["  bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]", "  bun run start -- [--iwad <path-to-iwad>] --list-maps"],
+      "packageScript": "start",
+      "packageScriptCommand": "bun run src/main.ts"
+    },
+    "targetPlayable": {
+      "entryFile": "doom.ts",
+      "runtimeCommand": "bun run doom.ts"
+    }
+  },
+  "expectedFrame": {
+    "framebufferSha256": null,
+    "framebufferSha256Status": "pending-live-reference-capture",
+    "frameIndex": 0,
+    "surface": "title-screen",
+    "tic": 0,
+    "traceSha256": "68f6f03a34995d715382a2fdfed8fa37b42c45d6cabbf4d02ca555717dc966ec"
+  },
+  "expectedTrace": [
+    {
+      "authority": "local-primary-binary",
+      "event": "select-local-dos-binary",
+      "ordinal": 1,
+      "path": "doom/DOOMD.EXE",
+      "sourceCatalogId": "S-FPS-005"
+    },
+    {
+      "authority": "local-primary-data",
+      "event": "select-local-iwad",
+      "ordinal": 2,
+      "path": "doom/DOOM1.WAD",
+      "sourceCatalogId": "S-FPS-006"
+    },
+    {
+      "arguments": ["-iwad", "doom/DOOM1.WAD"],
+      "event": "prepare-reference-command",
+      "ordinal": 3,
+      "program": "doom/DOOMD.EXE",
+      "workingDirectory": "D:/Projects/doom-in-typescript"
+    },
+    {
+      "event": "capture-initial-title-frame",
+      "frameIndex": 0,
+      "ordinal": 4,
+      "targetSurface": "title-screen",
+      "tic": 0
+    },
+    {
+      "event": "lock-contract-derived-from-allowed-authority",
+      "manifestPath": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+      "ordinal": 5,
+      "reason": "The selected step read scope does not permit opening or executing reference binaries directly.",
+      "status": "pending-live-framebuffer-capture"
+    }
+  ],
+  "expectedTraceHash": "68f6f03a34995d715382a2fdfed8fa37b42c45d6cabbf4d02ca555717dc966ec",
+  "manifestEvidence": {
+    "allowedReadScopeManifest": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "observedLaunchSurfaces": ["bun-argv-command-line", "gameplay-first-console-message", "launcher-window-entry"],
+    "relevantExplicitNullSurfaces": ["framebuffer-hash-comparison", "reference-oracle-replay-capture", "side-by-side-replay-command"],
+    "sourceHashes": [
+      {
+        "path": "package.json",
+        "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+        "sizeBytes": 569
+      },
+      {
+        "path": "src/main.ts",
+        "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+        "sizeBytes": 3239
+      },
+      {
+        "path": "tsconfig.json",
+        "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+        "sizeBytes": 645
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "path": "doom/DOOMD.EXE",
+      "role": "reference executable for initial title frame capture",
+      "sourceCatalogId": "S-FPS-005"
+    },
+    {
+      "authority": "local-primary-data",
+      "path": "doom/DOOM1.WAD",
+      "role": "shareware IWAD data for initial title frame capture",
+      "sourceCatalogId": "S-FPS-006"
+    }
+  ],
+  "stepId": "02-004",
+  "stepTitle": "capture-initial-title-frame"
+}

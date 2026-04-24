@@ -581,3 +581,21 @@
 - oracle_changes: OR-FPS-008 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-startup-sequence.json` with refresh command `bun test test/oracles/capture-startup-sequence.test.ts`
 - next_eligible_steps: 02-004 capture-initial-title-frame
 - open_risks: The selected step did not permit opening or executing reference binary files directly, so this oracle locks a static startup-sequence contract and trace/hash derived from allowed authority records; later capture steps remain responsible for live reference frame, state, and audio artifacts.
+
+## 2026-04-24 - 02-004 capture-initial-title-frame
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-004
+- step_title: capture-initial-title-frame
+- summary: Added the initial title frame oracle fixture at `test/oracles/fixtures/capture-initial-title-frame.json`, derived from the allowed source authority records and 01-015 launch-surface manifest. The fixture records local DOS binary and IWAD authority, the reference capture command, tic/frame 0 capture window, the exact static expected trace, its SHA-256 trace hash, and explicit pending status for live framebuffer hashing because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-initial-title-frame.test.ts` to lock the fixture exactly, recompute the trace hash, cross-check source catalog rows, cross-check the 01-015 manifest command/source/null-surface evidence, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-initial-title-frame.json; test/oracles/capture-initial-title-frame.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-initial-title-frame.test.ts (5 pass, 0 fail, 23 expect() calls); bun test (6607 pass, 0 fail, 690423 expect() calls across 203 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-009 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-initial-title-frame.json` with refresh command `bun test test/oracles/capture-initial-title-frame.test.ts`
+- next_eligible_steps: 02-005 capture-first-menu-frame
+- open_risks: The selected step did not permit opening or executing reference binary files directly, so this oracle locks a static initial-title-frame capture contract and trace/hash derived from allowed authority records; later capture steps remain responsible for live reference frame, state, and audio artifacts.
