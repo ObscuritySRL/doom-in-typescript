@@ -1,0 +1,75 @@
+{
+  "bunOnlyDecisionId": "D-FPS-006",
+  "completionRules": {
+    "focusedTestRequirement": "The focused test locks an exact value, hash, transition, command contract, or manifest schema rather than only checking existence.",
+    "markCompleteOnlyAfterAllRequiredVerificationPasses": true,
+    "mustRemainBunOnly": true,
+    "mustRemainDeterministicReplayCompatible": true
+  },
+  "currentWorkspace": {
+    "packageJson": {
+      "path": "package.json",
+      "private": true,
+      "requiredBunScriptNames": ["format", "start"],
+      "requiredScriptCommandPrefix": "bun ",
+      "type": "module"
+    },
+    "tsconfigJson": {
+      "noEmit": true,
+      "path": "tsconfig.json",
+      "requiredTypes": ["bun"]
+    }
+  },
+  "decisionId": "D-FPS-012",
+  "deterministicReplayCompatible": true,
+  "evidencePaths": ["package.json", "plan_fps/README.md", "plan_fps/steps/00-012-define-step-validation-rules.md", "tsconfig.json"],
+  "runtimeTarget": {
+    "command": "bun run doom.ts",
+    "decisionId": "D-FPS-003"
+  },
+  "schemaVersion": 1,
+  "sideBySideAcceptanceDecisionId": "D-FPS-011",
+  "stepFileContract": {
+    "commandSectionHeading": "Verification",
+    "directory": "plan_fps/steps",
+    "fileExtension": ".md",
+    "fileNamePattern": "^[0-9]{2}-[0-9]{3}-[a-z0-9-]+\\.md$",
+    "headingPattern": "^# \\[ \\] STEP [0-9]{2}-[0-9]{3}: [^\\r\\n]+$",
+    "pathBulletPattern": "^- [A-Za-z0-9_./-]+$",
+    "pathListSectionHeadings": ["Read Only", "Expected Changes", "Test Files"],
+    "prerequisiteBulletPattern": "^- (none|[0-9]{2}-[0-9]{3})$",
+    "requiredLogUpdateLabels": ["FACT_LOG.md", "DECISION_LOG.md", "REFERENCE_ORACLES.md", "HANDOFF_LOG.md"],
+    "requiredSectionOrder": ["Goal", "Prerequisites", "Read Only", "Consult Only If Blocked", "Expected Changes", "Test Files", "Verification", "Completion Criteria", "Required Log Updates", "Later Steps That May Benefit"]
+  },
+  "verificationRules": {
+    "loopCommandOrder": [
+      {
+        "command": "bun run format",
+        "kind": "formatter",
+        "order": 1
+      },
+      {
+        "commandPattern": "^bun test test/plan_fps/[0-9]{2}-[0-9]{3}-[a-z0-9-]+\\.test\\.ts$",
+        "kind": "focused-test",
+        "order": 2
+      },
+      {
+        "command": "bun test",
+        "kind": "full-suite",
+        "order": 3
+      },
+      {
+        "command": "bun x tsc --noEmit --project tsconfig.json",
+        "kind": "typecheck",
+        "order": 4
+      },
+      {
+        "commandSource": "selected step file Verification section commands after the required minimum",
+        "kind": "extra-step-commands",
+        "order": 5
+      }
+    ],
+    "stepFileCommandPatterns": ["^`bun test test/plan_fps/[0-9]{2}-[0-9]{3}-[a-z0-9-]+\\.test\\.ts`$", "^`bun test`$", "^`bun x tsc --noEmit --project tsconfig.json`$"],
+    "stepFileCommandSectionUsesBackticks": true
+  }
+}

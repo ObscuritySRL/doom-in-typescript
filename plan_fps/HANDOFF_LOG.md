@@ -203,3 +203,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-012 define-step-validation-rules
 - open_risks: none
+
+## 2026-04-24 - 00-012 define-step-validation-rules
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-012
+- step_title: define-step-validation-rules
+- summary: Defined the shared validation contract for every `plan_fps/steps/*.md` file. Added decision D-FPS-012 and wrote `plan_fps/manifests/00-012-define-step-validation-rules.json` (schema v1) locking the step-file directory/filename/header contract, ordered section list, path-bullet and prerequisite-bullet patterns, required log-update labels, Bun-only loop verification order, step-file verification command patterns, Bun workspace constraints from `package.json` and `tsconfig.json`, and the completion rules that require exact focused-test coverage plus full verification before a step can be marked complete. Added focused test `test/plan_fps/00-012-define-step-validation-rules.test.ts` to deep-lock the manifest, validate the live `00-012` step file against the declared schema, assert malformed names/headings/non-Bun commands fail, and cross-check the exact decision text plus live Bun workspace constraints.
+- files_changed: plan_fps/manifests/00-012-define-step-validation-rules.json; test/plan_fps/00-012-define-step-validation-rules.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Corrected over-escaped regex strings in the new manifest/test before the first verification run, then narrowed the README validation-command assertions after the focused test failed because the README records commands in a fenced code block instead of inline backticks.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-012-define-step-validation-rules.test.ts (initial run failed because README validation commands were asserted as inline backticks instead of fenced-code lines); bun run format (post-recovery edit, Formatted 2 files, Fixed 1 file); bun run format (post-recovery rerun, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-012-define-step-validation-rules.test.ts (rerun, 4 pass, 0 fail, 43 expect() calls); bun test (6505 pass, 0 fail, 689706 expect() calls across 183 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (pre-publish, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-012-define-step-validation-rules.test.ts (final publish pass, 4 pass, 0 fail, 43 expect() calls); bun test (final publish pass, 6505 pass, 0 fail, 689706 expect() calls across 183 files); bun x tsc --noEmit --project tsconfig.json (final publish pass, clean)
+- new_facts: none
+- decision_changes: added D-FPS-012 accepted, citing `plan_fps/README.md`, `plan_fps/manifests/00-012-define-step-validation-rules.json`, `package.json`, and `tsconfig.json` as evidence
+- oracle_changes: none
+- next_eligible_steps: 00-013 create-plan-validation-script
+- open_risks: none

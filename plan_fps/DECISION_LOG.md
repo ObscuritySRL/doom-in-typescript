@@ -109,3 +109,13 @@
 - evidence: plan_fps/README.md, plan_fps/manifests/00-011-define-side-by-side-acceptance-standard.json, package.json, tsconfig.json
 - affected_steps: 00-011, 00-012, 02-031, 15-010
 - supersedes: none
+
+## D-FPS-012
+
+- status: accepted
+- date: 2026-04-24
+- decision: Every `plan_fps/steps/*.md` file must follow the shared step schema (title line, ordered section headings, path lists, Bun-only verification commands, and required log-update labels), and a step may be marked complete only after its focused test plus the required Bun verification sequence pass.
+- rationale: D-FPS-003 pins the runtime target to `bun run doom.ts`, D-FPS-006 pins Bun as the only runtime and test toolchain, and D-FPS-011 turns later parity work into a strict acceptance gate. A machine-checkable step schema is required before the later validator implementation steps so the Ralph loop can reject malformed step files and incomplete verification sequences deterministically.
+- evidence: plan_fps/README.md, plan_fps/manifests/00-012-define-step-validation-rules.json, package.json, tsconfig.json
+- affected_steps: 00-012, 00-013, 00-014, 15-001
+- supersedes: none
