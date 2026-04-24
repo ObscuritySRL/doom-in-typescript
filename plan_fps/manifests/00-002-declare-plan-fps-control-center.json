@@ -40,6 +40,6 @@
     "plan_fps/PACKAGE_CAPABILITY_MATRIX.md",
     "plan_fps/STEP_TEMPLATE.md"
   ],
-  "ralphLoopWorkflowStepCount": 10,
+  "ralphLoopWorkflowStepCount": 12,
   "validationCommands": ["bun run format", "bun test plan_fps/validate-plan.test.ts", "bun run plan_fps/validate-plan.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"]
 }

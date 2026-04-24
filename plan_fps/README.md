@@ -29,13 +29,15 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 1. Open `plan_fps/README.md`.
 2. Open `plan_fps/MASTER_CHECKLIST.md`.
 3. Scan from the top and choose the first unchecked step whose prerequisites are complete.
-4. Read only the selected step file, the shared logs, and exact paths listed in the selected step's Read Only section.
-5. Change only files listed in Expected Changes, plus required control-log/checklist updates.
-6. Run `bun run format` with Biome, then run verification in the listed order.
-7. Mark the selected step complete only after verification passes.
-8. Append `plan_fps/HANDOFF_LOG.md`, including the exact agent, model, and effort metadata supplied by the Ralph-loop launcher.
-9. Commit the verified step and push the current branch directly.
-10. Stop after one step.
+4. Read any existing `plan_fps/loop_logs/step_<step-id>_progress.txt`, then read only the selected step file, the shared logs, and exact paths listed in the selected step's Read Only section.
+5. Create or update `plan_fps/loop_logs/step_<step-id>_progress.txt` before changing product or plan files. Keep it current with completed work, test results, touched files, blockers, the next exact action, and the remaining planned work required to finish the step.
+6. Change only files listed in Expected Changes, plus required control-log/checklist updates and the active step progress log.
+7. Run `bun run format` with Biome, then run verification in the listed order.
+8. Mark the selected step complete only after verification passes.
+9. Append `plan_fps/HANDOFF_LOG.md`, including the exact agent, model, and effort metadata supplied by the Ralph-loop launcher.
+10. Commit the verified step and push the current branch directly.
+11. Delete only that step's `plan_fps/loop_logs/step_<step-id>_progress.txt` after the step is marked complete, all required verification passes, and the verified commit has been pushed. Do not delete it on blocked, failed, interrupted, or limit-reached work.
+12. Stop after one step.
 
 ## Publishing Rules
 
@@ -54,6 +56,7 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 - `DECISION_LOG.md`: durable decisions.
 - `FACT_LOG.md`: durable facts.
 - `HANDOFF_LOG.md`: append-only execution history.
+- `loop_logs/step_<step-id>_progress.txt`: ignored active-step recovery log with completed work and remaining planned work.
 - `PRE_PROMPT.md`: audit-pass prompt used by the audited Ralph-loop script.
 - `REFERENCE_ORACLES.md`: oracle artifacts and authority.
 - `SOURCE_CATALOG.md`: source authority.

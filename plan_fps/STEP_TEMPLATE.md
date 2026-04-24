@@ -19,6 +19,7 @@
 ## Expected Changes
 
 - <exact writable path>
+- `plan_fps/loop_logs/step_<step-id>_progress.txt` is the standing local recovery exception; update it while the step is active and delete it only after completion, verification, commit, and push.
 
 ## Test Files
 
@@ -43,6 +44,7 @@
 - `FACT_LOG.md`: <what to add if learned, otherwise "none unless new reusable fact is discovered">
 - `DECISION_LOG.md`: <what to add if decision changed, otherwise "none">
 - `REFERENCE_ORACLES.md`: <what to add if oracle created/refreshed, otherwise "none">
+- `loop_logs/step_<step-id>_progress.txt`: keep completed work and remaining planned work current until the verified step is pushed
 - `HANDOFF_LOG.md`: append completion entry with exact `agent`, `model`, and `effort` execution metadata
 
 ## Later Steps That May Benefit

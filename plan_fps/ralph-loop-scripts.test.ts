@@ -256,6 +256,32 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(promptText).toContain('Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.');
   });
 
+  test('forward prompt requires an active resumable step progress log', async () => {
+    const promptText = await Bun.file(PROMPT_PATH).text();
+    const readmeText = await Bun.file(README_PATH).text();
+
+    for (const planText of [promptText, readmeText]) {
+      expect(planText).toContain('plan_fps/loop_logs/step_<step-id>_progress.txt');
+      expect(planText).toContain('completed work');
+      expect(planText).toContain('remaining planned work');
+    }
+
+    expect(promptText).toContain('next exact action');
+    expect(promptText).toContain('Do not stage, commit, or push the active step progress log');
+    expect(promptText).toContain("Delete only that step's progress log after the step is marked complete, all required verification passes, and the verified commit has been pushed.");
+    expect(promptText).toContain('leave the progress log in place');
+    expect(promptText).toContain('RLP_PROGRESS_LOG: KEPT|DELETED|NONE');
+    expect(readmeText).toContain('Do not delete it on blocked, failed, interrupted, or limit-reached work.');
+  });
+
+  test('status repair prompts preserve the progress log status field', async () => {
+    for (const scriptPath of [AUDIT_SCRIPT_PATH, NO_AUDIT_SCRIPT_PATH, CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
+      const scriptText = await Bun.file(scriptPath).text();
+
+      expect(scriptText).toContain('RLP_PROGRESS_LOG: KEPT|DELETED|NONE');
+    }
+  });
+
   test('loop log directory exists for script output', async () => {
     expect(existsSync('plan_fps/loop_logs')).toBe(true);
     expect(await Bun.file('plan_fps/loop_logs/.gitkeep').exists()).toBe(true);

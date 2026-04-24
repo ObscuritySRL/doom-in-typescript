@@ -97,7 +97,7 @@ describe('plan_fps control-center declaration manifest', () => {
   });
 
   test('locks the ralph-loop workflow step count and canonical validation commands', () => {
-    expect(manifest.ralphLoopWorkflowStepCount).toBe(10);
+    expect(manifest.ralphLoopWorkflowStepCount).toBe(12);
     expect(manifest.validationCommands).toEqual(['bun run format', 'bun test plan_fps/validate-plan.test.ts', 'bun run plan_fps/validate-plan.ts', 'bun test', 'bun x tsc --noEmit --project tsconfig.json']);
   });
 

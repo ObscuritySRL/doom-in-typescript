@@ -32,6 +32,7 @@ const REQUIRED_SECTIONS = [
 
 const READ_ONLY_ROOTS = ['doom/', 'iwad/', 'reference/'] as const;
 const RUNTIME_TARGET = 'bun run doom.ts';
+const STEP_PROGRESS_LOG_PATTERN = 'plan_fps/loop_logs/step_<step-id>_progress.txt';
 
 export async function validatePlan(planDirectory = import.meta.dir): Promise<ValidationResult> {
   const errors: ValidationError[] = [];
@@ -89,6 +90,8 @@ export async function validatePlan(planDirectory = import.meta.dir): Promise<Val
     });
   }
 
+  await validateProgressLogInstructions(planDirectory, errors);
+
   return {
     errors,
     firstStep: checklistSteps[0]?.id ?? null,
@@ -118,6 +121,52 @@ export function parseChecklist(checklistText: string): readonly ChecklistStep[] 
   }
 
   return steps;
+}
+
+async function validateProgressLogInstructions(planDirectory: string, errors: ValidationError[]): Promise<void> {
+  const promptText = await Bun.file(`${planDirectory}/PROMPT.md`).text();
+  const readmeText = await Bun.file(`${planDirectory}/README.md`).text();
+  const stepTemplateText = await Bun.file(`${planDirectory}/STEP_TEMPLATE.md`).text();
+  const gitignoreText = await Bun.file(`${planDirectory}/../.gitignore`).text();
+
+  const requiredPromptPhrases = [
+    STEP_PROGRESS_LOG_PATTERN,
+    'completed work',
+    'remaining planned work',
+    'next exact action',
+    'Do not stage, commit, or push the active step progress log',
+    "Delete only that step's progress log after the step is marked complete, all required verification passes, and the verified commit has been pushed.",
+    'leave the progress log in place',
+    'RLP_PROGRESS_LOG: KEPT|DELETED|NONE',
+  ] as const;
+
+  for (const requiredPhrase of requiredPromptPhrases) {
+    if (!promptText.includes(requiredPhrase)) {
+      errors.push({ file: 'plan_fps/PROMPT.md', message: `Missing active step progress log instruction: ${requiredPhrase}` });
+    }
+  }
+
+  const requiredReadmePhrases = [
+    STEP_PROGRESS_LOG_PATTERN,
+    'completed work',
+    'remaining planned work',
+    "Delete only that step's `plan_fps/loop_logs/step_<step-id>_progress.txt` after the step is marked complete, all required verification passes, and the verified commit has been pushed.",
+    'Do not delete it on blocked, failed, interrupted, or limit-reached work.',
+  ] as const;
+
+  for (const requiredPhrase of requiredReadmePhrases) {
+    if (!readmeText.includes(requiredPhrase)) {
+      errors.push({ file: 'plan_fps/README.md', message: `Missing active step progress log instruction: ${requiredPhrase}` });
+    }
+  }
+
+  if (!stepTemplateText.includes('`loop_logs/step_<step-id>_progress.txt`: keep completed work and remaining planned work current until the verified step is pushed')) {
+    errors.push({ file: 'plan_fps/STEP_TEMPLATE.md', message: 'Step template must require active step progress log updates.' });
+  }
+
+  if (!gitignoreText.includes('plan_fps/loop_logs/*.txt')) {
+    errors.push({ file: '.gitignore', message: 'Active step progress logs must stay ignored under plan_fps/loop_logs/*.txt.' });
+  }
 }
 
 function validateStepText(checklistStep: ChecklistStep, stepText: string, priorStepIds: ReadonlySet<string>, errors: ValidationError[]): void {

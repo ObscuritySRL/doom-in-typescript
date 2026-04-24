@@ -572,6 +572,7 @@ RLP_FILES_CHANGED: <semicolon-separated absolute paths or NONE>
 RLP_TEST_COMMANDS: <semicolon-separated commands or NONE>
 RLP_CHECKLIST_UPDATED: YES|NO
 RLP_HANDOFF_UPDATED: YES|NO
+RLP_PROGRESS_LOG: KEPT|DELETED|NONE
 RLP_NEXT_STEP: <next eligible step id/title or NONE>
 RLP_REASON: <one-line reason>
 
