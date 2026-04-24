@@ -140,6 +140,12 @@ describe('plan_fps control-center declaration manifest', () => {
     }
   });
 
+  test('sharedFiles, validationCommands, and readOnlyReferenceRoots each contain no duplicate entries', () => {
+    expect(new Set(manifest.sharedFiles).size).toBe(manifest.sharedFiles.length);
+    expect(new Set(manifest.validationCommands).size).toBe(manifest.validationCommands.length);
+    expect(new Set(manifest.readOnlyReferenceRoots).size).toBe(manifest.readOnlyReferenceRoots.length);
+  });
+
   test('plan_fps/steps directory contains exactly totalSteps step files', async () => {
     const stepsGlob = new Bun.Glob('*.md');
     let stepFileCount = 0;

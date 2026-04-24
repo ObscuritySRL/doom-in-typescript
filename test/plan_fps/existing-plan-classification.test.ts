@@ -116,6 +116,18 @@ describe('existing plan classification manifest', () => {
     expect(existsSync(manifest.playableParityGaps.currentEntryPointFile)).toBe(true);
   });
 
+  test('playable gap locks the exact current package start script and entry point strings', () => {
+    expect(manifest.playableParityGaps.currentPackageStartScript).toBe('bun run src/main.ts');
+    expect(manifest.playableParityGaps.currentEntryPointFile).toBe('src/main.ts');
+    expect(manifest.playableParityGaps.currentPackageStartScript).toContain(manifest.playableParityGaps.currentEntryPointFile);
+    expect(manifest.playableParityGaps.currentPackageStartScript.startsWith('bun run ')).toBe(true);
+  });
+
+  test('evidence paths are unique with no accidental duplicates', () => {
+    const unique = new Set(manifest.evidencePaths);
+    expect(unique.size).toBe(manifest.evidencePaths.length);
+  });
+
   test('D-FPS-002 in plan_fps/DECISION_LOG.md still accepts the mixed classification', async () => {
     const decisionLogText = await Bun.file(DECISION_LOG_PATH).text();
     expect(decisionLogText).toContain('## D-FPS-002');

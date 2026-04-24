@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 
 import { existsSync } from 'node:fs';
 
+import classificationManifest from '../../plan_fps/manifests/existing-plan-classification.json';
 import controlCenterManifest from '../../plan_fps/manifests/00-002-declare-plan-fps-control-center.json';
 import manifest from '../../plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json';
 
@@ -130,5 +131,21 @@ describe('pin-bun-run-doom-entrypoint manifest', () => {
     const lastSlashIndex = relativePath.lastIndexOf('/');
     const basename = lastSlashIndex === -1 ? relativePath : relativePath.slice(lastSlashIndex + 1);
     expect(basename).toBe(manifest.commandContract.entryFile);
+  });
+
+  test('currentLauncher scriptValue contains the recorded entryFile and both agree with the 00-001 classification manifest', () => {
+    expect(manifest.currentLauncher.scriptValue).toContain(manifest.currentLauncher.entryFile);
+    expect(manifest.currentLauncher.scriptValue.startsWith('bun run ')).toBe(true);
+    expect(manifest.currentLauncher.scriptValue).toBe(classificationManifest.playableParityGaps.currentPackageStartScript);
+    expect(manifest.currentLauncher.entryFile).toBe(classificationManifest.playableParityGaps.currentEntryPointFile);
+  });
+
+  test('runtimeCommand agrees with the 00-001 classification manifest requiredRuntimeCommand', () => {
+    expect(manifest.runtimeCommand).toBe(classificationManifest.playableParityGaps.requiredRuntimeCommand);
+    expect(manifest.commandContract.entryFile).toBe(classificationManifest.playableParityGaps.missingEntryPointFile);
+  });
+
+  test('evidencePaths contains no duplicate entries', () => {
+    expect(new Set(manifest.evidencePaths).size).toBe(manifest.evidencePaths.length);
   });
 });
