@@ -167,3 +167,21 @@
 - oracle_changes: none
 - next_eligible_steps: 00-010 pin-windowed-only-difference
 - open_risks: none
+
+## 2026-04-24 - 00-010 pin-windowed-only-difference
+
+- status: completed
+- agent: Codex
+- model: codex-cli-default-unspecified
+- effort: xhigh
+- step_id: 00-010
+- step_title: pin-windowed-only-difference
+- summary: Pinned the only intentional observable difference from the reference target to windowed launch instead of fullscreen launch, and restricted that difference to the Bun runtime presentation path. Wrote `plan_fps/manifests/00-010-pin-windowed-only-difference.json` (schema v1) locking the README mission sentence, the Bun runtime metadata (`bun run doom.ts`, `package.json` private/module settings, `tsconfig.json` Bun/noEmit settings), the singular fullscreen-to-windowed presentation change, deterministic replay compatibility, and the parity-critical surface list that must remain unchanged. Added focused test `test/plan_fps/00-010-pin-windowed-only-difference.test.ts` (7 tests, 22 expects) that deep-locks the manifest payload and cross-checks README.md, DECISION_LOG.md, package.json, tsconfig.json, and evidence-path existence on disk.
+- files_changed: plan_fps/manifests/00-010-pin-windowed-only-difference.json; test/plan_fps/00-010-pin-windowed-only-difference.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/00-010-pin-windowed-only-difference.test.ts (7 pass, 0 fail, 22 expect() calls); bun test (6496 pass, 0 fail, 689648 expect() calls across 181 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (final publish pass, Formatted 2 files, No fixes applied); bun test test/plan_fps/00-010-pin-windowed-only-difference.test.ts (final publish pass, 7 pass, 0 fail, 22 expect() calls); bun test (final publish pass, 6496 pass, 0 fail, 689648 expect() calls across 181 files); bun x tsc --noEmit --project tsconfig.json (final publish pass, clean)
+- new_facts: none
+- decision_changes: updated D-FPS-004 evidence to cite `plan_fps/README.md` and `plan_fps/manifests/00-010-pin-windowed-only-difference.json`; accepted decision text and rationale remain unchanged
+- oracle_changes: none
+- next_eligible_steps: 00-011 define-side-by-side-acceptance-standard
+- open_risks: none

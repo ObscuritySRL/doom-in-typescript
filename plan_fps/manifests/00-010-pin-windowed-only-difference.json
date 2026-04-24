@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "stepId": "00-010",
+  "stepSlug": "pin-windowed-only-difference",
+  "decisionId": "D-FPS-004",
+  "readmeMissionSentence": "Convert the existing deterministic DOOM engine work into a Bun-run, windowed, playable, side-by-side-verifiable DOOM product while preserving vanilla/reference behavior exactly except for fullscreen-vs-windowed presentation.",
+  "runtimePath": {
+    "command": "bun run doom.ts",
+    "packageJson": {
+      "private": true,
+      "type": "module"
+    },
+    "tsconfig": {
+      "noEmit": true,
+      "types": ["bun"]
+    }
+  },
+  "windowedOnlyDifference": {
+    "decisionSentence": "The only intentional presentation difference from the reference target is windowed launch instead of fullscreen launch.",
+    "differenceCount": 1,
+    "productPresentationMode": "windowed",
+    "referencePresentationMode": "fullscreen",
+    "scope": "launch and presentation only",
+    "deterministicReplayCompatible": true,
+    "parityRule": "All other observable behavior remains parity-critical until proven otherwise and recorded."
+  },
+  "parityCriticalSurfaces": ["audio-output", "command-contract", "config-persistence", "deterministic-replay", "framebuffer-content", "input-behavior", "save-load-behavior", "simulation-timing"],
+  "evidencePaths": ["plan_fps/README.md", "plan_fps/DECISION_LOG.md", "package.json", "tsconfig.json"],
+  "rationale": "The playable parity product must remain side-by-side comparable to the reference target while still launching as a Bun-run windowed application. Pinning exactly one allowed difference keeps later host and acceptance steps from drifting into non-window presentation changes that would break deterministic replay or parity claims."
+}

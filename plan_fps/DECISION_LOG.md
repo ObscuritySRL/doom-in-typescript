@@ -36,7 +36,7 @@
 - date: 2026-04-24
 - decision: The only intentional presentation difference from the reference target is windowed launch instead of fullscreen launch.
 - rationale: All other observable behavior remains parity-critical until proven otherwise and recorded.
-- evidence: user request
+- evidence: user request, plan_fps/README.md, plan_fps/manifests/00-010-pin-windowed-only-difference.json
 - affected_steps: 00-010, 04-004, 15-010
 - supersedes: none
 
