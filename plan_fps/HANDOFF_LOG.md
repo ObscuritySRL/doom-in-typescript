@@ -617,3 +617,21 @@
 - oracle_changes: OR-FPS-010 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-first-menu-frame.json` with refresh command `bun test test/oracles/capture-first-menu-frame.test.ts`
 - next_eligible_steps: 02-006 capture-full-attract-loop-cycle
 - open_risks: The selected step did not permit opening or executing reference binary files directly, so this oracle locks a static first-menu-frame capture contract and trace/hash derived from allowed authority records; later capture steps remain responsible for live reference frame, state, and audio artifacts.
+
+## 2026-04-24 - 02-006 capture-full-attract-loop-cycle
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-006
+- step_title: capture-full-attract-loop-cycle
+- summary: Added the full attract loop cycle oracle fixture at `test/oracles/fixtures/capture-full-attract-loop-cycle.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference capture command contract, tick/frame start window, exact abstract attract-loop trace, deterministic trace SHA-256, source authority, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-full-attract-loop-cycle.test.ts` to lock the fixture exactly, recompute the trace hash, verify transition order, cross-check source catalog rows and the 01-015 command contract, verify the pending reference-capture gap, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-full-attract-loop-cycle.json; test/oracles/capture-full-attract-loop-cycle.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file; rerun No fixes applied); bun test test/oracles/capture-full-attract-loop-cycle.test.ts (5 pass, 0 fail, 11 expect() calls); bun test (6617 pass, 0 fail, 690444 expect() calls across 205 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-011 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-full-attract-loop-cycle.json` with refresh command `bun test test/oracles/capture-full-attract-loop-cycle.test.ts`
+- next_eligible_steps: 02-007 capture-demo1-playback-checkpoints
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.

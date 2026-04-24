@@ -1,0 +1,114 @@
+{
+  "captureCommand": {
+    "arguments": [],
+    "captureTarget": "full-attract-loop-cycle",
+    "commandLine": "doom/DOOMD.EXE",
+    "program": "doom/DOOMD.EXE",
+    "workingDirectory": "doom"
+  },
+  "deferredLiveHashes": [
+    {
+      "hash": null,
+      "kind": "audio",
+      "reason": "The 02-006 read scope does not permit executing or inspecting reference binaries.",
+      "status": "pending-live-reference-capture"
+    },
+    {
+      "hash": null,
+      "kind": "framebuffer",
+      "reason": "The 02-006 read scope does not permit executing or inspecting reference binaries.",
+      "status": "pending-live-reference-capture"
+    },
+    {
+      "hash": null,
+      "kind": "state",
+      "reason": "The 02-006 read scope does not permit executing or inspecting reference binaries.",
+      "status": "pending-live-reference-capture"
+    }
+  ],
+  "expectedTrace": [
+    {
+      "event": "capture-contract-created",
+      "surface": "full-attract-loop-cycle",
+      "tic": 0
+    },
+    {
+      "event": "reference-authority-selected",
+      "primaryBinary": "doom/DOOMD.EXE",
+      "primaryData": "doom/DOOM1.WAD"
+    },
+    {
+      "event": "launch-reference-binary",
+      "commandLine": "doom/DOOMD.EXE",
+      "workingDirectory": "doom"
+    },
+    {
+      "event": "observe-title-page",
+      "phase": "title"
+    },
+    {
+      "event": "observe-demo-playback",
+      "phase": "demo1"
+    },
+    {
+      "event": "observe-interstitial-page",
+      "phase": "post-demo1"
+    },
+    {
+      "event": "observe-demo-playback",
+      "phase": "demo2"
+    },
+    {
+      "event": "observe-interstitial-page",
+      "phase": "post-demo2"
+    },
+    {
+      "event": "observe-demo-playback",
+      "phase": "demo3"
+    },
+    {
+      "event": "observe-cycle-return",
+      "phase": "title-repeat"
+    }
+  ],
+  "expectedTraceHash": "77c2c36888420845a21cb2a57f1c075b41c4dcb9fd4f45c81acf4ffa45bf63ee",
+  "liveCaptureStatus": "pending-live-reference-capture",
+  "rationale": "This oracle locks the full attract loop capture contract, source authority, tick/frame start point, and exact abstract trace hash while leaving live framebuffer, audio, and state hashes pending for a later step that may execute the reference capture path.",
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "role": "local DOS binary authority when usable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "role": "local shareware IWAD data"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts",
+      "role": "current launcher surface evidence from the 01-015 manifest"
+    }
+  ],
+  "sourceManifest": {
+    "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "schemaVersion": 1,
+    "stepId": "01-015",
+    "stepTitle": "audit-missing-side-by-side-replay"
+  },
+  "stepId": "02-006",
+  "stepTitle": "capture-full-attract-loop-cycle",
+  "tickFrameWindow": {
+    "endCondition": "first completed attract-loop cycle return after title, demo1, interstitial page, demo2, interstitial page, demo3, and title repeat observations",
+    "liveEndFrame": null,
+    "liveEndTic": null,
+    "startFrame": 0,
+    "startTic": 0,
+    "status": "pending-live-reference-capture"
+  }
+}
