@@ -401,3 +401,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-009 audit-missing-menu-to-e1m1
 - open_risks: The selected step did not permit opening menu, host, or renderer implementation files, so broader menu inventory remains intentionally recorded as explicit nulls for later broader-scope steps.
+
+## 2026-04-24 - 01-009 audit-missing-menu-to-e1m1
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-009
+- step_title: audit-missing-menu-to-e1m1
+- summary: Audited the missing menu-to-E1M1 route visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-009-audit-missing-menu-to-e1m1.json` (schema v1) locking current and target command contracts, live package/TypeScript workspace values, source hashes, the direct `src/main.ts` transition from IWAD resources to `createLauncherSession` and `runLauncherWindow`, gameplay-first help/console evidence, default E1M1/skill/scale values, source-catalog rows, and explicit nulls for menu controller/render surfaces, episode/skill menu routes, root command menu path, and menu-to-E1M1 transition. Added focused test `test/plan_fps/01-009-audit-missing-menu-to-e1m1.test.ts` that deep-locks the manifest, cross-checks live command/config values, recomputes source hashes, verifies the gameplay-first transition ordering, and verifies source-catalog plus fact-log evidence.
+- files_changed: plan_fps/manifests/01-009-audit-missing-menu-to-e1m1.json; test/plan_fps/01-009-audit-missing-menu-to-e1m1.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Relaxed the focused test's help-text source assertion after the first run expected the string without the two leading spaces present in the `src/main.ts` HELP_TEXT literal.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-009-audit-missing-menu-to-e1m1.test.ts (initial run failed: 4 pass, 1 fail, help-text assertion); bun run format (recovery rerun, Formatted 2 files, No fixes applied); bun test test/plan_fps/01-009-audit-missing-menu-to-e1m1.test.ts (5 pass, 0 fail, 29 expect() calls); bun test (6553 pass, 0 fail, 689997 expect() calls across 193 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-017 (visible `src/main.ts` defaults directly to E1M1, creates a gameplay launcher session before `runLauncherWindow`, and exposes no menu-to-E1M1 route in the 01-009 read scope)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-010 audit-missing-live-input
+- open_risks: The selected step did not permit opening menu, host, or renderer implementation files, so broader menu inventory and actual menu-to-gameplay wiring remain intentionally recorded as explicit nulls for later broader-scope steps.

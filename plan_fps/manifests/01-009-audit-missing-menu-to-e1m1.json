@@ -1,0 +1,183 @@
+{
+  "commandContracts": {
+    "currentPackageStart": {
+      "command": "bun run src/main.ts",
+      "path": "package.json",
+      "scriptName": "start"
+    },
+    "targetRuntime": {
+      "command": "bun run doom.ts",
+      "entryFile": "doom.ts",
+      "implementedInReadScope": false
+    }
+  },
+  "currentLauncherSurface": {
+    "defaults": {
+      "mapName": "E1M1",
+      "scale": 2,
+      "skill": 2
+    },
+    "observedSurfaces": [
+      {
+        "evidence": "const DEFAULT_MAP_NAME = 'E1M1';",
+        "path": "src/main.ts",
+        "surfaceId": "default-map-e1m1"
+      },
+      {
+        "evidence": "const session = createLauncherSession(resources, { mapName, skill });",
+        "path": "src/main.ts",
+        "surfaceId": "direct-gameplay-session"
+      },
+      {
+        "evidence": "The launcher now starts in the gameplay view and can switch to automap on demand.",
+        "path": "src/main.ts",
+        "surfaceId": "gameplay-first-help"
+      },
+      {
+        "evidence": "Opening gameplay window. Use Tab to switch to the automap.",
+        "path": "src/main.ts",
+        "surfaceId": "gameplay-window-console"
+      },
+      {
+        "evidence": "Tab: toggle gameplay view and automap",
+        "path": "src/main.ts",
+        "surfaceId": "tab-automap-toggle"
+      }
+    ],
+    "transitions": [
+      {
+        "evidence": "const commandLine = new CommandLine(Bun.argv);",
+        "from": "Bun.argv",
+        "ordinal": 1,
+        "path": "src/main.ts",
+        "to": "CommandLine"
+      },
+      {
+        "evidence": "const iwadPath = commandLine.getParameter('--iwad') ?? (await resolveDefaultIwadPath());",
+        "from": "CommandLine",
+        "ordinal": 2,
+        "path": "src/main.ts",
+        "to": "IWAD path resolution"
+      },
+      {
+        "evidence": "const resources = await loadLauncherResources(iwadPath);",
+        "from": "IWAD path resolution",
+        "ordinal": 3,
+        "path": "src/main.ts",
+        "to": "launcher resources"
+      },
+      {
+        "evidence": "const session = createLauncherSession(resources, { mapName, skill });",
+        "from": "launcher resources",
+        "ordinal": 4,
+        "path": "src/main.ts",
+        "to": "gameplay session"
+      },
+      {
+        "evidence": "await runLauncherWindow(session, { scale, title: `DOOM Codex - ${session.mapName}` });",
+        "from": "gameplay session",
+        "ordinal": 5,
+        "path": "src/main.ts",
+        "to": "gameplay window"
+      }
+    ]
+  },
+  "evidencePaths": ["package.json", "plan_fps/FACT_LOG.md", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+  "explicitNullSurfaces": [
+    {
+      "evidence": "The allowed launch surface creates a gameplay session directly; no menu command path is exposed.",
+      "expectedPath": null,
+      "reason": "No current path in the allowed files routes New Game -> episode -> skill -> E1M1 start.",
+      "surfaceId": "e1m1-start-menu-command"
+    },
+    {
+      "evidence": "The allowed read scope exposes no episode-select menu implementation or call site.",
+      "expectedPath": null,
+      "reason": "Episode selection is required for the vanilla menu-to-E1M1 route but is absent from the visible launch surface.",
+      "surfaceId": "episode-menu-route"
+    },
+    {
+      "evidence": "The allowed read scope exposes no menu controller module or menu event handler.",
+      "expectedPath": null,
+      "reason": "No menu controller surface is visible from the selected step's exact read scope.",
+      "surfaceId": "menu-controller-surface"
+    },
+    {
+      "evidence": "The allowed read scope exposes no menu renderer or title/menu first frame surface.",
+      "expectedPath": null,
+      "reason": "No menu render surface is visible from the selected step's exact read scope.",
+      "surfaceId": "menu-render-surface"
+    },
+    {
+      "evidence": "src/main.ts transitions from launcher resources to createLauncherSession and runLauncherWindow without a menu state.",
+      "expectedPath": null,
+      "reason": "No menu-state transition into E1M1 is visible before gameplay session creation.",
+      "surfaceId": "menu-to-e1m1-transition"
+    },
+    {
+      "evidence": "The target command is bun run doom.ts, but the visible current package start script is bun run src/main.ts.",
+      "expectedPath": null,
+      "reason": "The root command contract that should own the final launch path is not implemented in this read scope.",
+      "surfaceId": "root-doom-entrypoint-menu-path"
+    },
+    {
+      "evidence": "The allowed read scope exposes no skill-select menu implementation or call site.",
+      "expectedPath": null,
+      "reason": "Skill selection is required for the vanilla menu-to-E1M1 route but is absent from the visible launch surface.",
+      "surfaceId": "skill-menu-route"
+    }
+  ],
+  "generatedAt": "2026-04-24",
+  "readScope": ["package.json", "plan_fps/FACT_LOG.md", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+  "schemaVersion": 1,
+  "sourceCatalogEvidence": [
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-009",
+      "path": "package.json"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-010",
+      "path": "tsconfig.json"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts"
+    }
+  ],
+  "stepId": "01-009",
+  "stepTitle": "audit-missing-menu-to-e1m1",
+  "workspace": {
+    "packageJson": {
+      "dependencies": ["@bun-win32/core", "@bun-win32/gdi32", "@bun-win32/kernel32", "@bun-win32/user32", "@bun-win32/winmm"],
+      "description": "Vanilla Doom parity engine built on Bun FFI and @bun-win32 bindings.",
+      "devDependencies": ["@biomejs/biome", "@types/bun"],
+      "name": "doom-codex",
+      "path": "package.json",
+      "private": true,
+      "scripts": {
+        "format": "bun run tools/format-changed.ts",
+        "start": "bun run src/main.ts"
+      },
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "type": "module",
+      "version": "0.0.0"
+    },
+    "srcMainTs": {
+      "defaultMapName": "E1M1",
+      "defaultScale": 2,
+      "defaultSkill": 2,
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44"
+    },
+    "tsconfigJson": {
+      "include": ["src", "test", "tools"],
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "strict": true,
+      "types": ["bun"]
+    }
+  }
+}

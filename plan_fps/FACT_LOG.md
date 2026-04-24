@@ -95,3 +95,9 @@
 - date: 2026-04-24
 - fact: Within the 01-008 read scope, `src/main.ts` creates a launcher session and calls `runLauncherWindow` directly with help and console text that starts in gameplay view; no clean launch-to-menu entry or menu-first transition is exposed.
 - source: `src/main.ts`, `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-008-audit-missing-launch-to-menu.json`
+
+## F-FPS-017
+
+- date: 2026-04-24
+- fact: Within the 01-009 read scope, `src/main.ts` defaults directly to `E1M1`, creates a gameplay launcher session before `runLauncherWindow`, and exposes gameplay-first help/console text; no menu-to-E1M1 route is exposed.
+- source: `src/main.ts`, `package.json`, `plan_fps/manifests/01-009-audit-missing-menu-to-e1m1.json`
