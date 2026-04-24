@@ -59,3 +59,9 @@
 - date: 2026-04-24
 - fact: The visible test configuration is Bun-based: `tsconfig.json` includes the `test` root, `package.json` has no `test` script, and the 01-002 verification contract invokes `bun test` directly.
 - source: `package.json`, `tsconfig.json`, `plan_fps/steps/01-002-audit-existing-tests.md`
+
+## F-FPS-011
+
+- date: 2026-04-24
+- fact: Within the 01-003 read scope, the catalog-visible oracle fixture authorities are `doom/DOOM1.WAD`, `iwad/DOOM1.WAD`, and `reference/manifests/`; no generated playable oracle fixture inventory is visible, so the 01-003 manifest records explicit null surfaces for that missing inventory.
+- source: `plan_fps/SOURCE_CATALOG.md`, `plan_fps/manifests/01-003-audit-existing-oracle-fixtures.json`

@@ -293,3 +293,21 @@
 - oracle_changes: none
 - next_eligible_steps: 01-003 audit-existing-oracle-fixtures
 - open_risks: The selected step did not permit opening existing test files or enumerating test directories, so the manifest intentionally records visible configuration and explicit nulls instead of a broad file inventory.
+
+## 2026-04-24 - 01-003 audit-existing-oracle-fixtures
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 01-003
+- step_title: audit-existing-oracle-fixtures
+- summary: Audited the existing oracle-fixture surface visible through the selected step's allowed files. Wrote `plan_fps/manifests/01-003-audit-existing-oracle-fixtures.json` (schema v1) locking the read scope, Bun workspace command/config values, source hashes, catalog-visible oracle authorities (`doom/DOOM1.WAD`, `iwad/DOOM1.WAD`, `reference/manifests/`), launcher default-IWAD touchpoints, and explicit nulls for generated playable fixture inventory, prior reference-manifest file inventory, and clean-launch oracle artifact path. Added focused test `test/plan_fps/01-003-audit-existing-oracle-fixtures.test.ts` that deep-locks the manifest, cross-checks the catalog-visible authority rows, verifies live workspace values and file hashes, asserts the explicit-null inventory surfaces, and verifies the new fact.
+- files_changed: plan_fps/manifests/01-003-audit-existing-oracle-fixtures.json; test/plan_fps/01-003-audit-existing-oracle-fixtures.test.ts; plan_fps/FACT_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/plan_fps/01-003-audit-existing-oracle-fixtures.test.ts (5 pass, 0 fail, 22 expect() calls); bun test (6524 pass, 0 fail, 689795 expect() calls across 187 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: F-FPS-011 (catalog-visible oracle fixture authorities and explicit null for missing generated playable oracle fixture inventory)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-004 audit-existing-manifests
+- open_risks: The audit is intentionally scoped to `SOURCE_CATALOG.md`, `package.json`, `tsconfig.json`, and `src/main.ts`; the step did not permit enumerating generated fixture directories or `reference/manifests/`, so those inventories remain explicit nulls for later broader-scope steps.

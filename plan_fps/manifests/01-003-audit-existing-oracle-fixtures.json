@@ -1,0 +1,123 @@
+{
+  "allowedReadScope": ["package.json", "plan_fps/FACT_LOG.md", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+  "audit": {
+    "date": "2026-04-24",
+    "stepId": "01-003",
+    "stepTitle": "audit-existing-oracle-fixtures",
+    "workspaceRoot": "D:/Projects/doom-in-typescript"
+  },
+  "bunWorkspace": {
+    "packageJson": {
+      "description": "Vanilla Doom parity engine built on Bun FFI and @bun-win32 bindings.",
+      "name": "doom-codex",
+      "private": true,
+      "scripts": {
+        "format": "bun run tools/format-changed.ts",
+        "start": "bun run src/main.ts"
+      },
+      "type": "module",
+      "version": "0.0.0"
+    },
+    "runtimeTarget": "bun run doom.ts",
+    "tsconfigJson": {
+      "compilerOptions": {
+        "allowImportingTsExtensions": true,
+        "lib": ["ESNext"],
+        "module": "Preserve",
+        "noEmit": true,
+        "strict": true,
+        "target": "ESNext",
+        "types": ["bun"]
+      },
+      "include": ["src", "test", "tools"]
+    }
+  },
+  "evidencePaths": ["package.json", "plan_fps/FACT_LOG.md", "plan_fps/SOURCE_CATALOG.md", "src/main.ts", "tsconfig.json"],
+  "oracleFixtureSurface": {
+    "catalogVisibleOracleSources": [
+      {
+        "authority": "local-primary-data",
+        "id": "S-FPS-006",
+        "kind": "file",
+        "path": "doom/DOOM1.WAD",
+        "readOnlyRoot": "doom",
+        "role": "Shareware IWAD data source visible through the source catalog; not a generated playable oracle fixture."
+      },
+      {
+        "authority": "local-data",
+        "id": "S-FPS-007",
+        "kind": "file",
+        "path": "iwad/DOOM1.WAD",
+        "readOnlyRoot": "iwad",
+        "role": "Copied local IWAD data path visible through the source catalog; not a generated playable oracle fixture."
+      },
+      {
+        "authority": "prior-art",
+        "id": "S-FPS-008",
+        "kind": "directory",
+        "path": "reference/manifests/",
+        "readOnlyRoot": "reference",
+        "role": "Existing derived manifest directory visible through the source catalog; contents are not inventoried by this step."
+      }
+    ],
+    "explicitNulls": [
+      {
+        "path": null,
+        "reason": "No generated playable oracle fixture directory is listed in SOURCE_CATALOG.md or in this step's read-only file list.",
+        "surface": "generated-playable-oracle-fixture-inventory"
+      },
+      {
+        "path": null,
+        "reason": "The selected step does not allow enumerating reference/manifests/, so its contents are intentionally not inventoried.",
+        "surface": "prior-reference-manifest-file-inventory"
+      },
+      {
+        "path": null,
+        "reason": "The current launcher surface exposes default IWAD resolution through Bun.file(DEFAULT_LOCAL_IWAD_PATH), not a captured launch oracle artifact path.",
+        "surface": "clean-launch-oracle-artifact"
+      }
+    ],
+    "launcherFixtureTouchpoints": [
+      {
+        "evidence": "const DEFAULT_LOCAL_IWAD_PATH = `${REFERENCE_BUNDLE_PATH}\\\\${PRIMARY_TARGET.wadFilename}`;",
+        "path": "src/main.ts",
+        "symbol": "DEFAULT_LOCAL_IWAD_PATH"
+      },
+      {
+        "evidence": "const localIwad = Bun.file(DEFAULT_LOCAL_IWAD_PATH);",
+        "path": "src/main.ts",
+        "symbol": "resolveDefaultIwadPath"
+      }
+    ],
+    "writableOutputTargets": [
+      {
+        "path": "plan_fps/manifests/01-003-audit-existing-oracle-fixtures.json",
+        "role": "Step-owned machine-readable oracle fixture audit manifest."
+      },
+      {
+        "path": "test/plan_fps/01-003-audit-existing-oracle-fixtures.test.ts",
+        "role": "Step-owned focused Bun test locking the audit manifest."
+      }
+    ]
+  },
+  "rationale": "Within the selected read scope, oracle-fixture evidence is limited to SOURCE_CATALOG.md entries for local IWAD data and prior reference manifests plus the current launcher default-IWAD touchpoint. Generated playable oracle fixtures are not visible in this scope, so missing inventories are represented with explicit null paths.",
+  "schemaVersion": 1,
+  "sourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe"
+    },
+    {
+      "path": "plan_fps/SOURCE_CATALOG.md",
+      "sha256": "7c8de73fb48a6a12c62798b17efcac2ffba18b6926a350d0d75265e80e51de3c"
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62"
+    }
+  ]
+}
