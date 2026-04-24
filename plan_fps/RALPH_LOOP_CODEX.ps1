@@ -261,34 +261,101 @@ function Invoke-CodexCommand {
         [Parameter(Mandatory = $true)]
         [string]$InputText,
         [Parameter(Mandatory = $true)]
-        [string]$WorkingDirectory
+        [string]$WorkingDirectory,
+        [Parameter(Mandatory = $true)]
+        [string]$ResponsePath
     )
 
+    $responseBuilder = New-Object System.Text.StringBuilder
+    $responseWriter = New-Object System.IO.StreamWriter($ResponsePath, $false, (New-Object System.Text.UTF8Encoding($false)))
+    $responseWriter.AutoFlush = $true
+    $standardOutputPath = [System.IO.Path]::GetTempFileName()
+    $standardErrorPath = [System.IO.Path]::GetTempFileName()
+    $standardOutputOffset = 0
+    $standardErrorOffset = 0
+
+    function Read-FileDelta {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Path,
+            [Parameter(Mandatory = $true)]
+            [ref]$Offset
+        )
+
+        if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+            return ""
+        }
+
+        $stream = [System.IO.File]::Open($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+        try {
+            if ($stream.Length -le $Offset.Value) {
+                return ""
+            }
+
+            $stream.Position = $Offset.Value
+            $byteCount = [int]($stream.Length - $Offset.Value)
+            $buffer = New-Object byte[] $byteCount
+            $bytesRead = $stream.Read($buffer, 0, $byteCount)
+            $Offset.Value = $stream.Position
+
+            return [Console]::OutputEncoding.GetString($buffer, 0, $bytesRead)
+        }
+        finally {
+            $stream.Dispose()
+        }
+    }
+
+    function Write-CodexOutputDelta {
+        param(
+            [Parameter(Mandatory = $true)]
+            [string]$Text
+        )
+
+        if ([string]::IsNullOrEmpty($Text)) {
+            return
+        }
+
+        [void]$responseBuilder.Append($Text)
+        $responseWriter.Write($Text)
+        Write-Host -NoNewline $Text
+    }
+
     $startInfo = New-Object System.Diagnostics.ProcessStartInfo
-    $startInfo.FileName = $Command
-    $startInfo.Arguments = ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
+    $shellCommand = ((ConvertTo-ProcessArgument -Value $Command), ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ })) -join " "
+    $shellCommand = "$shellCommand 1> $(ConvertTo-ProcessArgument -Value $standardOutputPath) 2> $(ConvertTo-ProcessArgument -Value $standardErrorPath)"
+    $startInfo.FileName = $env:ComSpec
+    $startInfo.Arguments = "/d /s /c `"$shellCommand`""
     $startInfo.WorkingDirectory = $WorkingDirectory
     $startInfo.UseShellExecute = $false
     $startInfo.RedirectStandardInput = $true
-    $startInfo.RedirectStandardOutput = $true
-    $startInfo.RedirectStandardError = $true
-    $startInfo.StandardOutputEncoding = [Console]::OutputEncoding
-    $startInfo.StandardErrorEncoding = [Console]::OutputEncoding
 
     $process = New-Object System.Diagnostics.Process
     $process.StartInfo = $startInfo
-    [void]$process.Start()
 
-    $process.StandardInput.Write($InputText)
-    $process.StandardInput.Close()
+    try {
+        [void]$process.Start()
 
-    $standardOutput = $process.StandardOutput.ReadToEnd()
-    $standardError = $process.StandardError.ReadToEnd()
-    $process.WaitForExit()
+        $process.StandardInput.Write($InputText)
+        $process.StandardInput.Close()
+
+        while (-not $process.HasExited) {
+            Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardOutputPath -Offset ([ref]$standardOutputOffset))
+            Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardErrorPath -Offset ([ref]$standardErrorOffset))
+            Start-Sleep -Milliseconds 200
+        }
+
+        $process.WaitForExit()
+        Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardOutputPath -Offset ([ref]$standardOutputOffset))
+        Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardErrorPath -Offset ([ref]$standardErrorOffset))
+    }
+    finally {
+        $responseWriter.Dispose()
+        Remove-Item -LiteralPath $standardOutputPath, $standardErrorPath -Force -ErrorAction SilentlyContinue
+    }
 
     return [PSCustomObject]@{
         ExitCode = $process.ExitCode
-        Response = ($standardOutput + $standardError)
+        Response = $responseBuilder.ToString()
     }
 }
 
@@ -486,13 +553,12 @@ try {
         Write-Host "Execution effort: $executionEffort"
 
         Write-Host "--- Audit pass (PRE_PROMPT.md) ---"
-        $preResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prePrompt -WorkingDirectory $WorkingDirectory
+        Write-Host "Streaming pre-prompt response to $prePath"
+        $preResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prePrompt -WorkingDirectory $WorkingDirectory -ResponsePath $prePath
         $preResponse = $preResult.Response
         $preExitCode = $preResult.ExitCode
 
-        Set-Content -LiteralPath $prePath -Value $preResponse -Encoding utf8
         Write-Host "Saved pre-prompt response to $prePath"
-        Write-Output $preResponse
 
         if (Test-LimitReached -Text $preResponse) {
             Write-LoopSummary -Status "LIMIT_REACHED" -Reason "Codex reported a rate or usage limit during audit pass." -ResponsePath $prePath
@@ -516,13 +582,12 @@ try {
         }
 
         Write-Host "--- Forward step (PROMPT.md) ---"
-        $result = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prompt -WorkingDirectory $WorkingDirectory
+        Write-Host "Streaming response to $responsePath"
+        $result = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prompt -WorkingDirectory $WorkingDirectory -ResponsePath $responsePath
         $response = $result.Response
         $exitCode = $result.ExitCode
 
-        Set-Content -LiteralPath $responsePath -Value $response -Encoding utf8
         Write-Host "Saved response to $responsePath"
-        Write-Output $response
 
         if (Test-LimitReached -Text $response) {
             Write-LoopSummary -Status "LIMIT_REACHED" -Reason "Codex reported a rate or usage limit." -ResponsePath $responsePath
@@ -589,13 +654,12 @@ Response to convert:
 $response
 "@
 
-            $repairResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $repairPrompt -WorkingDirectory $WorkingDirectory
+            Write-Host "Streaming repair response to $repairPath"
+            $repairResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $repairPrompt -WorkingDirectory $WorkingDirectory -ResponsePath $repairPath
             $repairResponse = $repairResult.Response
             $repairExitCode = $repairResult.ExitCode
 
-            Set-Content -LiteralPath $repairPath -Value $repairResponse -Encoding utf8
             Write-Host "Saved repair response to $repairPath"
-            Write-Output $repairResponse
 
             if (Test-LimitReached -Text $repairResponse) {
                 Write-LoopSummary -Status "LIMIT_REACHED" -Reason "Codex reported a rate or usage limit during status repair." -ResponsePath $repairPath
