@@ -269,6 +269,7 @@ function Invoke-CodexCommand {
     $responseBuilder = New-Object System.Text.StringBuilder
     $responseWriter = New-Object System.IO.StreamWriter($ResponsePath, $false, (New-Object System.Text.UTF8Encoding($false)))
     $responseWriter.AutoFlush = $true
+    $standardInputPath = [System.IO.Path]::GetTempFileName()
     $standardOutputPath = [System.IO.Path]::GetTempFileName()
     $standardErrorPath = [System.IO.Path]::GetTempFileName()
     $standardOutputOffset = 0
@@ -321,23 +322,12 @@ function Invoke-CodexCommand {
         Write-Host -NoNewline $Text
     }
 
-    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
-    $shellCommand = ((ConvertTo-ProcessArgument -Value $Command), ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ })) -join " "
-    $shellCommand = "$shellCommand 1> $(ConvertTo-ProcessArgument -Value $standardOutputPath) 2> $(ConvertTo-ProcessArgument -Value $standardErrorPath)"
-    $startInfo.FileName = $env:ComSpec
-    $startInfo.Arguments = "/d /s /c `"$shellCommand`""
-    $startInfo.WorkingDirectory = $WorkingDirectory
-    $startInfo.UseShellExecute = $false
-    $startInfo.RedirectStandardInput = $true
-
-    $process = New-Object System.Diagnostics.Process
-    $process.StartInfo = $startInfo
+    [System.IO.File]::WriteAllText($standardInputPath, $InputText, (New-Object System.Text.UTF8Encoding($false)))
+    $argumentText = ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
+    $process = $null
 
     try {
-        [void]$process.Start()
-
-        $process.StandardInput.Write($InputText)
-        $process.StandardInput.Close()
+        $process = Start-Process -FilePath $Command -ArgumentList $argumentText -WorkingDirectory $WorkingDirectory -RedirectStandardInput $standardInputPath -RedirectStandardOutput $standardOutputPath -RedirectStandardError $standardErrorPath -PassThru
 
         while (-not $process.HasExited) {
             Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardOutputPath -Offset ([ref]$standardOutputOffset))
@@ -346,12 +336,13 @@ function Invoke-CodexCommand {
         }
 
         $process.WaitForExit()
+        $process.Refresh()
         Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardOutputPath -Offset ([ref]$standardOutputOffset))
         Write-CodexOutputDelta -Text (Read-FileDelta -Path $standardErrorPath -Offset ([ref]$standardErrorOffset))
     }
     finally {
         $responseWriter.Dispose()
-        Remove-Item -LiteralPath $standardOutputPath, $standardErrorPath -Force -ErrorAction SilentlyContinue
+        Remove-Item -LiteralPath $standardInputPath, $standardOutputPath, $standardErrorPath -Force -ErrorAction SilentlyContinue
     }
 
     return [PSCustomObject]@{

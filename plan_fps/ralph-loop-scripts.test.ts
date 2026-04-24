@@ -115,6 +115,10 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('function Invoke-CodexCommand');
       expect(scriptText).toContain('function Resolve-CodexCommand');
       expect(scriptText).toContain('function Test-CodexCommand');
+      expect(scriptText).toContain('$standardInputPath = [System.IO.Path]::GetTempFileName()');
+      expect(scriptText).toContain('[System.IO.File]::WriteAllText($standardInputPath, $InputText, (New-Object System.Text.UTF8Encoding($false)))');
+      expect(scriptText).toContain('Start-Process -FilePath $Command');
+      expect(scriptText).toContain('-RedirectStandardInput $standardInputPath');
       expect(scriptText).toContain('[System.IO.Path]::ChangeExtension($command.Source, ".cmd")');
       expect(scriptText).toContain('[System.IO.Path]::ChangeExtension($resolvedPath, ".cmd")');
       expect(scriptText).toContain('if ($Value -eq "max")');
@@ -130,6 +134,7 @@ describe('Ralph-loop PowerShell scripts', () => {
       expect(scriptText).toContain('$codexArguments += "-"');
       expect(scriptText).toContain('Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments');
       expect(scriptText).not.toContain('| & $resolvedCodexCommand @codexArguments 2>&1 | Out-String');
+      expect(scriptText).not.toContain('$env:ComSpec');
       expect(scriptText).not.toContain('--dangerously-skip-permissions');
       expect(scriptText).not.toContain('--effort');
       expect(scriptText).not.toContain('--output-format');
