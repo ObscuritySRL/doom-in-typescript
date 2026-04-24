@@ -35,6 +35,7 @@
 
 - <objective condition>
 - <objective condition>
+- Verified changes are committed and pushed directly with no pull request.
 
 ## Required Log Updates
 

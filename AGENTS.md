@@ -18,6 +18,17 @@ Any rule below that mentions "when the project uses Bun" applies here unconditio
 
 ---
 
+## GitHub and Publishing Authority
+
+- Do not do anything as Codex, OpenAI, Claude, or any other AI or agent identity.
+- All GitHub actions must be done by Stev Peifer through the configured human account and repository permissions.
+- Use only local Git commands for publishing repository changes. Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows unless the human owner explicitly changes this rule.
+- When publishing changes, commit and push directly. Do not open pull requests.
+- Every completed Ralph-loop step must end with a verified commit and push before the step is considered complete.
+- Every audit pass that changes files must end with a verified commit and push before the audit is considered complete. If an audit makes no file changes, do not create an empty commit.
+
+---
+
 ## Core Principles
 
 - **Plan before implementing.** Read and understand the problem, the existing code, and the surrounding context before writing anything. Do not guess at what code does — read it.

@@ -69,6 +69,19 @@ Shared-log behavior:
 - If the audit refreshes an oracle artifact, update `D:\Projects\doom-in-typescript\plan_fps\REFERENCE_ORACLES.md`.
 - Do NOT append to `HANDOFF_LOG.md`. Do NOT modify `MASTER_CHECKLIST.md`.
 
+Publishing behavior:
+
+- If the audit pass changes any files, commit the verified audit fixes and push them before reporting `RLP_STATUS: COMPLETED`.
+- If the audit pass changes no files, do not create an empty commit.
+- Use the configured local Git identity only.
+- Do not mention Codex, OpenAI, Claude, AI, or agents in commits, PRs, issues, comments, or generated metadata.
+- Stage files explicitly by path.
+- Use a Conventional Commit message.
+- Push the current branch directly.
+- Do not open a pull request.
+- Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.
+- If the push fails, report `RLP_STATUS: BLOCKED` and make the push failure the `RLP_REASON`.
+
 Output requirements:
 
 - At the very top of your response, print the randomly selected step IDs and titles and a one-line reason each was selected.

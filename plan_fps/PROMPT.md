@@ -38,4 +38,16 @@ Do not mark the step complete unless all required verification passes.
 
 Append `HANDOFF_LOG.md`.
 
+After the step is verified and logs/checklist are updated, commit the step and push it before stopping.
+
+Commit and push rules:
+- Use the configured local Git identity only.
+- Do not mention Codex, OpenAI, Claude, AI, or agents in commits, PRs, issues, comments, or generated metadata.
+- Stage files explicitly by path.
+- Use a Conventional Commit message.
+- Push the current branch directly.
+- Do not open a pull request.
+- Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.
+- If the push fails, report the blocker and do not mark the loop successful.
+
 Stop after one step.

@@ -34,7 +34,18 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 6. Run verification in the listed order.
 7. Mark the selected step complete only after verification passes.
 8. Append `plan_fps/HANDOFF_LOG.md`.
-9. Stop after one step.
+9. Commit the verified step and push the current branch directly.
+10. Stop after one step.
+
+## Publishing Rules
+
+- Every completed Ralph-loop step requires a commit and push before it is considered complete.
+- Every audit pass that changes files requires a commit and push before it is considered complete.
+- Use the configured local Git identity only.
+- Stage files explicitly by path.
+- Do not mention Codex, OpenAI, Claude, AI, or agents in commits, PRs, issues, comments, or generated metadata.
+- Do not open pull requests.
+- Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.
 
 ## Shared Files
 

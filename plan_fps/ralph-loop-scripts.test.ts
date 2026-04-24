@@ -2,11 +2,23 @@ import { describe, expect, test } from 'bun:test';
 
 import { existsSync } from 'node:fs';
 
+const AGENTS_PATH = 'AGENTS.md';
 const AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE.ps1';
 const NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1';
 const PRE_PROMPT_PATH = 'plan_fps/PRE_PROMPT.md';
+const PROMPT_PATH = 'plan_fps/PROMPT.md';
 
 describe('Ralph-loop PowerShell scripts', () => {
+  test('repository instructions require human-owned direct commit and push publishing', async () => {
+    const agentsText = await Bun.file(AGENTS_PATH).text();
+
+    expect(agentsText).toContain('## GitHub and Publishing Authority');
+    expect(agentsText).toContain('Do not do anything as Codex, OpenAI, Claude, or any other AI or agent identity.');
+    expect(agentsText).toContain('All GitHub actions must be done by Stev Peifer through the configured human account and repository permissions.');
+    expect(agentsText).toContain('When publishing changes, commit and push directly. Do not open pull requests.');
+    expect(agentsText).toContain('Every completed Ralph-loop step must end with a verified commit and push before the step is considered complete.');
+  });
+
   test('audit script defaults to the playable plan control center', async () => {
     const scriptText = await Bun.file(AUDIT_SCRIPT_PATH).text();
 
@@ -36,7 +48,21 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(promptText).toContain('Open the selected step file under `D:\\Projects\\doom-in-typescript\\plan_fps\\steps\\`.');
     expect(promptText).toContain('Do NOT modify `D:\\Projects\\doom-in-typescript\\plan_fps\\MASTER_CHECKLIST.md`.');
     expect(promptText).toContain('RLP_STATUS: COMPLETED|BLOCKED|LIMIT_REACHED');
+    expect(promptText).toContain('If the audit pass changes any files, commit the verified audit fixes and push them before reporting `RLP_STATUS: COMPLETED`.');
+    expect(promptText).toContain('Do not open a pull request.');
+    expect(promptText).toContain('Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.');
     expect(promptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
+  });
+
+  test('forward prompt requires commit and push after one verified step', async () => {
+    const promptText = await Bun.file(PROMPT_PATH).text();
+
+    expect(promptText).toContain('Work on exactly one step.');
+    expect(promptText).toContain('After the step is verified and logs/checklist are updated, commit the step and push it before stopping.');
+    expect(promptText).toContain('Use the configured local Git identity only.');
+    expect(promptText).toContain('Stage files explicitly by path.');
+    expect(promptText).toContain('Do not open a pull request.');
+    expect(promptText).toContain('Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.');
   });
 
   test('loop log directory exists for script output', async () => {
