@@ -161,7 +161,7 @@
 - [x] `07-017` `render-skull-cursor` | prereqs: `07-016` | file: `plan_fps/steps/07-017-render-skull-cursor.md`
 - [x] `07-018` `render-menu-text` | prereqs: `07-017` | file: `plan_fps/steps/07-018-render-menu-text.md`
 - [x] `07-019` `preserve-menu-timing-idle-behavior` | prereqs: `07-018` | file: `plan_fps/steps/07-019-preserve-menu-timing-idle-behavior.md`
-- [ ] `07-020` `implement-return-to-title-flow` | prereqs: `07-019` | file: `plan_fps/steps/07-020-implement-return-to-title-flow.md`
+- [x] `07-020` `implement-return-to-title-flow` | prereqs: `07-019` | file: `plan_fps/steps/07-020-implement-return-to-title-flow.md`
 
 ## Phase 08: Game Session Wiring
 

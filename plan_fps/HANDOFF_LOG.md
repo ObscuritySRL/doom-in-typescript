@@ -2399,3 +2399,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-020 implement-return-to-title-flow
 - open_risks: none
+
+## 2026-04-25 - 07-020 implement-return-to-title-flow
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-020
+- step_title: implement-return-to-title-flow
+- summary: Added the playable return-to-title surface at `src/playable/front-end-menus/implementReturnToTitleFlow.ts`. The module exports an exact Bun-only runtime contract plus `implementReturnToTitleFlow`, which validates the `bun run doom.ts` command, requires the active Options-menu End Game selection, routes the end-game confirmation through `menus.ts`, keeps cancellation inside the menu overlay, and on confirm closes the menu and reseeds the front-end title loop to the first visible title tick through `frontEndSequence.ts`. Added focused test `test/playable/front-end-menus/implement-return-to-title-flow.test.ts` to lock the exact runtime contract, 01-008 audit linkage, stable SHA-256 source hash, the confirm path back to `TITLEPIC`, the cancel path, and wrong-command plus wrong-selection rejection.
+- files_changed: src/playable/front-end-menus/implementReturnToTitleFlow.ts; test/playable/front-end-menus/implement-return-to-title-flow.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` rewrote the new implementation file on the first pass, which made the focused test's locked SHA-256 stale. Refreshed the expected hash in the test, reran `bun run format`, and then ran the verification tail cleanly.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; rerun after the source-hash recovery edit applied no fixes); bun test test/playable/front-end-menus/implement-return-to-title-flow.test.ts (5 pass, 0 fail, 23 expect() calls); bun test (7164 pass, 0 fail, 692016 expect() calls across 304 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-001 start-e1m1-from-menu
+- open_risks: none
