@@ -1319,3 +1319,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-014 implement-startup-logging
 - open_risks: none
+
+## 2026-04-25 - 03-014 implement-startup-logging
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 03-014
+- step_title: implement-startup-logging
+- summary: Added the Bun runtime startup logging surface at `src/playable/bun-runtime-entry-point/implementStartupLogging.ts`. The module exports an exact startup logging contract plus `implementStartupLogging`, which formats the two startup log lines only for `bun run doom.ts`, mirrors the audited `src/main.ts` startup logging surface from 01-007, and keeps deterministic replay inputs, game state, global random seed, and window-host creation untouched. Added focused test `test/playable/bun-runtime-entry-point/implement-startup-logging.test.ts` to lock the exact contract object, stable SHA-256 hash, manifest/package/source evidence, happy-path startup logging output, and failure cases.
+- files_changed: src/playable/bun-runtime-entry-point/implementStartupLogging.ts; test/playable/bun-runtime-entry-point/implement-startup-logging.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run Formatted 2 files, Fixed 2 files; rerun Formatted 2 files, No fixes applied); bun test test/playable/bun-runtime-entry-point/implement-startup-logging.test.ts (4 pass, 0 fail, 14 expect() calls); bun test (6811 pass, 0 fail, 691170 expect() calls across 244 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-015 implement-deterministic-reset-seed
+- open_risks: none
