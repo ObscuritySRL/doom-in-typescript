@@ -2633,3 +2633,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-013 wire-pause-menu-overlay-flow
 - open_risks: none
+
+## 2026-04-25 - 08-013 wire-pause-menu-overlay-flow
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-013
+- step_title: wire-pause-menu-overlay-flow
+- summary: Added the playable pause-menu overlay flow surface at `src/playable/game-session-wiring/wirePauseMenuOverlayFlow.ts`. The module exports the exact `bun run doom.ts` command contract plus `wirePauseMenuOverlayFlow`, which validates the Bun runtime command, toggles pause-menu overlay state only during `tryRunTics`, blocks gameplay advancement while the overlay is open, resumes deterministic gameplay when the overlay closes, renders only during `display`, and returns deterministic phase, pre-loop, frame-count, level-time, framebuffer, and overlay evidence. Added focused test `test/playable/game-session-wiring/wire-pause-menu-overlay-flow.test.ts` to lock the exact command contract, 01-009 audit manifest linkage, stable SHA-256 source hash, paused-overlay transition, resume transition, and wrong-command rejection before replay state mutation.
+- files_changed: src/playable/game-session-wiring/wirePauseMenuOverlayFlow.ts; test/playable/game-session-wiring/wire-pause-menu-overlay-flow.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed one of the two new files on the first pass; replaced the focused test's temporary source-hash placeholder with the formatted implementation SHA-256 before rerunning format and verification.
+- tests_run: bun run format (formatted 2 files and fixed 1 file; rerun after source-hash update applied no fixes); bun test test/playable/game-session-wiring/wire-pause-menu-overlay-flow.test.ts (6 pass, 0 fail, 33 expect() calls); bun test (7231 pass, 0 fail, 692245 expect() calls across 317 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-014 wire-live-sound-music-triggers
+- open_risks: none
