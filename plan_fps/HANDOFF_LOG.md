@@ -779,3 +779,21 @@
 - oracle_changes: OR-FPS-019 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-options-menu-path.json` with refresh command `bun test test/oracles/capture-options-menu-path.test.ts`
 - next_eligible_steps: 02-015 capture-sound-volume-menu-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live options menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-015 capture-sound-volume-menu-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-015
+- step_title: capture-sound-volume-menu-path
+- summary: Added the sound volume menu path oracle fixture at `test/oracles/fixtures/capture-sound-volume-menu-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape/ArrowDown/Enter input sequence through the options menu to Sound Volume, tick/frame capture window, exact abstract transition trace into the sound volume menu, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-sound-volume-menu-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the sound volume transition, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-sound-volume-menu-path.json; test/oracles/capture-sound-volume-menu-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file; rerun No fixes applied); bun test test/oracles/capture-sound-volume-menu-path.test.ts (5 pass, 0 fail, 21 expect() calls); bun test (6661 pass, 0 fail, 690589 expect() calls across 214 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-020 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-sound-volume-menu-path.json` with refresh command `bun test test/oracles/capture-sound-volume-menu-path.test.ts`
+- next_eligible_steps: 02-016 capture-screen-size-detail-gamma-paths
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live sound volume menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.

@@ -1,0 +1,239 @@
+{
+  "captureCommand": {
+    "arguments": ["-iwad", "doom/DOOM1.WAD"],
+    "program": "doom/DOOMD.EXE",
+    "requiredWorkingDirectory": "D:/Projects/doom-in-typescript",
+    "runner": "local DOS reference runner",
+    "targetPlayableCommand": "bun run doom.ts"
+  },
+  "captureWindow": {
+    "checkpointFrames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "checkpointTicks": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "endFrame": 10,
+    "endTick": 10,
+    "startFrame": 0,
+    "startTick": 0
+  },
+  "expectedHashes": {
+    "audioEventSha256": null,
+    "framebufferSha256": null,
+    "stateSha256": null,
+    "traceSha256": "8f01956219a468482870e172933dd21339b4574ce2bc720312977bb749db4d70"
+  },
+  "expectedTrace": [
+    {
+      "event": "attract-loop-visible",
+      "frame": 0,
+      "input": null,
+      "menu": null,
+      "selection": null,
+      "sound": null,
+      "tick": 0
+    },
+    {
+      "event": "menu-opened",
+      "frame": 1,
+      "input": "Escape",
+      "menu": "main",
+      "selection": "new-game",
+      "sound": "sfx_swtchn",
+      "tick": 1
+    },
+    {
+      "event": "main-selection-moved",
+      "frame": 2,
+      "input": "ArrowDown",
+      "menu": "main",
+      "selection": "options",
+      "sound": "sfx_pstop",
+      "tick": 2
+    },
+    {
+      "event": "submenu-opened",
+      "frame": 3,
+      "input": "Enter",
+      "menu": "options",
+      "selection": "end-game",
+      "sound": "sfx_pistol",
+      "tick": 3
+    },
+    {
+      "event": "options-selection-moved",
+      "frame": 4,
+      "input": "ArrowDown",
+      "menu": "options",
+      "selection": "messages",
+      "sound": "sfx_pstop",
+      "tick": 4
+    },
+    {
+      "event": "options-selection-moved",
+      "frame": 5,
+      "input": "ArrowDown",
+      "menu": "options",
+      "selection": "graphic-detail",
+      "sound": "sfx_pstop",
+      "tick": 5
+    },
+    {
+      "event": "options-selection-moved",
+      "frame": 6,
+      "input": "ArrowDown",
+      "menu": "options",
+      "selection": "screen-size",
+      "sound": "sfx_pstop",
+      "tick": 6
+    },
+    {
+      "event": "options-selection-moved",
+      "frame": 7,
+      "input": "ArrowDown",
+      "menu": "options",
+      "selection": "mouse-sensitivity",
+      "sound": "sfx_pstop",
+      "tick": 7
+    },
+    {
+      "event": "options-selection-moved",
+      "frame": 8,
+      "input": "ArrowDown",
+      "menu": "options",
+      "selection": "sound-volume",
+      "sound": "sfx_pstop",
+      "tick": 8
+    },
+    {
+      "event": "submenu-opened",
+      "frame": 9,
+      "input": "Enter",
+      "menu": "sound-volume",
+      "selection": "sfx-volume",
+      "sound": "sfx_pistol",
+      "tick": 9
+    },
+    {
+      "event": "sound-volume-menu-stable",
+      "frame": 10,
+      "input": null,
+      "menu": "sound-volume",
+      "selection": "sfx-volume",
+      "sound": null,
+      "tick": 10
+    }
+  ],
+  "inputSequence": [
+    {
+      "action": "open-main-menu",
+      "frame": 1,
+      "key": "Escape",
+      "tick": 1
+    },
+    {
+      "action": "select-options-menu",
+      "frame": 2,
+      "key": "ArrowDown",
+      "tick": 2
+    },
+    {
+      "action": "open-options-menu",
+      "frame": 3,
+      "key": "Enter",
+      "tick": 3
+    },
+    {
+      "action": "select-messages-row",
+      "frame": 4,
+      "key": "ArrowDown",
+      "tick": 4
+    },
+    {
+      "action": "select-graphic-detail-row",
+      "frame": 5,
+      "key": "ArrowDown",
+      "tick": 5
+    },
+    {
+      "action": "select-screen-size-row",
+      "frame": 6,
+      "key": "ArrowDown",
+      "tick": 6
+    },
+    {
+      "action": "select-mouse-sensitivity-row",
+      "frame": 7,
+      "key": "ArrowDown",
+      "tick": 7
+    },
+    {
+      "action": "select-sound-volume-row",
+      "frame": 8,
+      "key": "ArrowDown",
+      "tick": 8
+    },
+    {
+      "action": "open-sound-volume-menu",
+      "frame": 9,
+      "key": "Enter",
+      "tick": 9
+    }
+  ],
+  "oracleId": "OR-FPS-020",
+  "referenceCaptureStatus": {
+    "audioEventHash": {
+      "reason": "No reference oracle replay capture or audio hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending-live-reference-capture"
+    },
+    "framebufferHash": {
+      "reason": "No reference oracle replay capture or framebuffer hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending-live-reference-capture"
+    },
+    "stateHash": {
+      "reason": "No reference oracle replay capture or state hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending-live-reference-capture"
+    }
+  },
+  "schemaVersion": 1,
+  "sourceAuthority": {
+    "derivedFromManifest": {
+      "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+      "stepId": "01-015"
+    },
+    "primaryBinary": {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "source": "local DOS executable"
+    },
+    "primaryData": {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "source": "local IWAD"
+    },
+    "secondaryData": {
+      "authority": "local-data",
+      "id": "S-FPS-007",
+      "path": "iwad/DOOM1.WAD",
+      "source": "copied IWAD"
+    },
+    "sourceHashes": [
+      {
+        "path": "package.json",
+        "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+        "sizeBytes": 569
+      },
+      {
+        "path": "src/main.ts",
+        "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+        "sizeBytes": 3239
+      },
+      {
+        "path": "tsconfig.json",
+        "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+        "sizeBytes": 645
+      }
+    ]
+  },
+  "stepId": "02-015",
+  "stepTitle": "capture-sound-volume-menu-path"
+}
