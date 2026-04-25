@@ -2795,3 +2795,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-008 render-automap-overlay-and-full-mode
 - open_risks: none
+
+## 2026-04-25 - 09-008 render-automap-overlay-and-full-mode
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-008
+- step_title: render-automap-overlay-and-full-mode
+- summary: Added the playable automap rendering product surface at `src/playable/rendering-product-integration/renderAutomapOverlayAndFullMode.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderAutomapOverlayAndFullMode`, which validates the Bun runtime command, validates full 320x200 palette-index framebuffers, renders deterministic full-screen automap mode with a configured background palette index, renders overlay mode inside the computed viewport from `computeViewport`, clips out-of-bounds automap lines, and returns replay-stable target, draw-count, clip-count, changed-pixel, and framebuffer checksum evidence. Added focused test `test/playable/rendering-product-integration/render-automap-overlay-and-full-mode.test.ts` to lock the command contract, 01-012 missing-rendering audit schema, stable SHA-256 source hash, exact overlay framebuffer checksum/hash, exact full-mode framebuffer checksum/hash, wrong-command rejection, and invalid-line mutation guard.
+- files_changed: src/playable/rendering-product-integration/renderAutomapOverlayAndFullMode.ts; test/playable/rendering-product-integration/render-automap-overlay-and-full-mode.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (passed; formatted 2 files with no fixes applied, rerun after exact-value patch also passed with no fixes); bun test test/playable/rendering-product-integration/render-automap-overlay-and-full-mode.test.ts (6 pass, 0 fail, 19 expect() calls); bun test (7282 pass, 0 fail, 692409 expect() calls across 326 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-009 apply-palette-effects-and-gamma
+- open_risks: none
