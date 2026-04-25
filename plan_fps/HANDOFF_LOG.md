@@ -2471,3 +2471,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-004 enforce-game-tick-order
 - open_risks: none
+
+## 2026-04-25 - 08-004 enforce-game-tick-order
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-004
+- step_title: enforce-game-tick-order
+- summary: Added the playable game-tick order surface at `src/playable/game-session-wiring/enforceGameTickOrder.ts`. The module exports an exact Bun-only runtime contract plus `enforceGameTickOrder`, which validates the `bun run doom.ts` command, runs the existing `MainLoop` pre-loop and one-frame callbacks in canonical order, advances gameplay only during `tryRunTics`, renders only during `display`, and returns replay-relevant tick/order evidence. Added focused test `test/playable/game-session-wiring/enforce-game-tick-order.test.ts` to lock the exact runtime contract, 01-009 audit linkage, stable SHA-256 source hash, canonical phase trace, one-tic gameplay transition, framebuffer handoff, and wrong-command rejection.
+- files_changed: src/playable/game-session-wiring/enforceGameTickOrder.ts; test/playable/game-session-wiring/enforce-game-tick-order.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` rewrote the new implementation on the first pass, so the focused test's placeholder source hash was replaced with the formatted SHA-256 before rerunning format and verification.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; rerun after the source-hash edit applied no fixes); bun test test/playable/game-session-wiring/enforce-game-tick-order.test.ts (4 pass, 0 fail, 14 expect() calls); bun test (7185 pass, 0 fail, 692083 expect() calls across 308 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-005 wire-world-thinker-ticking
+- open_risks: none

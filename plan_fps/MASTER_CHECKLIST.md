@@ -168,7 +168,7 @@
 - [x] `08-001` `start-e1m1-from-menu` | prereqs: `07-020` | file: `plan_fps/steps/08-001-start-e1m1-from-menu.md`
 - [x] `08-002` `start-shareware-maps-through-valid-routes` | prereqs: `08-001` | file: `plan_fps/steps/08-002-start-shareware-maps-through-valid-routes.md`
 - [x] `08-003` `wire-player-spawn-session` | prereqs: `08-002` | file: `plan_fps/steps/08-003-wire-player-spawn-session.md`
-- [ ] `08-004` `enforce-game-tick-order` | prereqs: `08-003` | file: `plan_fps/steps/08-004-enforce-game-tick-order.md`
+- [x] `08-004` `enforce-game-tick-order` | prereqs: `08-003` | file: `plan_fps/steps/08-004-enforce-game-tick-order.md`
 - [ ] `08-005` `wire-world-thinker-ticking` | prereqs: `08-004` | file: `plan_fps/steps/08-005-wire-world-thinker-ticking.md`
 - [ ] `08-006` `wire-player-command-application` | prereqs: `08-005` | file: `plan_fps/steps/08-006-wire-player-command-application.md`
 - [ ] `08-007` `wire-gameplay-renderer-invocation` | prereqs: `08-006` | file: `plan_fps/steps/08-007-wire-gameplay-renderer-invocation.md`
