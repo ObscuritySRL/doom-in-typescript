@@ -1895,3 +1895,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-006 map-mouse-buttons
 - open_risks: none
+
+## 2026-04-25 - 06-006 map-mouse-buttons
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-006
+- step_title: map-mouse-buttons
+- summary: Added the playable input mouse-button surface at `src/playable/input/mapMouseButtons.ts`. The module exports an exact Bun-only contract plus `mapMouseButtons`, which validates the `bun run doom.ts` runtime path, maps left/right/middle mouse button events into deterministic semantic actions and replay-safe ticcmd deltas, keeps right-button strafe modification neutral until later movement accumulation, and returns neutral release deltas instead of mutating live tic state. Added focused test `test/playable/input/map-mouse-buttons.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, left/right/middle mapping behavior, neutral release behavior, unsupported-button behavior, and wrong-command plus unsupported-event failure modes.
+- files_changed: src/playable/input/mapMouseButtons.ts; test/playable/input/map-mouse-buttons.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because `Bun.file(...).json()` in the focused test did not accept a type parameter here, which left manifest callback parameters implicitly `any`. Replaced that read with explicit `JSON.parse(await Bun.file(...).text())` plus a schema guard, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun before verification applied no fixes; post-recovery run fixed 1 file; post-recovery clean rerun applied no fixes); bun test test/playable/input/map-mouse-buttons.test.ts (initial run: 9 pass, 0 fail, 15 expect() calls; post-recovery rerun: 9 pass, 0 fail, 15 expect() calls); bun test (initial run: 6993 pass, 0 fail, 691586 expect() calls across 276 files; post-recovery rerun: 6993 pass, 0 fail, 691586 expect() calls across 276 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on the focused-test manifest parsing path; post-recovery rerun: clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-007 accumulate-mouse-movement
+- open_risks: none
