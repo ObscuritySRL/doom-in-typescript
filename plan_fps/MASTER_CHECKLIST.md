@@ -61,7 +61,7 @@
 - [x] `02-017` `capture-save-load-menu-path` | prereqs: `02-016` | file: `plan_fps/steps/02-017-capture-save-load-menu-path.md`
 - [x] `02-018` `capture-quit-confirmation-path` | prereqs: `02-017` | file: `plan_fps/steps/02-018-capture-quit-confirmation-path.md`
 - [x] `02-019` `capture-e1m1-start-from-clean-launch` | prereqs: `02-018` | file: `plan_fps/steps/02-019-capture-e1m1-start-from-clean-launch.md`
-- [ ] `02-020` `capture-scripted-movement-path` | prereqs: `02-019` | file: `plan_fps/steps/02-020-capture-scripted-movement-path.md`
+- [x] `02-020` `capture-scripted-movement-path` | prereqs: `02-019` | file: `plan_fps/steps/02-020-capture-scripted-movement-path.md`
 - [ ] `02-021` `capture-scripted-combat-path` | prereqs: `02-020` | file: `plan_fps/steps/02-021-capture-scripted-combat-path.md`
 - [ ] `02-022` `capture-scripted-pickup-path` | prereqs: `02-021` | file: `plan_fps/steps/02-022-capture-scripted-pickup-path.md`
 - [ ] `02-023` `capture-scripted-door-use-path` | prereqs: `02-022` | file: `plan_fps/steps/02-023-capture-scripted-door-use-path.md`
