@@ -174,7 +174,7 @@
 - [x] `08-007` `wire-gameplay-renderer-invocation` | prereqs: `08-006` | file: `plan_fps/steps/08-007-wire-gameplay-renderer-invocation.md`
 - [x] `08-008` `wire-status-bar-invocation` | prereqs: `08-007` | file: `plan_fps/steps/08-008-wire-status-bar-invocation.md`
 - [x] `08-009` `wire-automap-toggle-render-path` | prereqs: `08-008` | file: `plan_fps/steps/08-009-wire-automap-toggle-render-path.md`
-- [ ] `08-010` `wire-intermission-and-finale-transitions` | prereqs: `08-009` | file: `plan_fps/steps/08-010-wire-intermission-and-finale-transitions.md`
+- [x] `08-010` `wire-intermission-and-finale-transitions` | prereqs: `08-009` | file: `plan_fps/steps/08-010-wire-intermission-and-finale-transitions.md`
 - [ ] `08-011` `wire-death-reborn-flow` | prereqs: `08-010` | file: `plan_fps/steps/08-011-wire-death-reborn-flow.md`
 - [ ] `08-012` `wire-level-exit-flow` | prereqs: `08-011` | file: `plan_fps/steps/08-012-wire-level-exit-flow.md`
 - [ ] `08-013` `wire-pause-menu-overlay-flow` | prereqs: `08-012` | file: `plan_fps/steps/08-013-wire-pause-menu-overlay-flow.md`

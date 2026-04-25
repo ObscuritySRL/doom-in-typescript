@@ -2579,3 +2579,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-010 wire-intermission-and-finale-transitions
 - open_risks: none
+
+## 2026-04-25 - 08-010 wire-intermission-and-finale-transitions
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-010
+- step_title: wire-intermission-and-finale-transitions
+- summary: Added the playable intermission/finale transition surface at `src/playable/game-session-wiring/wireIntermissionAndFinaleTransitions.ts`. The module exports an exact Bun-only runtime contract plus `wireIntermissionAndFinaleTransitions`, which validates `bun run doom.ts`, creates a launcher session through the existing session constructor, runs the canonical `MainLoop` setup and one frame, advances replay state only during `tryRunTics`, renders only during `display`, and returns deterministic evidence for E1M1 gameplay-to-intermission and E1M8 gameplay-through-intermission-to-finale paths. Added focused test `test/playable/game-session-wiring/wire-intermission-and-finale-transitions.test.ts` to lock the exact command contract, intermission transition, finale transition, wrong-command rejection, and premature-finale rejection.
+- files_changed: src/playable/game-session-wiring/wireIntermissionAndFinaleTransitions.ts; test/playable/game-session-wiring/wire-intermission-and-finale-transitions.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed one of the two new files on the first pass; reran `bun run format` with no fixes before verification.
+- tests_run: bun run format (formatted 2 files, fixed 1 file; rerun formatted 2 files with no fixes); bun test test/playable/game-session-wiring/wire-intermission-and-finale-transitions.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (7215 pass, 0 fail, 692189 expect() calls across 314 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-011 wire-death-reborn-flow
+- open_risks: none
