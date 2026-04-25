@@ -833,3 +833,21 @@
 - oracle_changes: OR-FPS-022 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-save-load-menu-path.json` with refresh command `bun test test/oracles/capture-save-load-menu-path.test.ts`
 - next_eligible_steps: 02-018 capture-quit-confirmation-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live save/load menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-018 capture-quit-confirmation-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-018
+- step_title: capture-quit-confirmation-path
+- summary: Added the quit confirmation path oracle fixture at `test/oracles/fixtures/capture-quit-confirmation-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape/ArrowDown/ArrowDown/ArrowDown/ArrowDown/ArrowDown/Enter/KeyN input sequence, tic/frame capture window, exact abstract transition trace from attract loop to the main menu, Quit Game confirmation, and cancel back to the main menu, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-quit-confirmation-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the quit confirmation transition path, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-quit-confirmation-path.json; test/oracles/capture-quit-confirmation-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-quit-confirmation-path.test.ts (5 pass, 0 fail, 18 expect() calls); bun test (6676 pass, 0 fail, 690650 expect() calls across 217 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (post-control rerun, Formatted 2 files, No fixes applied); bun test test/oracles/capture-quit-confirmation-path.test.ts (post-control rerun, 5 pass, 0 fail, 18 expect() calls); bun test (post-control rerun, 6676 pass, 0 fail, 690650 expect() calls across 217 files); bun x tsc --noEmit --project tsconfig.json (post-control rerun, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-023 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-quit-confirmation-path.json` with refresh command `bun test test/oracles/capture-quit-confirmation-path.test.ts`
+- next_eligible_steps: 02-019 capture-e1m1-start-from-clean-launch
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live quit confirmation framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.

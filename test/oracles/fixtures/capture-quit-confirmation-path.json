@@ -1,0 +1,133 @@
+{
+  "captureCommand": {
+    "inputSequence": ["Escape", "ArrowDown", "ArrowDown", "ArrowDown", "ArrowDown", "ArrowDown", "Enter", "KeyN"],
+    "iwadPath": "doom/DOOM1.WAD",
+    "referenceExecutable": "doom/DOOMD.EXE",
+    "referenceRuntime": "local-dos-reference",
+    "targetPlayableCommand": "bun run doom.ts"
+  },
+  "captureWindow": {
+    "captureFrames": [0, 2, 4, 6, 8, 10, 12, 14],
+    "endTic": 14,
+    "gameTicRateHz": 35,
+    "startTic": 0,
+    "windowName": "clean-launch-quit-confirmation-cancel"
+  },
+  "expectedTrace": [
+    {
+      "input": "Escape",
+      "menu": "main",
+      "result": "main menu opens with cursor on New Game",
+      "sound": "menu-open",
+      "state": "main-menu",
+      "tic": 0
+    },
+    {
+      "input": "ArrowDown",
+      "menu": "main",
+      "result": "cursor moves to Options",
+      "sound": "menu-cursor",
+      "state": "main-menu",
+      "tic": 2
+    },
+    {
+      "input": "ArrowDown",
+      "menu": "main",
+      "result": "cursor moves to Load Game",
+      "sound": "menu-cursor",
+      "state": "main-menu",
+      "tic": 4
+    },
+    {
+      "input": "ArrowDown",
+      "menu": "main",
+      "result": "cursor moves to Save Game",
+      "sound": "menu-cursor",
+      "state": "main-menu",
+      "tic": 6
+    },
+    {
+      "input": "ArrowDown",
+      "menu": "main",
+      "result": "cursor moves to Read This!",
+      "sound": "menu-cursor",
+      "state": "main-menu",
+      "tic": 8
+    },
+    {
+      "input": "ArrowDown",
+      "menu": "main",
+      "result": "cursor moves to Quit Game",
+      "sound": "menu-cursor",
+      "state": "main-menu",
+      "tic": 10
+    },
+    {
+      "input": "Enter",
+      "menu": "main",
+      "result": "quit confirmation message opens and waits for yes or no input",
+      "sound": "menu-select",
+      "state": "quit-confirmation",
+      "tic": 12
+    },
+    {
+      "input": "KeyN",
+      "menu": "quit-confirmation",
+      "result": "confirmation is canceled and the main menu remains active on Quit Game",
+      "sound": "none",
+      "state": "main-menu",
+      "tic": 14
+    }
+  ],
+  "inheritedLaunchSurfaceSourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "sizeBytes": 569
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "sizeBytes": 3239
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "sizeBytes": 645
+    }
+  ],
+  "liveHashStatus": {
+    "audioSha256": null,
+    "framebufferSha256": null,
+    "stateSha256": null,
+    "status": "pending-reference-capture-surface"
+  },
+  "pendingCaptureReason": "The allowed 02-018 read scope exposes no reference oracle replay capture, framebuffer hash comparison, audio hash comparison, or state hash comparison surface in plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json.",
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "role": "preferred reference executable",
+      "source": "local DOS executable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "role": "reference IWAD data",
+      "source": "local IWAD"
+    },
+    {
+      "authority": "local-primary",
+      "id": "01-015",
+      "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+      "role": "allowed launch-surface gap record",
+      "source": "side-by-side replay audit manifest"
+    }
+  ],
+  "stepId": "02-018",
+  "stepTitle": "capture-quit-confirmation-path",
+  "traceSha256": "da174a3479ae3dff579c03e67588bf160f0e3f810c28aaa089472b029ab944ad"
+}
