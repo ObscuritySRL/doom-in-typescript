@@ -103,7 +103,7 @@
 - [x] `04-007` `define-resize-policy` | prereqs: `04-006` | file: `plan_fps/steps/04-007-define-resize-policy.md`
 - [x] `04-008` `handle-window-focus` | prereqs: `04-007` | file: `plan_fps/steps/04-008-handle-window-focus.md`
 - [x] `04-009` `handle-close-button` | prereqs: `04-008` | file: `plan_fps/steps/04-009-handle-close-button.md`
-- [ ] `04-010` `run-message-pump` | prereqs: `04-009` | file: `plan_fps/steps/04-010-run-message-pump.md`
+- [x] `04-010` `run-message-pump` | prereqs: `04-009` | file: `plan_fps/steps/04-010-run-message-pump.md`
 - [ ] `04-011` `blit-framebuffer-to-window` | prereqs: `04-010` | file: `plan_fps/steps/04-011-blit-framebuffer-to-window.md`
 - [ ] `04-012` `apply-playpal-palette` | prereqs: `04-011` | file: `plan_fps/steps/04-012-apply-playpal-palette.md`
 - [ ] `04-013` `prevent-host-filtering` | prereqs: `04-012` | file: `plan_fps/steps/04-013-prevent-host-filtering.md`

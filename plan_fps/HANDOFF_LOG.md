@@ -1517,3 +1517,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-010 run-message-pump
 - open_risks: none
+
+## 2026-04-25 - 04-010 run-message-pump
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-010
+- step_title: run-message-pump
+- summary: Added the playable window-host message-pump surface at `src/playable/window-host/runMessagePump.ts`. The module exports an exact message-pump contract plus `runMessagePump`, which validates the `bun run doom.ts` runtime path, locks the live `PeekMessageW` / `WM_CLOSE` / `WM_DESTROY` / `WM_QUIT` / `TranslateMessage` / `DispatchMessageW` / `Bun.sleep(1)` host loop evidence from `src/launcher/win32.ts`, preserves the shared 640x480 default client size from `src/host/windowPolicy.ts`, and keeps deterministic replay compatibility explicit by limiting the surface to native message-queue planning only. Added focused test `test/playable/window-host/run-message-pump.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live source evidence, continue/close/quit behavior, and wrong-command failure mode.
+- files_changed: src/playable/window-host/runMessagePump.ts; test/playable/window-host/run-message-pump.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript rejected focused-test assertions that compared literal-typed contract fields against dynamic manifest values on the expected side. Flipped those manifest cross-check assertions so the manifest values are the actual side and the exact contract literals remain the expected side, then reran formatting, the focused test, the full test suite, and TypeScript successfully.
+- tests_run: bun run format (initial run: Formatted 2 files in 2ms, No fixes applied; post-recovery run: Formatted 2 files in 2ms, No fixes applied); bun test test/playable/window-host/run-message-pump.test.ts (initial and post-recovery runs: 6 pass, 0 fail, 16 expect() calls); bun test (initial and post-recovery runs: 6870 pass, 0 fail, 691337 expect() calls across 255 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on literal-vs-dynamic manifest comparisons; post-recovery run clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-011 blit-framebuffer-to-window
+- open_risks: none
