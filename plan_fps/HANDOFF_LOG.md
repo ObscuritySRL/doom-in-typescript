@@ -1139,3 +1139,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-004 wire-bun-native-file-loading
 - open_risks: none
+
+## 2026-04-25 - 03-004 wire-bun-native-file-loading
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-004
+- step_title: wire-bun-native-file-loading
+- summary: Added the Bun-native file-loading wire contract at `src/playable/bun-runtime-entry-point/wireBunNativeFileLoading.ts`. The contract pins `Bun.file` as the playable Bun runtime file-loading provider, records the exact target `bun run doom.ts` command contract, mirrors the current `src/main.ts` launcher transition and default IWAD `Bun.file().exists` probe from the 01-007 audit manifest, and marks the surface as launcher-startup-only with no replay input dependency or game-state mutation. Added focused test `test/playable/bun-runtime-entry-point/wire-bun-native-file-loading.test.ts` to lock the exact contract object, command reconstruction, 01-007 manifest schema/transition, current package script and launcher probe evidence, deterministic replay compatibility, and rejection of Node filesystem loading surfaces.
+- files_changed: src/playable/bun-runtime-entry-point/wireBunNativeFileLoading.ts; test/playable/bun-runtime-entry-point/wire-bun-native-file-loading.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; post-checklist run no fixes applied); bun test test/playable/bun-runtime-entry-point/wire-bun-native-file-loading.test.ts (initial and post-checklist runs both 6 pass, 0 fail, 19 expect() calls); bun test (initial and post-checklist runs both 6760 pass, 0 fail, 691014 expect() calls across 234 files); bun x tsc --noEmit --project tsconfig.json (initial and post-checklist runs both clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-005 wire-bun-native-process-oracle-helpers
+- open_risks: none

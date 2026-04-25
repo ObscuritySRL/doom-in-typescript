@@ -79,7 +79,7 @@
 - [x] `03-001` `add-root-doom-ts-command-contract` | prereqs: `02-031` | file: `plan_fps/steps/03-001-add-root-doom-ts-command-contract.md`
 - [x] `03-002` `wire-root-doom-ts-entrypoint` | prereqs: `03-001` | file: `plan_fps/steps/03-002-wire-root-doom-ts-entrypoint.md`
 - [x] `03-003` `add-dev-launch-smoke-test` | prereqs: `03-002` | file: `plan_fps/steps/03-003-add-dev-launch-smoke-test.md`
-- [ ] `03-004` `wire-bun-native-file-loading` | prereqs: `03-003` | file: `plan_fps/steps/03-004-wire-bun-native-file-loading.md`
+- [x] `03-004` `wire-bun-native-file-loading` | prereqs: `03-003` | file: `plan_fps/steps/03-004-wire-bun-native-file-loading.md`
 - [ ] `03-005` `wire-bun-native-process-oracle-helpers` | prereqs: `03-004` | file: `plan_fps/steps/03-005-wire-bun-native-process-oracle-helpers.md`
 - [ ] `03-006` `wire-bun-test-integration` | prereqs: `03-005` | file: `plan_fps/steps/03-006-wire-bun-test-integration.md`
 - [ ] `03-007` `implement-iwad-discovery` | prereqs: `03-006` | file: `plan_fps/steps/03-007-implement-iwad-discovery.md`
