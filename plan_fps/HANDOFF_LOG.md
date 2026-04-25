@@ -1985,3 +1985,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-011 route-gameplay-input
 - open_risks: none
+
+## 2026-04-25 - 06-011 route-gameplay-input
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-011
+- step_title: route-gameplay-input
+- summary: Added the playable gameplay-input routing surface at `src/playable/input/routeGameplayInput.ts`. The module exports an exact Bun-only contract plus `routeGameplayInput`, which validates the `bun run doom.ts` runtime path, routes gameplay movement and run keys into frozen held-state and ticcmd snapshots, keeps automap controls as host-only actions, and leaves Escape reserved for the menu router from 06-010. Added focused test `test/playable/input/route-gameplay-input.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, gameplay routing behavior, host-action behavior, keyup release behavior, ignored reserved keys, and wrong-command plus unsupported-event failure modes.
+- files_changed: src/playable/input/routeGameplayInput.ts; test/playable/input/route-gameplay-input.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because Bun's literal-sensitive matcher overload widened `EXPECTED_CONTRACT` in the focused test. Narrowed the expected contract with `as const`, reran format, the focused test, `bun test`, and `bun x tsc --noEmit --project tsconfig.json`, and the step verified cleanly.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; recovery rerun applied no fixes); bun test test/playable/input/route-gameplay-input.test.ts (initial run passed 8 pass, 0 fail, 21 expect() calls; recovery rerun passed 8 pass, 0 fail, 21 expect() calls); bun test (initial run passed 7027 pass, 0 fail, 691653 expect() calls; recovery rerun passed 7027 pass, 0 fail, 691653 expect() calls); bun x tsc --noEmit --project tsconfig.json (initial run failed on the literal-sensitive exact-contract matcher overload; recovery rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-012 inject-demo-scripted-input
+- open_risks: none
