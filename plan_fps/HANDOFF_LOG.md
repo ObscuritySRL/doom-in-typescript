@@ -1265,3 +1265,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-011 enter-default-title-loop
 - open_risks: none
+
+## 2026-04-25 - 03-011 enter-default-title-loop
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-011
+- step_title: enter-default-title-loop
+- summary: Added the Bun runtime default title-loop surface at `src/playable/bun-runtime-entry-point/enterDefaultTitleLoop.ts`. The module exports an exact title-loop contract and `enterDefaultTitleLoop` helper that enters the initial title screen only through `bun run doom.ts`, rejects the current `src/main.ts` command for this surface, and records deterministic replay compatibility with no replay input consumption, IWAD byte loading, game-state mutation, global random seed mutation, or window-host creation. Added focused test `test/playable/bun-runtime-entry-point/enter-default-title-loop.test.ts` to lock the exact contract value, SHA-256 hash, command reconstruction, audited current launcher transition, package script evidence, default title state, and wrong-command failure mode.
+- files_changed: src/playable/bun-runtime-entry-point/enterDefaultTitleLoop.ts; test/playable/bun-runtime-entry-point/enter-default-title-loop.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (formatted 2 files and fixed 2 files); bun test test/playable/bun-runtime-entry-point/enter-default-title-loop.test.ts (5 pass, 0 fail, 7 expect() calls); bun test (6796 pass, 0 fail, 691119 expect() calls across 241 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-012 implement-clean-quit
+- open_risks: none
