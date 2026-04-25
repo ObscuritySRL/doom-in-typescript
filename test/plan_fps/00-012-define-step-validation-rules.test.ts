@@ -242,18 +242,72 @@ describe('00-012 define-step-validation-rules manifest', () => {
     expect(requiredLogUpdateLabels).toEqual(manifest.stepFileContract.requiredLogUpdateLabels);
   });
 
-  test('rejects malformed names, headings, and non-Bun command examples', async () => {
+  test('rejects malformed names, headings, prerequisites, paths, and non-Bun command examples', async () => {
     const manifest = (await Bun.file(manifestPath).json()) as StepValidationManifest;
     const fileNamePattern = new RegExp(manifest.stepFileContract.fileNamePattern);
     const headingPattern = new RegExp(manifest.stepFileContract.headingPattern);
+    const prerequisiteBulletPattern = new RegExp(manifest.stepFileContract.prerequisiteBulletPattern);
+    const pathBulletPattern = new RegExp(manifest.stepFileContract.pathBulletPattern);
 
     expect('0-12-define-step-validation-rules.md').not.toMatch(fileNamePattern);
+    expect('00-12-define-step-validation-rules.md').not.toMatch(fileNamePattern);
+    expect('00-012-Define-Step-Validation-Rules.md').not.toMatch(fileNamePattern);
     expect('# [x] STEP 00-012: Define Step Validation Rules').not.toMatch(headingPattern);
+    expect('# [ ] step 00-012: Define Step Validation Rules').not.toMatch(headingPattern);
+    expect('# [ ] STEP 0-12: Define Step Validation Rules').not.toMatch(headingPattern);
 
-    const malformedVerificationItems = ['`npm test test/plan_fps/00-012-define-step-validation-rules.test.ts`', '`bun test`', '`bun x tsc --noEmit --project tsconfig.json`'];
+    expect('- 00-12').not.toMatch(prerequisiteBulletPattern);
+    expect('- NONE').not.toMatch(prerequisiteBulletPattern);
+    expect('- has spaces.md').not.toMatch(pathBulletPattern);
+    expect('- back\\slashed.md').not.toMatch(pathBulletPattern);
 
-    expect(malformedVerificationItems[0]).not.toMatch(new RegExp(manifest.verificationRules.stepFileCommandPatterns[0]));
-    expect(malformedVerificationItems.slice().reverse()).not.toEqual(['`bun test test/plan_fps/00-012-define-step-validation-rules.test.ts`', '`bun test`', '`bun x tsc --noEmit --project tsconfig.json`']);
+    const focusedTestPattern = new RegExp(manifest.verificationRules.stepFileCommandPatterns[0]);
+    const fullSuitePattern = new RegExp(manifest.verificationRules.stepFileCommandPatterns[1]);
+    const typecheckPattern = new RegExp(manifest.verificationRules.stepFileCommandPatterns[2]);
+
+    expect('`npm test test/plan_fps/00-012-define-step-validation-rules.test.ts`').not.toMatch(focusedTestPattern);
+    expect('`bun test test/plan_fps/00-012-define-step-validation-rules.test.ts`').toMatch(focusedTestPattern);
+    expect('`yarn test`').not.toMatch(fullSuitePattern);
+    expect('`bun test`').toMatch(fullSuitePattern);
+    expect('`tsc --noEmit`').not.toMatch(typecheckPattern);
+    expect('`bun x tsc --noEmit --project tsconfig.json`').toMatch(typecheckPattern);
+  });
+
+  test('locks the structural invariants of the manifest', async () => {
+    const manifest = (await Bun.file(manifestPath).json()) as StepValidationManifest;
+
+    const orders = manifest.verificationRules.loopCommandOrder.map((rule) => rule.order);
+    expect(orders).toEqual([1, 2, 3, 4, 5]);
+    expect(orders).toEqual([...orders].sort((left, right) => left - right));
+
+    const kinds = manifest.verificationRules.loopCommandOrder.map((rule) => rule.kind);
+    expect(new Set(kinds).size).toBe(kinds.length);
+
+    for (const rule of manifest.verificationRules.loopCommandOrder) {
+      const fieldsPresent: Array<keyof LoopCommandRule> = (['command', 'commandPattern', 'commandSource'] as const).filter((key) => rule[key] !== undefined);
+
+      expect(fieldsPresent).toHaveLength(1);
+    }
+
+    expect(manifest.evidencePaths).toEqual([...manifest.evidencePaths].sort());
+    expect(new Set(manifest.evidencePaths).size).toBe(manifest.evidencePaths.length);
+
+    for (const evidencePath of manifest.evidencePaths) {
+      expect(await Bun.file(resolve(workspaceRootPath, evidencePath)).exists()).toBe(true);
+    }
+
+    expect(manifest.currentWorkspace.packageJson.requiredBunScriptNames).toEqual([...manifest.currentWorkspace.packageJson.requiredBunScriptNames].sort());
+    expect(new Set(manifest.currentWorkspace.packageJson.requiredBunScriptNames).size).toBe(manifest.currentWorkspace.packageJson.requiredBunScriptNames.length);
+
+    expect(new Set(manifest.stepFileContract.requiredSectionOrder).size).toBe(manifest.stepFileContract.requiredSectionOrder.length);
+
+    for (const heading of manifest.stepFileContract.pathListSectionHeadings) {
+      expect(manifest.stepFileContract.requiredSectionOrder).toContain(heading);
+    }
+
+    expect(new Set(manifest.stepFileContract.requiredLogUpdateLabels).size).toBe(manifest.stepFileContract.requiredLogUpdateLabels.length);
+
+    expect(manifest.verificationRules.stepFileCommandPatterns).toHaveLength(3);
   });
 
   test('records the exact decision and the live Bun workspace constraints', async () => {
