@@ -101,7 +101,7 @@ describe('preserveDemoPlaybackMenuInteraction', () => {
   });
 
   test('locks the source hash', () => {
-    expect(SOURCE_HASH).toBe('23e59dbb4438151ec0b8f651c8647b5566c0610afb1d3be0eede348a640c998d');
+    expect(SOURCE_HASH).toBe('e2b30e6a69f94000663bd5287accfde3fc8b9a32afb2bfcc71a822c3cdee7847');
   });
 
   test('links the wrapper to the 01-008 launch-to-menu audit surface', () => {
@@ -142,6 +142,56 @@ describe('preserveDemoPlaybackMenuInteraction', () => {
     expect(frontEndState.menuActive).toBe(true);
     expect(menuState.active).toBe(true);
     expect(menuState.currentMenu).toBe(MenuKind.ReadThis2);
+  });
+
+  test('maps the commercial help action to the first Read This menu during demo playback', () => {
+    const { frontEndState, menuState } = createDemoPlaybackContext('commercial');
+
+    const result = preserveDemoPlaybackMenuInteraction(PRESERVE_DEMO_PLAYBACK_MENU_INTERACTION_CONTRACT.command, frontEndState, menuState, FRONTEND_KEY_HELP);
+
+    expect(result.frontEndAction).toEqual({ kind: 'openHelp', lump: 'HELP' });
+    expect(result.inDemoPlayback).toBe(true);
+    expect(result.menuAction).toBe(MENU_ACTION_NONE);
+    expect(result.menuActive).toBe(true);
+    expect(result.openedMenu).toBe(MenuKind.ReadThis1);
+    expect(result.route).toBe('frontEnd');
+    expect(frontEndState.menuActive).toBe(true);
+    expect(menuState.active).toBe(true);
+    expect(menuState.currentMenu).toBe(MenuKind.ReadThis1);
+  });
+
+  test('maps the shareware help action to the first Read This menu during demo playback', () => {
+    const { frontEndState, menuState } = createDemoPlaybackContext('shareware');
+
+    const result = preserveDemoPlaybackMenuInteraction(PRESERVE_DEMO_PLAYBACK_MENU_INTERACTION_CONTRACT.command, frontEndState, menuState, FRONTEND_KEY_HELP);
+
+    expect(result.frontEndAction).toEqual({ kind: 'openHelp', lump: 'HELP2' });
+    expect(result.inDemoPlayback).toBe(true);
+    expect(result.menuAction).toBe(MENU_ACTION_NONE);
+    expect(result.menuActive).toBe(true);
+    expect(result.openedMenu).toBe(MenuKind.ReadThis1);
+    expect(result.route).toBe('frontEnd');
+    expect(frontEndState.menuActive).toBe(true);
+    expect(menuState.active).toBe(true);
+    expect(menuState.currentMenu).toBe(MenuKind.ReadThis1);
+  });
+
+  test('advances the attract loop when a non-menu, non-help key is pressed during demo playback', () => {
+    const { frontEndState, menuState } = createDemoPlaybackContext();
+
+    expect(frontEndState.titleLoop.advancedemo).toBe(false);
+
+    const result = preserveDemoPlaybackMenuInteraction(PRESERVE_DEMO_PLAYBACK_MENU_INTERACTION_CONTRACT.command, frontEndState, menuState, 0x61);
+
+    expect(result.frontEndAction).toEqual({ kind: 'advanceDemo' });
+    expect(result.inDemoPlayback).toBe(true);
+    expect(result.menuAction).toBe(MENU_ACTION_NONE);
+    expect(result.menuActive).toBe(false);
+    expect(result.openedMenu).toBeNull();
+    expect(result.route).toBe('frontEnd');
+    expect(frontEndState.menuActive).toBe(false);
+    expect(frontEndState.titleLoop.advancedemo).toBe(true);
+    expect(menuState.active).toBe(false);
   });
 
   test('routes active-overlay keys to the menu without advancing the attract loop', () => {

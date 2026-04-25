@@ -1,4 +1,4 @@
-import type { FrontEndKeyAction, FrontEndSequenceState } from '../../ui/frontEndSequence.ts';
+import type { FrontEndKeyAction, FrontEndSequenceState, HelpLump } from '../../ui/frontEndSequence.ts';
 import { FRONTEND_KEY_NONE, handleFrontEndKey, setMenuActive } from '../../ui/frontEndSequence.ts';
 import type { MenuAction, MenuState } from '../../ui/menus.ts';
 import { MENU_ACTION_NONE, MenuKind, handleMenuKey, openMenu } from '../../ui/menus.ts';
@@ -32,7 +32,7 @@ function assertRuntimeCommand(runtimeCommand: string): void {
   }
 }
 
-function getHelpMenuKindFromLump(lump: 'HELP' | 'HELP1' | 'HELP2'): MenuKind {
+function getHelpMenuKindFromLump(lump: HelpLump): MenuKind {
   if (lump === 'HELP1') {
     return MenuKind.ReadThis2;
   }
