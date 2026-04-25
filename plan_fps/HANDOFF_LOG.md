@@ -1301,3 +1301,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-013 implement-fatal-error-handling
 - open_risks: none
+
+## 2026-04-25 - 03-013 implement-fatal-error-handling
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 03-013
+- step_title: implement-fatal-error-handling
+- summary: Added the Bun runtime fatal-error surface at `src/playable/bun-runtime-entry-point/implementFatalErrorHandling.ts`. The module exports an exact fatal-error contract plus `implementFatalErrorHandling`, which formats fatal stderr output only for `bun run doom.ts`, mirrors the audited `src/main.ts` fatal path and current launcher surface from 01-007, and keeps deterministic replay state untouched before session creation. Added focused test `test/playable/bun-runtime-entry-point/implement-fatal-error-handling.test.ts` to lock the exact contract object, stable SHA-256 hash, command reconstruction, manifest/package/source evidence, happy-path formatting, blank-message fallback, and wrong-command failure mode.
+- files_changed: src/playable/bun-runtime-entry-point/implementFatalErrorHandling.ts; test/playable/bun-runtime-entry-point/implement-fatal-error-handling.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (formatted 2 files and fixed 2 files); bun test test/playable/bun-runtime-entry-point/implement-fatal-error-handling.test.ts (6 pass, 0 fail, 17 expect() calls); bun test (6807 pass, 0 fail, 691156 expect() calls across 243 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-014 implement-startup-logging
+- open_risks: none
