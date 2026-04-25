@@ -2021,3 +2021,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-013 record-input-trace-format
 - open_risks: none
+
+## 2026-04-25 - 06-013 record-input-trace-format
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-013
+- step_title: record-input-trace-format
+- summary: Added the playable input trace-format surface at `src/playable/input/recordInputTraceFormat.ts`. The module exports an exact Bun-only contract plus `recordInputTraceFormat`, which validates the `bun run doom.ts` runtime path, records tic-indexed arrival-ordered keyboard, mouse-button, mouse-motion, and scripted Doom-key events, preserves translated scan-code metadata for replay, and returns a deterministic replay-safe header keyed to `EMPTY_TICCMD` and `TICCMD_SIZE`. Added focused test `test/playable/input/record-input-trace-format.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, deterministic trace recording behavior, and wrong-command plus invalid-trace failure modes.
+- files_changed: src/playable/input/recordInputTraceFormat.ts; test/playable/input/record-input-trace-format.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes); bun test test/playable/input/record-input-trace-format.test.ts (6 pass, 0 fail, 10 expect() calls); bun test (7039 pass, 0 fail, 691673 expect() calls across 283 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-014 replay-deterministic-input
+- open_risks: none

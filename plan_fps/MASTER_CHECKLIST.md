@@ -137,7 +137,7 @@
 - [x] `06-010` `route-menu-input` | prereqs: `06-009` | file: `plan_fps/steps/06-010-route-menu-input.md`
 - [x] `06-011` `route-gameplay-input` | prereqs: `06-010` | file: `plan_fps/steps/06-011-route-gameplay-input.md`
 - [x] `06-012` `inject-demo-scripted-input` | prereqs: `06-011` | file: `plan_fps/steps/06-012-inject-demo-scripted-input.md`
-- [ ] `06-013` `record-input-trace-format` | prereqs: `06-012` | file: `plan_fps/steps/06-013-record-input-trace-format.md`
+- [x] `06-013` `record-input-trace-format` | prereqs: `06-012` | file: `plan_fps/steps/06-013-record-input-trace-format.md`
 - [ ] `06-014` `replay-deterministic-input` | prereqs: `06-013` | file: `plan_fps/steps/06-014-replay-deterministic-input.md`
 
 ## Phase 07: Front-End / Menus
