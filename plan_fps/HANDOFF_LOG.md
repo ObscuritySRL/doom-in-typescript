@@ -2003,3 +2003,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-012 inject-demo-scripted-input
 - open_risks: none
+
+## 2026-04-25 - 06-012 inject-demo-scripted-input
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-012
+- step_title: inject-demo-scripted-input
+- summary: Added the playable demo-scripted-input surface at `src/playable/input/injectDemoScriptedInput.ts`. The module exports an exact Bun-only contract plus `injectDemoScriptedInput`, which validates the `bun run doom.ts` runtime path, injects already-translated Doom-key events on the requested tic only, advances deterministic held-key state without mutating live ticcmd state, and rejects unsupported keys or out-of-order scripted input. Added focused test `test/playable/input/inject-demo-scripted-input.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, per-tic injection behavior, deterministic key release, and wrong-command plus invalid-script failure modes.
+- files_changed: src/playable/input/injectDemoScriptedInput.ts; test/playable/input/inject-demo-scripted-input.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; required clean rerun applied no fixes); bun test test/playable/input/inject-demo-scripted-input.test.ts (6 pass, 0 fail, 10 expect() calls); bun test (7033 pass, 0 fail, 691663 expect() calls across 282 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-013 record-input-trace-format
+- open_risks: none
