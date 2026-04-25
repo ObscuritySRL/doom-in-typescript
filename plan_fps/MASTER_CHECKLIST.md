@@ -111,7 +111,7 @@
 
 ## Phase 05: Real-Time Main Loop
 
-- [ ] `05-001` `schedule-35hz-game-tics` | prereqs: `04-014` | file: `plan_fps/steps/05-001-schedule-35hz-game-tics.md`
+- [x] `05-001` `schedule-35hz-game-tics` | prereqs: `04-014` | file: `plan_fps/steps/05-001-schedule-35hz-game-tics.md`
 - [ ] `05-002` `implement-bun-compatible-timing` | prereqs: `05-001` | file: `plan_fps/steps/05-002-implement-bun-compatible-timing.md`
 - [ ] `05-003` `implement-tic-accumulation` | prereqs: `05-002` | file: `plan_fps/steps/05-003-implement-tic-accumulation.md`
 - [ ] `05-004` `implement-deterministic-replay-mode` | prereqs: `05-003` | file: `plan_fps/steps/05-004-implement-deterministic-replay-mode.md`

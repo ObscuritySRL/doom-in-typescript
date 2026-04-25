@@ -1607,3 +1607,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-001 schedule-35hz-game-tics
 - open_risks: none
+
+## 2026-04-25 - 05-001 schedule-35hz-game-tics
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-001
+- step_title: schedule-35hz-game-tics
+- summary: Added the playable real-time-main-loop scheduling surface at `src/playable/real-time-main-loop/schedule35hzGameTics.ts`. The module exports an exact 35 Hz scheduling contract plus `schedule35hzGameTics`, which validates the `bun run doom.ts` runtime path, locks `TicAccumulator` as the 35 Hz absolute-baseline timing source from `src/host/ticAccumulator.ts`, ties scheduling to the `tryRunTics` phase in `src/mainLoop.ts`, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, and keeps deterministic replay compatibility explicit by limiting the surface to a pure Bun-only scheduling contract. Added focused test `test/playable/real-time-main-loop/schedule-35hz-game-tics.test.ts` to lock the exact contract object, stable SHA-256 hash, Bun runtime command validation, audited launcher transition, and live timing-source evidence.
+- files_changed: src/playable/real-time-main-loop/schedule35hzGameTics.ts; test/playable/real-time-main-loop/schedule-35hz-game-tics.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files in 3ms, Fixed 1 file); bun run format (rerun: Formatted 2 files in 2ms, No fixes applied); bun test test/playable/real-time-main-loop/schedule-35hz-game-tics.test.ts (5 pass, 0 fail, 9 expect() calls); bun test (6894 pass, 0 fail, 691403 expect() calls across 260 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-002 implement-bun-compatible-timing
+- open_risks: none
