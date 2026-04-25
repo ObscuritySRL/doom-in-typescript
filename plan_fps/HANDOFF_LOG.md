@@ -1625,3 +1625,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-002 implement-bun-compatible-timing
 - open_risks: none
+
+## 2026-04-25 - 05-002 implement-bun-compatible-timing
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-002
+- step_title: implement-bun-compatible-timing
+- summary: Added the playable real-time-main-loop Bun timing surface at `src/playable/real-time-main-loop/implementBunCompatibleTiming.ts`. The module exports an exact Bun-compatible timing contract plus `implementBunCompatibleTiming`, which validates the `bun run doom.ts` runtime path, records `Bun.nanoseconds` and `Bun.sleep` as the Bun-only host timing primitives, ties timing to the `tryRunTics` phase in `src/mainLoop.ts`, preserves `TicAccumulator` as the absolute 35 Hz authority from `src/host/ticAccumulator.ts`, and keeps deterministic replay compatibility explicit by leaving tic accumulation outside the host timing adapter. Added focused test `test/playable/real-time-main-loop/implement-bun-compatible-timing.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 audited launcher transition, live main-loop and tic-accumulator evidence, the Bun happy path, and the wrong-command failure mode.
+- files_changed: src/playable/real-time-main-loop/implementBunCompatibleTiming.ts; test/playable/real-time-main-loop/implement-bun-compatible-timing.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; rerun formatted 2 files and applied no fixes); bun test test/playable/real-time-main-loop/implement-bun-compatible-timing.test.ts (6 pass, 0 fail, 9 expect() calls); bun test (6900 pass, 0 fail, 691412 expect() calls across 261 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-003 implement-tic-accumulation
+- open_risks: none
