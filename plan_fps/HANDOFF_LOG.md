@@ -2994,3 +2994,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-006 connect-music-system
 - open_risks: none
+
+## 2026-04-25 - 10-006 connect-music-system
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-006
+- step_title: connect-music-system
+- summary: Added the playable music-system connection surface at `src/playable/audio-product-integration/connectMusicSystem.ts`. The module exports the exact `bun run doom.ts` command contract plus `connectMusicSystem`, which prevalidates music device action payloads, gates live dispatch behind the Bun runtime command, forwards normalized frozen actions to an injected host dispatcher, and returns deterministic handle-free replay evidence with a locked checksum. Added focused test `test/playable/audio-product-integration/connect-music-system.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, replay evidence transition, replay checksum, source SHA-256, wrong-command rejection, and invalid-volume predispatch guard.
+- files_changed: src/playable/audio-product-integration/connectMusicSystem.ts; test/playable/audio-product-integration/connect-music-system.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders while locking exact values; captured replayChecksum `4013364346` and source SHA-256 `e0d88b05198a53d1e712406bfd31b8df080cc21cfec9c8bf4be8c52c4011daac`. The first TypeScript verification pass then failed because numeric property guards checked `Number.isInteger` without narrowing `unknown` to `number`; added explicit `typeof value === "number"` guards, refreshed the source SHA-256 to `3daacdf2ad4d17e02cfc3ef572acae4bbc649176a3320157f8d3920271544ad1`, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass formatted 3 files and fixed 1 file; recovery passes formatted 3/5/6 files with no fixes); bun test test/playable/audio-product-integration/connect-music-system.test.ts (placeholder/source-hash runs failed as expected while locking exact values; final run 5 pass, 0 fail, 23 expect() calls); bun test (initial pass 7472 pass, 0 fail, 693114 expect() calls across 337 files; final rerun 7484 pass, 0 fail, 693138 expect() calls across 337 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on unknown-to-number narrowing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-007 preserve-opl-mus-timing
+- open_risks: none
