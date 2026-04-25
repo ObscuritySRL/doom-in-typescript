@@ -1193,3 +1193,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-007 implement-iwad-discovery
 - open_risks: none
+
+## 2026-04-25 - 03-007 implement-iwad-discovery
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-007
+- step_title: implement-iwad-discovery
+- summary: Added the Bun runtime IWAD discovery surface at `src/playable/bun-runtime-entry-point/implementIwadDiscovery.ts`. The module exports the default local IWAD candidate `doom\DOOM1.WAD`, a Bun-file-backed `discoverIwadPath` function that prefers an explicit `--iwad` path, checks the default candidate through `Bun.file().exists()`, and returns a deferred missing result for 03-008, plus an exact contract object pinning the target `bun run doom.ts` command, audited current launcher transition, and deterministic replay compatibility. Added focused test `test/playable/bun-runtime-entry-point/implement-iwad-discovery.test.ts` to lock the exact contract, SHA-256 hash, manifest schema/transition, package script, command-line override, default discovery, and missing-default result.
+- files_changed: src/playable/bun-runtime-entry-point/implementIwadDiscovery.ts; test/playable/bun-runtime-entry-point/implement-iwad-discovery.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: First TypeScript check failed because the focused test returned dynamic audit manifest strings where the contract type expects exact literal values; tightened the test helper assertions to narrow the audited entrypoint fields to exact literals, reran formatting, focused tests, full tests, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; post-hash run no fixes; post-recovery run fixed 1 file); bun test test/playable/bun-runtime-entry-point/implement-iwad-discovery.test.ts (initial and post-recovery runs both 5 pass, 0 fail, 12 expect() calls); bun test (initial and post-recovery runs both 6775 pass, 0 fail, 691070 expect() calls across 237 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on literal narrowing; post-recovery clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-008 implement-missing-iwad-error
+- open_risks: none
