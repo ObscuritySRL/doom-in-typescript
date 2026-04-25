@@ -2813,3 +2813,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-009 apply-palette-effects-and-gamma
 - open_risks: none
+
+## 2026-04-25 - 09-009 apply-palette-effects-and-gamma
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-009
+- step_title: apply-palette-effects-and-gamma
+- summary: Added the playable palette effects and gamma presentation surface at `src/playable/rendering-product-integration/applyPaletteEffectsAndGamma.ts`. The module exports the exact `bun run doom.ts` command contract plus `applyPaletteEffectsAndGamma`, which validates the Bun runtime command, requires full 320x200 palette-index framebuffer, 256-entry gamma table, 256-color RGB palette, and full RGBA presentation destination, applies deterministic palette-effect blending and gamma lookup, and returns replay-stable framebuffer and presentation checksum evidence. Added focused test `test/playable/rendering-product-integration/apply-palette-effects-and-gamma.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable SHA-256 source hash, exact presentation framebuffer transition bytes, exact checksums, wrong-command rejection, and invalid-effect mutation guard.
+- files_changed: src/playable/rendering-product-integration/applyPaletteEffectsAndGamma.ts; test/playable/rendering-product-integration/apply-palette-effects-and-gamma.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Resumed an existing recovery log from a previous blocked attempt. The previous full-suite blocker in `plan_fps/ralph-loop-scripts.test.ts` no longer reproduced in this invocation, so the step was verified and completed without editing files outside the 09-009 scope.
+- tests_run: bun run format (Formatted 3 files, Fixed 1 file); bun test test/playable/rendering-product-integration/apply-palette-effects-and-gamma.test.ts (4 pass, 0 fail, 22 expect() calls); bun test (7291 pass, 0 fail, 692498 expect() calls across 327 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-010 render-detail-mode
+- open_risks: none

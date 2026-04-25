@@ -190,7 +190,7 @@
 - [x] `09-006` `render-intermission-screens` | prereqs: `09-005` | file: `plan_fps/steps/09-006-render-intermission-screens.md`
 - [x] `09-007` `render-finale-screens` | prereqs: `09-006` | file: `plan_fps/steps/09-007-render-finale-screens.md`
 - [x] `09-008` `render-automap-overlay-and-full-mode` | prereqs: `09-007` | file: `plan_fps/steps/09-008-render-automap-overlay-and-full-mode.md`
-- [ ] `09-009` `apply-palette-effects-and-gamma` | prereqs: `09-008` | file: `plan_fps/steps/09-009-apply-palette-effects-and-gamma.md`
+- [x] `09-009` `apply-palette-effects-and-gamma` | prereqs: `09-008` | file: `plan_fps/steps/09-009-apply-palette-effects-and-gamma.md`
 - [ ] `09-010` `render-detail-mode` | prereqs: `09-009` | file: `plan_fps/steps/09-010-render-detail-mode.md`
 - [ ] `09-011` `render-screenblocks` | prereqs: `09-010` | file: `plan_fps/steps/09-011-render-screenblocks.md`
 - [ ] `09-012` `render-wipe-transition-effects` | prereqs: `09-011` | file: `plan_fps/steps/09-012-render-wipe-transition-effects.md`
