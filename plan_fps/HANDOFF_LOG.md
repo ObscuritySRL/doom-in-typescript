@@ -1211,3 +1211,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-008 implement-missing-iwad-error
 - open_risks: none
+
+## 2026-04-25 - 03-008 implement-missing-iwad-error
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-008
+- step_title: implement-missing-iwad-error
+- summary: Added the Bun runtime missing-IWAD error surface at `src/playable/bun-runtime-entry-point/implementMissingIwadError.ts`. The module exports the exact missing-IWAD launch contract plus stable formatting and Error creation helpers that report the explicit `--iwad` path, checked paths, and recovery text before any launcher session, replay input, game state, or window-host mutation. Added focused test `test/playable/bun-runtime-entry-point/implement-missing-iwad-error.test.ts` to lock the exact contract value, SHA-256 hash, command reconstruction, default and explicit-path error messages, 01-007 audit manifest transition, current package/source launcher evidence, and deterministic replay compatibility.
+- files_changed: src/playable/bun-runtime-entry-point/implementMissingIwadError.ts; test/playable/bun-runtime-entry-point/implement-missing-iwad-error.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run Formatted 2 files, Fixed 2 files; post-hash run Formatted 2 files, Fixed 1 file); bun test test/playable/bun-runtime-entry-point/implement-missing-iwad-error.test.ts (5 pass, 0 fail, 14 expect() calls); bun test (6780 pass, 0 fail, 691084 expect() calls across 238 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-009 implement-default-config-loading
+- open_risks: none
