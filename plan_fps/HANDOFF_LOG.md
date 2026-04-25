@@ -743,3 +743,21 @@
 - oracle_changes: OR-FPS-017 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-episode-menu-path.json` with refresh command `bun test test/oracles/capture-episode-menu-path.test.ts`
 - next_eligible_steps: 02-013 capture-skill-menu-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live episode menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-013 capture-skill-menu-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-013
+- step_title: capture-skill-menu-path
+- summary: Added the skill menu path oracle fixture at `test/oracles/fixtures/capture-skill-menu-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape/Enter/Enter/Enter input sequence, tic/frame capture window, exact abstract transition trace from attract loop to main menu to episode menu to skill menu to E1M1 start request, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-skill-menu-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the skill menu transition path, cross-check source-catalog authority and the 01-015 manifest, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-skill-menu-path.json; test/oracles/capture-skill-menu-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Replaced the focused test's final `expectedTrace.at(-1)` lookup with exact tuple index `expectedTrace[4]` after TypeScript could not narrow the optional result in `bun x tsc --noEmit --project tsconfig.json`.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun run format (rerun, No fixes applied); bun test test/oracles/capture-skill-menu-path.test.ts (5 pass, 0 fail, 30 expect() calls); bun test (6651 pass, 0 fail, 690548 expect() calls across 212 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on optional final trace lookup); bun run format (post-recovery, No fixes applied); bun test test/oracles/capture-skill-menu-path.test.ts (5 pass, 0 fail, 30 expect() calls); bun test (6651 pass, 0 fail, 690548 expect() calls across 212 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-018 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-skill-menu-path.json` with refresh command `bun test test/oracles/capture-skill-menu-path.test.ts`
+- next_eligible_steps: 02-014 capture-options-menu-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live skill menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
