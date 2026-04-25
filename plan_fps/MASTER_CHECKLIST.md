@@ -121,7 +121,7 @@
 - [x] `05-008` `prevent-frame-rate-dependent-simulation` | prereqs: `05-007` | file: `plan_fps/steps/05-008-prevent-frame-rate-dependent-simulation.md`
 - [x] `05-009` `reject-visible-interpolation` | prereqs: `05-008` | file: `plan_fps/steps/05-009-reject-visible-interpolation.md`
 - [x] `05-010` `implement-clean-main-loop-shutdown` | prereqs: `05-009` | file: `plan_fps/steps/05-010-implement-clean-main-loop-shutdown.md`
-- [ ] `05-011` `add-timing-instrumentation` | prereqs: `05-010` | file: `plan_fps/steps/05-011-add-timing-instrumentation.md`
+- [x] `05-011` `add-timing-instrumentation` | prereqs: `05-010` | file: `plan_fps/steps/05-011-add-timing-instrumentation.md`
 
 ## Phase 06: Input
 

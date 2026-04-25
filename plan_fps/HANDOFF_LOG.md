@@ -1787,3 +1787,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-011 add-timing-instrumentation
 - open_risks: none
+
+## 2026-04-25 - 05-011 add-timing-instrumentation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-011
+- step_title: add-timing-instrumentation
+- summary: Added the playable real-time-main-loop timing instrumentation surface at `src/playable/real-time-main-loop/addTimingInstrumentation.ts`. The module exports an exact Bun-only timing instrumentation contract plus `addTimingInstrumentation`, which validates the `bun run doom.ts` runtime path, anchors instrumentation to `MainLoop.runOneFrame`, records `Bun.nanoseconds` as the timing primitive and `TicAccumulator.totalTics` as the replay-safe timing snapshot from `src/host/ticAccumulator.ts`, and keeps instrumentation observer-only so it never advances, resets, or interpolates tic timing. Added focused test `test/playable/real-time-main-loop/add-timing-instrumentation.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, observer-only sample behavior, and wrong-command plus negative-duration failure modes.
+- files_changed: src/playable/real-time-main-loop/addTimingInstrumentation.ts; test/playable/real-time-main-loop/add-timing-instrumentation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because Bun's matcher overload narrowed the contract host-transition string too aggressively in the focused test. Inverted the manifest equality assertion, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun before verification applied no fixes; post-recovery rerun applied no fixes); bun test test/playable/real-time-main-loop/add-timing-instrumentation.test.ts (initial run: 6 pass, 0 fail, 13 expect() calls; post-recovery rerun: 6 pass, 0 fail, 13 expect() calls); bun test (initial run: 6952 pass, 0 fail, 691513 expect() calls; post-recovery rerun: 6952 pass, 0 fail, 691513 expect() calls); bun x tsc --noEmit --project tsconfig.json (initial run failed on the focused-test matcher overload; post-recovery rerun: clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-001 translate-keyboard-events
+- open_risks: none
