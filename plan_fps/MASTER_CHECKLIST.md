@@ -69,7 +69,7 @@
 - [x] `02-025` `capture-scripted-intermission-path` | prereqs: `02-024` | file: `plan_fps/steps/02-025-capture-scripted-intermission-path.md`
 - [x] `02-026` `capture-live-save-load-roundtrip` | prereqs: `02-025` | file: `plan_fps/steps/02-026-capture-live-save-load-roundtrip.md`
 - [x] `02-027` `capture-sfx-hash-windows` | prereqs: `02-026` | file: `plan_fps/steps/02-027-capture-sfx-hash-windows.md`
-- [ ] `02-028` `capture-music-event-hash-windows` | prereqs: `02-027` | file: `plan_fps/steps/02-028-capture-music-event-hash-windows.md`
+- [x] `02-028` `capture-music-event-hash-windows` | prereqs: `02-027` | file: `plan_fps/steps/02-028-capture-music-event-hash-windows.md`
 - [ ] `02-029` `capture-framebuffer-hash-windows` | prereqs: `02-028` | file: `plan_fps/steps/02-029-capture-framebuffer-hash-windows.md`
 - [ ] `02-030` `capture-state-hash-windows` | prereqs: `02-029` | file: `plan_fps/steps/02-030-capture-state-hash-windows.md`
 - [ ] `02-031` `capture-final-side-by-side-replay` | prereqs: `02-030` | file: `plan_fps/steps/02-031-capture-final-side-by-side-replay.md`

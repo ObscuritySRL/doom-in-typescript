@@ -1013,3 +1013,21 @@
 - oracle_changes: OR-FPS-032 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-sfx-hash-windows.json` with refresh command `bun test test/oracles/capture-sfx-hash-windows.test.ts`
 - next_eligible_steps: 02-028 capture-music-event-hash-windows
 - open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live SFX audio hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-028 capture-music-event-hash-windows
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-028
+- step_title: capture-music-event-hash-windows
+- summary: Added the music event hash windows oracle fixture at `test/oracles/fixtures/capture-music-event-hash-windows.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, music event capture arguments, clean-launch/menu/gameplay tic and frame windows, exact pending music event hash trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live music hash status because the step read scope exposes no reference capture or audio hash comparison surface. Added focused test `test/oracles/capture-music-event-hash-windows.test.ts` to lock the full fixture value, trace hash, capture command contract, music event windows, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-music-event-hash-windows.json; test/oracles/capture-music-event-hash-windows.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-music-event-hash-windows.test.ts (5 pass, 0 fail, 21 expect() calls); bun test (6728 pass, 0 fail, 690891 expect() calls across 227 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-033 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-music-event-hash-windows.json` with refresh command `bun test test/oracles/capture-music-event-hash-windows.test.ts`
+- next_eligible_steps: 02-029 capture-framebuffer-hash-windows
+- open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live music event hashes remain pending for later capture steps that may run a reference capture path.
