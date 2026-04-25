@@ -2435,3 +2435,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-002 start-shareware-maps-through-valid-routes
 - open_risks: none
+
+## 2026-04-25 - 08-002 start-shareware-maps-through-valid-routes
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-002
+- step_title: start-shareware-maps-through-valid-routes
+- summary: Added the playable shareware-map start surface at `src/playable/game-session-wiring/startSharewareMapsThroughValidRoutes.ts`. The module exports an exact Bun-only runtime contract plus `startSharewareMapsThroughValidRoutes`, which validates the `bun run doom.ts` command, accepts only E1M1 through E1M9, requires the matching shareware menu route for the requested map, verifies the map exists in loaded IWAD resources, creates the `LauncherSession` through the existing session constructor, and returns an unopened `MainLoop` so replay state remains unadvanced. Added focused test `test/playable/game-session-wiring/start-shareware-maps-through-valid-routes.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-009 audit linkage, an E1M9 valid-route transition, wrong-command rejection, non-shareware-map rejection, wrong-route rejection, and unavailable-resource rejection.
+- files_changed: src/playable/game-session-wiring/startSharewareMapsThroughValidRoutes.ts; test/playable/game-session-wiring/start-shareware-maps-through-valid-routes.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the shareware route table values were inferred as readonly string arrays instead of readonly `SharewareMapRouteStep` arrays. Narrowed each route constant as a literal tuple, refreshed the locked source hash, reran formatting, and reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; reruns after source-hash refreshes and recovery edits applied no fixes); bun test test/playable/game-session-wiring/start-shareware-maps-through-valid-routes.test.ts (7 pass, 0 fail, 22 expect() calls; rerun after recovery also passed); bun test (7177 pass, 0 fail, 692055 expect() calls across 306 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on route-table literal typing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-003 wire-player-spawn-session
+- open_risks: none
