@@ -2543,3 +2543,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-008 wire-status-bar-invocation
 - open_risks: none
+
+## 2026-04-25 - 08-008 wire-status-bar-invocation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-008
+- step_title: wire-status-bar-invocation
+- summary: Added the playable status-bar invocation surface at `src/playable/game-session-wiring/wireStatusBarInvocation.ts`. The module exports an exact Bun-only runtime contract plus `wireStatusBarInvocation`, which validates the `bun run doom.ts` command, starts or reuses the existing `MainLoop`, advances gameplay only during `tryRunTics`, renders the gameplay framebuffer only during `display`, and records replay-stable status-bar invocation evidence immediately after gameplay rendering. Added focused test `test/playable/game-session-wiring/wire-status-bar-invocation.test.ts` to lock the exact command contract, 01-009 audit linkage, stable SHA-256 source hash, exact display-phase transition, started-loop reuse, and wrong-command rejection before replay state mutation.
+- files_changed: src/playable/game-session-wiring/wireStatusBarInvocation.ts; test/playable/game-session-wiring/wire-status-bar-invocation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because callback-assigned local variables for framebuffer and status-bar evidence could not be narrowed after `MainLoop.runOneFrame`. Replaced them with a typed display-evidence object, refreshed the locked source hash, reran formatting, and reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial source-format pass formatted 1 file with no fixes; required pass after test creation formatted 2 files and fixed 1 file; recovery reruns formatted 2 files with no fixes); bun test test/playable/game-session-wiring/wire-status-bar-invocation.test.ts (5 pass, 0 fail, 14 expect() calls; rerun after recovery also passed); bun test (7206 pass, 0 fail, 692157 expect() calls across 312 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on callback-assigned narrowing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-009 wire-automap-toggle-render-path
+- open_risks: none
