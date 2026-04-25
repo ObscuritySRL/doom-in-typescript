@@ -2327,3 +2327,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-016 implement-menu-sound-events
 - open_risks: none
+
+## 2026-04-25 - 07-016 implement-menu-sound-events
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-016
+- step_title: implement-menu-sound-events
+- summary: Added the playable menu-sound-events surface at `src/playable/front-end-menus/implementMenuSoundEvents.ts`. The module exports an exact Bun-only runtime contract plus `implementMenuSoundEvents`, which validates the `bun run doom.ts` command, routes menu-layer keys through `menus.ts`, classifies stable menu sound-event categories (`activate`, `adjust`, `back`, `cursorMove`, `none`), keeps `frontEndSequence.ts` menu-active state synchronized with the menu layer, and preserves replay-relevant front-end demo playback state. Added focused test `test/playable/front-end-menus/implement-menu-sound-events.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, the main-menu activation path, cursor-move and slider-adjust transitions, confirmation cancel/back behavior, and wrong-command rejection.
+- files_changed: src/playable/front-end-menus/implementMenuSoundEvents.ts; test/playable/front-end-menus/implement-menu-sound-events.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The focused-test pass first failed because the runtime contract audit object omitted the manifest's `schemaVersion: 1`; after aligning that shape, the typecheck surfaced an unreachable `'none'` switch branch and two literal-narrow `toEqual` comparisons. Removed the unreachable branch, inverted the manifest-equality assertions to stay type-safe, refreshed the locked source hash, reran formatting, and reran the verification tail successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; all reruns after recovery edits and source-hash refreshes applied no fixes); bun test test/playable/front-end-menus/implement-menu-sound-events.test.ts (initial run failed on the missing audit schemaVersion; final rerun passed with 7 tests, 0 failures, 21 expect() calls); bun test (initial run passed with 7143 tests, 0 failures; rerun after the typecheck recovery also passed with 7143 tests, 0 failures); bun x tsc --noEmit --project tsconfig.json (initial run failed on the unreachable `'none'` switch case and literal-narrow test expectations; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-017 render-skull-cursor
+- open_risks: none
