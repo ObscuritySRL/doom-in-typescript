@@ -1697,3 +1697,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-006 handle-long-stall-panic
 - open_risks: none
+
+## 2026-04-25 - 05-006 handle-long-stall-panic
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-006
+- step_title: handle-long-stall-panic
+- summary: Added the playable real-time-main-loop long-stall panic surface at `src/playable/real-time-main-loop/handleLongStallPanic.ts`. The module exports an exact handle-long-stall-panic contract plus `handleLongStallPanic`, which validates the `bun run doom.ts` runtime path, ties panic decisions to the `tryRunTics` phase in `src/mainLoop.ts`, records `TicAccumulator.advance()` and `TicAccumulator.totalTics` as the discrete timing authorities from `src/host/ticAccumulator.ts`, preserves deterministic replay compatibility by basing the panic branch only on integer tic counts, and returns zero runnable tics when a caller-supplied long-stall limit is exceeded. Added focused test `test/playable/real-time-main-loop/handle-long-stall-panic.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live main-loop and tic-accumulator evidence, happy-path behavior, panic behavior, and wrong-command rejection.
+- files_changed: src/playable/real-time-main-loop/handleLongStallPanic.ts; test/playable/real-time-main-loop/handle-long-stall-panic.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; clean rerun formatted 2 files and applied no fixes); bun test test/playable/real-time-main-loop/handle-long-stall-panic.test.ts (6 pass, 0 fail, 11 expect() calls); bun test (6922 pass, 0 fail, 691453 expect() calls across 265 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-007 handle-pause-focus-timing
+- open_risks: none
