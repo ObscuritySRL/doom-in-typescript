@@ -180,4 +180,32 @@ describe('implementFatalErrorHandling', () => {
   test('rejects non-Bun runtime commands', () => {
     expect(() => implementFatalErrorHandling('bun run src/main.ts', new Error('boom'))).toThrow('Fatal error handling is only available through bun run doom.ts.');
   });
+
+  test('returns the trimmed plain-string fatal payload', () => {
+    expect(implementFatalErrorHandling(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.commandContract.command, '  IWAD lump missing  ').stderrLine).toBe('Fatal error: IWAD lump missing');
+  });
+
+  test('falls back across the full set of unusable fatal payloads', () => {
+    const expectedFallbackLine = `Fatal error: ${IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.fatalErrorHandling.unknownFallback}`;
+    const errorWithUndefinedMessage = new Error('placeholder');
+    Object.defineProperty(errorWithUndefinedMessage, 'message', { value: undefined });
+    const errorWithNumericMessage = new Error('placeholder');
+    Object.defineProperty(errorWithNumericMessage, 'message', { value: 42 });
+    const unusableFatalPayloads: readonly unknown[] = ['', '   ', null, undefined, 0, 42, true, false, {}, [], errorWithUndefinedMessage, errorWithNumericMessage];
+
+    for (const unusableFatalPayload of unusableFatalPayloads) {
+      expect(implementFatalErrorHandling(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.commandContract.command, unusableFatalPayload).stderrLine).toBe(expectedFallbackLine);
+    }
+  });
+
+  test('keeps fatal-error replay neutrality and contract identity stable across payloads', () => {
+    const baselineResult = implementFatalErrorHandling(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.commandContract.command, new Error('baseline'));
+
+    expect(baselineResult.deterministicReplayCompatibility).toBe(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.deterministicReplayCompatibility);
+    expect(baselineResult.auditedCurrentLauncherSurface).toBe(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.auditedCurrentLauncherSurface);
+    expect(baselineResult.runtimeCommand).toBe(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.commandContract.command);
+    expect(baselineResult.exitCode).toBe(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.fatalErrorHandling.exitCode);
+    expect(baselineResult.outputStream).toBe(IMPLEMENT_FATAL_ERROR_HANDLING_CONTRACT.fatalErrorHandling.outputStream);
+    expect(baselineResult.status).toBe('fatal-error');
+  });
 });

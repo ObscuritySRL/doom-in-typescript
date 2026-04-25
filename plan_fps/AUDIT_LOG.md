@@ -58,3 +58,20 @@ Required entry shape:
 - files_changed: none
 - tests_run: bun test test/plan_fps/01-009-audit-missing-menu-to-e1m1.test.ts; bun test; bun x tsc --noEmit --project tsconfig.json
 - follow_up: none
+
+## 2026-04-25T19:40:16Z - 03-013 implement-fatal-error-handling - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 03-013
+- step_title: implement-fatal-error-handling
+- prior_audits: none (no prior AUDIT_LOG entry; HANDOFF_LOG records Codex completion of the original implementation only)
+- correctness_findings: extractFatalErrorMessage in src/playable/bun-runtime-entry-point/implementFatalErrorHandling.ts called fatalError.message.trim() unconditionally inside the `instanceof Error` branch. Empirically reproduced — `Object.create(Error.prototype)` and a real `new Error()` whose `.message` was redefined to `undefined` both pass `instanceof Error` while `typeof .message === 'undefined'`, and `.trim()` then threw `TypeError: undefined is not an object (evaluating 'fatalError.message.trim')`. That defect lived inside the *fatal error handler itself*, where a thrown error has nowhere to be caught (the launcher's outer `void main().catch` would already be servicing the original fatal). Implementation otherwise satisfies Expected Changes: contract object is `as const`, runtime command guard rejects non-`bun run doom.ts` callers with the literal expected message, deterministic-replay flags are all false at phase `pre-session-launch`, and the focused test still pins the contract SHA-256 (3148335646ca0fc8e21171fb4e4ee389716b96265748769f7c94aac5b1f745da, recomputed live via Bun.CryptoHasher) and cross-checks the 01-007 audit manifest, package.json `start` script, and `src/main.ts` HELP_TEXT plus catch/stderr/exit fatal path.
+- performance_findings: none — fatal handler runs at most once per process exit; no hot-path allocations or per-frame work involved.
+- improvement_findings: focused test exercised only `Error` with valid message, `Error` with whitespace-only message, and the non-Bun command rejection path. The plain-`string` branch of extractFatalErrorMessage and the unknown-fallback path for null, undefined, plain objects, arrays, numbers, booleans, and Errors with non-string messages were not directly tested, masking the undefined-message crash and leaving four other branches drift-unprotected.
+- corrective_action: Hardened extractFatalErrorMessage with a `typeof fatalError.message === 'string'` guard so a non-string `.message` falls through to the next branch instead of throwing. Contract object value (and therefore its pinned SHA-256) is unchanged. Added three regression tests covering the trimmed plain-string path, a parameterized fallback sweep across `''`, `'   '`, `null`, `undefined`, `0`, `42`, `true`, `false`, `{}`, `[]`, and two Errors whose `.message` was redefined to `undefined`/`42`, and a result-identity test asserting the result reuses the contract's auditedCurrentLauncherSurface and deterministicReplayCompatibility references and pins the literal status/exitCode/outputStream/runtimeCommand fields. Test count grew from 6 (17 expects) to 9 (36 expects).
+- files_changed: src/playable/bun-runtime-entry-point/implementFatalErrorHandling.ts; test/playable/bun-runtime-entry-point/implement-fatal-error-handling.test.ts; plan_fps/AUDIT_LOG.md
+- tests_run: bun test test/playable/bun-runtime-entry-point/implement-fatal-error-handling.test.ts; bun test; bun x tsc --noEmit --project tsconfig.json
+- follow_up: none

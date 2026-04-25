@@ -45,7 +45,7 @@ export type FatalErrorHandlingResult = Readonly<{
 }>;
 
 function extractFatalErrorMessage(fatalError: unknown): string {
-  if (fatalError instanceof Error) {
+  if (fatalError instanceof Error && typeof fatalError.message === 'string') {
     const normalizedMessage = fatalError.message.trim();
 
     if (normalizedMessage.length > 0) {
