@@ -1283,3 +1283,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-012 implement-clean-quit
 - open_risks: none
+
+## 2026-04-25 - 03-012 implement-clean-quit
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-012
+- step_title: implement-clean-quit
+- summary: Added the Bun runtime clean-quit surface at `src/playable/bun-runtime-entry-point/implementCleanQuit.ts`. The module exports an exact clean-quit contract and `implementCleanQuit` helper that returns a zero-exit clean result only for `bun run doom.ts`, rejects the current `src/main.ts` command, records the audited current launcher transition, and keeps deterministic replay state neutral. Added focused test `test/playable/bun-runtime-entry-point/implement-clean-quit.test.ts` to lock the exact contract value, SHA-256 hash, command reconstruction, 01-007 audit manifest schema/transition, package/source launcher evidence, clean result, wrong-command failure mode, and deterministic replay compatibility.
+- files_changed: src/playable/bun-runtime-entry-point/implementCleanQuit.ts; test/playable/bun-runtime-entry-point/implement-clean-quit.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file); bun test test/playable/bun-runtime-entry-point/implement-clean-quit.test.ts (5 pass, 0 fail, 20 expect() calls); bun test (6801 pass, 0 fail, 691139 expect() calls across 242 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-013 implement-fatal-error-handling
+- open_risks: none

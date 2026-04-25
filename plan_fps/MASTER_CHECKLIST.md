@@ -87,7 +87,7 @@
 - [x] `03-009` `implement-default-config-loading` | prereqs: `03-008` | file: `plan_fps/steps/03-009-implement-default-config-loading.md`
 - [x] `03-010` `create-game-context` | prereqs: `03-009` | file: `plan_fps/steps/03-010-create-game-context.md`
 - [x] `03-011` `enter-default-title-loop` | prereqs: `03-010` | file: `plan_fps/steps/03-011-enter-default-title-loop.md`
-- [ ] `03-012` `implement-clean-quit` | prereqs: `03-011` | file: `plan_fps/steps/03-012-implement-clean-quit.md`
+- [x] `03-012` `implement-clean-quit` | prereqs: `03-011` | file: `plan_fps/steps/03-012-implement-clean-quit.md`
 - [ ] `03-013` `implement-fatal-error-handling` | prereqs: `03-012` | file: `plan_fps/steps/03-013-implement-fatal-error-handling.md`
 - [ ] `03-014` `implement-startup-logging` | prereqs: `03-013` | file: `plan_fps/steps/03-014-implement-startup-logging.md`
 - [ ] `03-015` `implement-deterministic-reset-seed` | prereqs: `03-014` | file: `plan_fps/steps/03-015-implement-deterministic-reset-seed.md`
