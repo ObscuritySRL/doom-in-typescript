@@ -2417,3 +2417,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-001 start-e1m1-from-menu
 - open_risks: none
+
+## 2026-04-25 - 08-001 start-e1m1-from-menu
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 08-001
+- step_title: start-e1m1-from-menu
+- summary: Added the playable start-E1M1-from-menu surface at `src/playable/game-session-wiring/startE1m1FromMenu.ts`. The module exports an exact Bun-only runtime contract plus `startE1m1FromMenu`, which validates the `bun run doom.ts` command, requires the exact `main:new-game -> episode:e1 -> skill-select` transition route, rejects non-E1 episodes, creates an unopened `MainLoop`, and hands back a fresh `LauncherSession` for `E1M1` without advancing deterministic replay state. Added focused test `test/playable/game-session-wiring/start-e1m1-from-menu.test.ts` to lock the exact runtime contract, stable SHA-256 source hash, 01-009 audit linkage, the happy-path E1M1 transition, and wrong-command plus wrong-route rejection paths.
+- files_changed: src/playable/game-session-wiring/startE1m1FromMenu.ts; test/playable/game-session-wiring/start-e1m1-from-menu.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run after file creation applied no fixes; rerun after locking the source hash applied no fixes); bun test test/playable/game-session-wiring/start-e1m1-from-menu.test.ts (6 pass, 0 fail, 17 expect() calls); bun test (7170 pass, 0 fail, 692033 expect() calls across 305 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-002 start-shareware-maps-through-valid-routes
+- open_risks: none

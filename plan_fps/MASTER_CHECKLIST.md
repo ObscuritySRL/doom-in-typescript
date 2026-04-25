@@ -165,7 +165,7 @@
 
 ## Phase 08: Game Session Wiring
 
-- [ ] `08-001` `start-e1m1-from-menu` | prereqs: `07-020` | file: `plan_fps/steps/08-001-start-e1m1-from-menu.md`
+- [x] `08-001` `start-e1m1-from-menu` | prereqs: `07-020` | file: `plan_fps/steps/08-001-start-e1m1-from-menu.md`
 - [ ] `08-002` `start-shareware-maps-through-valid-routes` | prereqs: `08-001` | file: `plan_fps/steps/08-002-start-shareware-maps-through-valid-routes.md`
 - [ ] `08-003` `wire-player-spawn-session` | prereqs: `08-002` | file: `plan_fps/steps/08-003-wire-player-spawn-session.md`
 - [ ] `08-004` `enforce-game-tick-order` | prereqs: `08-003` | file: `plan_fps/steps/08-004-enforce-game-tick-order.md`
