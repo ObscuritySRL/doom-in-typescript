@@ -169,13 +169,47 @@ describe('defineMouseCapturePolicy', () => {
     });
   });
 
-  test('rejects non-doom runtime commands', () => {
+  test('keeps focus-loss priority over deterministic replay when focus and replay coincide', () => {
+    expect(
+      defineMouseCapturePolicy({
+        hasWindowFocus: false,
+        inputOwner: 'deterministic-replay',
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toEqual({
+      captureMode: 'released',
+      policyReason: 'focus-loss',
+      replaySafeTicCommand: EMPTY_TICCMD,
+      replaySafeTicCommandBytes: TICCMD_SIZE,
+      shouldClipCursorToWindow: false,
+      shouldHideCursor: false,
+    });
+  });
+
+  test('keeps focus-loss priority over an active menu when focus and menu coincide', () => {
+    expect(
+      defineMouseCapturePolicy({
+        hasWindowFocus: false,
+        inputOwner: 'menu',
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toEqual({
+      captureMode: 'released',
+      policyReason: 'focus-loss',
+      replaySafeTicCommand: EMPTY_TICCMD,
+      replaySafeTicCommandBytes: TICCMD_SIZE,
+      shouldClipCursorToWindow: false,
+      shouldHideCursor: false,
+    });
+  });
+
+  test('rejects non-doom runtime commands and reports the received value', () => {
     expect(() =>
       defineMouseCapturePolicy({
         hasWindowFocus: true,
         inputOwner: 'gameplay',
         runtimeCommand: 'bun run src/main.ts',
       }),
-    ).toThrow('defineMouseCapturePolicy requires `bun run doom.ts`.');
+    ).toThrow('defineMouseCapturePolicy requires `bun run doom.ts`. Received `bun run src/main.ts`.');
   });
 });

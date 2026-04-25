@@ -84,7 +84,7 @@ const RELEASED_MOUSE_POLICY_BY_REASON: Readonly<Record<ReleasedMouseCaptureReaso
 
 function assertRuntimeCommand(runtimeCommand: string): void {
   if (runtimeCommand !== EXPECTED_RUNTIME_COMMAND) {
-    throw new Error('defineMouseCapturePolicy requires `bun run doom.ts`.');
+    throw new Error(`defineMouseCapturePolicy requires \`${EXPECTED_RUNTIME_COMMAND}\`. Received \`${runtimeCommand}\`.`);
   }
 }
 
