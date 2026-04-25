@@ -106,7 +106,7 @@
 - [x] `04-010` `run-message-pump` | prereqs: `04-009` | file: `plan_fps/steps/04-010-run-message-pump.md`
 - [x] `04-011` `blit-framebuffer-to-window` | prereqs: `04-010` | file: `plan_fps/steps/04-011-blit-framebuffer-to-window.md`
 - [x] `04-012` `apply-playpal-palette` | prereqs: `04-011` | file: `plan_fps/steps/04-012-apply-playpal-palette.md`
-- [ ] `04-013` `prevent-host-filtering` | prereqs: `04-012` | file: `plan_fps/steps/04-013-prevent-host-filtering.md`
+- [x] `04-013` `prevent-host-filtering` | prereqs: `04-012` | file: `plan_fps/steps/04-013-prevent-host-filtering.md`
 - [ ] `04-014` `add-screenshot-capture-hooks` | prereqs: `04-013` | file: `plan_fps/steps/04-014-add-screenshot-capture-hooks.md`
 
 ## Phase 05: Real-Time Main Loop

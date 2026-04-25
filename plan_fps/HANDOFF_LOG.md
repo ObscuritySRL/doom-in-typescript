@@ -1571,3 +1571,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-013 prevent-host-filtering
 - open_risks: none
+
+## 2026-04-25 - 04-013 prevent-host-filtering
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-013
+- step_title: prevent-host-filtering
+- summary: Added the playable window-host host-filtering surface at `src/playable/window-host/preventHostFiltering.ts`. The module exports an exact prevent-host-filtering contract plus `preventHostFiltering`, which validates the `bun run doom.ts` runtime path, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, records the live `StretchDIBits` blit evidence and the current absence of `SetStretchBltMode` and `HALFTONE` in `src/launcher/win32.ts`, locks `COLORONCOLOR` as the required non-filtered stretch mode for windowed presentation, preserves the shared 640x480 default client size from `src/host/windowPolicy.ts`, and keeps deterministic replay compatibility explicit by limiting the surface to presentation-only stretch-mode policy. Added focused test `test/playable/window-host/prevent-host-filtering.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live source evidence, happy path, and wrong-command failure mode.
+- files_changed: src/playable/window-host/preventHostFiltering.ts; test/playable/window-host/prevent-host-filtering.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; rerun formatted 2 files and applied no fixes); bun test test/playable/window-host/prevent-host-filtering.test.ts (5 pass, 0 fail, 13 expect() calls); bun test (6884 pass, 0 fail, 691383 expect() calls across 258 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-014 add-screenshot-capture-hooks
+- open_risks: none
