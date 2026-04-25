@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 const fixturePath = 'test/oracles/fixtures/capture-reference-clean-launch.json';
+const referenceOraclesPath = 'plan_fps/REFERENCE_ORACLES.md';
+const sourceCatalogPath = 'plan_fps/SOURCE_CATALOG.md';
 
 const expectedTrace = [
   {
@@ -109,7 +109,7 @@ const expectedFixture = {
 };
 
 function sha256Json(value: unknown): string {
-  return createHash('sha256').update(JSON.stringify(value)).digest('hex');
+  return new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
 }
 
 describe('capture-reference-clean-launch oracle', () => {
@@ -119,51 +119,63 @@ describe('capture-reference-clean-launch oracle', () => {
     expect(fixture).toEqual(expectedFixture);
   });
 
-  test('locks the exact clean-launch trace hash', () => {
-    expect(sha256Json(expectedTrace)).toBe(expectedTraceHash);
-    expect(expectedFixture.expectedHashes).toEqual([
-      {
-        algorithm: 'sha256',
-        sha256: expectedTraceHash,
-        surface: 'expectedTrace-json',
-      },
-    ]);
+  test('recomputes the on-disk trace hash and locks structural invariants', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as typeof expectedFixture;
+    const traceHash = sha256Json(fixture.expectedTrace);
+
+    expect(traceHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(fixture.expectedHashes).toHaveLength(1);
+    expect(fixture.expectedHashes[0]).toEqual({
+      algorithm: 'sha256',
+      sha256: traceHash,
+      surface: 'expectedTrace-json',
+    });
+    expect(fixture.expectedTrace.map((event) => event.ordinal)).toEqual([1, 2, 3, 4]);
+    expect(new Set(fixture.expectedTrace.map((event) => event.event)).size).toBe(fixture.expectedTrace.length);
+    expect(fixture.captureWindow.frameCount).toBe(1);
+    expect(fixture.captureWindow.startFrame).toBe(fixture.captureWindow.endFrame);
+    expect(fixture.captureWindow.startTic).toBe(fixture.captureWindow.endTic);
+    expect(fixture.captureWindow.inputTrace).toHaveLength(0);
+    expect(fixture.captureCommand.writesInsideReferenceRoots).toBe(false);
+    expect(fixture.refreshCommand).toBe('bun test test/oracles/capture-reference-clean-launch.test.ts');
+
+    const sourceAuthorityIds = new Set([fixture.sourceAuthority.primaryExecutable.id, fixture.sourceAuthority.secondaryExecutable.id, fixture.sourceAuthority.primaryData.id]);
+    const sourceCatalogIds = new Set(fixture.sourceCatalogEvidence.map((evidence) => evidence.id));
+    expect(sourceCatalogIds).toEqual(sourceAuthorityIds);
   });
 
-  test('cross-checks allowed source catalog authority rows', async () => {
-    const sourceCatalogText = await Bun.file('plan_fps/SOURCE_CATALOG.md').text();
+  test('cross-checks allowed source catalog authority rows are intact on disk', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as typeof expectedFixture;
+    const sourceCatalogText = await Bun.file(sourceCatalogPath).text();
 
-    for (const evidence of expectedFixture.sourceCatalogEvidence) {
-      expect(sourceCatalogText).toContain(`| ${evidence.id} |`);
-      expect(sourceCatalogText).toContain(`| ${evidence.source} |`);
-      expect(sourceCatalogText).toContain(`| ${evidence.authority} |`);
-      expect(sourceCatalogText).toContain(`\`${evidence.path}\``);
+    for (const evidence of fixture.sourceCatalogEvidence) {
+      expect(sourceCatalogText).toContain(`| ${evidence.id} | ${evidence.source} | file | ${evidence.authority} | \`${evidence.path}\` |`);
     }
   });
 
   test('cross-checks the allowed launch-surface manifest evidence', async () => {
-    const sourceManifest = await Bun.file(expectedFixture.sourceManifestEvidence.path).json();
+    const fixture = (await Bun.file(fixturePath).json()) as typeof expectedFixture;
+    const sourceManifest = await Bun.file(fixture.sourceManifestEvidence.path).json();
 
     expect(sourceManifest).toMatchObject({
       commandContracts: {
         currentLauncher: {
-          entryFile: expectedFixture.sourceManifestEvidence.currentLauncherEntryFile,
+          entryFile: fixture.sourceManifestEvidence.currentLauncherEntryFile,
         },
         targetPlayable: {
-          runtimeCommand: expectedFixture.sourceManifestEvidence.targetRuntimeCommand,
+          runtimeCommand: fixture.sourceManifestEvidence.targetRuntimeCommand,
         },
       },
-      schemaVersion: expectedFixture.sourceManifestEvidence.schemaVersion,
-      stepId: expectedFixture.sourceManifestEvidence.stepId,
+      schemaVersion: fixture.sourceManifestEvidence.schemaVersion,
+      stepId: fixture.sourceManifestEvidence.stepId,
     });
   });
 
-  test('registers the oracle artifact and refresh command', async () => {
-    const referenceOraclesText = await Bun.file('plan_fps/REFERENCE_ORACLES.md').text();
+  test('registers the oracle artifact row in REFERENCE_ORACLES.md', async () => {
+    const referenceOraclesText = await Bun.file(referenceOraclesPath).text();
 
-    expect(referenceOraclesText).toContain('| OR-FPS-007 |');
-    expect(referenceOraclesText).toContain(`\`${fixturePath}\``);
-    expect(referenceOraclesText).toContain('reference clean-launch capture contract from local DOS binary authority');
-    expect(referenceOraclesText).toContain(`\`${expectedFixture.refreshCommand}\``);
+    expect(referenceOraclesText).toContain(
+      '| OR-FPS-007 | `test/oracles/fixtures/capture-reference-clean-launch.json` | reference clean-launch capture contract from local DOS binary authority | `bun test test/oracles/capture-reference-clean-launch.test.ts` |',
+    );
   });
 });
