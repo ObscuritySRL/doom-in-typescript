@@ -1409,3 +1409,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-004 present-windowed-framebuffer
 - open_risks: none
+
+## 2026-04-25 - 04-004 present-windowed-framebuffer
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-004
+- step_title: present-windowed-framebuffer
+- summary: Added the playable window-host present-windowed-framebuffer surface at `src/playable/window-host/presentWindowedFramebuffer.ts`. The module exports an exact windowed presentation contract plus `presentWindowedFramebuffer`, which validates the `bun run doom.ts` runtime path, records the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` launcher transition from 01-006, keeps aspect/scaling/resize/filtering work explicitly deferred to later window-host steps, and keeps deterministic replay compatibility explicit by limiting the surface to a pure windowed presentation plan. Added focused test `test/playable/window-host/present-windowed-framebuffer.test.ts` to lock the exact contract object, stable SHA-256 hash, audit manifest evidence, live `src/launcher/win32.ts` presentation evidence, and helper success/failure behavior.
+- files_changed: src/playable/window-host/presentWindowedFramebuffer.ts; test/playable/window-host/present-windowed-framebuffer.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files in 2ms, No fixes applied); bun test test/playable/window-host/present-windowed-framebuffer.test.ts (4 pass, 0 fail, 15 expect() calls); bun test (6836 pass, 0 fail, 691249 expect() calls across 249 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-005 define-aspect-correction-policy
+- open_risks: none
