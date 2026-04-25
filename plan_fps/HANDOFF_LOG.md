@@ -2723,3 +2723,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-004 compose-menu-overlay
 - open_risks: none
+
+## 2026-04-25 - 09-004 compose-menu-overlay
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-004
+- step_title: compose-menu-overlay
+- summary: Added the playable menu overlay composition surface at `src/playable/rendering-product-integration/composeMenuOverlay.ts`. The module exports the exact `bun run doom.ts` command contract plus `composeMenuOverlay`, which validates a full 320x200 framebuffer, validates all menu layers before mutation, skips transparent palette-index pixels, clips offscreen pixels, writes deterministic nontransparent overlay pixels into the existing framebuffer, and returns replay-stable evidence. Added focused test `test/playable/rendering-product-integration/compose-menu-overlay.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable SHA-256 source hash, exact framebuffer transition hash, offscreen clipping, wrong-command rejection, and invalid-layer mutation guard.
+- files_changed: src/playable/rendering-product-integration/composeMenuOverlay.ts; test/playable/rendering-product-integration/compose-menu-overlay.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run failed because one transparent-pixel assertion targeted a nontransparent byte in the fixture. Corrected the assertion to the actual transparent coordinate, reran `bun run format`, then reran the focused test, full `bun test`, and TypeScript verification successfully.
+- tests_run: bun run format (initial pass formatted 2 files and fixed 1 file; hash-update pass formatted 2 files with no fixes; recovery pass formatted 2 files with no fixes); bun test test/playable/rendering-product-integration/compose-menu-overlay.test.ts (first run failed 5 pass/1 fail due to fixture assertion; final run 6 pass, 0 fail, 20 expect() calls); bun test (7260 pass, 0 fail, 692338 expect() calls across 322 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-005 render-title-help-credit-pages
+- open_risks: none
