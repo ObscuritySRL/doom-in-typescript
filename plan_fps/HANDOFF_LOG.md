@@ -1175,3 +1175,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-006 wire-bun-test-integration
 - open_risks: none
+
+## 2026-04-25 - 03-006 wire-bun-test-integration
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-006
+- step_title: wire-bun-test-integration
+- summary: Added the Bun test integration contract at `src/playable/bun-runtime-entry-point/wireBunTestIntegration.ts`. The contract pins `bun:test` and `bun test` as the test-runner surface for the playable Bun runtime path, reconstructs the target `bun run doom.ts` command, mirrors the current `src/main.ts` launcher transition from the 01-007 audit manifest, records package script evidence, rejects non-Bun test runners, and keeps deterministic replay state outside the test-runner contract. Added focused test `test/playable/bun-runtime-entry-point/wire-bun-test-integration.test.ts` to lock the exact contract object, command reconstruction, manifest schema/transition, package/source evidence, forbidden test runners, and deterministic replay compatibility hash.
+- files_changed: src/playable/bun-runtime-entry-point/wireBunTestIntegration.ts; test/playable/bun-runtime-entry-point/wire-bun-test-integration.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: First focused test run failed because the deterministic replay compatibility hash expectation was generated from an earlier object shape; updated the expected hash to the stable value for the final exact compatibility object and reran verification from formatting.
+- tests_run: bun run format (initial run Formatted 2 files, Fixed 2 files; post-hash recovery run Formatted 2 files, No fixes applied); bun test test/playable/bun-runtime-entry-point/wire-bun-test-integration.test.ts (initial run failed on deterministic replay compatibility hash; post-hash recovery run 5 pass, 0 fail, 24 expect() calls); bun test (6770 pass, 0 fail, 691058 expect() calls across 236 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-007 implement-iwad-discovery
+- open_risks: none
