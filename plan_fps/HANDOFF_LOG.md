@@ -923,3 +923,21 @@
 - oracle_changes: OR-FPS-027 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-pickup-path.json` with refresh command `bun test test/oracles/capture-scripted-pickup-path.test.ts`
 - next_eligible_steps: 02-023 capture-scripted-door-use-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted pickup framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-023 capture-scripted-door-use-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-023
+- step_title: capture-scripted-door-use-path
+- summary: Added the scripted door use path oracle fixture at `test/oracles/fixtures/capture-scripted-door-use-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, scripted input/capture arguments from clean launch through E1M1 first-door use, tic/frame capture window, exact abstract door-use transition trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-scripted-door-use-path.test.ts` to lock the command contract, capture window, scripted input sequence, trace hash, door-use transition, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-scripted-door-use-path.json; test/oracles/capture-scripted-door-use-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Initial focused test run failed because two new assertions were too broad: the fixture command contract includes `sourceManifestPath` while the inherited 01-015 target contract only includes `entryFile` and `runtimeCommand`, and SOURCE_CATALOG.md wraps paths in backticks. Narrowed the command-contract cross-check to the shared fields and matched backticked source-catalog paths, then reran formatting and verification.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-scripted-door-use-path.test.ts (initial run failed on assertion-shape issues); bun run format (post-recovery, Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-scripted-door-use-path.test.ts (6 pass, 0 fail, 32 expect() calls); bun test (6702 pass, 0 fail, 690794 expect() calls across 222 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-028 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-door-use-path.json` with refresh command `bun test test/oracles/capture-scripted-door-use-path.test.ts`
+- next_eligible_steps: 02-024 capture-scripted-damage-death-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted door-use framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
