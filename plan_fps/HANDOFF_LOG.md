@@ -1805,3 +1805,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-001 translate-keyboard-events
 - open_risks: none
+
+## 2026-04-25 - 06-001 translate-keyboard-events
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-001
+- step_title: translate-keyboard-events
+- summary: Added the playable input keyboard-translation surface at `src/playable/input/translateKeyboardEvents.ts`. The module exports an exact Bun-only contract plus `translateKeyboardEvents`, which validates the `bun run doom.ts` runtime path, translates Win32 keyboard message parameters through `extractScanCode`, `translateScanCode`, and `isExtendedKey` from `src/input/keyboard.ts`, returns discrete Doom key events without timestamps or tic mutation, and leaves later `packTicCommand` integration in `src/input/ticcmd.ts` for deterministic replay compatibility. Added focused test `test/playable/input/translate-keyboard-events.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audited missing-input manifest linkage, Bun-path translation behavior, unmapped-input behavior, and wrong-command plus unsupported-event failure modes.
+- files_changed: src/playable/input/translateKeyboardEvents.ts; test/playable/input/translate-keyboard-events.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run failed because the `key-translation-table` manifest assertion omitted the audited `evidence` and `symbol` fields. Updated the assertion and schema guard to match the manifest payload exactly, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes; post-recovery run formatted 2 files and fixed 1 file; final rerun applied no fixes); bun test test/playable/input/translate-keyboard-events.test.ts (initial run failed 6 pass, 1 fail, 10 expect() calls; final rerun passed 7 pass, 0 fail, 10 expect() calls); bun test (6959 pass, 0 fail, 691523 expect() calls); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-002 map-internal-doom-keys
+- open_risks: none
