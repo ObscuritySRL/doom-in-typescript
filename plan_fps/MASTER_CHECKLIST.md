@@ -131,7 +131,7 @@
 - [x] `06-004` `preserve-key-down-up-ordering` | prereqs: `06-003` | file: `plan_fps/steps/06-004-preserve-key-down-up-ordering.md`
 - [x] `06-005` `preserve-key-repeat-behavior` | prereqs: `06-004` | file: `plan_fps/steps/06-005-preserve-key-repeat-behavior.md`
 - [x] `06-006` `map-mouse-buttons` | prereqs: `06-005` | file: `plan_fps/steps/06-006-map-mouse-buttons.md`
-- [ ] `06-007` `accumulate-mouse-movement` | prereqs: `06-006` | file: `plan_fps/steps/06-007-accumulate-mouse-movement.md`
+- [x] `06-007` `accumulate-mouse-movement` | prereqs: `06-006` | file: `plan_fps/steps/06-007-accumulate-mouse-movement.md`
 - [ ] `06-008` `define-mouse-capture-policy` | prereqs: `06-007` | file: `plan_fps/steps/06-008-define-mouse-capture-policy.md`
 - [ ] `06-009` `release-input-on-focus-loss` | prereqs: `06-008` | file: `plan_fps/steps/06-009-release-input-on-focus-loss.md`
 - [ ] `06-010` `route-menu-input` | prereqs: `06-009` | file: `plan_fps/steps/06-010-route-menu-input.md`

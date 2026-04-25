@@ -1913,3 +1913,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-007 accumulate-mouse-movement
 - open_risks: none
+
+## 2026-04-25 - 06-007 accumulate-mouse-movement
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-007
+- step_title: accumulate-mouse-movement
+- summary: Added the playable input mouse-movement accumulation surface at `src/playable/input/accumulateMouseMovement.ts`. The module exports an exact Bun-only contract plus `accumulateMouseMovement`, which validates the `bun run doom.ts` runtime path, routes raw mouse X into turning or strafing depending on the strafe modifier, converts mouse Y into forward movement, and packs replay-safe ticcmd deltas through `packTicCommand` without timestamps or live tic mutation. Added focused test `test/playable/input/accumulate-mouse-movement.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, turning and strafing accumulation behavior, and wrong-command plus invalid-delta failure modes.
+- files_changed: src/playable/input/accumulateMouseMovement.ts; test/playable/input/accumulate-mouse-movement.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; required clean rerun applied no fixes); bun test test/playable/input/accumulate-mouse-movement.test.ts (6 pass, 0 fail, 9 expect() calls); bun test (6999 pass, 0 fail, 691595 expect() calls across 277 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-008 define-mouse-capture-policy
+- open_risks: none
