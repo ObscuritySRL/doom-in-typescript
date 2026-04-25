@@ -2831,3 +2831,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-010 render-detail-mode
 - open_risks: none
+
+## 2026-04-25 - 09-010 render-detail-mode
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-010
+- step_title: render-detail-mode
+- summary: Added the playable render-detail-mode surface at `src/playable/rendering-product-integration/renderDetailMode.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderDetailMode`, which validates the Bun runtime command, requires a full 320x200 framebuffer, derives the viewport with `computeViewport`, preserves high-detail frames, expands low-detail sampled columns across the visible viewport, and returns deterministic replay evidence including changed-pixel count, duplicated-column count, viewport placement, and framebuffer checksum. Added focused test `test/playable/rendering-product-integration/render-detail-mode.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable source SHA-256, exact low-detail framebuffer transition/hash/checksum, high-detail preservation, and invalid-input mutation guard.
+- files_changed: src/playable/rendering-product-integration/renderDetailMode.ts; test/playable/rendering-product-integration/render-detail-mode.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Resumed an existing 09-010 recovery log from a previous blocked attempt. The prior TypeScript blocker in `test/playable/bun-runtime-entry-point/wire-bun-native-process-oracle-helpers.test.ts` no longer reproduced; no files outside the 09-010 expected-change scope were edited.
+- tests_run: bun run format (current invocation formatted 2 files with no fixes applied); bun test test/playable/rendering-product-integration/render-detail-mode.test.ts (5 pass, 0 fail, 20 expect() calls); bun test (7296 pass, 0 fail, 692518 expect() calls across 328 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-011 render-screenblocks
+- open_risks: none
