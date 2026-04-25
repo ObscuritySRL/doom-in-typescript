@@ -1445,3 +1445,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-006 define-integer-nearest-scaling-policy
 - open_risks: none
+
+## 2026-04-25 - 04-006 define-integer-nearest-scaling-policy
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-006
+- step_title: define-integer-nearest-scaling-policy
+- summary: Added the playable window-host integer nearest scaling surface at `src/playable/window-host/defineIntegerNearestScalingPolicy.ts`. The module exports an exact scaling-policy contract plus `defineIntegerNearestScalingPolicy`, which validates the `bun run doom.ts` runtime path, derives integer-only nearest-scaled presentation dimensions from `src/host/windowPolicy.ts`, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, and keeps deterministic replay compatibility explicit by limiting the surface to pure scaling policy only. Added focused test `test/playable/window-host/define-integer-nearest-scaling-policy.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 audit-manifest wiring, live `src/launcher/win32.ts` presentation evidence, happy-path scale selection, minimum-scale behavior, and wrong-command failure mode.
+- files_changed: src/playable/window-host/defineIntegerNearestScalingPolicy.ts; test/playable/window-host/define-integer-nearest-scaling-policy.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files in 3ms, No fixes applied); bun test test/playable/window-host/define-integer-nearest-scaling-policy.test.ts (6 pass, 0 fail, 18 expect() calls); bun test (6848 pass, 0 fail, 691283 expect() calls across 251 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-007 define-resize-policy
+- open_risks: none
