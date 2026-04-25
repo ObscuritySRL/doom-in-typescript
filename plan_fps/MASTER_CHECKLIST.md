@@ -183,7 +183,7 @@
 ## Phase 09: Rendering Product Integration
 
 - [x] `09-001` `render-full-frame-every-visible-tic` | prereqs: `08-014` | file: `plan_fps/steps/09-001-render-full-frame-every-visible-tic.md`
-- [ ] `09-002` `render-viewport-borders` | prereqs: `09-001` | file: `plan_fps/steps/09-002-render-viewport-borders.md`
+- [x] `09-002` `render-viewport-borders` | prereqs: `09-001` | file: `plan_fps/steps/09-002-render-viewport-borders.md`
 - [ ] `09-003` `render-status-bar-product-frame` | prereqs: `09-002` | file: `plan_fps/steps/09-003-render-status-bar-product-frame.md`
 - [ ] `09-004` `compose-menu-overlay` | prereqs: `09-003` | file: `plan_fps/steps/09-004-compose-menu-overlay.md`
 - [ ] `09-005` `render-title-help-credit-pages` | prereqs: `09-004` | file: `plan_fps/steps/09-005-render-title-help-credit-pages.md`

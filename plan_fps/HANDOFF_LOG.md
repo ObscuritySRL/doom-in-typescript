@@ -2687,3 +2687,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-002 render-viewport-borders
 - open_risks: none
+
+## 2026-04-25 - 09-002 render-viewport-borders
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-002
+- step_title: render-viewport-borders
+- summary: Added the playable viewport-border rendering surface at `src/playable/rendering-product-integration/renderViewportBorders.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderViewportBorders`, which validates the Bun runtime command, requires a full 320x200 framebuffer, validates an 8-bit border palette index, derives the vanilla viewport region through `computeViewport`, fills only deterministic border pixels outside that region, and preserves the status-bar area for non-fullscreen viewport sizes. Added focused test `test/playable/rendering-product-integration/render-viewport-borders.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable SHA-256 source hash, exact centered-viewport framebuffer transition, full-width borderless transition, and invalid-input rejection paths.
+- files_changed: src/playable/rendering-product-integration/renderViewportBorders.ts; test/playable/rendering-product-integration/render-viewport-borders.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass formatted 2 files with no fixes; rerun after source-hash replacement formatted 2 files with no fixes); bun test test/playable/rendering-product-integration/render-viewport-borders.test.ts (6 pass, 0 fail, 32 expect() calls); bun test (7247 pass, 0 fail, 692299 expect() calls across 320 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-003 render-status-bar-product-frame
+- open_risks: none
