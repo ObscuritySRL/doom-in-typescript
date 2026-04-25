@@ -96,4 +96,118 @@ describe('handleLongStallPanic', () => {
       }),
     ).toThrow('handleLongStallPanic requires runtime command bun run doom.ts');
   });
+
+  test('does not panic when elapsedTics equals maximumSafeElapsedTics (strict-greater boundary)', () => {
+    expect(
+      handleLongStallPanic({
+        currentTotalTics: 120,
+        elapsedTics: 5,
+        maximumSafeElapsedTics: 5,
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toEqual({
+      currentTotalTics: 120,
+      elapsedTics: 5,
+      panicReason: null,
+      panicTriggered: false,
+      phase: 'tryRunTics',
+      ticsToRun: 5,
+    });
+  });
+
+  test('panics on the first elapsed tic when maximumSafeElapsedTics is zero', () => {
+    expect(
+      handleLongStallPanic({
+        currentTotalTics: 0,
+        elapsedTics: 1,
+        maximumSafeElapsedTics: 0,
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toEqual({
+      currentTotalTics: 0,
+      elapsedTics: 1,
+      panicReason: 'long stall exceeded 0 tics',
+      panicTriggered: true,
+      phase: 'tryRunTics',
+      ticsToRun: 0,
+    });
+  });
+
+  test('returns ticsToRun zero without panic when elapsedTics is zero and threshold is zero', () => {
+    expect(
+      handleLongStallPanic({
+        currentTotalTics: 0,
+        elapsedTics: 0,
+        maximumSafeElapsedTics: 0,
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toEqual({
+      currentTotalTics: 0,
+      elapsedTics: 0,
+      panicReason: null,
+      panicTriggered: false,
+      phase: 'tryRunTics',
+      ticsToRun: 0,
+    });
+  });
+
+  test('panic decision is independent of currentTotalTics (deterministic-replay guarantee)', () => {
+    const panicAtZero = handleLongStallPanic({
+      currentTotalTics: 0,
+      elapsedTics: 9,
+      maximumSafeElapsedTics: 5,
+      runtimeCommand: 'bun run doom.ts',
+    });
+    const panicAtMillion = handleLongStallPanic({
+      currentTotalTics: 1_000_000,
+      elapsedTics: 9,
+      maximumSafeElapsedTics: 5,
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(panicAtZero.panicTriggered).toBe(true);
+    expect(panicAtMillion.panicTriggered).toBe(true);
+    expect(panicAtZero.panicReason).toBe(panicAtMillion.panicReason);
+    expect(panicAtZero.ticsToRun).toBe(panicAtMillion.ticsToRun);
+    expect(panicAtMillion.currentTotalTics).toBe(1_000_000);
+  });
+
+  test('rejects non-integer or negative currentTotalTics', () => {
+    for (const badValue of [-1, 1.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(() =>
+        handleLongStallPanic({
+          currentTotalTics: badValue,
+          elapsedTics: 1,
+          maximumSafeElapsedTics: 5,
+          runtimeCommand: 'bun run doom.ts',
+        }),
+      ).toThrow('currentTotalTics must be a non-negative integer');
+    }
+  });
+
+  test('rejects non-integer or negative elapsedTics', () => {
+    for (const badValue of [-1, 0.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(() =>
+        handleLongStallPanic({
+          currentTotalTics: 0,
+          elapsedTics: badValue,
+          maximumSafeElapsedTics: 5,
+          runtimeCommand: 'bun run doom.ts',
+        }),
+      ).toThrow('elapsedTics must be a non-negative integer');
+    }
+  });
+
+  test('rejects non-integer or negative maximumSafeElapsedTics', () => {
+    for (const badValue of [-1, 2.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(() =>
+        handleLongStallPanic({
+          currentTotalTics: 0,
+          elapsedTics: 1,
+          maximumSafeElapsedTics: badValue,
+          runtimeCommand: 'bun run doom.ts',
+        }),
+      ).toThrow('maximumSafeElapsedTics must be a non-negative integer');
+    }
+  });
 });

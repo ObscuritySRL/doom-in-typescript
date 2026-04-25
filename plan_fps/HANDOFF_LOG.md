@@ -2958,3 +2958,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-004 implement-sfx-priority-eviction
 - open_risks: none
+
+## 2026-04-25 - 10-004 implement-sfx-priority-eviction
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-004
+- step_title: implement-sfx-priority-eviction
+- summary: Added the playable SFX priority eviction surface at `src/playable/audio-product-integration/implementSfxPriorityEviction.ts`. The module exports the exact `bun run doom.ts` command contract plus `implementSfxPriorityEviction`, validates eight deterministic channel snapshots, applies vanilla-style channel selection precedence for first free slot, same-origin replacement, then first weaker-or-equal priority victim, and returns handle-free replay evidence with before/after signatures and checksums. Added focused test `test/playable/audio-product-integration/implement-sfx-priority-eviction.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, source SHA-256, exact eviction and drop evidence, wrong-command rejection, and invalid-channel mutation guard.
+- files_changed: src/playable/audio-product-integration/implementSfxPriorityEviction.ts; test/playable/audio-product-integration/implement-sfx-priority-eviction.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the internal selection type did not narrow the selected-result kind away from `dropped`. Split the internal selection shape into explicit dropped and selected variants, updated the focused source hash, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 1 file; reruns after source-hash and TypeScript recovery edits reported no fixes); bun test test/playable/audio-product-integration/implement-sfx-priority-eviction.test.ts (5 pass, 0 fail, 11 expect() calls; rerun after recovery also passed); bun test (initial pass 7419 pass, 0 fail, 692978 expect() calls across 335 files; final rerun 7426 pass, 0 fail, 692998 expect() calls across 335 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on internal selection narrowing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-005 update-sfx-spatialization
+- open_risks: none
