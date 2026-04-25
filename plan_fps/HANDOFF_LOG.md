@@ -1949,3 +1949,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-009 release-input-on-focus-loss
 - open_risks: none
+
+## 2026-04-25 - 06-009 release-input-on-focus-loss
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-009
+- step_title: release-input-on-focus-loss
+- summary: Added the playable input focus-loss release surface at `src/playable/input/releaseInputOnFocusLoss.ts`. The module exports an exact Bun-only contract plus `releaseInputOnFocusLoss`, which validates the `bun run doom.ts` runtime path, releases held Doom keys and mouse buttons into deterministic release events, clears pending mouse motion, drops mouse capture on focus loss, and preserves replay compatibility by returning the neutral `EMPTY_TICCMD` plus `TICCMD_SIZE` without mutating live tic state. Added focused test `test/playable/input/release-input-on-focus-loss.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, replay-safe release behavior, and wrong-command plus unsupported-key failure modes.
+- files_changed: src/playable/input/releaseInputOnFocusLoss.ts; test/playable/input/release-input-on-focus-loss.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run failed because the manifest linkage assertion used `toContainEqual` against `explicitNullSurfaces` entries that include additional `evidence`, `path`, and `symbol` fields; replaced it with a field-level predicate over `surface` and `reason`. A later TypeScript verification pass failed on Bun's literal-sensitive matcher overload for the manifest step-id equality, so the assertion was inverted before rerunning format, the focused test, the full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; rerun after manifest-assertion recovery formatted 2 files and fixed 1 file; rerun after TypeScript recovery formatted 2 files and applied no fixes); bun test test/playable/input/release-input-on-focus-loss.test.ts (initial run failed 4 pass, 1 fail, 9 expect() calls; rerun after manifest recovery passed 5 pass, 0 fail, 9 expect() calls; post-TypeScript recovery rerun passed 5 pass, 0 fail, 9 expect() calls); bun test (initial run passed 7011 pass, 0 fail, 691616 expect() calls; post-TypeScript recovery rerun passed 7011 pass, 0 fail, 691616 expect() calls); bun x tsc --noEmit --project tsconfig.json (initial run failed on the literal-sensitive matcher overload; post-TypeScript recovery rerun clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-010 route-menu-input
+- open_risks: none
