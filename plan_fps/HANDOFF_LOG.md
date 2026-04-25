@@ -2849,3 +2849,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-011 render-screenblocks
 - open_risks: none
+
+## 2026-04-25 - 09-011 render-screenblocks
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-011
+- step_title: render-screenblocks
+- summary: Added the playable render-screenblocks surface at `src/playable/rendering-product-integration/renderScreenblocks.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderScreenblocks`, which validates the Bun runtime command, requires full 320x200 source and destination framebuffers, derives the vanilla screenblocks viewport through `computeViewport`, copies only the active viewport into the replay-visible destination framebuffer, preserves all pixels outside the viewport, and returns deterministic viewport, copy-count, preservation-count, and checksum evidence. Added focused test `test/playable/rendering-product-integration/render-screenblocks.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable source SHA-256, exact viewport transition checksum/hash, fullscreen screenblocks behavior, wrong-command rejection, and invalid-framebuffer mutation guard.
+- files_changed: src/playable/rendering-product-integration/renderScreenblocks.ts; test/playable/rendering-product-integration/render-screenblocks.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused runs used placeholders while locking exact values; captured source SHA-256 `4cf95d3c14dc5ae2cd06ebd9d435182dd61ac4b25efea55c086c87d1f4d61839`, viewport destination checksum `1722970560`, and viewport framebuffer SHA-256 `da2b2f946e920ba7ad180bbe96bd90cdec3b6d60fa54e5b6edf87262f432ae0f`. The first TypeScript verification pass then failed on a typed-array helper in the focused test; narrowed the source framebuffer and SHA helper types to `Uint8Array<ArrayBuffer>`, reran formatting, and reran focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass formatted 2 files with no fixes; placeholder replacement passes formatted 2/4 files with no fixes; recovery pass formatted 2 files with no fixes); bun test test/playable/rendering-product-integration/render-screenblocks.test.ts (placeholder runs failed as expected while locking exact values; final runs 6 pass, 0 fail, 23 expect() calls); bun test (7305 pass, 0 fail, 692560 expect() calls; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on focused test typed-array helper plus an out-of-scope dirty oracle-test type error; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-012 render-wipe-transition-effects
+- open_risks: none
