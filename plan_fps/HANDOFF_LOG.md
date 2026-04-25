@@ -2525,3 +2525,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-007 wire-gameplay-renderer-invocation
 - open_risks: none
+
+## 2026-04-25 - 08-007 wire-gameplay-renderer-invocation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-007
+- step_title: wire-gameplay-renderer-invocation
+- summary: Added the playable gameplay-renderer invocation surface at `src/playable/game-session-wiring/wireGameplayRendererInvocation.ts`. The module exports an exact Bun-only runtime contract plus `wireGameplayRendererInvocation`, which validates the `bun run doom.ts` command, requires the gameplay view, starts or reuses the existing `MainLoop`, advances gameplay only during `tryRunTics`, invokes `renderLauncherFrame` only during `display`, and returns replay-relevant phase, frame, level-time, and framebuffer evidence. Added focused test `test/playable/game-session-wiring/wire-gameplay-renderer-invocation.test.ts` to lock the exact command contract, 01-009 audit linkage, stable SHA-256 source hash, deterministic one-frame gameplay framebuffer hash, display-phase render transition, started-loop reuse, and wrong-command plus automap-view rejection paths.
+- files_changed: src/playable/game-session-wiring/wireGameplayRendererInvocation.ts; test/playable/game-session-wiring/wire-gameplay-renderer-invocation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test's local AuditManifest defaults type omitted the manifest's numeric `scale` field while asserting the exact defaults object. Added the missing `scale` field to the local test type, reran formatting, and reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial product pass formatted 1 file with no fixes; focused-test pass formatted 2 files with no fixes; recovery rerun formatted 2 files with no fixes); bun test test/playable/game-session-wiring/wire-gameplay-renderer-invocation.test.ts (6 pass, 0 fail, 35 expect() calls; rerun after recovery also passed); bun test (7201 pass, 0 fail, 692143 expect() calls across 311 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on missing local test type field; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-008 wire-status-bar-invocation
+- open_risks: none

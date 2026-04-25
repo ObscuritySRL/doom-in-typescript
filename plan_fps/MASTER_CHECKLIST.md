@@ -171,7 +171,7 @@
 - [x] `08-004` `enforce-game-tick-order` | prereqs: `08-003` | file: `plan_fps/steps/08-004-enforce-game-tick-order.md`
 - [x] `08-005` `wire-world-thinker-ticking` | prereqs: `08-004` | file: `plan_fps/steps/08-005-wire-world-thinker-ticking.md`
 - [x] `08-006` `wire-player-command-application` | prereqs: `08-005` | file: `plan_fps/steps/08-006-wire-player-command-application.md`
-- [ ] `08-007` `wire-gameplay-renderer-invocation` | prereqs: `08-006` | file: `plan_fps/steps/08-007-wire-gameplay-renderer-invocation.md`
+- [x] `08-007` `wire-gameplay-renderer-invocation` | prereqs: `08-006` | file: `plan_fps/steps/08-007-wire-gameplay-renderer-invocation.md`
 - [ ] `08-008` `wire-status-bar-invocation` | prereqs: `08-007` | file: `plan_fps/steps/08-008-wire-status-bar-invocation.md`
 - [ ] `08-009` `wire-automap-toggle-render-path` | prereqs: `08-008` | file: `plan_fps/steps/08-009-wire-automap-toggle-render-path.md`
 - [ ] `08-010` `wire-intermission-and-finale-transitions` | prereqs: `08-009` | file: `plan_fps/steps/08-010-wire-intermission-and-finale-transitions.md`
