@@ -142,7 +142,7 @@
 
 ## Phase 07: Front-End / Menus
 
-- [ ] `07-001` `render-title-screen` | prereqs: `06-014` | file: `plan_fps/steps/07-001-render-title-screen.md`
+- [x] `07-001` `render-title-screen` | prereqs: `06-014` | file: `plan_fps/steps/07-001-render-title-screen.md`
 - [ ] `07-002` `implement-attract-loop-state-machine` | prereqs: `07-001` | file: `plan_fps/steps/07-002-implement-attract-loop-state-machine.md`
 - [ ] `07-003` `preserve-demo-playback-menu-interaction` | prereqs: `07-002` | file: `plan_fps/steps/07-003-preserve-demo-playback-menu-interaction.md`
 - [ ] `07-004` `implement-main-menu` | prereqs: `07-003` | file: `plan_fps/steps/07-004-implement-main-menu.md`
