@@ -1643,3 +1643,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-003 implement-tic-accumulation
 - open_risks: none
+
+## 2026-04-25 - 05-003 implement-tic-accumulation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-003
+- step_title: implement-tic-accumulation
+- summary: Added the playable real-time-main-loop tic-accumulation surface at `src/playable/real-time-main-loop/implementTicAccumulation.ts`. The module exports an exact tic-accumulation contract plus `implementTicAccumulation`, which validates the `bun run doom.ts` runtime path, ties accumulation to the `tryRunTics` phase in `src/mainLoop.ts`, samples `TicAccumulator.advance()` and `totalTics` from `src/host/ticAccumulator.ts`, preserves the integer-only `floor((delta * 35) / frequency)` accumulation rule, and keeps deterministic replay compatibility explicit by surfacing discrete tic counts instead of presentation-driven timing. Added focused test `test/playable/real-time-main-loop/implement-tic-accumulation.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 audited launcher transition, absolute-baseline accumulation behavior, and wrong-command failure mode.
+- files_changed: src/playable/real-time-main-loop/implementTicAccumulation.ts; test/playable/real-time-main-loop/implement-tic-accumulation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run failed because the hard-coded SHA-256 digest did not match the serialized contract. Updated the expected hash to the actual serialized-contract digest, reran formatting, then reran the focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes; post-recovery rerun applied no fixes); bun test test/playable/real-time-main-loop/implement-tic-accumulation.test.ts (initial run failed on the contract hash; post-recovery run: 4 pass, 0 fail, 10 expect() calls); bun test (6904 pass, 0 fail, 691422 expect() calls across 262 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-004 implement-deterministic-replay-mode
+- open_risks: none
