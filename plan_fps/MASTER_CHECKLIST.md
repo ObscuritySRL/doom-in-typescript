@@ -84,7 +84,7 @@
 - [x] `03-006` `wire-bun-test-integration` | prereqs: `03-005` | file: `plan_fps/steps/03-006-wire-bun-test-integration.md`
 - [x] `03-007` `implement-iwad-discovery` | prereqs: `03-006` | file: `plan_fps/steps/03-007-implement-iwad-discovery.md`
 - [x] `03-008` `implement-missing-iwad-error` | prereqs: `03-007` | file: `plan_fps/steps/03-008-implement-missing-iwad-error.md`
-- [ ] `03-009` `implement-default-config-loading` | prereqs: `03-008` | file: `plan_fps/steps/03-009-implement-default-config-loading.md`
+- [x] `03-009` `implement-default-config-loading` | prereqs: `03-008` | file: `plan_fps/steps/03-009-implement-default-config-loading.md`
 - [ ] `03-010` `create-game-context` | prereqs: `03-009` | file: `plan_fps/steps/03-010-create-game-context.md`
 - [ ] `03-011` `enter-default-title-loop` | prereqs: `03-010` | file: `plan_fps/steps/03-011-enter-default-title-loop.md`
 - [ ] `03-012` `implement-clean-quit` | prereqs: `03-011` | file: `plan_fps/steps/03-012-implement-clean-quit.md`

@@ -1229,3 +1229,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-009 implement-default-config-loading
 - open_risks: none
+
+## 2026-04-25 - 03-009 implement-default-config-loading
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-009
+- step_title: implement-default-config-loading
+- summary: Added the Bun runtime default configuration loading surface at `src/playable/bun-runtime-entry-point/implementDefaultConfigLoading.ts`. The module exports the default configuration candidate paths, a Bun-file-backed `loadDefaultConfiguration` function, a whitespace-separated default configuration parser, and an exact startup contract object that records the target `bun run doom.ts` command, audited current launcher transition, Bun-only file reader, and deterministic replay compatibility before session creation. Added focused test `test/playable/bun-runtime-entry-point/implement-default-config-loading.test.ts` to lock the exact contract value, SHA-256 hash, manifest and package transition, fact-log path authority, parser behavior, loaded result, and missing result.
+- files_changed: src/playable/bun-runtime-entry-point/implementDefaultConfigLoading.ts; test/playable/bun-runtime-entry-point/implement-default-config-loading.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript rejected comparing the exact literal contract object to dynamically parsed manifest records as the expected value. Flipped the manifest cross-check assertion direction so the dynamic manifest is the actual value and the exact contract remains the expected value, then reran formatting, focused tests, full tests, and TypeScript successfully.
+- tests_run: bun run format (initial run Formatted 2 files, Fixed 2 files; post-recovery run Formatted 2 files, No fixes applied); bun test test/playable/bun-runtime-entry-point/implement-default-config-loading.test.ts (initial and post-recovery runs both 6 pass, 0 fail, 15 expect() calls); bun test (initial and post-recovery runs both 6786 pass, 0 fail, 691099 expect() calls across 239 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on literal expected-value inference; post-recovery clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-010 create-game-context
+- open_risks: none
