@@ -2291,3 +2291,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-014 implement-read-this-help-pages
 - open_risks: none
+
+## 2026-04-25 - 07-014 implement-read-this-help-pages
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-014
+- step_title: implement-read-this-help-pages
+- summary: Added the playable Read This help-page wiring surface at `src/playable/front-end-menus/implementReadThisHelpPages.ts`. The module exports an exact Bun-only runtime contract plus `implementReadThisHelpPages`, which validates the `bun run doom.ts` command, opens Read This from either the front-end F1 help key or the Main-menu Read This selection, advances from the first Read This page to the second page, preserves replay-relevant demo playback state, and keeps `frontEndSequence.ts` menu-active state synchronized with the menu layer. Added focused test `test/playable/front-end-menus/implement-read-this-help-pages.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, the retail F1 help entry mapping, the main-menu Read This transition, the page-advance behavior, and wrong-command rejection.
+- files_changed: src/playable/front-end-menus/implementReadThisHelpPages.ts; test/playable/front-end-menus/implement-read-this-help-pages.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test pass failed because the locked SHA-256 had been captured before Biome rewrote the new module. Refreshed the expected hash in the focused test, reran `bun run format`, and reran the verification tail successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes; post-hash-refresh rerun applied no fixes); bun test test/playable/front-end-menus/implement-read-this-help-pages.test.ts (initial run failed only on the stale SHA-256 expectation; rerun passed with 7 tests, 0 failed, 16 expect() calls); bun test (7129 pass, 0 fail, 691922 expect() calls across 298 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-015 implement-quit-confirmation
+- open_risks: none
