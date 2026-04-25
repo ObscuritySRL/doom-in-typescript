@@ -1481,3 +1481,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-008 handle-window-focus
 - open_risks: none
+
+## 2026-04-25 - 04-008 handle-window-focus
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-008
+- step_title: handle-window-focus
+- summary: Added the playable window-host focus surface at `src/playable/window-host/handleWindowFocus.ts`. The module exports an exact window-focus contract plus `handleWindowFocus`, which validates the `bun run doom.ts` runtime path, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, locks the live `GetForegroundWindow` focus gate and blur-input-release behavior from `src/launcher/win32.ts`, preserves the shared 640x480 default client dimensions from `src/host/windowPolicy.ts`, and keeps deterministic replay compatibility explicit by limiting the surface to focus-policy planning only. Added focused test `test/playable/window-host/handle-window-focus.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live focus source evidence, foreground/background behavior, and wrong-command failure mode.
+- files_changed: src/playable/window-host/handleWindowFocus.ts; test/playable/window-host/handle-window-focus.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run assumed the focus-loss guard existed as a single-line statement. Narrowed the contract and live-source assertion to the exact multiline guard block that actually exists in `src/launcher/win32.ts`, reran formatting, the focused test, the full test suite, and TypeScript successfully.
+- tests_run: bun run format (formatted 2 files, fixed 1 file; rerun formatted 2 files, no fixes applied); bun test test/playable/window-host/handle-window-focus.test.ts (initial run failed on the single-line blur-guard assertion; post-recovery run: 5 pass, 0 fail, 14 expect() calls); bun test (6858 pass, 0 fail, 691309 expect() calls across 253 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-009 handle-close-button
+- open_risks: none
