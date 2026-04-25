@@ -1769,3 +1769,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-010 implement-clean-main-loop-shutdown
 - open_risks: none
+
+## 2026-04-25 - 05-010 implement-clean-main-loop-shutdown
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-010
+- step_title: implement-clean-main-loop-shutdown
+- summary: Added the playable real-time-main-loop clean-shutdown surface at `src/playable/real-time-main-loop/implementCleanMainLoopShutdown.ts`. The module exports an exact clean main-loop shutdown contract plus `implementCleanMainLoopShutdown`, which validates the `bun run doom.ts` runtime path, anchors shutdown to the completed-frame boundary in `src/mainLoop.ts`, preserves the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` playable host transition from 01-006, records `TicAccumulator.totalTics` as the replay-safe shutdown authority from `src/host/ticAccumulator.ts`, and keeps shutdown from advancing or resetting deterministic tic timing. Added focused test `test/playable/real-time-main-loop/implement-clean-main-loop-shutdown.test.ts` to lock the exact contract object, stable SHA-256 hash, audited launcher transition, completed-frame boundary, replay-safe tic authority, and wrong-command failure mode.
+- files_changed: src/playable/real-time-main-loop/implementCleanMainLoopShutdown.ts; test/playable/real-time-main-loop/implement-clean-main-loop-shutdown.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run failed because the completion-boundary contract collapsed `callbacks.display();` and `this.#frameCount++;` onto one line; updated the contract to the exact multiline source text, recomputed the contract hash, then fixed a follow-up TypeScript tuple-widening issue by narrowing `phaseOrder` to a readonly tuple in the module and focused test before rerunning format and verification.
+- tests_run: bun run format (initial run formatted 2 files and applied no fixes; reruns after recovery edits also applied no fixes); bun test test/playable/real-time-main-loop/implement-clean-main-loop-shutdown.test.ts (initial run failed 5 pass, 1 fail; final reruns passed 6 pass, 0 fail, 15 expect() calls); bun test (initial and final reruns passed 6946 pass, 0 fail, 691500 expect() calls); bun x tsc --noEmit --project tsconfig.json (initial run failed on tuple widening; final rerun clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-011 add-timing-instrumentation
+- open_risks: none
