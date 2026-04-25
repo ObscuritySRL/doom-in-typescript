@@ -204,7 +204,7 @@
 - [x] `10-004` `implement-sfx-priority-eviction` | prereqs: `10-003` | file: `plan_fps/steps/10-004-implement-sfx-priority-eviction.md`
 - [x] `10-005` `update-sfx-spatialization` | prereqs: `10-004` | file: `plan_fps/steps/10-005-update-sfx-spatialization.md`
 - [x] `10-006` `connect-music-system` | prereqs: `10-005` | file: `plan_fps/steps/10-006-connect-music-system.md`
-- [ ] `10-007` `preserve-opl-mus-timing` | prereqs: `10-006` | file: `plan_fps/steps/10-007-preserve-opl-mus-timing.md`
+- [x] `10-007` `preserve-opl-mus-timing` | prereqs: `10-006` | file: `plan_fps/steps/10-007-preserve-opl-mus-timing.md`
 - [ ] `10-008` `pause-and-resume-audio` | prereqs: `10-007` | file: `plan_fps/steps/10-008-pause-and-resume-audio.md`
 - [ ] `10-009` `play-menu-sounds` | prereqs: `10-008` | file: `plan_fps/steps/10-009-play-menu-sounds.md`
 - [ ] `10-010` `play-level-music` | prereqs: `10-009` | file: `plan_fps/steps/10-010-play-level-music.md`

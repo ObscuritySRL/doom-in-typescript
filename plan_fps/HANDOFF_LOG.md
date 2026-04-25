@@ -3012,3 +3012,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-007 preserve-opl-mus-timing
 - open_risks: none
+
+## 2026-04-25 - 10-007 preserve-opl-mus-timing
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-007
+- step_title: preserve-opl-mus-timing
+- summary: Added the playable OPL MUS timing preservation surface at `src/playable/audio-product-integration/preserveOplMusTiming.ts`. The module exports the exact `bun run doom.ts` command contract plus `preserveOplMusTiming`, validates the Bun runtime path before advancing music timing, routes timing windows through the existing `advanceMusic` path, records the locked 4-MUS-quickticks-per-game-tic relationship, and returns frozen handle-free replay evidence with exact hashes and checksums. Added focused test `test/playable/audio-product-integration/preserve-opl-mus-timing.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, source SHA-256, replay-stable quicktick transition evidence, wrong-command rejection, and invalid timing-window rejection.
+- files_changed: src/playable/audio-product-integration/preserveOplMusTiming.ts; test/playable/audio-product-integration/preserve-opl-mus-timing.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders while locking exact values; captured source SHA-256 `f90266a05cbb8542119ccef8c734cd4584b771b90a9ae46dccdd626112bddde3`, replayChecksum `1140817209`, and replayHash `efc07f9186dc0b84d1bd5742717662842f5f1f9bef238dd0fa9c9b81bda606c0`, replaced the placeholders, reran formatting, and reran verification successfully.
+- tests_run: bun run format (initial pass formatted 2 files with no fixes; rerun after exact-value replacement formatted 2 files with no fixes); bun test test/playable/audio-product-integration/preserve-opl-mus-timing.test.ts (placeholder run failed as expected while locking exact values; final run 4 pass, 0 fail, 9 expect() calls); bun test (7488 pass, 0 fail, 693180 expect() calls across 338 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-008 pause-and-resume-audio
+- open_risks: none
