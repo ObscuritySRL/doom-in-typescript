@@ -2651,3 +2651,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-014 wire-live-sound-music-triggers
 - open_risks: none
+
+## 2026-04-25 - 08-014 wire-live-sound-music-triggers
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-014
+- step_title: wire-live-sound-music-triggers
+- summary: Added the playable live sound/music trigger surface at `src/playable/game-session-wiring/wireLiveSoundMusicTriggers.ts`. The module exports the exact `bun run doom.ts` command contract plus `wireLiveSoundMusicTriggers`, which validates the Bun runtime command, runs or reuses the existing `MainLoop`, emits deterministic level-music and listener sound-update triggers only during the `updateSounds` phase, and returns phase, pre-loop, frame-count, music, and listener evidence without using wall-clock or random state. Added focused test `test/playable/game-session-wiring/wire-live-sound-music-triggers.test.ts` to lock the exact command contract, 01-009 audit manifest linkage, stable SHA-256 source hash, E1M1 updateSounds trigger transition, wrong-command rejection, and unsupported-map rejection.
+- files_changed: src/playable/game-session-wiring/wireLiveSoundMusicTriggers.ts; test/playable/game-session-wiring/wire-live-sound-music-triggers.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed the focused test once after creation; the formatted implementation SHA-256 was unchanged and remained locked in the test before final verification.
+- tests_run: bun run format (initial source pass formatted 1 file with no fixes; focused-test pass formatted 2 files and fixed 1 file; final pre-verification rerun formatted 2 files with no fixes); bun test test/playable/game-session-wiring/wire-live-sound-music-triggers.test.ts (5 pass, 0 fail, 9 expect() calls); bun test (7236 pass, 0 fail, 692254 expect() calls across 318 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-001 render-full-frame-every-visible-tic
+- open_risks: none

@@ -178,7 +178,7 @@
 - [x] `08-011` `wire-death-reborn-flow` | prereqs: `08-010` | file: `plan_fps/steps/08-011-wire-death-reborn-flow.md`
 - [x] `08-012` `wire-level-exit-flow` | prereqs: `08-011` | file: `plan_fps/steps/08-012-wire-level-exit-flow.md`
 - [x] `08-013` `wire-pause-menu-overlay-flow` | prereqs: `08-012` | file: `plan_fps/steps/08-013-wire-pause-menu-overlay-flow.md`
-- [ ] `08-014` `wire-live-sound-music-triggers` | prereqs: `08-013` | file: `plan_fps/steps/08-014-wire-live-sound-music-triggers.md`
+- [x] `08-014` `wire-live-sound-music-triggers` | prereqs: `08-013` | file: `plan_fps/steps/08-014-wire-live-sound-music-triggers.md`
 
 ## Phase 09: Rendering Product Integration
 
