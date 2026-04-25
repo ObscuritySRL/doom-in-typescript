@@ -2561,3 +2561,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-009 wire-automap-toggle-render-path
 - open_risks: none
+
+## 2026-04-25 - 08-009 wire-automap-toggle-render-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-009
+- step_title: wire-automap-toggle-render-path
+- summary: Added the playable automap toggle/render path surface at `src/playable/game-session-wiring/wireAutomapToggleRenderPath.ts`. The module exports an exact Bun-only runtime contract plus `wireAutomapToggleRenderPath`, which validates `bun run doom.ts`, starts or reuses the existing `MainLoop`, toggles automap only during `tryRunTics` through `advanceLauncherSession`, renders only during `display` through `renderLauncherFrame`, and returns replay-stable phase, pre-loop, framebuffer, level-time, and automap mode evidence. Added focused test `test/playable/game-session-wiring/wire-automap-toggle-render-path.test.ts` to lock the exact command contract, 01-009 audit linkage, stable SHA-256 source hash, gameplay-to-automap transition, automap display render path, and wrong-command rejection before replay state mutation.
+- files_changed: src/playable/game-session-wiring/wireAutomapToggleRenderPath.ts; test/playable/game-session-wiring/wire-automap-toggle-render-path.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test's local AuditManifest observedSurfaces type omitted the manifest `path` field used by the exact assertion. Added the missing field, reran formatting, and reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; rerun after source-hash refresh applied no fixes; rerun after recovery edit applied no fixes); bun test test/playable/game-session-wiring/wire-automap-toggle-render-path.test.ts (4 pass, 0 fail, 20 expect() calls; rerun after recovery also passed); bun test (7210 pass, 0 fail, 692177 expect() calls across 313 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on the local manifest type; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-010 wire-intermission-and-finale-transitions
+- open_risks: none
