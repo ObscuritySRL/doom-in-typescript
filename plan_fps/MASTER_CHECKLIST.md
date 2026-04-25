@@ -198,7 +198,7 @@
 
 ## Phase 10: Audio Product Integration
 
-- [ ] `10-001` `select-and-open-bun-win32-audio-host` | prereqs: `09-013` | file: `plan_fps/steps/10-001-select-and-open-bun-win32-audio-host.md`
+- [x] `10-001` `select-and-open-bun-win32-audio-host` | prereqs: `09-013` | file: `plan_fps/steps/10-001-select-and-open-bun-win32-audio-host.md`
 - [ ] `10-002` `connect-sfx-mixer` | prereqs: `10-001` | file: `plan_fps/steps/10-002-connect-sfx-mixer.md`
 - [ ] `10-003` `lock-sfx-channel-count` | prereqs: `10-002` | file: `plan_fps/steps/10-003-lock-sfx-channel-count.md`
 - [ ] `10-004` `implement-sfx-priority-eviction` | prereqs: `10-003` | file: `plan_fps/steps/10-004-implement-sfx-priority-eviction.md`

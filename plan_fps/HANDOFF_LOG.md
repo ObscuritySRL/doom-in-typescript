@@ -2903,3 +2903,22 @@
 - oracle_changes: none
 - next_eligible_steps: 10-001 select-and-open-bun-win32-audio-host
 - open_risks: none
+
+## 2026-04-25 - 10-001 select-and-open-bun-win32-audio-host
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-001
+- step_title: select-and-open-bun-win32-audio-host
+- summary: Added the playable Bun Win32 audio host selection surface at `src/playable/audio-product-integration/selectAndOpenBunWin32AudioHost.ts`. The module exports the exact `bun run doom.ts` command contract plus `selectAndOpenBunWin32AudioHost`, validates the Bun runtime command and Win32 platform before opening devices, selects the `@bun-win32/winmm` WinMM host with fixed stereo PCM defaults, invokes an injected opener for live music and sfx handles, and returns deterministic replay evidence that excludes live handles. Added focused test `test/playable/audio-product-integration/select-and-open-bun-win32-audio-host.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, source SHA-256, replay evidence SHA-256, live opener sequence, handle-free evidence, and wrong-command rejection.
+- files_changed: src/playable/audio-product-integration/selectAndOpenBunWin32AudioHost.ts; test/playable/audio-product-integration/select-and-open-bun-win32-audio-host.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test's expected `selectedRoles` fixture inferred as `readonly string[]`. Added the exported `BunWin32AudioHostDeviceRole` type to the fixture, reran formatting, and reran the focused test, full `bun test`, and TypeScript successfully. Also normalized device-role ordering to `music`, then `sfx` before locking hashes.
+- tests_run: bun run format (initial pass formatted 6 files and fixed 1 file; rerun after ordering cleanup formatted 6 files with no fixes; rerun before verification formatted 6 files with no fixes; recovery rerun reported no changed files to format); bun test test/playable/audio-product-integration/select-and-open-bun-win32-audio-host.test.ts (4 pass, 0 fail, 15 expect() calls; rerun after recovery also passed); bun test (7378 pass, 0 fail, 692790 expect() calls across 332 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on focused test selectedRoles fixture typing; final rerun passed clean)
+- post_control_validation: bun run format before publishing (fixed 1 file, then rerun with no fixes); bun test test/playable/audio-product-integration/select-and-open-bun-win32-audio-host.test.ts after formatter fix (4 pass, 0 fail, 15 expect() calls); bun test after formatter fix (7378 pass, 0 fail, 692790 expect() calls across 332 files); bun x tsc --noEmit --project tsconfig.json after formatter fix (clean); bun test plan_fps/validate-plan.test.ts (5 pass, 0 fail, 12 expect() calls); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps. First step: 00-001.)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-002 connect-sfx-mixer
+- open_risks: none
