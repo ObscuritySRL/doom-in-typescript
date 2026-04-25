@@ -71,7 +71,7 @@
 - [x] `02-027` `capture-sfx-hash-windows` | prereqs: `02-026` | file: `plan_fps/steps/02-027-capture-sfx-hash-windows.md`
 - [x] `02-028` `capture-music-event-hash-windows` | prereqs: `02-027` | file: `plan_fps/steps/02-028-capture-music-event-hash-windows.md`
 - [x] `02-029` `capture-framebuffer-hash-windows` | prereqs: `02-028` | file: `plan_fps/steps/02-029-capture-framebuffer-hash-windows.md`
-- [ ] `02-030` `capture-state-hash-windows` | prereqs: `02-029` | file: `plan_fps/steps/02-030-capture-state-hash-windows.md`
+- [x] `02-030` `capture-state-hash-windows` | prereqs: `02-029` | file: `plan_fps/steps/02-030-capture-state-hash-windows.md`
 - [ ] `02-031` `capture-final-side-by-side-replay` | prereqs: `02-030` | file: `plan_fps/steps/02-031-capture-final-side-by-side-replay.md`
 
 ## Phase 03: Bun Runtime Entry Point

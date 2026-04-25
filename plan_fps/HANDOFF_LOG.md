@@ -1049,3 +1049,21 @@
 - oracle_changes: OR-FPS-034 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-framebuffer-hash-windows.json` with refresh command `bun test test/oracles/capture-framebuffer-hash-windows.test.ts`
 - next_eligible_steps: 02-030 capture-state-hash-windows
 - open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live framebuffer hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-030 capture-state-hash-windows
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-030
+- step_title: capture-state-hash-windows
+- summary: Added the state hash windows oracle fixture at `test/oracles/fixtures/capture-state-hash-windows.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, pending state hash capture command, clean-launch/title/menu/gameplay tic and frame sample windows, exact pending state hash trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and explicit pending live state hash status because the step read scope exposes no reference capture or state hash comparison surface. Added focused test `test/oracles/capture-state-hash-windows.test.ts` to lock the exact fixture value, trace hash, capture command contract, state windows, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-state-hash-windows.json; test/oracles/capture-state-hash-windows.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun run format (rerun, Formatted 2 files, No fixes applied); bun test test/oracles/capture-state-hash-windows.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (6738 pass, 0 fail, 690934 expect() calls across 229 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (post-checklist, Formatted 2 files, No fixes applied); bun test test/oracles/capture-state-hash-windows.test.ts (post-checklist, 5 pass, 0 fail, 12 expect() calls); bun test (post-checklist, 6738 pass, 0 fail, 690934 expect() calls across 229 files); bun x tsc --noEmit --project tsconfig.json (post-checklist, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-035 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-state-hash-windows.json` with refresh command `bun test test/oracles/capture-state-hash-windows.test.ts`
+- next_eligible_steps: 02-031 capture-final-side-by-side-replay
+- open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live state hashes remain pending for later capture steps that may run a reference capture path.
