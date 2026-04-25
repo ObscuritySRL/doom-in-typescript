@@ -1931,3 +1931,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-008 define-mouse-capture-policy
 - open_risks: none
+
+## 2026-04-25 - 06-008 define-mouse-capture-policy
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-008
+- step_title: define-mouse-capture-policy
+- summary: Added the playable input mouse-capture policy surface at `src/playable/input/defineMouseCapturePolicy.ts`. The module exports an exact Bun-only contract plus `defineMouseCapturePolicy`, which validates the `bun run doom.ts` runtime path, captures the mouse only for focused gameplay, releases it for menu routing, deterministic replay, and focus loss, and keeps the policy replay-safe by returning the neutral `EMPTY_TICCMD` plus `TICCMD_SIZE` without mutating live tic state. Added focused test `test/playable/input/define-mouse-capture-policy.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, focused gameplay capture behavior, menu and deterministic-replay release behavior, focus-loss release behavior, and wrong-command rejection.
+- files_changed: src/playable/input/defineMouseCapturePolicy.ts; test/playable/input/define-mouse-capture-policy.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run failed because `toContainEqual` expected an exact manifest object shape while `explicitNullSurfaces` includes additional `evidence`, `path`, and `symbol` fields. Replaced that assertion with a field-level predicate over `reason` and `surface`, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; immediate clean rerun applied no fixes; post-recovery run formatted 2 files and fixed 1 file; post-recovery clean rerun applied no fixes); bun test test/playable/input/define-mouse-capture-policy.test.ts (initial run failed 6 pass, 1 fail, 12 expect() calls; rerun passed 7 pass, 0 fail, 12 expect() calls); bun test (7006 pass, 0 fail, 691607 expect() calls across 278 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-009 release-input-on-focus-loss
+- open_risks: none
