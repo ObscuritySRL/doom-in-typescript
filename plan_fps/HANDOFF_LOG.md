@@ -3030,3 +3030,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-008 pause-and-resume-audio
 - open_risks: none
+
+## 2026-04-25 - 10-008 pause-and-resume-audio
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-008
+- step_title: pause-and-resume-audio
+- summary: Added the playable pause/resume audio surface at `src/playable/audio-product-integration/pauseAndResumeAudio.ts`. The module exports the exact `bun run doom.ts` command contract plus `pauseAndResumeAudio`, validates the Bun runtime path before mutating audio state or dispatching live music actions, delegates to the existing vanilla-style music pause/resume state machine, leaves sound-effect playback unchanged, and returns frozen handle-free replay evidence with exact signatures and checksums. Added focused test `test/playable/audio-product-integration/pause-and-resume-audio.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, formatted source SHA-256, pause/resume transition evidence, unloaded no-op behavior, and wrong-command rejection before mutation or dispatch.
+- files_changed: src/playable/audio-product-integration/pauseAndResumeAudio.ts; test/playable/audio-product-integration/pause-and-resume-audio.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass formatted 5 files and fixed 1 file; exact-value rerun formatted 5 files with no fixes; pre-publish pass formatted 2 files with no fixes); bun test test/playable/audio-product-integration/pause-and-resume-audio.test.ts (4 pass, 0 fail, 17 expect() calls); bun test (7493 pass, 0 fail, 693341 expect() calls across 339 files); bun x tsc --noEmit --project tsconfig.json (clean); bun test plan_fps/validate-plan.test.ts (5 pass, 0 fail, 12 expect() calls); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps, First step: 00-001)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-009 play-menu-sounds
+- open_risks: none
