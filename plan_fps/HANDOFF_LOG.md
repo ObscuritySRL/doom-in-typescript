@@ -2039,3 +2039,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-014 replay-deterministic-input
 - open_risks: none
+
+## 2026-04-25 - 06-014 replay-deterministic-input
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-014
+- step_title: replay-deterministic-input
+- summary: Added the playable deterministic-input replay surface at `src/playable/input/replayDeterministicInput.ts`. The module exports an exact Bun-only contract plus `replayDeterministicInput`, which validates the `bun run doom.ts` runtime path, revalidates recorded keyboard metadata against the shared scan-code translation helpers, consumes only the requested tic's arrival-ordered trace events from the provided cursor, and keeps replay compatibility by returning the neutral `EMPTY_TICCMD` plus `TICCMD_SIZE` without mutating live tic state. Added focused test `test/playable/input/replay-deterministic-input.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, recorded-order replay behavior, and wrong-command plus translation-drift failure modes.
+- files_changed: src/playable/input/replayDeterministicInput.ts; test/playable/input/replay-deterministic-input.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test rebuilt a union-typed replay event with an object spread that widened the event shape beyond `ReplayTraceEvent`. Replaced that fixture with an explicit `KeyboardReplayTraceEvent`, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes); bun test test/playable/input/replay-deterministic-input.test.ts (initial run: 6 pass, 0 fail, 11 expect() calls; post-recovery rerun: 6 pass, 0 fail, 11 expect() calls); bun test (initial run: 7045 pass, 0 fail, 691684 expect() calls across 284 files; post-recovery rerun: 7045 pass, 0 fail, 691684 expect() calls across 284 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on the union-typed replay fixture; post-recovery rerun: clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-001 render-title-screen
+- open_risks: none
