@@ -1499,3 +1499,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-009 handle-close-button
 - open_risks: none
+
+## 2026-04-25 - 04-009 handle-close-button
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-009
+- step_title: handle-close-button
+- summary: Added the playable window-host close-button surface at `src/playable/window-host/handleCloseButton.ts`. The module exports an exact close-button contract plus `handleCloseButton`, which validates the `bun run doom.ts` runtime path, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, locks the live `WM_CLOSE` destroy-and-return branch from `src/launcher/win32.ts`, preserves the shared 640x480 default client size from `src/host/windowPolicy.ts`, and keeps deterministic replay compatibility explicit by limiting the surface to native close-button planning only. Added focused test `test/playable/window-host/handle-close-button.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live source evidence, handled close behavior, passthrough behavior for other messages, and the wrong-command failure mode.
+- files_changed: src/playable/window-host/handleCloseButton.ts; test/playable/window-host/handle-close-button.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; rerun formatted 2 files and applied no fixes); bun test test/playable/window-host/handle-close-button.test.ts (6 pass, 0 fail, 12 expect() calls); bun test (6864 pass, 0 fail, 691321 expect() calls across 254 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-010 run-message-pump
+- open_risks: none
