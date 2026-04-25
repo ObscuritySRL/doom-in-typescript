@@ -1715,3 +1715,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-007 handle-pause-focus-timing
 - open_risks: none
+
+## 2026-04-25 - 05-007 handle-pause-focus-timing
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-007
+- step_title: handle-pause-focus-timing
+- summary: Added the playable real-time-main-loop pause/focus timing surface at `src/playable/real-time-main-loop/handlePauseFocusTiming.ts`. The module exports an exact handle-pause-focus-timing contract plus `handlePauseFocusTiming`, which validates the `bun run doom.ts` runtime path, ties focus timing decisions to the `tryRunTics` phase in `src/mainLoop.ts`, records `TicAccumulator.reset()` and `TicAccumulator.totalTics` as the timing authorities from `src/host/ticAccumulator.ts`, preserves deterministic replay compatibility by pausing immediately on focus loss and resetting the timing baseline on focus regain, and keeps presentation-driven timing outside the surface. Added focused test `test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live timing evidence, pause/resume behavior, non-`tryRunTics` no-op behavior, and wrong-command rejection.
+- files_changed: src/playable/real-time-main-loop/handlePauseFocusTiming.ts; test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun formatted 2 files and applied no fixes); bun test test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts (6 pass, 0 fail, 12 expect() calls); bun test (6928 pass, 0 fail, 691465 expect() calls across 266 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-008 prevent-frame-rate-dependent-simulation
+- open_risks: none
