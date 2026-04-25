@@ -65,7 +65,7 @@
 - [x] `02-021` `capture-scripted-combat-path` | prereqs: `02-020` | file: `plan_fps/steps/02-021-capture-scripted-combat-path.md`
 - [x] `02-022` `capture-scripted-pickup-path` | prereqs: `02-021` | file: `plan_fps/steps/02-022-capture-scripted-pickup-path.md`
 - [x] `02-023` `capture-scripted-door-use-path` | prereqs: `02-022` | file: `plan_fps/steps/02-023-capture-scripted-door-use-path.md`
-- [ ] `02-024` `capture-scripted-damage-death-path` | prereqs: `02-023` | file: `plan_fps/steps/02-024-capture-scripted-damage-death-path.md`
+- [x] `02-024` `capture-scripted-damage-death-path` | prereqs: `02-023` | file: `plan_fps/steps/02-024-capture-scripted-damage-death-path.md`
 - [ ] `02-025` `capture-scripted-intermission-path` | prereqs: `02-024` | file: `plan_fps/steps/02-025-capture-scripted-intermission-path.md`
 - [ ] `02-026` `capture-live-save-load-roundtrip` | prereqs: `02-025` | file: `plan_fps/steps/02-026-capture-live-save-load-roundtrip.md`
 - [ ] `02-027` `capture-sfx-hash-windows` | prereqs: `02-026` | file: `plan_fps/steps/02-027-capture-sfx-hash-windows.md`
