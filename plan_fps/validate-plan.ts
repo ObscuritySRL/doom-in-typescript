@@ -36,27 +36,45 @@ const READ_ONLY_ROOTS = ['doom/', 'iwad/', 'reference/'] as const;
 const RUNTIME_TARGET = 'bun run doom.ts';
 const STEP_PROGRESS_LOG_PATTERN = 'plan_fps/loop_logs/step_<step-id>_progress.txt';
 const DEFAULT_PLAN_DIRECTORY = import.meta.dir;
+const FINAL_GATE_RELATIVE_PATH = 'steps/15-010-gate-final-side-by-side.md';
+const FINAL_GATE_FILE_PATH = `plan_fps/${FINAL_GATE_RELATIVE_PATH}`;
+const CHECKLIST_LINE_PATTERN = /^- \[[ x]\] `(?<id>\d{2}-\d{3})` `(?<titleSlug>[^`]+)` \| prereqs: `(?<prereq>[^`]+)` \| file: `(?<filePath>plan_fps\/steps\/[^`]+\.md)`$/;
 
 export const PLAN_VALIDATION_COMMAND = 'bun run plan_fps/validate-plan.ts';
 
 export async function validatePlan(planDirectory = DEFAULT_PLAN_DIRECTORY): Promise<ValidationResult> {
   const errors: ValidationError[] = [];
   const checklistPath = `${planDirectory}/MASTER_CHECKLIST.md`;
-  const checklistText = await Bun.file(checklistPath).text();
-  const checklistSteps = parseChecklist(checklistText);
-  const stepIds = new Set<string>();
-  const stepFileSet = new Set<string>();
   const stepGlob = new Bun.Glob('steps/*.md');
 
-  for await (const relativePath of stepGlob.scan({ cwd: planDirectory })) {
-    stepFileSet.add(relativePath.replace(/\\/g, '/'));
-  }
+  const stepFileSetPromise = (async (): Promise<Set<string>> => {
+    const stepFileSet = new Set<string>();
+    for await (const relativePath of stepGlob.scan({ cwd: planDirectory })) {
+      stepFileSet.add(relativePath.replace(/\\/g, '/'));
+    }
+    return stepFileSet;
+  })();
 
-  for (const checklistStep of checklistSteps) {
+  const [checklistText, stepFileSet] = await Promise.all([Bun.file(checklistPath).text(), stepFileSetPromise]);
+  const checklistSteps = parseChecklist(checklistText);
+
+  const stepReadResults = await Promise.all(
+    checklistSteps.map(async (checklistStep) => {
+      const relativeFilePath = checklistStep.filePath.replace(/^plan_fps\//, '');
+      if (!stepFileSet.has(relativeFilePath)) {
+        return { checklistStep, fileExists: false as const, stepText: null };
+      }
+      const fullStepPath = `${planDirectory}/${relativeFilePath}`;
+      return { checklistStep, fileExists: true as const, stepText: await Bun.file(fullStepPath).text() };
+    }),
+  );
+
+  const stepIds = new Set<string>();
+  let finalGateTextFromReads: string | null = null;
+  for (const { checklistStep, fileExists, stepText } of stepReadResults) {
     stepIds.add(checklistStep.id);
 
-    const relativeFilePath = checklistStep.filePath.replace(/^plan_fps\//, '');
-    if (!stepFileSet.has(relativeFilePath)) {
+    if (!fileExists) {
       errors.push({
         file: 'plan_fps/MASTER_CHECKLIST.md',
         message: `Checklist step ${checklistStep.id} points to missing file ${checklistStep.filePath}.`,
@@ -64,16 +82,18 @@ export async function validatePlan(planDirectory = DEFAULT_PLAN_DIRECTORY): Prom
       continue;
     }
 
-    const fullStepPath = `${planDirectory}/${relativeFilePath}`;
-    const stepText = await Bun.file(fullStepPath).text();
+    if (checklistStep.filePath === FINAL_GATE_FILE_PATH) {
+      finalGateTextFromReads = stepText;
+    }
+
     validateStepText(checklistStep, stepText, stepIds, errors);
   }
 
+  const checklistFilePathSet = new Set(checklistSteps.map((step) => step.filePath));
   for (const stepFile of stepFileSet) {
-    const fullPath = `plan_fps/${stepFile}`;
-    if (!checklistSteps.some((checklistStep) => checklistStep.filePath === fullPath)) {
+    if (!checklistFilePathSet.has(`plan_fps/${stepFile}`)) {
       errors.push({
-        file: fullPath,
+        file: `plan_fps/${stepFile}`,
         message: 'Step file is not referenced by MASTER_CHECKLIST.md.',
       });
     }
@@ -86,11 +106,10 @@ export async function validatePlan(planDirectory = DEFAULT_PLAN_DIRECTORY): Prom
     });
   }
 
-  const finalGatePath = `${planDirectory}/steps/15-010-gate-final-side-by-side.md`;
-  const finalGateText = await Bun.file(finalGatePath).text();
+  const finalGateText = finalGateTextFromReads ?? (await Bun.file(`${planDirectory}/${FINAL_GATE_RELATIVE_PATH}`).text());
   if (!finalGateText.includes(RUNTIME_TARGET)) {
     errors.push({
-      file: 'plan_fps/steps/15-010-gate-final-side-by-side.md',
+      file: FINAL_GATE_FILE_PATH,
       message: `Final acceptance gate must reference ${RUNTIME_TARGET}.`,
     });
   }
@@ -122,11 +141,10 @@ export async function runValidationCli(planDirectory = DEFAULT_PLAN_DIRECTORY, s
 export function parseChecklist(checklistText: string): readonly ChecklistStep[] {
   const steps: ChecklistStep[] = [];
   const lines = checklistText.split(/\r?\n/);
-  const pattern = new RegExp('^- \\[[ x]\\] `(?<id>\\d{2}-\\d{3})` `(?<titleSlug>[^`]+)` \\| prereqs: `(?<prereq>[^`]+)` \\| file: `(?<filePath>plan_fps/steps/[^`]+\\.md)`$');
 
   for (let lineIndex = 0; lineIndex < lines.length; lineIndex += 1) {
     const line = lines[lineIndex]!;
-    const match = pattern.exec(line);
+    const match = CHECKLIST_LINE_PATTERN.exec(line);
     if (match?.groups === undefined) {
       continue;
     }
@@ -144,10 +162,12 @@ export function parseChecklist(checklistText: string): readonly ChecklistStep[] 
 }
 
 async function validateProgressLogInstructions(planDirectory: string, errors: ValidationError[]): Promise<void> {
-  const promptText = await Bun.file(`${planDirectory}/PROMPT.md`).text();
-  const readmeText = await Bun.file(`${planDirectory}/README.md`).text();
-  const stepTemplateText = await Bun.file(`${planDirectory}/STEP_TEMPLATE.md`).text();
-  const gitignoreText = await Bun.file(`${planDirectory}/../.gitignore`).text();
+  const [promptText, readmeText, stepTemplateText, gitignoreText] = await Promise.all([
+    Bun.file(`${planDirectory}/PROMPT.md`).text(),
+    Bun.file(`${planDirectory}/README.md`).text(),
+    Bun.file(`${planDirectory}/STEP_TEMPLATE.md`).text(),
+    Bun.file(`${planDirectory}/../.gitignore`).text(),
+  ]);
 
   const requiredPromptPhrases = [
     STEP_PROGRESS_LOG_PATTERN,
