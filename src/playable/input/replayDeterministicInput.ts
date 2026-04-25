@@ -221,7 +221,7 @@ export function replayDeterministicInput(options: ReplayDeterministicInputOption
   }
 
   return Object.freeze({
-    consumedEvents: Object.freeze([...consumedEvents]),
+    consumedEvents: Object.freeze(consumedEvents),
     nextCursor,
     ticCommand: EMPTY_TICCMD,
     ticCommandSize: TICCMD_SIZE,

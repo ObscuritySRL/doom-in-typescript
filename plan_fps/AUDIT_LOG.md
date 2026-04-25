@@ -126,3 +126,54 @@ Required entry shape:
 - files_changed: plan_fps/AUDIT_LOG.md
 - tests_run: bun test test/oracles/capture-final-side-by-side-replay.test.ts; bun test; bun x tsc --noEmit --project tsconfig.json
 - follow_up: none
+
+## 2026-04-25T19:58:23Z - 00-002 declare-plan-fps-control-center - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 00-002
+- step_title: declare-plan-fps-control-center
+- prior_audits: none
+- correctness_findings: Manifest at plan_fps/manifests/00-002-declare-plan-fps-control-center.json fully satisfies Expected Changes — schemaVersion: 1, decisionId: D-FPS-001, activeControlCenter pins all nine plan_fps subpaths (README/checklist/prompt/pre-prompt/template/validator script+test/steps/manifests directories), priorArtPlan declares plan_engine as prior-art-only with mixed classification inherited from existing-plan-classification.json, runtimeTarget locks 'bun run doom.ts', totalSteps: 223 with firstStepId 00-001 classify-existing-plan and finalGateStepId 15-010, writableWorkspaceRoot 'D:/Projects/doom-in-typescript', readOnlyReferenceRoots ['doom/', 'iwad/', 'reference/'] each terminating in '/', sharedFiles enumerates the nine plan_fps control-log/reference files, ralphLoopWorkflowStepCount 12, and validationCommands lists the canonical five commands. The 23-test focused suite verifies on-disk existence for every active path, deep-equality on declarative arrays, derived first-step path pattern, sorted-no-duplicates invariants on three list fields, MASTER_CHECKLIST/README/DECISION_LOG cross-checks, validate-plan.ts RUNTIME_TARGET source pin, glob-counted step file total against manifest.totalSteps, and checklist-row regex count against manifest.totalSteps. No nullable/empty/wrap-around boundary exists in this declarative manifest.
+- performance_findings: README.md is read four times across four independent tests (lines 112, 172, 209, 223). Splitting tests for readability is intentional and Bun.file().text() is fast for small files; hoisting via beforeAll would couple the tests. Not worth changing.
+- improvement_findings: none — manifest fields are sorted and machine-readable, the test pins exact values rather than mere existence (deep-equality on sharedFiles/readOnlyReferenceRoots/validationCommands, glob-derived step file count cross-check, regex-validated step filename pattern), and cross-references both the prior-art classification manifest and the validate-plan.ts runtime target source. The readOnlyReferenceRoots existence check is correctly omitted because doom/ and iwad/ are gitignored user-supplied directories.
+- corrective_action: none — no fixes required.
+- files_changed: plan_fps/AUDIT_LOG.md
+- tests_run: bun test test/plan_fps/00-002-declare-plan-fps-control-center.test.ts; bun test; bun x tsc --noEmit --project tsconfig.json
+- follow_up: none
+
+## 2026-04-25T19:58:23Z - 06-014 replay-deterministic-input - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 06-014
+- step_title: replay-deterministic-input
+- prior_audits: none
+- correctness_findings: Implementation in src/playable/input/replayDeterministicInput.ts satisfies Expected Changes — REPLAY_DETERMINISTIC_INPUT_CONTRACT pins domains tuple, neutralTicCommand=EMPTY_TICCMD, preservesArrivalOrder=true, replaysOnlyCurrentTic=true, runtimeCommand 'bun run doom.ts', ticCommandSize=TICCMD_SIZE, traceSchemaVersion=1, validatesKeyboardTranslation=true. Function validates runtime command, integer ticIndex/traceCursor with non-negative ticIndex and bounded traceCursor, header (runtimeCommand, schemaVersion, ticCommandSize, neutralTicCommand-by-field), per-event integer arrivalIndex/ticIndex with non-negative ticIndex, type-discriminated assertion (keyboard scanCode/extendedKey/doomKey cross-checked against extractScanCode/isExtendedKey/translateScanCode of messageLongParameter; mouse-button enum + transition; mouse-motion integer deltas; scripted-doom-key transition), monotonic arrival-order within a tic, and skipped-pending-tic guard. Test (4 cases pre-audit) only covered the contract value, contract hash, manifest linkage, happy-path consumption, runtime-command rejection, and one keyboard doomKey drift case — leaving header validation, bounds errors, mouse-button enum/transition errors, mouse-motion integer guard, scripted-doom-key transition guard, monotonic arrival, skipped pending tic, empty consumption, end-of-trace cursor, and non-zero cursor resume paths drift-unprotected.
+- performance_findings: replayDeterministicInput allocated a new array via spread `Object.freeze([...consumedEvents])` before freezing the result, even though the local `consumedEvents` array is constructed inside the function and never escapes before the freeze. The spread allocates a redundant copy on every call (one per tic at 35Hz when input replay is active).
+- improvement_findings: 23 missing-coverage paths — header runtimeCommand/traceSchemaVersion/ticCommandSize/neutralTicCommand mismatches, traceCursor < 0 / > events.length, ticIndex < 0, non-integer ticIndex, keyboard scanCode/extendedKey mismatches and unsupported transition, mouse-button unsupported button/transition, mouse-motion non-integer delta, scripted-doom-key unsupported transition, scripted-doom-key negative ticIndex, non-monotonic arrival within a tic, skipped pending tic, empty-trace consumption, cursor-at-end consumption, and non-zero cursor resume.
+- corrective_action: Replaced `Object.freeze([...consumedEvents])` with `Object.freeze(consumedEvents)` to drop the redundant spread allocation; the local array is the sole reference and freeze still prevents post-return mutation. Added 23 regression tests to test/playable/input/replay-deterministic-input.test.ts covering keyboard scanCode mismatch, keyboard extendedKey mismatch, unsupported keyboard transition, mouse-button enum and transition errors, mouse-motion non-integer delta, scripted-doom-key transition error, negative event ticIndex, non-monotonic arrival within a tic, skipped pending tic, empty-result requested-tic mismatch, cursor-at-end consumption, fully-empty trace consumption, non-integer ticIndex, negative ticIndex, traceCursor out-of-bounds (both directions), all four header mismatches, and a non-zero cursor resume case. Test count grew from 6 (10 expects) to 27 (39 expects). Imported the missing event-type interfaces (MouseButtonReplayTraceEvent, MouseMotionReplayTraceEvent, ScriptedDoomKeyReplayTraceEvent) so the new tests build event fixtures with `as const satisfies <Type>` rather than `as` casts. Contract value and pinned SHA-256 hash are unchanged.
+- files_changed: src/playable/input/replayDeterministicInput.ts; test/playable/input/replay-deterministic-input.test.ts; plan_fps/AUDIT_LOG.md
+- tests_run: bun test test/playable/input/replay-deterministic-input.test.ts; bun test; bun x tsc --noEmit --project tsconfig.json
+- follow_up: none
+
+## 2026-04-25T19:58:23Z - 05-007 handle-pause-focus-timing - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 05-007
+- step_title: handle-pause-focus-timing
+- prior_audits: none
+- correctness_findings: Implementation in src/playable/real-time-main-loop/handlePauseFocusTiming.ts satisfies Expected Changes — HANDLE_PAUSE_FOCUS_TIMING_CONTRACT pins deterministicReplayGuard, focusLossPolicy, focusRegainPolicy, hostTransition (matches the 01-006 manifest's currentLauncherHostTransition.call), mainLoopPhase 'tryRunTics', runtimeCommand 'bun run doom.ts', and ticTimingAuthority. Function correctly handles all five state transitions: wrong runtime → throws; phase ≠ tryRunTics → 'skip' with paused: !isFocused and resetApplied: false; tryRunTics + !isFocused → 'pause' with resetApplied: false; tryRunTics + !wasFocused + isFocused → 'resume' with reset called and resetApplied: true; tryRunTics + wasFocused + isFocused → 'continue'. The 5-test focused suite (pre-audit) covered the contract literal, contract hash, manifest+source cross-checks, focus-loss→focus-regain transition, non-tryRunTics phase skip, and runtime-command rejection — but did not cover the steady-state 'continue' path, the still-unfocused 'pause' path at tryRunTics, or the paused-during-non-tryRunTics phase path.
+- performance_findings: none — function returns a freshly-constructed result object per call (5 fields, ~35Hz under tryRunTics + 35Hz×3 other phases), trivial allocation. Pre-freezing the simple-path results would require parameterizing on totalTics/paused, which would not amortize.
+- improvement_findings: 3 missing-coverage action paths — 'continue' (true→true at tryRunTics, no reset), 'pause' (false→false at tryRunTics, no reset, not first time), and 'skip' with paused: true (lose focus during non-tryRunTics phase to verify the paused flag tracks isFocused even when the action is skip).
+- corrective_action: Added 3 regression tests to test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts: 'continues without resetting when focus is held across consecutive tryRunTics calls', 'keeps reporting pause without resetting when focus has been lost across consecutive tryRunTics calls', and 'preserves the paused flag across non-tryRunTics phases when focus is lost'. Each test uses an inline TicAccumulator stub with a resetCallCount counter and asserts the full PauseFocusTimingDecision shape via toEqual plus the reset call count and (where relevant) the totalTics drift after the call. Test count grew from 6 (12 expects) to 9 (20 expects). No production code change required.
+- files_changed: test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts; plan_fps/AUDIT_LOG.md
+- tests_run: bun test test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts; bun test; bun x tsc --noEmit --project tsconfig.json
+- follow_up: none

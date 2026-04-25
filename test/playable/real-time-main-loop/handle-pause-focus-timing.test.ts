@@ -99,4 +99,71 @@ describe('handlePauseFocusTiming', () => {
 
     expect(() => handlePauseFocusTiming('bun run src/main.ts', 'tryRunTics', true, false, ticAccumulator)).toThrow('handlePauseFocusTiming requires bun run doom.ts');
   });
+
+  test('continues without resetting when focus is held across consecutive tryRunTics calls', () => {
+    const ticAccumulator = {
+      resetCallCount: 0,
+      totalTics: 21,
+      reset() {
+        this.resetCallCount++;
+        this.totalTics = 0;
+      },
+    };
+
+    const decision = handlePauseFocusTiming('bun run doom.ts', 'tryRunTics', true, true, ticAccumulator);
+
+    expect(decision).toEqual({
+      action: 'continue',
+      paused: false,
+      resetApplied: false,
+      runnableTics: 0,
+      totalTics: 21,
+    });
+    expect(ticAccumulator.resetCallCount).toBe(0);
+    expect(ticAccumulator.totalTics).toBe(21);
+  });
+
+  test('keeps reporting pause without resetting when focus has been lost across consecutive tryRunTics calls', () => {
+    const ticAccumulator = {
+      resetCallCount: 0,
+      totalTics: 14,
+      reset() {
+        this.resetCallCount++;
+        this.totalTics = 0;
+      },
+    };
+
+    const decision = handlePauseFocusTiming('bun run doom.ts', 'tryRunTics', false, false, ticAccumulator);
+
+    expect(decision).toEqual({
+      action: 'pause',
+      paused: true,
+      resetApplied: false,
+      runnableTics: 0,
+      totalTics: 14,
+    });
+    expect(ticAccumulator.resetCallCount).toBe(0);
+    expect(ticAccumulator.totalTics).toBe(14);
+  });
+
+  test('preserves the paused flag across non-tryRunTics phases when focus is lost', () => {
+    const ticAccumulator = {
+      resetCallCount: 0,
+      totalTics: 3,
+      reset() {
+        this.resetCallCount++;
+      },
+    };
+
+    const decision = handlePauseFocusTiming('bun run doom.ts', 'startFrame', true, false, ticAccumulator);
+
+    expect(decision).toEqual({
+      action: 'skip',
+      paused: true,
+      resetApplied: false,
+      runnableTics: 0,
+      totalTics: 3,
+    });
+    expect(ticAccumulator.resetCallCount).toBe(0);
+  });
 });
