@@ -2922,3 +2922,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-002 connect-sfx-mixer
 - open_risks: none
+
+## 2026-04-25 - 10-002 connect-sfx-mixer
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-002
+- step_title: connect-sfx-mixer
+- summary: Added the playable SFX mixer connection surface at `src/playable/audio-product-integration/connectSfxMixer.ts`. The module exports the exact `bun run doom.ts` command contract plus `connectSfxMixer`, which validates the runtime command, prevalidates deterministic `startSound` payloads before live dispatch, forwards only started SFX actions to an injected mixer, records dropped `link-silenced`/`inaudible`/`no-channel` paths, and returns replay-stable evidence without live device handles. Added focused test `test/playable/audio-product-integration/connect-sfx-mixer.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, source SHA-256, exact deterministic replay checksum, handle-free dispatch evidence, wrong-command rejection, and invalid-payload mutation guard.
+- files_changed: src/playable/audio-product-integration/connectSfxMixer.ts; test/playable/audio-product-integration/connect-sfx-mixer.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders while locking exact values; captured source SHA-256 `a41b91aa1a85f4a2f499301e4c0f461c6ca5ce71e0058aca73c57573608c12a6` and replayChecksum `1029420772`, replaced the placeholders, reran formatting, and reran verification successfully.
+- tests_run: bun run format (initial pass formatted 2 files with no fixes; rerun after exact-value replacement formatted 2 files with no fixes); bun test test/playable/audio-product-integration/connect-sfx-mixer.test.ts (placeholder run failed as expected while locking exact values; final run 5 pass, 0 fail, 15 expect() calls); bun test (7397 pass, 0 fail, 692868 expect() calls across 333 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-003 lock-sfx-channel-count
+- open_risks: none
