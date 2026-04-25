@@ -1661,3 +1661,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-004 implement-deterministic-replay-mode
 - open_risks: none
+
+## 2026-04-25 - 05-004 implement-deterministic-replay-mode
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-004
+- step_title: implement-deterministic-replay-mode
+- summary: Added the playable real-time-main-loop deterministic replay surface at `src/playable/real-time-main-loop/implementDeterministicReplayMode.ts`. The module exports an exact deterministic replay mode contract plus `implementDeterministicReplayMode`, which validates the `bun run doom.ts` runtime path, ties replay gating to the `tryRunTics` phase in `src/mainLoop.ts`, records `TicAccumulator.advance()` and `TicAccumulator.totalTics` as the discrete replay timing authorities from `src/host/ticAccumulator.ts`, preserves the integer-only `floor((delta * 35) / frequency)` accumulation rule, and keeps presentation-driven timing outside the replay surface. Added focused test `test/playable/real-time-main-loop/implement-deterministic-replay-mode.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 audited launcher transition, live main-loop and tic-accumulator evidence, Bun happy path, and wrong-command failure mode.
+- files_changed: src/playable/real-time-main-loop/implementDeterministicReplayMode.ts; test/playable/real-time-main-loop/implement-deterministic-replay-mode.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files); bun test test/playable/real-time-main-loop/implement-deterministic-replay-mode.test.ts (6 pass, 0 fail, 12 expect() calls); bun test (6910 pass, 0 fail, 691434 expect() calls across 263 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-005 schedule-presentation
+- open_risks: none
