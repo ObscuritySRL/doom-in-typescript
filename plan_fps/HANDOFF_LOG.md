@@ -1031,3 +1031,21 @@
 - oracle_changes: OR-FPS-033 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-music-event-hash-windows.json` with refresh command `bun test test/oracles/capture-music-event-hash-windows.test.ts`
 - next_eligible_steps: 02-029 capture-framebuffer-hash-windows
 - open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live music event hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-029 capture-framebuffer-hash-windows
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-029
+- step_title: capture-framebuffer-hash-windows
+- summary: Added the framebuffer hash windows oracle fixture at `test/oracles/fixtures/capture-framebuffer-hash-windows.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, pending framebuffer capture command, clean-launch/title/menu/gameplay tic and frame sample windows, exact pending framebuffer hash trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and explicit pending live framebuffer hash status because the step read scope exposes no reference capture or framebuffer hash comparison surface. Added focused test `test/oracles/capture-framebuffer-hash-windows.test.ts` to lock the full fixture value, trace hash, capture command contract, framebuffer windows, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-framebuffer-hash-windows.json; test/oracles/capture-framebuffer-hash-windows.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: First focused test run failed because the fixture oracle authority string did not include Markdown backticks around the 01-015 manifest path while the REFERENCE_ORACLES.md registry row did; aligned the fixture/test string with the registry. The first TypeScript check then failed because the parsed fixture assertion helper was an inferred const that did not narrow `unknown`; converted it to a declared assertion function.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-framebuffer-hash-windows.test.ts (initial run failed on registry authority string mismatch); bun run format (post-registry recovery, Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-framebuffer-hash-windows.test.ts (5 pass, 0 fail, 31 expect() calls); bun test (6733 pass, 0 fail, 690922 expect() calls across 228 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on assertion helper narrowing); bun run format (post-TypeScript recovery, Formatted 2 files, No fixes applied); bun test test/oracles/capture-framebuffer-hash-windows.test.ts (post-TypeScript recovery, 5 pass, 0 fail, 31 expect() calls); bun test (post-TypeScript recovery, 6733 pass, 0 fail, 690922 expect() calls across 228 files); bun x tsc --noEmit --project tsconfig.json (post-TypeScript recovery, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-034 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-framebuffer-hash-windows.json` with refresh command `bun test test/oracles/capture-framebuffer-hash-windows.test.ts`
+- next_eligible_steps: 02-030 capture-state-hash-windows
+- open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live framebuffer hashes remain pending for later capture steps that may run a reference capture path.

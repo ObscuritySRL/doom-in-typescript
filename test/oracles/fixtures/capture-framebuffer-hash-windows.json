@@ -1,0 +1,186 @@
+{
+  "captureCommand": {
+    "arguments": ["run", "doom.ts", "--oracle", "capture-framebuffer-hash-windows", "--iwad", "doom/DOOM1.WAD", "--reference-binary", "doom/DOOMD.EXE", "--script", "clean-launch-framebuffer-windows", "--frames", "0,35,70,105,140,175,210"],
+    "program": "bun",
+    "status": "pending-implementation",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "captureWindow": {
+    "frameEnd": 210,
+    "frameStart": 0,
+    "framebuffer": {
+      "height": 200,
+      "pixelFormat": "indexed-8-bit-playpal",
+      "width": 320
+    },
+    "sampleFrames": [0, 35, 70, 105, 140, 175, 210],
+    "sampleTics": [0, 35, 70, 105, 140, 175, 210],
+    "source": "clean launch through title, menu, and E1M1 gameplay framebuffer checkpoints",
+    "ticEnd": 210,
+    "ticStart": 0
+  },
+  "commandContract": {
+    "entryFile": "doom.ts",
+    "runtimeCommand": "bun run doom.ts",
+    "sourceManifestPath": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json"
+  },
+  "fixtureKind": "framebuffer-hash-windows-capture-contract",
+  "framebufferHashTrace": [
+    {
+      "label": "clean-launch-first-visible-frame",
+      "tic": 0,
+      "frame": 0,
+      "window": "startup",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    },
+    {
+      "label": "title-settled-frame",
+      "tic": 35,
+      "frame": 35,
+      "window": "title",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    },
+    {
+      "label": "menu-first-frame",
+      "tic": 70,
+      "frame": 70,
+      "window": "menu",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    },
+    {
+      "label": "e1m1-first-gameplay-frame",
+      "tic": 105,
+      "frame": 105,
+      "window": "gameplay",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    },
+    {
+      "label": "e1m1-post-movement-frame",
+      "tic": 140,
+      "frame": 140,
+      "window": "gameplay",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    },
+    {
+      "label": "e1m1-post-combat-frame",
+      "tic": 175,
+      "frame": 175,
+      "window": "gameplay",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    },
+    {
+      "label": "e1m1-post-pickup-frame",
+      "tic": 210,
+      "frame": 210,
+      "window": "gameplay",
+      "expectedHashStatus": "pending-reference-capture",
+      "expectedSha256": null,
+      "surface": "framebuffer-hash-comparison",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files."
+    }
+  ],
+  "inheritedLaunchSurfaceSourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "sizeBytes": 569
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "sizeBytes": 3239
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "sizeBytes": 645
+    }
+  ],
+  "missingSurfaces": [
+    {
+      "evidencePaths": ["package.json", "tsconfig.json", "src/main.ts"],
+      "path": null,
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files.",
+      "surface": "framebuffer-hash-comparison"
+    },
+    {
+      "evidencePaths": ["package.json", "tsconfig.json", "src/main.ts"],
+      "path": null,
+      "reason": "No reference oracle replay capture surface is exposed in the allowed launch-surface files.",
+      "surface": "reference-oracle-replay-capture"
+    },
+    {
+      "evidencePaths": ["package.json", "tsconfig.json", "src/main.ts"],
+      "path": null,
+      "reason": "No side-by-side replay command is exposed by package scripts or the current launcher entry.",
+      "surface": "side-by-side-replay-command"
+    }
+  ],
+  "oracleId": "OR-FPS-034",
+  "oracleRegistration": {
+    "artifact": "test/oracles/fixtures/capture-framebuffer-hash-windows.json",
+    "authority": "framebuffer hash windows capture contract derived from local DOS binary authority and `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json`",
+    "refreshCommand": "bun test test/oracles/capture-framebuffer-hash-windows.test.ts"
+  },
+  "rationale": "The selected read scope exposes local binary/IWAD authority and the 01-015 launch-surface audit, but no runnable reference capture bridge or framebuffer hash comparison surface. This fixture therefore locks the exact pending framebuffer hash trace and the command contract that later implementation steps must satisfy.",
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "path": "doom/DOOMD.EXE",
+      "role": "reference executable authority",
+      "sourceId": "S-FPS-005"
+    },
+    {
+      "authority": "local-primary-data",
+      "path": "doom/DOOM1.WAD",
+      "role": "reference IWAD data",
+      "sourceId": "S-FPS-006"
+    },
+    {
+      "authority": "local-data",
+      "path": "iwad/DOOM1.WAD",
+      "role": "workspace IWAD copy",
+      "sourceId": "S-FPS-007"
+    },
+    {
+      "authority": "local-primary",
+      "path": "package.json",
+      "role": "launcher package surface inherited from 01-015",
+      "sourceId": "S-FPS-009"
+    },
+    {
+      "authority": "local-primary",
+      "path": "tsconfig.json",
+      "role": "TypeScript verification surface inherited from 01-015",
+      "sourceId": "S-FPS-010"
+    },
+    {
+      "authority": "local-primary",
+      "path": "src/main.ts",
+      "role": "current launcher surface inherited from 01-015",
+      "sourceId": "S-FPS-011"
+    }
+  ],
+  "stepId": "02-029",
+  "stepTitle": "capture-framebuffer-hash-windows",
+  "traceSha256": "26256123a36f2efb13333281e8b304214233084e04559aff9a3cd114d1e5da9c"
+}
