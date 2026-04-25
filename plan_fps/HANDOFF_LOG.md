@@ -815,3 +815,21 @@
 - oracle_changes: OR-FPS-021 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-screen-size-detail-gamma-paths.json` with refresh command `bun test test/oracles/capture-screen-size-detail-gamma-paths.test.ts`
 - next_eligible_steps: 02-017 capture-save-load-menu-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live screen size/detail/gamma framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-017 capture-save-load-menu-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-017
+- step_title: capture-save-load-menu-path
+- summary: Added the save/load menu path oracle fixture at `test/oracles/fixtures/capture-save-load-menu-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape/ArrowDown/ArrowDown/Enter/Escape/ArrowDown/Enter input sequence through Load Game and the pre-game Save Game rejection path, tic/frame capture window, exact abstract transition trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-save-load-menu-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the load-menu and save-rejection transition path, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-save-load-menu-path.json; test/oracles/capture-save-load-menu-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Initial focused test run failed because the precomputed trace SHA-256 was calculated from the same trace values with a different object key order than the formatted fixture/test. Updated `traceSha256` to `a1ed2a9249cf40294c6e13f1bbea0d8aa1c3650cd94121fe848c4960bedfe81c`, matching `JSON.stringify(fixture.expectedTrace)`, then reran verification.
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun run format (rerun, No fixes applied); bun test test/oracles/capture-save-load-menu-path.test.ts (initial run failed on trace hash mismatch); bun run format (post-recovery, No fixes applied); bun test test/oracles/capture-save-load-menu-path.test.ts (5 pass, 0 fail, 27 expect() calls); bun test (6671 pass, 0 fail, 690632 expect() calls across 216 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (post-checklist rerun, No fixes applied); bun test test/oracles/capture-save-load-menu-path.test.ts (post-checklist rerun, 5 pass, 0 fail, 27 expect() calls); bun test (post-checklist rerun, 6671 pass, 0 fail, 690632 expect() calls across 216 files); bun x tsc --noEmit --project tsconfig.json (post-checklist rerun, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-022 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-save-load-menu-path.json` with refresh command `bun test test/oracles/capture-save-load-menu-path.test.ts`
+- next_eligible_steps: 02-018 capture-quit-confirmation-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live save/load menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
