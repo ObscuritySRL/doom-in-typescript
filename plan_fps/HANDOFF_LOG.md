@@ -2940,3 +2940,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-003 lock-sfx-channel-count
 - open_risks: none
+
+## 2026-04-25 - 10-003 lock-sfx-channel-count
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-003
+- step_title: lock-sfx-channel-count
+- summary: Added the playable SFX channel-count lock surface at `src/playable/audio-product-integration/lockSfxChannelCount.ts`. The module exports the exact `bun run doom.ts` command contract plus `lockSfxChannelCount`, which validates the Bun runtime path, requires exactly eight sequential deterministic SFX channel snapshots, rejects invalid slot counts or channel indices before producing evidence, and returns frozen replay evidence with slot signatures, occupied/empty counts, and a handle-free checksum. Added focused test `test/playable/audio-product-integration/lock-sfx-channel-count.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, source SHA-256, exact replay checksum, wrong-command rejection, invalid count rejection, and invalid-channel transition guard.
+- files_changed: src/playable/audio-product-integration/lockSfxChannelCount.ts; test/playable/audio-product-integration/lock-sfx-channel-count.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass formatted 2 files and fixed 1 file; rerun after exact-value replacement formatted 2 files with no fixes); bun test test/playable/audio-product-integration/lock-sfx-channel-count.test.ts (5 pass, 0 fail, 14 expect() calls); bun test (7405 pass, 0 fail, 692935 expect() calls across 334 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-004 implement-sfx-priority-eviction
+- open_risks: none
