@@ -3228,3 +3228,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-005 implement-live-game-save-load
 - open_risks: none
+
+## 2026-04-25 - 11-005 implement-live-game-save-load
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-005
+- step_title: implement-live-game-save-load
+- summary: Added the playable live save/load transition surface at `src/playable/save-load-playability/implementLiveGameSaveLoad.ts`. The module exports the exact `bun run doom.ts` command contract plus `implementLiveGameSaveLoad`, validates the product runtime command before save/load mutation, serializes canonical Doom save headers with live section bytes and the Doom EOF marker, parses live load headers, optionally delegates full restoration to `readLoadGame` when a world layout is provided, and returns replay-safe hashes, signatures, and checksums. Added focused test `test/playable/save-load-playability/implement-live-game-save-load.test.ts` to lock the command contract, 01-013 live-save/load audit linkage, formatted source SHA-256 `d24da5a20c688a04cebd6df72d6e022792c729633714fdd26ef4326a317d8094`, exact save/load hashes and replay signatures, byte-copy behavior, wrong-command prevalidation, and missing-EOF rejection.
+- files_changed: src/playable/save-load-playability/implementLiveGameSaveLoad.ts; test/playable/save-load-playability/implement-live-game-save-load.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the public function needed overloads for save/load result narrowing, the focused test fixture widened `playeringame` to `readonly number[]`, and an unreachable default branch inspected a `never` value. Added save/load overloads, typed the fixture with `SaveGamePlayerPresence`, replaced the default branch with operation prevalidation, refreshed the focused-test source hash, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; placeholder/recovery reruns reported no fixes except the TypeScript recovery pass fixed 1 file); bun test test/playable/save-load-playability/implement-live-game-save-load.test.ts (placeholder runs failed as expected while locking exact values; final run 5 pass, 0 fail, 23 expect() calls); bun test (final run 7573 pass, 0 fail, 693685 expect() calls across 350 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on overload/tuple/default-branch typing; final run passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-006 validate-savegame-version
+- open_risks: none
