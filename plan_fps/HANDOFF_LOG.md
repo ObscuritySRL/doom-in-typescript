@@ -995,3 +995,21 @@
 - oracle_changes: OR-FPS-031 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-live-save-load-roundtrip.json` with refresh command `bun test test/oracles/capture-live-save-load-roundtrip.test.ts`
 - next_eligible_steps: 02-027 capture-sfx-hash-windows
 - open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live save/load roundtrip framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-027 capture-sfx-hash-windows
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-027
+- step_title: capture-sfx-hash-windows
+- summary: Added the SFX hash windows oracle fixture at `test/oracles/fixtures/capture-sfx-hash-windows.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, SFX capture arguments, the clean-launch/menu/gameplay tic and frame windows, exact pending SFX hash trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live audio hash status because the step read scope exposes no reference capture or audio hash comparison surface. Added focused test `test/oracles/capture-sfx-hash-windows.test.ts` to lock the full fixture value, trace hash, capture command contract, SFX windows, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-sfx-hash-windows.json; test/oracles/capture-sfx-hash-windows.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files; rerun No fixes applied); bun test test/oracles/capture-sfx-hash-windows.test.ts (5 pass, 0 fail, 24 expect() calls); bun test (6723 pass, 0 fail, 690870 expect() calls across 226 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-032 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-sfx-hash-windows.json` with refresh command `bun test test/oracles/capture-sfx-hash-windows.test.ts`
+- next_eligible_steps: 02-028 capture-music-event-hash-windows
+- open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live SFX audio hashes remain pending for later capture steps that may run a reference capture path.
