@@ -84,10 +84,7 @@ const referenceOraclesPath = 'plan_fps/REFERENCE_ORACLES.md';
 const sideBySideReplayManifestPath = 'plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json';
 const sourceCatalogPath = 'plan_fps/SOURCE_CATALOG.md';
 
-const fixture: ScriptedCombatPathOracleFixture = await Bun.file(fixturePath).json();
-const referenceOraclesText = await Bun.file(referenceOraclesPath).text();
-const sideBySideReplayManifest: SideBySideReplayManifest = await Bun.file(sideBySideReplayManifestPath).json();
-const sourceCatalogText = await Bun.file(sourceCatalogPath).text();
+const ALLOWED_INPUT_ACTIONS: ReadonlySet<string> = new Set(['press', 'release', 'hold']);
 
 const expectedFixture = {
   captureCommand: {
@@ -274,20 +271,57 @@ const expectedFixture = {
   traceSha256: '59a84f722ab1bdb74c91c4f29530f7aa0cf701ffecb3829e58a80ef2ff09700e',
 } satisfies ScriptedCombatPathOracleFixture;
 
+const hashJson = (value: unknown): string => new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
+
 describe('capture-scripted-combat-path oracle', () => {
-  test('locks the exact scripted combat fixture', () => {
-    expect(fixture).toEqual(expectedFixture);
+  test('locks the exact scripted combat fixture', async () => {
+    await expect(Bun.file(fixturePath).json()).resolves.toEqual(expectedFixture);
   });
 
-  test('recomputes the deterministic trace hash', () => {
-    const traceHasher = new Bun.CryptoHasher('sha256');
-    traceHasher.update(JSON.stringify(fixture.expectedTrace));
+  test('recomputes the on-disk trace hash and locks structural invariants', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as ScriptedCombatPathOracleFixture;
 
-    expect(traceHasher.digest('hex')).toBe(fixture.traceSha256);
+    expect(fixture.traceSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(hashJson(fixture.expectedTrace)).toBe(fixture.traceSha256);
+
+    const traceTics = fixture.expectedTrace.map((entry) => entry.tic);
+    expect(traceTics).toEqual([...traceTics].sort((leftTic, rightTic) => leftTic - rightTic));
+    expect(new Set(traceTics).size).toBe(traceTics.length);
+
+    const eventNames = fixture.expectedTrace.map((entry) => entry.event);
+    expect(new Set(eventNames).size).toBe(eventNames.length);
+
+    for (const entry of fixture.expectedTrace) {
+      expect(entry.event.length).toBeGreaterThan(0);
+      expect(entry.note.length).toBeGreaterThan(0);
+      expect(Number.isInteger(entry.tic)).toBe(true);
+      expect(entry.tic).toBeGreaterThanOrEqual(0);
+    }
+
+    expect(fixture.captureWindow.startTic).toBe(fixture.expectedTrace[0]!.tic);
+    expect(fixture.captureWindow.endTic).toBe(fixture.expectedTrace[fixture.expectedTrace.length - 1]!.tic);
+    expect(fixture.captureWindow.startFrame).toBe(fixture.captureWindow.startTic);
+    expect(fixture.captureWindow.endFrame).toBe(fixture.captureWindow.endTic);
+
+    const inputTics = fixture.scriptedInput.map((entry) => entry.tic);
+    expect(inputTics).toEqual([...inputTics].sort((leftTic, rightTic) => leftTic - rightTic));
+    for (const entry of fixture.scriptedInput) {
+      expect(entry.control.length).toBeGreaterThan(0);
+      expect(ALLOWED_INPUT_ACTIONS.has(entry.action)).toBe(true);
+      expect(Number.isInteger(entry.tic)).toBe(true);
+      expect(entry.tic).toBeGreaterThanOrEqual(fixture.captureWindow.startTic);
+      expect(entry.tic).toBeLessThanOrEqual(fixture.captureWindow.endTic);
+    }
+
+    for (const sourceHash of fixture.inheritedLaunchSurfaceSourceHashes) {
+      expect(sourceHash.sha256).toMatch(/^[0-9a-f]{64}$/);
+      expect(sourceHash.sizeBytes).toBeGreaterThan(0);
+      expect(sourceHash.path.length).toBeGreaterThan(0);
+    }
   });
 
   test('records the menu-to-combat transition and scripted fire input', () => {
-    expect(fixture.expectedTrace.map((traceEntry) => traceEntry.event)).toEqual([
+    expect(expectedFixture.expectedTrace.map((traceEntry) => traceEntry.event)).toEqual([
       'clean-launch',
       'open-main-menu',
       'select-new-game',
@@ -300,12 +334,12 @@ describe('capture-scripted-combat-path oracle', () => {
       'pistol-shot-resolved',
       'combat-path-capture-end',
     ]);
-    expect(fixture.scriptedInput).toContainEqual({
+    expect(expectedFixture.scriptedInput).toContainEqual({
       action: 'press',
       control: 'ControlLeft',
       tic: 88,
     });
-    expect(fixture.captureWindow).toEqual({
+    expect(expectedFixture.captureWindow).toEqual({
       endFrame: 110,
       endTic: 110,
       startFrame: 0,
@@ -313,10 +347,13 @@ describe('capture-scripted-combat-path oracle', () => {
     });
   });
 
-  test('cross-checks source authority and the side-by-side audit manifest', () => {
-    expect(fixture.captureCommand.runtimeCommand).toBe(sideBySideReplayManifest.commandContracts.targetPlayable.runtimeCommand);
-    expect(fixture.captureCommand.entryFile).toBe(sideBySideReplayManifest.commandContracts.targetPlayable.entryFile);
-    expect(fixture.inheritedLaunchSurfaceSourceHashes).toEqual(sideBySideReplayManifest.sourceHashes);
+  test('cross-checks source authority and the side-by-side audit manifest', async () => {
+    const sourceCatalogText = await Bun.file(sourceCatalogPath).text();
+    const sideBySideReplayManifest = (await Bun.file(sideBySideReplayManifestPath).json()) as SideBySideReplayManifest;
+
+    expect(expectedFixture.captureCommand.runtimeCommand).toBe(sideBySideReplayManifest.commandContracts.targetPlayable.runtimeCommand);
+    expect(expectedFixture.captureCommand.entryFile).toBe(sideBySideReplayManifest.commandContracts.targetPlayable.entryFile);
+    expect(expectedFixture.inheritedLaunchSurfaceSourceHashes).toEqual(sideBySideReplayManifest.sourceHashes);
     expect(sideBySideReplayManifest.explicitNullSurfaces).toContainEqual({
       evidencePaths: ['package.json', 'tsconfig.json', 'src/main.ts'],
       path: null,
@@ -324,37 +361,43 @@ describe('capture-scripted-combat-path oracle', () => {
       surface: 'reference-oracle-replay-capture',
     });
 
-    for (const sourceAuthorityEntry of fixture.sourceAuthority.filter((sourceAuthorityEntry) => sourceAuthorityEntry.sourceCatalogIdentifier.startsWith('S-FPS-'))) {
-      expect(sourceCatalogText).toContain(sourceAuthorityEntry.sourceCatalogIdentifier);
-      expect(sourceCatalogText).toContain(sourceAuthorityEntry.path);
+    for (const sourceAuthorityEntry of expectedFixture.sourceAuthority.filter((entry) => entry.sourceCatalogIdentifier.startsWith('S-FPS-'))) {
+      const catalogRow = sourceCatalogText.split('\n').find((line) => line.startsWith(`| ${sourceAuthorityEntry.sourceCatalogIdentifier} |`));
+      expect(catalogRow).toBeDefined();
+      expect(catalogRow).toContain(`\`${sourceAuthorityEntry.path}\``);
+      expect(catalogRow).toContain(`| ${sourceAuthorityEntry.authority} |`);
     }
-    expect(fixture.sourceAuthority).toContainEqual({
+    expect(expectedFixture.sourceAuthority).toContainEqual({
       authority: 'derived-launch-surface-audit',
       path: sideBySideReplayManifestPath,
       sourceCatalogIdentifier: '01-015',
     });
   });
 
-  test('records pending live hash gaps and oracle registration', () => {
-    expect(Object.values(fixture.liveHashStatus)).toEqual([
-      {
-        reason: 'pending because the selected step read scope does not permit opening or executing reference binaries',
-        sha256: null,
-        status: 'pending',
-      },
-      {
-        reason: 'pending because the selected step read scope does not permit opening or executing reference binaries',
-        sha256: null,
-        status: 'pending',
-      },
-      {
-        reason: 'pending because the selected step read scope does not permit opening or executing reference binaries',
-        sha256: null,
-        status: 'pending',
-      },
-    ]);
+  test('records pending live hash gaps and oracle registration', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as ScriptedCombatPathOracleFixture;
+    const referenceOraclesText = await Bun.file(referenceOraclesPath).text();
+
+    const liveHashKinds = Object.keys(fixture.liveHashStatus);
+    expect([...liveHashKinds].sort()).toEqual(['audio', 'framebuffer', 'state']);
+
+    for (const status of Object.values(fixture.liveHashStatus)) {
+      expect(status.sha256).toBeNull();
+      expect(status.status).toBe('pending');
+      expect(status.reason.length).toBeGreaterThan(0);
+    }
+
     expect(referenceOraclesText).toContain(
       '| OR-FPS-026 | `test/oracles/fixtures/capture-scripted-combat-path.json` | scripted combat path capture contract derived from local DOS binary authority and `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json` | `bun test test/oracles/capture-scripted-combat-path.test.ts` |',
     );
+  });
+
+  test('matches the inherited launch-surface hashes against live source files', async () => {
+    for (const sourceHash of expectedFixture.inheritedLaunchSurfaceSourceHashes) {
+      const fileText = await Bun.file(sourceHash.path).text();
+      const liveSha256 = new Bun.CryptoHasher('sha256').update(fileText).digest('hex');
+      expect(liveSha256).toBe(sourceHash.sha256);
+      expect(Buffer.byteLength(fileText)).toBe(sourceHash.sizeBytes);
+    }
   });
 });

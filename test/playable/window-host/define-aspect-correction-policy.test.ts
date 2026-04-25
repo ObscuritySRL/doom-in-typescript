@@ -109,6 +109,12 @@ describe('defineAspectCorrectionPolicy', () => {
 
     expect(aspectCorrectionPolicy).toBe(DEFINE_ASPECT_CORRECTION_POLICY_CONTRACT);
     expect(Object.isFrozen(aspectCorrectionPolicy)).toBe(true);
+    expect(Object.isFrozen(aspectCorrectionPolicy.correctedDisplay)).toBe(true);
+    expect(Object.isFrozen(aspectCorrectionPolicy.deterministicReplayCompatibility)).toBe(true);
+    expect(Object.isFrozen(aspectCorrectionPolicy.presentation)).toBe(true);
+    expect(Object.isFrozen(aspectCorrectionPolicy.presentation.defaultPresentationRectAtScaleTwo)).toBe(true);
+    expect(Object.isFrozen(aspectCorrectionPolicy.runtime)).toBe(true);
+    expect(Object.isFrozen(aspectCorrectionPolicy.sourceFramebuffer)).toBe(true);
   });
 
   it('locks a stable SHA-256 hash for the contract', () => {
@@ -141,5 +147,8 @@ describe('defineAspectCorrectionPolicy', () => {
 
   it('rejects commands outside the Bun runtime path', () => {
     expect(() => defineAspectCorrectionPolicy('bun run src/main.ts')).toThrow('Aspect correction policy requires bun run doom.ts');
+    expect(() => defineAspectCorrectionPolicy('')).toThrow('Aspect correction policy requires bun run doom.ts');
+    expect(() => defineAspectCorrectionPolicy(' bun run doom.ts ')).toThrow('Aspect correction policy requires bun run doom.ts');
+    expect(() => defineAspectCorrectionPolicy('bun run doom.ts --debug')).toThrow('Aspect correction policy requires bun run doom.ts');
   });
 });

@@ -39,6 +39,7 @@ describe('wireStatusBarInvocation', () => {
       stepId: '08-008',
       stepTitle: 'wire-status-bar-invocation',
     });
+    expect(Object.isFrozen(WIRE_STATUS_BAR_INVOCATION_CONTRACT)).toBe(true);
     expect(manifest.schemaVersion).toBe(1);
     expect(manifest.stepId).toBe('01-009');
     expect(manifest.commandContracts.targetRuntime).toEqual({
@@ -83,6 +84,10 @@ describe('wireStatusBarInvocation', () => {
         viewZ: 2_686_976,
       },
     });
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.statusBarInvocation)).toBe(true);
+    expect(Object.isFrozen(result.phaseTrace)).toBe(true);
+    expect(Object.isFrozen(result.framebufferSample)).toBe(true);
   });
 
   test('reuses an already-started main loop without rerunning pre-loop callbacks', async () => {
