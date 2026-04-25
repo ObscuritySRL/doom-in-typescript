@@ -887,3 +887,21 @@
 - oracle_changes: OR-FPS-025 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-movement-path.json` with refresh command `bun test test/oracles/capture-scripted-movement-path.test.ts`
 - next_eligible_steps: 02-021 capture-scripted-combat-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted movement framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-021 capture-scripted-combat-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-021
+- step_title: capture-scripted-combat-path
+- summary: Added the scripted combat path oracle fixture at `test/oracles/fixtures/capture-scripted-combat-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, scripted input sequence from clean launch through E1M1 movement and the first pistol attack, tic/frame capture window, exact abstract combat trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-scripted-combat-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the scripted combat transition, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-scripted-combat-path.json; test/oracles/capture-scripted-combat-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Separated the focused test source-authority assertion so source-catalog-backed authority rows are checked against `plan_fps/SOURCE_CATALOG.md` while the allowed 01-015 manifest evidence path is checked directly. Added `evidencePaths` to the local SideBySideReplayManifest explicit-null-surface type after TypeScript caught the omitted field.
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file; rerun No fixes applied); bun test test/oracles/capture-scripted-combat-path.test.ts (initial run failed on overstrict source-catalog assertion); bun run format (post-recovery, Fixed 1 file; rerun No fixes applied); bun test test/oracles/capture-scripted-combat-path.test.ts (5 pass, 0 fail, 18 expect() calls); bun test (6691 pass, 0 fail, 690703 expect() calls across 220 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on omitted evidencePaths type); bun run format (post-tsc-recovery, No fixes applied); bun test test/oracles/capture-scripted-combat-path.test.ts (post-tsc-recovery, 5 pass, 0 fail, 18 expect() calls); bun test (post-tsc-recovery, 6691 pass, 0 fail, 690703 expect() calls across 220 files); bun x tsc --noEmit --project tsconfig.json (post-tsc-recovery, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-026 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-combat-path.json` with refresh command `bun test test/oracles/capture-scripted-combat-path.test.ts`
+- next_eligible_steps: 02-022 capture-scripted-pickup-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted combat framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
