@@ -1,0 +1,98 @@
+{
+  "captureCommand": {
+    "arguments": ["-iwad", "doom/DOOM1.WAD", "-playdemo", "demo3"],
+    "executablePath": "doom/DOOMD.EXE",
+    "iwadPath": "doom/DOOM1.WAD",
+    "mode": "local-dos-reference-demo-playback",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "captureWindow": {
+    "checkpointFrames": [0, 1, 35, 350, 700],
+    "checkpointTics": [0, 1, 35, 350, 700],
+    "endFrame": 700,
+    "endTic": 700,
+    "startFrame": 0,
+    "startTic": 0
+  },
+  "expectedTrace": [
+    {
+      "checkpoint": "demo3-playback-requested",
+      "expectedState": "reference launch receives -playdemo demo3",
+      "frame": 0,
+      "tic": 0
+    },
+    {
+      "checkpoint": "demo3-lump-selected",
+      "expectedState": "DEMO3 input stream selected from local IWAD authority",
+      "frame": 1,
+      "tic": 1
+    },
+    {
+      "checkpoint": "demo3-first-visible-frame",
+      "expectedState": "first visible demo3 playback checkpoint is ready for later framebuffer hash capture",
+      "frame": 35,
+      "tic": 35
+    },
+    {
+      "checkpoint": "demo3-mid-window",
+      "expectedState": "mid-window demo3 playback checkpoint is ready for later state and audio hash capture",
+      "frame": 350,
+      "tic": 350
+    },
+    {
+      "checkpoint": "demo3-end-window",
+      "expectedState": "end-window demo3 playback checkpoint is ready for later long-run drift comparison",
+      "frame": 700,
+      "tic": 700
+    }
+  ],
+  "pendingLiveHashes": [
+    {
+      "evidenceSurface": "framebuffer-hash-comparison",
+      "hashKind": "framebuffer",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-reference-capture"
+    },
+    {
+      "evidenceSurface": "audio-hash-comparison",
+      "hashKind": "audio",
+      "reason": "No audio hash comparison surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-reference-capture"
+    },
+    {
+      "evidenceSurface": "state-hash-comparison",
+      "hashKind": "state",
+      "reason": "No state hash comparison surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-reference-capture"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "source": "local DOS executable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "source": "local IWAD"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts",
+      "source": "current launcher entry"
+    }
+  ],
+  "sourceManifest": {
+    "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "schemaVersion": 1,
+    "stepId": "01-015"
+  },
+  "stepId": "02-009",
+  "stepTitle": "capture-demo3-playback-checkpoints",
+  "traceSha256": "47ba2bb739f1a745f6237db884ccd759bd0d2d2bd6a823b2d500ab2f2cab0716"
+}
