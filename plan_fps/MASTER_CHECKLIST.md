@@ -156,7 +156,7 @@
 - [x] `07-012` `implement-save-game-menu` | prereqs: `07-011` | file: `plan_fps/steps/07-012-implement-save-game-menu.md`
 - [x] `07-013` `implement-load-game-menu` | prereqs: `07-012` | file: `plan_fps/steps/07-013-implement-load-game-menu.md`
 - [x] `07-014` `implement-read-this-help-pages` | prereqs: `07-013` | file: `plan_fps/steps/07-014-implement-read-this-help-pages.md`
-- [ ] `07-015` `implement-quit-confirmation` | prereqs: `07-014` | file: `plan_fps/steps/07-015-implement-quit-confirmation.md`
+- [x] `07-015` `implement-quit-confirmation` | prereqs: `07-014` | file: `plan_fps/steps/07-015-implement-quit-confirmation.md`
 - [ ] `07-016` `implement-menu-sound-events` | prereqs: `07-015` | file: `plan_fps/steps/07-016-implement-menu-sound-events.md`
 - [ ] `07-017` `render-skull-cursor` | prereqs: `07-016` | file: `plan_fps/steps/07-017-render-skull-cursor.md`
 - [ ] `07-018` `render-menu-text` | prereqs: `07-017` | file: `plan_fps/steps/07-018-render-menu-text.md`
