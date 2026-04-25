@@ -1679,3 +1679,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-005 schedule-presentation
 - open_risks: none
+
+## 2026-04-25 - 05-005 schedule-presentation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-005
+- step_title: schedule-presentation
+- summary: Added the playable real-time-main-loop presentation surface at `src/playable/real-time-main-loop/schedulePresentation.ts`. The module exports an exact schedule-presentation contract plus `schedulePresentation`, which validates the `bun run doom.ts` runtime path, ties presentation scheduling to the `display` phase in `src/mainLoop.ts`, records `TicAccumulator.advance()` and `TicAccumulator.totalTics` as replay-safe timing authorities from `src/host/ticAccumulator.ts`, preserves the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` launcher transition from 01-006, and keeps presentation from advancing simulation state. Added focused test `test/playable/real-time-main-loop/schedule-presentation.test.ts` to lock the exact contract object, stable SHA-256 hash, audited manifest linkage, happy-path scheduling, non-display no-op behavior, and wrong-command failure mode.
+- files_changed: src/playable/real-time-main-loop/schedulePresentation.ts; test/playable/real-time-main-loop/schedule-presentation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run: Formatted 2 files in 3ms. No fixes applied.; pre-publish rerun: Formatted 2 files in 3ms. No fixes applied.); bun test test/playable/real-time-main-loop/schedule-presentation.test.ts (6 pass, 0 fail, 8 expect() calls); bun test (6916 pass, 0 fail, 691442 expect() calls across 264 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-006 handle-long-stall-panic
+- open_risks: none
