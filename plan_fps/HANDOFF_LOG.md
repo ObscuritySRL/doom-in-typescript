@@ -3084,3 +3084,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-011 play-intermission-finale-music
 - open_risks: none
+
+## 2026-04-25 - 10-011 play-intermission-finale-music
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-011
+- step_title: play-intermission-finale-music
+- summary: Added the playable intermission/finale music surface at `src/playable/audio-product-integration/playIntermissionFinaleMusic.ts`. The module exports the exact `bun run doom.ts` command contract plus `playIntermissionFinaleMusic`, validates the product runtime command before music-state mutation or live dispatch, maps intermission/finale-victory/finale-bunny scenes to vanilla `D_INTER`/`D_VICTOR`/`D_BUNNY` music numbers, routes playback through `changeMusic` with looping enabled, forwards replay-safe music device actions to an optional live dispatcher, and returns frozen handle-free replay evidence with locked checksums. Added focused test `test/playable/audio-product-integration/play-intermission-finale-music.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, formatted source SHA-256, route constants, intermission transition evidence, intermission-to-finale transition order, repeat-track no-op behavior, and wrong-command rejection before mutation or dispatch.
+- files_changed: src/playable/audio-product-integration/playIntermissionFinaleMusic.ts; test/playable/audio-product-integration/play-intermission-finale-music.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders while locking exact values; captured source SHA-256 `6e0681c8efc44438c062ad32dfee1ca23eebe37dd9860dc674478080912c794d`, intermission replayChecksum `1181899283`, finale-victory transition replayChecksum `3957481178`, and repeat finale-bunny replayChecksum `2804529359`, replaced the placeholders, reran formatting, and reran verification successfully.
+- tests_run: bun run format (initial pass fixed 1 file; exact-value rerun reported no fixes); bun test test/playable/audio-product-integration/play-intermission-finale-music.test.ts (placeholder run failed as expected while locking exact values; final run 5 pass, 0 fail, 21 expect() calls); bun test (7535 pass, 0 fail, 693534 expect() calls across 342 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-012 wire-volume-controls
+- open_risks: none
