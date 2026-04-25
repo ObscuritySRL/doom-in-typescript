@@ -153,7 +153,7 @@
 - [x] `07-009` `implement-sound-volume-menu` | prereqs: `07-008` | file: `plan_fps/steps/07-009-implement-sound-volume-menu.md`
 - [x] `07-010` `implement-screen-size-detail-gamma-controls` | prereqs: `07-009` | file: `plan_fps/steps/07-010-implement-screen-size-detail-gamma-controls.md`
 - [x] `07-011` `implement-messages-toggle` | prereqs: `07-010` | file: `plan_fps/steps/07-011-implement-messages-toggle.md`
-- [ ] `07-012` `implement-save-game-menu` | prereqs: `07-011` | file: `plan_fps/steps/07-012-implement-save-game-menu.md`
+- [x] `07-012` `implement-save-game-menu` | prereqs: `07-011` | file: `plan_fps/steps/07-012-implement-save-game-menu.md`
 - [ ] `07-013` `implement-load-game-menu` | prereqs: `07-012` | file: `plan_fps/steps/07-013-implement-load-game-menu.md`
 - [ ] `07-014` `implement-read-this-help-pages` | prereqs: `07-013` | file: `plan_fps/steps/07-014-implement-read-this-help-pages.md`
 - [ ] `07-015` `implement-quit-confirmation` | prereqs: `07-014` | file: `plan_fps/steps/07-015-implement-quit-confirmation.md`
