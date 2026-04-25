@@ -1,0 +1,149 @@
+{
+  "captureCommand": {
+    "arguments": [],
+    "entryFile": "doom.ts",
+    "runtimeCommand": "bun run doom.ts",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "captureWindow": {
+    "endFrame": 140,
+    "endTic": 140,
+    "startFrame": 0,
+    "startTic": 0
+  },
+  "expectedTrace": [
+    {
+      "frame": 0,
+      "input": [],
+      "state": "clean-launch",
+      "tic": 0,
+      "view": "startup"
+    },
+    {
+      "frame": 35,
+      "input": ["Escape"],
+      "state": "main-menu-open",
+      "tic": 35,
+      "view": "main-menu"
+    },
+    {
+      "frame": 45,
+      "input": ["Enter"],
+      "state": "episode-menu-open",
+      "tic": 45,
+      "view": "episode-menu"
+    },
+    {
+      "frame": 55,
+      "input": ["Enter"],
+      "state": "skill-menu-open",
+      "tic": 55,
+      "view": "skill-menu"
+    },
+    {
+      "frame": 65,
+      "input": ["Enter"],
+      "state": "e1m1-start-requested",
+      "tic": 65,
+      "view": "level-start"
+    },
+    {
+      "frame": 105,
+      "input": [],
+      "map": "E1M1",
+      "state": "level-loaded",
+      "tic": 105,
+      "view": "gameplay"
+    },
+    {
+      "frame": 140,
+      "input": [],
+      "map": "E1M1",
+      "state": "first-gameplay-frame-ready",
+      "tic": 140,
+      "view": "gameplay"
+    }
+  ],
+  "liveHashStatus": [
+    {
+      "hash": null,
+      "kind": "framebuffer",
+      "reason": "No reference oracle replay capture or framebuffer hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending"
+    },
+    {
+      "hash": null,
+      "kind": "audio",
+      "reason": "No reference oracle replay capture or audio hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending"
+    },
+    {
+      "hash": null,
+      "kind": "state",
+      "reason": "No reference oracle replay capture or state hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending"
+    }
+  ],
+  "manifestEvidence": {
+    "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "schemaVersion": 1,
+    "sourceHashes": [
+      {
+        "path": "package.json",
+        "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+        "sizeBytes": 569
+      },
+      {
+        "path": "src/main.ts",
+        "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+        "sizeBytes": 3239
+      },
+      {
+        "path": "tsconfig.json",
+        "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+        "sizeBytes": 645
+      }
+    ]
+  },
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "role": "preferred local reference executable authority when usable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "role": "shareware IWAD data for E1M1"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts",
+      "role": "allowed current launcher surface evidence inherited through the 01-015 manifest"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "sizeBytes": 569
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "sizeBytes": 3239
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "sizeBytes": 645
+    }
+  ],
+  "stepId": "02-019",
+  "stepTitle": "capture-e1m1-start-from-clean-launch",
+  "traceSha256": "aff7bb6d4013157e1fe11c6c2a0f59ec4580f112f07f0bdc014fa88e2c898295"
+}

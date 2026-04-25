@@ -851,3 +851,21 @@
 - oracle_changes: OR-FPS-023 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-quit-confirmation-path.json` with refresh command `bun test test/oracles/capture-quit-confirmation-path.test.ts`
 - next_eligible_steps: 02-019 capture-e1m1-start-from-clean-launch
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live quit confirmation framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-019 capture-e1m1-start-from-clean-launch
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-019
+- step_title: capture-e1m1-start-from-clean-launch
+- summary: Added the E1M1 start from clean launch oracle fixture at `test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, tick/frame capture window, exact abstract transition trace from clean launch through menu selection to the first E1M1 gameplay frame, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-e1m1-start-from-clean-launch.test.ts` to lock the fixture exactly, recompute the trace hash, verify the transition path, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json; test/oracles/capture-e1m1-start-from-clean-launch.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-e1m1-start-from-clean-launch.test.ts (5 pass, 0 fail, 16 expect() calls); bun test (6681 pass, 0 fail, 690666 expect() calls across 218 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-024 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json` with refresh command `bun test test/oracles/capture-e1m1-start-from-clean-launch.test.ts`
+- next_eligible_steps: 02-020 capture-scripted-movement-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live E1M1 start framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
