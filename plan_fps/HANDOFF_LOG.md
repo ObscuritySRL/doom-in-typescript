@@ -2453,3 +2453,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-003 wire-player-spawn-session
 - open_risks: none
+
+## 2026-04-25 - 08-003 wire-player-spawn-session
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-003
+- step_title: wire-player-spawn-session
+- summary: Added the playable player-spawn session surface at `src/playable/game-session-wiring/wirePlayerSpawnSession.ts`. The module exports an exact Bun-only runtime contract plus `wirePlayerSpawnSession`, which validates the `bun run doom.ts` command, creates the launcher session through the existing session constructor, verifies and snapshots the Player 1 spawn, and returns a fresh unopened `MainLoop` so replay state remains unadvanced. Added focused test `test/playable/game-session-wiring/wire-player-spawn-session.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-009 audit linkage, exact E1M1 Player 1 spawn snapshot, unadvanced replay state, and wrong-command rejection.
+- files_changed: src/playable/game-session-wiring/wirePlayerSpawnSession.ts; test/playable/game-session-wiring/wire-player-spawn-session.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files with no fixes; rerun after locking the source hash also applied no fixes); bun test test/playable/game-session-wiring/wire-player-spawn-session.test.ts (4 pass, 0 fail, 14 expect() calls); bun test (7181 pass, 0 fail, 692069 expect() calls across 307 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-004 enforce-game-tick-order
+- open_risks: none
