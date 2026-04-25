@@ -2615,3 +2615,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-012 wire-level-exit-flow
 - open_risks: none
+
+## 2026-04-25 - 08-012 wire-level-exit-flow
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-012
+- step_title: wire-level-exit-flow
+- summary: Added the playable level-exit flow surface at `src/playable/game-session-wiring/wireLevelExitFlow.ts`. The module exports the exact `bun run doom.ts` command contract plus `wireLevelExitFlow`, which validates the Bun runtime command, advances the current gameplay session only during `tryRunTics`, swaps to the next map during the same phase, renders only during `display`, and returns deterministic phase, pre-loop, framebuffer, level-time, and transition evidence. Added focused test `test/playable/game-session-wiring/wire-level-exit-flow.test.ts` to lock the exact command contract, 01-009 audit linkage and schema, stable SHA-256 source hash, E1M1-to-E1M2 transition, wrong-command rejection, unavailable-map rejection, and self-targeting exit rejection.
+- files_changed: src/playable/game-session-wiring/wireLevelExitFlow.ts; test/playable/game-session-wiring/wire-level-exit-flow.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (passed twice; no fixes applied); bun test test/playable/game-session-wiring/wire-level-exit-flow.test.ts (5 pass, 0 fail, 11 expect() calls); bun test (7225 pass, 0 fail, 692212 expect() calls across 316 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-013 wire-pause-menu-overlay-flow
+- open_risks: none
