@@ -1157,3 +1157,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-005 wire-bun-native-process-oracle-helpers
 - open_risks: none
+
+## 2026-04-25 - 03-005 wire-bun-native-process-oracle-helpers
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-005
+- step_title: wire-bun-native-process-oracle-helpers
+- summary: Added the Bun-native process oracle helper contract at `src/playable/bun-runtime-entry-point/wireBunNativeProcessOracleHelpers.ts`. The contract pins `Bun.spawn` as the process helper provider, reconstructs the target `bun run doom.ts` command from Bun runtime parts, records the current `src/main.ts` launcher transition from the 01-007 audit manifest, rejects Node process/package runners for this helper surface, and keeps deterministic replay state outside the deferred oracle process runner. Added focused test `test/playable/bun-runtime-entry-point/wire-bun-native-process-oracle-helpers.test.ts` to lock the exact contract object, command reconstruction, 01-007 manifest schema/transition, current package/source launcher evidence, and deterministic replay compatibility.
+- files_changed: src/playable/bun-runtime-entry-point/wireBunNativeProcessOracleHelpers.ts; test/playable/bun-runtime-entry-point/wire-bun-native-process-oracle-helpers.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; post-control run no fixes applied); bun test test/playable/bun-runtime-entry-point/wire-bun-native-process-oracle-helpers.test.ts (initial and post-control runs both 5 pass, 0 fail, 20 expect() calls); bun test (initial and post-control runs both 6765 pass, 0 fail, 691034 expect() calls across 235 files); bun x tsc --noEmit --project tsconfig.json (initial and post-control runs both clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-006 wire-bun-test-integration
+- open_risks: none
