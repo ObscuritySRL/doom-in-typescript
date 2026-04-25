@@ -1,0 +1,153 @@
+{
+  "artifactPath": "test/oracles/fixtures/capture-final-side-by-side-replay.json",
+  "captureCommand": {
+    "arguments": [
+      "run",
+      "doom.ts",
+      "--side-by-side-replay",
+      "--reference-executable",
+      "doom/DOOMD.EXE",
+      "--iwad",
+      "doom/DOOM1.WAD",
+      "--input-trace",
+      "test/oracles/fixtures/final-side-by-side-replay-input-trace.json",
+      "--sample-tics",
+      "0,1,35,70,140,210,350,700,1050,1400,1750,2100",
+      "--hash",
+      "framebuffer,state,audio,music-event",
+      "--report",
+      "test/oracles/fixtures/capture-final-side-by-side-replay.json"
+    ],
+    "implementationStatus": "pending-unimplemented-side-by-side-surface",
+    "program": "bun",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "captureWindow": {
+    "endFrame": 2100,
+    "endTic": 2100,
+    "framebufferHeight": 200,
+    "framebufferWidth": 320,
+    "sampleFrames": [0, 1, 35, 70, 140, 210, 350, 700, 1050, 1400, 1750, 2100],
+    "sampleTics": [0, 1, 35, 70, 140, 210, 350, 700, 1050, 1400, 1750, 2100],
+    "startFrame": 0,
+    "startTic": 0,
+    "ticRateHz": 35
+  },
+  "commandContract": {
+    "acceptanceMode": "side-by-side-verifiable replay parity",
+    "entryFile": "doom.ts",
+    "runtimeCommand": "bun run doom.ts",
+    "sourceManifestStepId": "01-015"
+  },
+  "expectedTrace": [
+    {
+      "checkpoint": "clean-launch-pair-created",
+      "comparisonStatus": "pending-live-capture",
+      "detail": "Reference and implementation launch from clean workspace with the same IWAD, map, skill, and deterministic input trace.",
+      "frameIndex": 0,
+      "referenceState": "title-loop-start",
+      "tic": 0
+    },
+    {
+      "checkpoint": "menu-route-to-e1m1",
+      "comparisonStatus": "pending-live-capture",
+      "detail": "The replay leaves the title/menu path through the recorded new-game, episode, and skill selections.",
+      "frameIndex": 210,
+      "referenceState": "menu-confirmed-skill",
+      "tic": 210
+    },
+    {
+      "checkpoint": "e1m1-gameplay-synchronized",
+      "comparisonStatus": "pending-live-capture",
+      "detail": "Both sides are expected to enter E1M1 and apply the same per-tic input commands before hash sampling begins.",
+      "frameIndex": 350,
+      "referenceState": "e1m1-active",
+      "tic": 350
+    },
+    {
+      "checkpoint": "scripted-path-samples-collected",
+      "comparisonStatus": "pending-live-capture",
+      "detail": "Framebuffer, state, SFX, and music-event hash windows from earlier capture steps are sampled on the shared replay timeline.",
+      "frameIndex": 1400,
+      "referenceState": "scripted-e1m1-path-active",
+      "tic": 1400
+    },
+    {
+      "checkpoint": "final-side-by-side-report-ready",
+      "comparisonStatus": "pending-unimplemented-surface",
+      "detail": "The final report should contain paired framebuffer, state, audio, and music-event comparisons once the side-by-side runner exists.",
+      "frameIndex": 2100,
+      "referenceState": "report-ready",
+      "tic": 2100
+    }
+  ],
+  "inheritedSourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "sizeBytes": 569
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "sizeBytes": 3239
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "sizeBytes": 645
+    }
+  ],
+  "liveHashStatus": [
+    {
+      "hashKind": "audio",
+      "reason": "No audio hash comparison surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-capture",
+      "surface": "audio-hash-comparison"
+    },
+    {
+      "hashKind": "framebuffer",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-capture",
+      "surface": "framebuffer-hash-comparison"
+    },
+    {
+      "hashKind": "music-event",
+      "reason": "No final side-by-side replay report surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-capture",
+      "surface": "final-side-by-side-report"
+    },
+    {
+      "hashKind": "state",
+      "reason": "No state hash comparison surface is exposed in the allowed launch-surface files.",
+      "status": "pending-live-capture",
+      "surface": "state-hash-comparison"
+    }
+  ],
+  "oracleId": "OR-FPS-036",
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "role": "reference executable authority when usable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "role": "shareware IWAD data authority"
+    },
+    {
+      "authority": "derived-manifest",
+      "id": "01-015",
+      "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+      "role": "allowed launch-surface and missing-side-by-side evidence"
+    }
+  ],
+  "sourceManifestPath": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+  "stepId": "02-031",
+  "stepTitle": "capture-final-side-by-side-replay",
+  "traceSha256": "4c4e75ccf5333fe7ea84916139237d77403adb8307f5220bfd5c95fd784e6111"
+}

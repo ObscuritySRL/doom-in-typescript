@@ -1067,3 +1067,21 @@
 - oracle_changes: OR-FPS-035 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-state-hash-windows.json` with refresh command `bun test test/oracles/capture-state-hash-windows.test.ts`
 - next_eligible_steps: 02-031 capture-final-side-by-side-replay
 - open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-031 capture-final-side-by-side-replay
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-031
+- step_title: capture-final-side-by-side-replay
+- summary: Added the final side-by-side replay oracle fixture at `test/oracles/fixtures/capture-final-side-by-side-replay.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, pending side-by-side capture command, clean-launch-to-final-report tic/frame window, exact abstract replay comparison trace, deterministic trace SHA-256, inherited launch-surface source hashes, and explicit pending live hash status because the step read scope exposes no side-by-side runner or hash comparison surfaces. Added focused test `test/oracles/capture-final-side-by-side-replay.test.ts` to lock the full fixture value, trace hash, final transition, command contract, manifest gaps, source-catalog authority, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-final-side-by-side-replay.json; test/oracles/capture-final-side-by-side-replay.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run Formatted 2 files, Fixed 1 file; post-checklist run Formatted 2 files, No fixes applied); bun test test/oracles/capture-final-side-by-side-replay.test.ts (initial and post-checklist runs both 5 pass, 0 fail, 21 expect() calls); bun test (initial and post-checklist runs both 6743 pass, 0 fail, 690955 expect() calls across 230 files); bun x tsc --noEmit --project tsconfig.json (initial and post-checklist runs both clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-036 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-final-side-by-side-replay.json` with refresh command `bun test test/oracles/capture-final-side-by-side-replay.test.ts`
+- next_eligible_steps: 03-001 add-root-doom-ts-command-contract
+- open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live final side-by-side framebuffer/audio/state hashes remain pending for later implementation steps that add a side-by-side replay runner and comparison report surface.
