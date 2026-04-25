@@ -1,0 +1,103 @@
+{
+  "captureCommand": {
+    "arguments": ["-timedemo", "DEMO2", "-iwad", "doom/DOOM1.WAD"],
+    "binaryPath": "doom/DOOMD.EXE",
+    "command": "doom/DOOMD.EXE -timedemo DEMO2 -iwad doom/DOOM1.WAD",
+    "demoLump": "DEMO2",
+    "iwadPath": "doom/DOOM1.WAD"
+  },
+  "checkpointWindow": {
+    "frames": [0, 35, 70, 140, 280, 560, 840, 1120],
+    "startFrame": 0,
+    "startTic": 0,
+    "ticRateHz": 35,
+    "tics": [0, 35, 70, 140, 280, 560, 840, 1120]
+  },
+  "expectedTrace": [
+    {
+      "checkpoint": "demo2-playback-start",
+      "demoLump": "DEMO2",
+      "frame": 0,
+      "tic": 0
+    },
+    {
+      "checkpoint": "demo2-checkpoint-35",
+      "demoLump": "DEMO2",
+      "frame": 35,
+      "tic": 35
+    },
+    {
+      "checkpoint": "demo2-checkpoint-70",
+      "demoLump": "DEMO2",
+      "frame": 70,
+      "tic": 70
+    },
+    {
+      "checkpoint": "demo2-checkpoint-140",
+      "demoLump": "DEMO2",
+      "frame": 140,
+      "tic": 140
+    },
+    {
+      "checkpoint": "demo2-checkpoint-280",
+      "demoLump": "DEMO2",
+      "frame": 280,
+      "tic": 280
+    },
+    {
+      "checkpoint": "demo2-checkpoint-560",
+      "demoLump": "DEMO2",
+      "frame": 560,
+      "tic": 560
+    },
+    {
+      "checkpoint": "demo2-checkpoint-840",
+      "demoLump": "DEMO2",
+      "frame": 840,
+      "tic": 840
+    },
+    {
+      "checkpoint": "demo2-live-hashes-pending",
+      "demoLump": "DEMO2",
+      "frame": 1120,
+      "reason": "reference-oracle-replay-capture is not exposed in the allowed 01-015 launch-surface files",
+      "tic": 1120
+    }
+  ],
+  "liveHashStatus": {
+    "audioSha256": null,
+    "framebufferSha256": null,
+    "reason": "No reference oracle replay capture, framebuffer hash comparison, audio hash comparison, or state hash comparison surface is exposed in the allowed 01-015 launch-surface files.",
+    "stateSha256": null
+  },
+  "referenceManifest": {
+    "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "schemaVersion": 1,
+    "targetReplayContractCurrentVisibility": "missing in allowed launch-surface files"
+  },
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "source": "local DOS executable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "source": "local IWAD"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts",
+      "source": "current launcher entry"
+    }
+  ],
+  "stepId": "02-008",
+  "stepTitle": "capture-demo2-playback-checkpoints",
+  "traceSha256": "736f0d08a73b3983dc0406477b6ac1cc1bf47cdf776165271e332047bff6cfa4",
+  "traceSerialization": "JSON.stringify(expectedTrace)"
+}

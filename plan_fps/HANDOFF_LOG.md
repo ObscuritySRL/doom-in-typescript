@@ -653,3 +653,21 @@
 - oracle_changes: OR-FPS-012 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-demo1-playback-checkpoints.json` with refresh command `bun test test/oracles/capture-demo1-playback-checkpoints.test.ts`
 - next_eligible_steps: 02-008 capture-demo2-playback-checkpoints
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live demo1 framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-24 - 02-008 capture-demo2-playback-checkpoints
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-008
+- step_title: capture-demo2-playback-checkpoints
+- summary: Added the demo2 playback checkpoints oracle fixture at `test/oracles/fixtures/capture-demo2-playback-checkpoints.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference capture command contract, DEMO2 playback argument, tick/frame checkpoint window, exact abstract checkpoint trace, deterministic trace SHA-256, source authority, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-demo2-playback-checkpoints.test.ts` to lock the fixture exactly, recompute the trace hash, verify checkpoint transition order and command contract, cross-check source-catalog authority and the 01-015 manifest null surfaces, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-demo2-playback-checkpoints.json; test/oracles/capture-demo2-playback-checkpoints.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file; rerun No fixes applied); bun test test/oracles/capture-demo2-playback-checkpoints.test.ts (5 pass, 0 fail, 10 expect() calls); bun test (6627 pass, 0 fail, 690464 expect() calls across 207 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-013 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-demo2-playback-checkpoints.json` with refresh command `bun test test/oracles/capture-demo2-playback-checkpoints.test.ts`
+- next_eligible_steps: 02-009 capture-demo3-playback-checkpoints
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live demo2 framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
