@@ -186,7 +186,7 @@ Execution metadata for this Ralph-loop invocation:
 - model: $Model
 - effort: $Effort
 
-Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry and in the final `RLP_AGENT`, `RLP_MODEL`, and `RLP_EFFORT` fields.
+Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry or `plan_fps/AUDIT_LOG.md` audit entry and in the final `RLP_AGENT`, `RLP_MODEL`, and `RLP_EFFORT` fields.
 
 $PromptText
 "@

@@ -56,6 +56,7 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 - `DECISION_LOG.md`: durable decisions.
 - `FACT_LOG.md`: durable facts.
 - `HANDOFF_LOG.md`: append-only execution history.
+- `AUDIT_LOG.md`: append-only completed-step audit history keyed by step and auditing agent.
 - `loop_logs/step_<step-id>_progress.txt`: ignored active-step recovery log with completed work and remaining planned work.
 - `PRE_PROMPT.md`: audit-pass prompt used by the audited Ralph-loop script.
 - `REFERENCE_ORACLES.md`: oracle artifacts and authority.
@@ -66,12 +67,15 @@ The old `plan_engine/` work is classified as `mixed`: it includes deterministic 
 ## Ralph-Loop Scripts
 
 - `RALPH_LOOP_CLAUDE_CODE.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md`.
+- `RALPH_LOOP_CLAUDE_CODE_AUDIT_ONLY.ps1`: repeatedly audits completed steps from `PRE_PROMPT.md` with Claude Code until no unaudited completed step remains for Claude Code.
 - `RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md`.
 - `RALPH_LOOP_CODEX.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md` through `codex exec`.
+- `RALPH_LOOP_CODEX_AUDIT_ONLY.ps1`: repeatedly audits completed steps from `PRE_PROMPT.md` through `codex exec` until no unaudited completed step remains for Codex.
 - `RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.
-- Both scripts default to `D:\Projects\doom-in-typescript` as the working directory and write loop output under `plan_fps/loop_logs/`.
+- All scripts default to `D:\Projects\doom-in-typescript` as the working directory and write loop output under `plan_fps/loop_logs/`.
 - The Codex scripts require the Codex CLI terminal command on `PATH`, or `-CodexCommand <full CLI path>`.
 - Handoff entries must record `agent`, `model`, and `effort`. Codex launchers default to `gpt-5.5`; pass `-Model` to override the exact Codex model.
+- Audit entries must record `agent`, `model`, `effort`, `step_id`, findings, corrective action, files changed, and tests run. A step audited by `Codex` remains eligible for one `Claude Code` audit, and a step audited by `Claude Code` remains eligible for one `Codex` audit.
 
 ## Boundaries
 

@@ -1,5 +1,7 @@
-﻿param(
-    [string]$PromptPath = "D:\Projects\doom-in-typescript\plan_fps\PROMPT.md",
+param(
+    [string]$PromptPath = "D:\Projects\doom-in-typescript\plan_fps\PRE_PROMPT.md",
+    [string]$MasterChecklistPath = "D:\Projects\doom-in-typescript\plan_fps\MASTER_CHECKLIST.md",
+    [string]$AuditLogPath = "D:\Projects\doom-in-typescript\plan_fps\AUDIT_LOG.md",
     [string]$WorkingDirectory = "D:\Projects\doom-in-typescript",
     [string]$LogDirectory = "D:\Projects\doom-in-typescript\plan_fps\loop_logs",
     [ValidateSet("minimal", "low", "medium", "high", "xhigh", "max")]
@@ -48,54 +50,17 @@ function Get-FirstNonEmptyField {
     return ""
 }
 
-function Get-InferredStepId {
+function Get-AuditEntryField {
     param(
         [Parameter(Mandatory = $true)]
-        [string]$Text
+        [string]$Text,
+        [Parameter(Mandatory = $true)]
+        [string]$Name
     )
 
-    $match = [regex]::Match($Text, "(?im)\bStep\s+([0-9]{2}-[0-9]{3})\b")
+    $match = [regex]::Match($Text, "(?im)^\s*-\s*$([regex]::Escape($Name))\s*:\s*(.+?)\s*$")
     if ($match.Success) {
         return $match.Groups[1].Value.Trim()
-    }
-
-    return ""
-}
-
-function Get-InferredStepTitle {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$Text
-    )
-
-    $match = [regex]::Match($Text, "(?im)^\s*Step\s+[0-9]{2}-[0-9]{3}\s+(.+?)\s+complete\.?\s*$")
-    if ($match.Success) {
-        return $match.Groups[1].Value.Trim()
-    }
-
-    return ""
-}
-
-function Get-InferredStatus {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string]$Text
-    )
-
-    if (Test-LimitReached -Text $Text) {
-        return "LIMIT_REACHED"
-    }
-
-    if ($Text -match "(?im)\bno eligible step\b" -or $Text -match "(?im)\bno steps?\s+(?:are\s+)?eligible\b") {
-        return "NO_ELIGIBLE_STEP"
-    }
-
-    if ($Text -match "(?im)^\s*(?:\*\*)?Next eligible(?:\*\*)?\s*:" -or $Text -match "(?im)\bStep\s+[0-9]{2}-[0-9]{3}\b.+\bcomplete\b") {
-        return "COMPLETED"
-    }
-
-    if ($Text -match "(?im)^\s*(?:\*\*)?(?:Blocker|Blocked)(?:\*\*)?\s*:" -or $Text -match "(?im)\bI am blocked\b" -or $Text -match "(?im)\bunresolved blocker\b") {
-        return "BLOCKED"
     }
 
     return ""
@@ -141,6 +106,12 @@ function ConvertTo-CanonicalRlpStatus {
         "LIMITREACHED" {
             return "LIMIT_REACHED"
         }
+        "NO_ELIGIBLE_AUDIT_STEP" {
+            return "NO_ELIGIBLE_STEP"
+        }
+        "NO_ELIGIBLE_AUDIT_STEPS" {
+            return "NO_ELIGIBLE_STEP"
+        }
         "NO_ELIGIBLE_STEP" {
             return "NO_ELIGIBLE_STEP"
         }
@@ -181,7 +152,7 @@ function ConvertTo-CodexReasoningEffort {
     return $Value
 }
 
-function Add-ExecutionMetadata {
+function Add-AuditExecutionMetadata {
     param(
         [Parameter(Mandatory = $true)]
         [string]$PromptText,
@@ -194,12 +165,54 @@ function Add-ExecutionMetadata {
     )
 
     return @"
-Execution metadata for this Ralph-loop invocation:
+Execution metadata for this Ralph-loop audit invocation:
 - agent: $Agent
 - model: $Model
 - effort: $Effort
 
-Record these exact values in any `plan_fps/HANDOFF_LOG.md` completion entry or `plan_fps/AUDIT_LOG.md` audit entry and in the final `RLP_AGENT`, `RLP_MODEL`, and `RLP_EFFORT` fields.
+Record these exact values in plan_fps/AUDIT_LOG.md entries and in the final RLP_AGENT, RLP_MODEL, and RLP_EFFORT fields.
+
+$PromptText
+"@
+}
+
+function ConvertTo-AuditTargetText {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object[]]$SelectedSteps
+    )
+
+    if ($SelectedSteps.Count -eq 0) {
+        return "- NONE"
+    }
+
+    $lines = foreach ($selectedStep in $SelectedSteps) {
+        "- $($selectedStep.Id) $($selectedStep.Title) | file: $($selectedStep.FilePath)"
+    }
+
+    return $lines -join [Environment]::NewLine
+}
+
+function Add-AuditTargetMetadata {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PromptText,
+        [Parameter(Mandatory = $true)]
+        [object[]]$SelectedSteps,
+        [Parameter(Mandatory = $true)]
+        [string]$AuditLogPath
+    )
+
+    $targetText = ConvertTo-AuditTargetText -SelectedSteps $SelectedSteps
+
+    return @"
+Audit target supplied by the audit-only launcher:
+- audit_log: $AuditLogPath
+- selected_count: $($SelectedSteps.Count)
+- selected_steps:
+$targetText
+
+Audit exactly the selected steps above. Do not select replacement or additional steps. If any selected step is no longer marked complete or already has an audit log entry for this execution agent, report RLP_STATUS: BLOCKED and explain the audit ledger mismatch.
 
 $PromptText
 "@
@@ -214,9 +227,9 @@ function Resolve-CodexCommand {
     if (Test-Path -LiteralPath $Value -PathType Leaf) {
         $resolvedPath = (Resolve-Path -LiteralPath $Value).Path
         if ($resolvedPath.EndsWith(".ps1", [System.StringComparison]::OrdinalIgnoreCase)) {
-            $cmdPath = [System.IO.Path]::ChangeExtension($resolvedPath, ".cmd")
-            if (Test-Path -LiteralPath $cmdPath -PathType Leaf) {
-                return $cmdPath
+            $commandPath = [System.IO.Path]::ChangeExtension($resolvedPath, ".cmd")
+            if (Test-Path -LiteralPath $commandPath -PathType Leaf) {
+                return $commandPath
             }
         }
 
@@ -226,9 +239,9 @@ function Resolve-CodexCommand {
     $command = Get-Command $Value -ErrorAction SilentlyContinue
     if ($command) {
         if ($command.Source.EndsWith(".ps1", [System.StringComparison]::OrdinalIgnoreCase)) {
-            $cmdPath = [System.IO.Path]::ChangeExtension($command.Source, ".cmd")
-            if (Test-Path -LiteralPath $cmdPath -PathType Leaf) {
-                return $cmdPath
+            $commandPath = [System.IO.Path]::ChangeExtension($command.Source, ".cmd")
+            if (Test-Path -LiteralPath $commandPath -PathType Leaf) {
+                return $commandPath
             }
         }
 
@@ -289,7 +302,7 @@ function Invoke-CodexCommand {
 
         while (-not $process.HasExited) {
             if ((([datetime]::UtcNow) - $lastHeartbeat).TotalSeconds -ge 30) {
-                Write-Host "Codex is still running; final response will be saved to $ResponsePath"
+                Write-Host "Codex audit is still running; final response will be saved to $ResponsePath"
                 $lastHeartbeat = [datetime]::UtcNow
             }
             Start-Sleep -Milliseconds 200
@@ -353,47 +366,6 @@ function Test-CodexCommand {
     return ""
 }
 
-function Get-ResolvedReason {
-    param(
-        [string]$ExplicitReason = "",
-        [Parameter(Mandatory = $true)]
-        [string]$Status,
-        [string]$StepId = "",
-        [string]$StepTitle = ""
-    )
-
-    if (-not [string]::IsNullOrWhiteSpace($ExplicitReason)) {
-        return $ExplicitReason.Trim()
-    }
-
-    switch ($Status) {
-        "COMPLETED" {
-            if ($StepId -and $StepTitle) {
-                return "No RLP_REASON provided; continuing after completed response for $StepId $StepTitle."
-            }
-            if ($StepId) {
-                return "No RLP_REASON provided; continuing after completed response for $StepId."
-            }
-            return "No RLP_REASON provided; continuing after completed response."
-        }
-        "BLOCKED" {
-            if ($StepId -and $StepTitle) {
-                return "No RLP_REASON provided; treating response as BLOCKED for $StepId $StepTitle."
-            }
-            return "No RLP_REASON provided; treating response as BLOCKED."
-        }
-        "NO_ELIGIBLE_STEP" {
-            return "No RLP_REASON provided; no eligible step remains."
-        }
-        "LIMIT_REACHED" {
-            return "No RLP_REASON provided; treating response as LIMIT_REACHED."
-        }
-        default {
-            return "No RLP_REASON provided."
-        }
-    }
-}
-
 function Test-LimitReached {
     param(
         [Parameter(Mandatory = $true)]
@@ -415,21 +387,92 @@ function Test-LimitReached {
     return $false
 }
 
-function Write-LoopSummary {
+function Get-CompletedChecklistSteps {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$MasterChecklistPath
+    )
+
+    $steps = @()
+    $checklistLines = Get-Content -LiteralPath $MasterChecklistPath -Encoding utf8
+    $checklistPattern = '^- \[x\] `(?<StepId>[0-9]{2}-[0-9]{3})` `(?<StepTitle>[^`]+)` \| prereqs: `[^`]+` \| file: `(?<StepFile>plan_fps/steps/[^`]+\.md)`$'
+
+    foreach ($checklistLine in $checklistLines) {
+        $match = [regex]::Match($checklistLine, $checklistPattern)
+        if (-not $match.Success) {
+            continue
+        }
+
+        $steps += [PSCustomObject]@{
+            FilePath = $match.Groups["StepFile"].Value
+            Id = $match.Groups["StepId"].Value
+            Title = $match.Groups["StepTitle"].Value
+        }
+    }
+
+    return @($steps)
+}
+
+function Get-AuditedStepIdMap {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$AuditLogPath,
+        [Parameter(Mandatory = $true)]
+        [string]$Agent
+    )
+
+    $auditedStepIdMap = @{}
+    $auditLogText = Get-Content -LiteralPath $AuditLogPath -Raw -Encoding utf8
+    $auditEntries = [regex]::Matches($auditLogText, "(?ims)^##\s+.+?(?=^##\s+|\z)")
+
+    foreach ($auditEntry in $auditEntries) {
+        $entryText = $auditEntry.Value
+        $entryAgent = Get-AuditEntryField -Text $entryText -Name "agent"
+        $entryStepId = Get-AuditEntryField -Text $entryText -Name "step_id"
+
+        if ([string]::IsNullOrWhiteSpace($entryAgent) -or [string]::IsNullOrWhiteSpace($entryStepId)) {
+            continue
+        }
+
+        if ($entryAgent.Equals($Agent, [System.StringComparison]::OrdinalIgnoreCase)) {
+            $auditedStepIdMap[$entryStepId] = $true
+        }
+    }
+
+    return $auditedStepIdMap
+}
+
+function Select-AuditSteps {
+    param(
+        [Parameter(Mandatory = $true)]
+        [object[]]$EligibleSteps
+    )
+
+    if ($EligibleSteps.Count -eq 0) {
+        return @()
+    }
+
+    $maximumSelectionCount = [Math]::Min(3, $EligibleSteps.Count)
+    $selectionCount = Get-Random -Minimum 1 -Maximum ($maximumSelectionCount + 1)
+
+    return @($EligibleSteps | Get-Random -Count $selectionCount)
+}
+
+function Write-AuditSummary {
     param(
         [Parameter(Mandatory = $true)]
         [string]$Status,
         [Parameter(Mandatory = $true)]
         [AllowEmptyString()]
         [string]$Reason,
-        [string]$StepId = "NONE",
-        [string]$StepTitle = "NONE",
+        [string]$AuditedSteps = "NONE",
+        [string]$AuditLogUpdated = "UNKNOWN",
         [string]$ResponsePath = ""
     )
 
     Write-Host "LOOP_STATUS: $Status"
-    Write-Host "LOOP_STEP_ID: $StepId"
-    Write-Host "LOOP_STEP_TITLE: $StepTitle"
+    Write-Host "LOOP_AUDITED_STEPS: $AuditedSteps"
+    Write-Host "LOOP_AUDIT_LOG_UPDATED: $AuditLogUpdated"
     Write-Host "LOOP_REASON: $Reason"
     if ($ResponsePath) {
         Write-Host "LOOP_RESPONSE_LOG: $ResponsePath"
@@ -438,6 +481,14 @@ function Write-LoopSummary {
 
 if (-not (Test-Path -LiteralPath $PromptPath -PathType Leaf)) {
     throw "Prompt file not found: $PromptPath"
+}
+
+if (-not (Test-Path -LiteralPath $MasterChecklistPath -PathType Leaf)) {
+    throw "Master checklist file not found: $MasterChecklistPath"
+}
+
+if (-not (Test-Path -LiteralPath $AuditLogPath -PathType Leaf)) {
+    throw "Audit log file not found: $AuditLogPath"
 }
 
 if (-not (Test-Path -LiteralPath $WorkingDirectory -PathType Container)) {
@@ -450,8 +501,8 @@ if ($MaxIterations -lt 0) {
 
 New-Item -ItemType Directory -Force -Path $LogDirectory | Out-Null
 
-$prompt = Get-Content -LiteralPath $PromptPath -Raw -Encoding utf8
-if ([string]::IsNullOrWhiteSpace($prompt)) {
+$basePrompt = Get-Content -LiteralPath $PromptPath -Raw -Encoding utf8
+if ([string]::IsNullOrWhiteSpace($basePrompt)) {
     throw "Prompt file is empty: $PromptPath"
 }
 
@@ -461,23 +512,11 @@ if ([string]::IsNullOrWhiteSpace($executionModel)) {
     $executionModel = "codex-cli-default-unspecified"
 }
 $executionEffort = $Effort
-$prompt = Add-ExecutionMetadata -PromptText $prompt -Agent $executionAgent -Model $executionModel -Effort $executionEffort
+$promptWithExecutionMetadata = Add-AuditExecutionMetadata -PromptText $basePrompt -Agent $executionAgent -Model $executionModel -Effort $executionEffort
 
 if ($MaxIterations -eq 0) {
-    Write-Host "Validated prompt path, working directory, and log directory. MaxIterations is 0, so no Codex invocation was made."
+    Write-Host "Validated prompt path, audit log, working directory, and log directory. MaxIterations is 0, so no Codex invocation was made."
     exit 0
-}
-
-$resolvedCodexCommand = Resolve-CodexCommand -Value $CodexCommand
-if (-not $resolvedCodexCommand) {
-    Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex CLI command not found: $CodexCommand. Install the Codex CLI and restart PowerShell so codex is on PATH, or pass -CodexCommand with the full CLI path."
-    exit 2
-}
-
-$codexCommandError = Test-CodexCommand -Value $resolvedCodexCommand
-if ($codexCommandError) {
-    Write-LoopSummary -Status "CLI_ERROR" -Reason "$codexCommandError Install the Codex CLI terminal command and restart PowerShell, or pass -CodexCommand with the full CLI path."
-    exit 2
 }
 
 $codexReasoningEffort = ConvertTo-CodexReasoningEffort -Value $Effort
@@ -494,39 +533,67 @@ if (-not [string]::IsNullOrWhiteSpace($Model)) {
 }
 
 $codexArguments += "-"
+$resolvedCodexCommand = ""
 
 Push-Location -LiteralPath $WorkingDirectory
 try {
     $iteration = 1
 
     while ($iteration -le $MaxIterations) {
+        $completedSteps = @(Get-CompletedChecklistSteps -MasterChecklistPath $MasterChecklistPath)
+        $auditedStepIdMap = Get-AuditedStepIdMap -AuditLogPath $AuditLogPath -Agent $executionAgent
+        $eligibleSteps = @($completedSteps | Where-Object { -not $auditedStepIdMap.ContainsKey($_.Id) })
+
+        if ($eligibleSteps.Count -eq 0) {
+            Write-AuditSummary -Status "NO_ELIGIBLE_STEP" -Reason "Every completed step already has an audit log entry for $executionAgent." -AuditedSteps "NONE" -AuditLogUpdated "NO"
+            exit 0
+        }
+
+        $selectedSteps = @(Select-AuditSteps -EligibleSteps $eligibleSteps)
         $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-        $repairPath = Join-Path $LogDirectory ("repair_{0:D4}_{1}.txt" -f $iteration, $timestamp)
-        $responsePath = Join-Path $LogDirectory ("loop_{0:D4}_{1}.txt" -f $iteration, $timestamp)
+        $responsePath = Join-Path $LogDirectory ("audit_codex_{0:D4}_{1}.txt" -f $iteration, $timestamp)
+        $iterationPrompt = Add-AuditTargetMetadata -PromptText $promptWithExecutionMetadata -SelectedSteps $selectedSteps -AuditLogPath $AuditLogPath
+        $selectedStepText = (($selectedSteps | ForEach-Object { "$($_.Id) $($_.Title)" }) -join "; ")
+
+        if (-not $resolvedCodexCommand) {
+            $resolvedCodexCommand = Resolve-CodexCommand -Value $CodexCommand
+            if (-not $resolvedCodexCommand) {
+                Write-AuditSummary -Status "CLI_ERROR" -Reason "Codex CLI command not found: $CodexCommand. Install the Codex CLI and restart PowerShell so codex is on PATH, or pass -CodexCommand with the full CLI path." -AuditedSteps $selectedStepText -AuditLogUpdated "NO"
+                exit 2
+            }
+
+            $codexCommandError = Test-CodexCommand -Value $resolvedCodexCommand
+            if ($codexCommandError) {
+                Write-AuditSummary -Status "CLI_ERROR" -Reason "$codexCommandError Install the Codex CLI terminal command and restart PowerShell, or pass -CodexCommand with the full CLI path." -AuditedSteps $selectedStepText -AuditLogUpdated "NO"
+                exit 2
+            }
+        }
 
         Write-Host "Iteration $iteration"
         Write-Host "Prompt: $PromptPath"
+        Write-Host "Audit log: $AuditLogPath"
+        Write-Host "Selected audit steps: $selectedStepText"
         Write-Host "Working directory: $WorkingDirectory"
         Write-Host "Codex command: $resolvedCodexCommand"
         Write-Host "Codex arguments: $($codexArguments -join ' ')"
         Write-Host "Execution agent: $executionAgent"
         Write-Host "Execution model: $executionModel"
         Write-Host "Execution effort: $executionEffort"
+        Write-Host "Saving final audit response to $responsePath"
 
-        Write-Host "Saving final response to $responsePath"
-        $result = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $prompt -WorkingDirectory $WorkingDirectory -ResponsePath $responsePath
+        $result = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $iterationPrompt -WorkingDirectory $WorkingDirectory -ResponsePath $responsePath
         $response = $result.Response
         $exitCode = $result.ExitCode
 
-        Write-Host "Saved response to $responsePath"
+        Write-Host "Saved audit response to $responsePath"
 
         if (Test-LimitReached -Text $response) {
-            Write-LoopSummary -Status "LIMIT_REACHED" -Reason "Codex reported a rate or usage limit." -ResponsePath $responsePath
+            Write-AuditSummary -Status "LIMIT_REACHED" -Reason "Codex reported a rate or usage limit during audit." -AuditedSteps $selectedStepText -AuditLogUpdated "NO" -ResponsePath $responsePath
             exit 3
         }
 
         if ($exitCode -ne 0 -and -not $response.Trim()) {
-            Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex exited with code $exitCode and produced no response body." -ResponsePath $responsePath
+            Write-AuditSummary -Status "CLI_ERROR" -Reason "Codex audit exited with code $exitCode and produced no response body." -AuditedSteps $selectedStepText -AuditLogUpdated "NO" -ResponsePath $responsePath
             $iteration++
             if ($SleepSeconds -gt 0) {
                 Start-Sleep -Seconds $SleepSeconds
@@ -536,138 +603,57 @@ try {
 
         $rawStatus = Get-RlpField -Text $response -Name "RLP_STATUS"
         $status = ConvertTo-CanonicalRlpStatus -Value $rawStatus
-        $stepId = Get-FirstNonEmptyField -Text $response -Names @("RLP_STEP_ID", "step")
-        $stepTitle = Get-FirstNonEmptyField -Text $response -Names @("RLP_STEP_TITLE", "name")
+        $auditedSteps = Get-FirstNonEmptyField -Text $response -Names @("RLP_AUDITED_STEPS", "RLP_STEP_ID", "step")
+        $auditLogUpdated = Get-FirstNonEmptyField -Text $response -Names @("RLP_AUDIT_LOG_UPDATED", "audit_log_updated")
         $reason = Get-FirstNonEmptyField -Text $response -Names @("RLP_REASON", "reason")
 
-        if (-not $status) {
-            if ($exitCode -ne 0) {
-                Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex exited with code $exitCode and did not emit RLP_STATUS." -ResponsePath $responsePath
-                $iteration++
-                if ($SleepSeconds -gt 0) {
-                    Start-Sleep -Seconds $SleepSeconds
-                }
-                continue
-            }
-
-            Write-Host "--- Status repair (missing RLP_STATUS) ---"
-            $repairPrompt = @"
-The following Ralph loop response is missing or has an invalid machine-readable status block.
-
-Return ONLY the status block. Do not repeat the prose summary. Do not use Markdown fences. Do not add commentary.
-Each field must be on its own line. Never place RLP_STEP_ID or any other key on the same line as RLP_STATUS.
-
-Use exactly this format:
-RLP_STATUS: COMPLETED|BLOCKED|NO_ELIGIBLE_STEP|LIMIT_REACHED
-RLP_STEP_ID: <step id or NONE>
-RLP_STEP_TITLE: <title or NONE>
-RLP_AGENT: $executionAgent
-RLP_MODEL: $executionModel
-RLP_EFFORT: $executionEffort
-RLP_FILES_CHANGED: <semicolon-separated absolute paths or NONE>
-RLP_TEST_COMMANDS: <semicolon-separated commands or NONE>
-RLP_CHECKLIST_UPDATED: YES|NO
-RLP_HANDOFF_UPDATED: YES|NO
-RLP_PROGRESS_LOG: KEPT|DELETED|NONE
-RLP_NEXT_STEP: <next eligible step id/title or NONE>
-RLP_REASON: <one-line reason>
-
-RLP_STATUS must be EXACTLY one of the four uppercase values above.
-Do not use variants like complete, ok, done, success, lowercase values, or another field name after RLP_STATUS:.
-
-Interpret the response as follows:
-- If it says a step is complete or names a next eligible step, use COMPLETED.
-- If it says no eligible step remains, use NO_ELIGIBLE_STEP.
-- If it describes a real unresolved blocker, use BLOCKED.
-- If it indicates model or usage limits, use LIMIT_REACHED.
-
-Response to convert:
-$response
-"@
-
-            Write-Host "Saving final repair response to $repairPath"
-            $repairResult = Invoke-CodexCommand -Command $resolvedCodexCommand -Arguments $codexArguments -InputText $repairPrompt -WorkingDirectory $WorkingDirectory -ResponsePath $repairPath
-            $repairResponse = $repairResult.Response
-            $repairExitCode = $repairResult.ExitCode
-
-            Write-Host "Saved repair response to $repairPath"
-
-            if (Test-LimitReached -Text $repairResponse) {
-                Write-LoopSummary -Status "LIMIT_REACHED" -Reason "Codex reported a rate or usage limit during status repair." -ResponsePath $repairPath
-                exit 3
-            }
-
-            if ($repairExitCode -ne 0 -and -not $repairResponse.Trim()) {
-                Write-LoopSummary -Status "CLI_ERROR" -Reason "Codex status repair exited with code $repairExitCode and produced no response body." -ResponsePath $repairPath
-                $iteration++
-                if ($SleepSeconds -gt 0) {
-                    Start-Sleep -Seconds $SleepSeconds
-                }
-                continue
-            }
-
-            $repairRawStatus = Get-RlpField -Text $repairResponse -Name "RLP_STATUS"
-            $status = ConvertTo-CanonicalRlpStatus -Value $repairRawStatus
-            if (-not $stepId) {
-                $stepId = Get-FirstNonEmptyField -Text $repairResponse -Names @("RLP_STEP_ID", "step")
-            }
-            if (-not $stepTitle) {
-                $stepTitle = Get-FirstNonEmptyField -Text $repairResponse -Names @("RLP_STEP_TITLE", "name")
-            }
-            if (-not $reason) {
-                $reason = Get-FirstNonEmptyField -Text $repairResponse -Names @("RLP_REASON", "reason")
-            }
-
-            if (-not $status) {
-                $inferredStatus = Get-InferredStatus -Text $response
-                if (-not $inferredStatus) {
-                    $inferredStatus = Get-InferredStatus -Text $repairResponse
-                }
-
-                if ($inferredStatus) {
-                    $status = $inferredStatus
-                    if (-not $stepId) {
-                        $stepId = Get-InferredStepId -Text $response
-                    }
-                    if (-not $stepTitle) {
-                        $stepTitle = Get-InferredStepTitle -Text $response
-                    }
-                    if (-not $reason) {
-                        $reason = "Inferred $status after missing RLP_STATUS and failed status repair."
-                    }
-
-                    Write-Host "Inferred loop status as $status after failed status repair."
-                }
-                else {
-                    Write-LoopSummary -Status "STATUS_REPAIR_FAILED" -Reason "Codex response omitted or malformed RLP_STATUS and status repair could not recover it." -ResponsePath $repairPath
-                    $iteration++
-                    if ($SleepSeconds -gt 0) {
-                        Start-Sleep -Seconds $SleepSeconds
-                    }
-                    continue
-                }
-            }
+        if ([string]::IsNullOrWhiteSpace($auditedSteps)) {
+            $auditedSteps = $selectedStepText
         }
 
-        $reason = Get-ResolvedReason -ExplicitReason $reason -Status $status -StepId $stepId -StepTitle $stepTitle
+        if ([string]::IsNullOrWhiteSpace($auditLogUpdated)) {
+            $auditLogUpdated = "NO"
+        }
+        else {
+            $auditLogUpdated = $auditLogUpdated.Trim().ToUpperInvariant()
+        }
+
+        if ([string]::IsNullOrWhiteSpace($reason)) {
+            $reason = "No RLP_REASON provided by audit response."
+        }
+
+        if (-not $status) {
+            Write-AuditSummary -Status "STATUS_MISSING" -Reason "Codex audit response omitted or malformed RLP_STATUS." -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
+            $iteration++
+            if ($SleepSeconds -gt 0) {
+                Start-Sleep -Seconds $SleepSeconds
+            }
+            continue
+        }
 
         switch ($status) {
             "COMPLETED" {
-                Write-LoopSummary -Status $status -Reason $reason -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath
+                if ($auditLogUpdated -ne "YES") {
+                    Write-AuditSummary -Status "AUDIT_LOG_NOT_UPDATED" -Reason "Audit reported COMPLETED without RLP_AUDIT_LOG_UPDATED: YES." -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
+                    exit 1
+                }
+
+                Write-AuditSummary -Status $status -Reason $reason -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
             }
             "BLOCKED" {
-                Write-LoopSummary -Status $status -Reason $reason -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath
+                Write-AuditSummary -Status $status -Reason $reason -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
+                exit 1
             }
             "NO_ELIGIBLE_STEP" {
-                Write-LoopSummary -Status $status -Reason $reason -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath
+                Write-AuditSummary -Status $status -Reason $reason -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
                 exit 0
             }
             "LIMIT_REACHED" {
-                Write-LoopSummary -Status $status -Reason $reason -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath
+                Write-AuditSummary -Status $status -Reason $reason -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
                 exit 3
             }
             default {
-                Write-LoopSummary -Status "UNKNOWN_STATUS" -Reason "Codex returned an unrecognized RLP_STATUS value: $status" -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath
+                Write-AuditSummary -Status "UNKNOWN_STATUS" -Reason "Codex returned an unrecognized audit RLP_STATUS value: $status" -AuditedSteps $auditedSteps -AuditLogUpdated $auditLogUpdated -ResponsePath $responsePath
             }
         }
 
@@ -675,13 +661,11 @@ $response
         if ($SleepSeconds -gt 0) {
             Start-Sleep -Seconds $SleepSeconds
         }
-        continue
     }
 
-    Write-LoopSummary -Status "MAX_ITERATIONS_REACHED" -Reason "Reached MaxIterations without a terminal loop status."
+    Write-AuditSummary -Status "MAX_ITERATIONS_REACHED" -Reason "Reached MaxIterations without exhausting eligible audit steps."
     exit 0
 }
 finally {
     Pop-Location
 }
-

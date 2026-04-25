@@ -6,11 +6,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const AGENTS_PATH = 'AGENTS.md';
+const AUDIT_LOG_PATH = 'plan_fps/AUDIT_LOG.md';
 const AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE.ps1';
 const BIOME_CONFIG_PATH = 'biome.json';
+const CLAUDE_AUDIT_ONLY_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE_AUDIT_ONLY.ps1';
+const CODEX_AUDIT_ONLY_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX_AUDIT_ONLY.ps1';
 const CODEX_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX.ps1';
 const CODEX_NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CODEX_NO_AUDIT.ps1';
 const FORMAT_CHANGED_TOOL_PATH = 'tools/format-changed.ts';
+const MASTER_CHECKLIST_PATH = 'plan_fps/MASTER_CHECKLIST.md';
 const NO_AUDIT_SCRIPT_PATH = 'plan_fps/RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1';
 const PACKAGE_PATH = 'package.json';
 const PRE_PROMPT_PATH = 'plan_fps/PRE_PROMPT.md';
@@ -31,6 +35,39 @@ async function runPowerShellScript(scriptPath: string, additionalArguments: stri
     combinedOutput: `${standardOutputText}\n${standardErrorText}`,
     exitCode,
   };
+}
+
+async function createAuditLogForCompletedSteps(agent: string) {
+  const checklistText = await Bun.file(MASTER_CHECKLIST_PATH).text();
+  const completedStepMatches = checklistText.matchAll(/^- \[x\] `(?<stepId>\d{2}-\d{3})` `(?<stepTitle>[^`]+)` \|/gm);
+  const entries: string[] = ['# Audit Log', '', 'Append-only test fixture.', ''];
+
+  for (const completedStepMatch of completedStepMatches) {
+    const stepId = completedStepMatch.groups?.stepId ?? '';
+    const stepTitle = completedStepMatch.groups?.stepTitle ?? '';
+
+    entries.push(
+      `## 2026-04-25T00:00:00Z - ${stepId} ${stepTitle} - ${agent}`,
+      '',
+      '- status: completed',
+      `- agent: ${agent}`,
+      '- model: test-model',
+      '- effort: test-effort',
+      `- step_id: ${stepId}`,
+      `- step_title: ${stepTitle}`,
+      '- prior_audits: none',
+      '- correctness_findings: none',
+      '- performance_findings: none',
+      '- improvement_findings: none',
+      '- corrective_action: none',
+      '- files_changed: none',
+      '- tests_run: none',
+      '- follow_up: none',
+      '',
+    );
+  }
+
+  return entries.join('\n');
 }
 
 describe('Ralph-loop PowerShell scripts', () => {
@@ -90,6 +127,25 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(scriptText).toContain('[string]$WorkingDirectory = "D:\\Projects\\doom-in-typescript"');
     expect(scriptText).toContain('[string]$LogDirectory = "D:\\Projects\\doom-in-typescript\\plan_fps\\loop_logs"');
     expect(scriptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
+  });
+
+  test('audit-only scripts default to the playable audit control center', async () => {
+    for (const scriptPath of [CLAUDE_AUDIT_ONLY_SCRIPT_PATH, CODEX_AUDIT_ONLY_SCRIPT_PATH]) {
+      const scriptText = await Bun.file(scriptPath).text();
+
+      expect(scriptText).toContain('[string]$PromptPath = "D:\\Projects\\doom-in-typescript\\plan_fps\\PRE_PROMPT.md"');
+      expect(scriptText).toContain('[string]$MasterChecklistPath = "D:\\Projects\\doom-in-typescript\\plan_fps\\MASTER_CHECKLIST.md"');
+      expect(scriptText).toContain('[string]$AuditLogPath = "D:\\Projects\\doom-in-typescript\\plan_fps\\AUDIT_LOG.md"');
+      expect(scriptText).toContain('[string]$WorkingDirectory = "D:\\Projects\\doom-in-typescript"');
+      expect(scriptText).toContain('[string]$LogDirectory = "D:\\Projects\\doom-in-typescript\\plan_fps\\loop_logs"');
+      expect(scriptText).toContain('function Add-AuditTargetMetadata');
+      expect(scriptText).toContain('function Get-AuditedStepIdMap');
+      expect(scriptText).toContain('function Get-CompletedChecklistSteps');
+      expect(scriptText).toContain('RLP_AUDIT_LOG_UPDATED');
+      expect(scriptText).toContain('Selected audit steps: $selectedStepText');
+      expect(scriptText).not.toContain('plan_fps\\PROMPT.md"');
+      expect(scriptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
+    }
   });
 
   test('codex no-audit script defaults to the playable plan control center', async () => {
@@ -253,6 +309,23 @@ describe('Ralph-loop PowerShell scripts', () => {
     }
   });
 
+  test('audit-only scripts inject execution metadata for audit tracking', async () => {
+    const codexScriptText = await Bun.file(CODEX_AUDIT_ONLY_SCRIPT_PATH).text();
+    const claudeScriptText = await Bun.file(CLAUDE_AUDIT_ONLY_SCRIPT_PATH).text();
+
+    for (const scriptText of [codexScriptText, claudeScriptText]) {
+      expect(scriptText).toContain('function Add-AuditExecutionMetadata');
+      expect(scriptText).toContain('Record these exact values in plan_fps/AUDIT_LOG.md entries');
+      expect(scriptText).toContain('RLP_AGENT, RLP_MODEL, and RLP_EFFORT');
+      expect(scriptText).toContain('RLP_AUDIT_LOG_UPDATED');
+    }
+
+    expect(codexScriptText).toContain('$executionAgent = "Codex"');
+    expect(codexScriptText).toContain('[string]$Model = "gpt-5.5"');
+    expect(claudeScriptText).toContain('$executionAgent = "Claude Code"');
+    expect(claudeScriptText).toContain('$executionModel = "claude-cli-default-unspecified"');
+  });
+
   test('codex scripts report a missing CLI before the loop starts', async () => {
     for (const scriptPath of [CODEX_AUDIT_SCRIPT_PATH, CODEX_NO_AUDIT_SCRIPT_PATH]) {
       const result = await runPowerShellScript(scriptPath, ['-MaxIterations', '1', '-CodexCommand', '__missing_codex_command_for_test__']);
@@ -266,22 +339,91 @@ describe('Ralph-loop PowerShell scripts', () => {
     }
   });
 
+  test('codex audit-only script skips steps already audited by Codex without requiring the CLI', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-codex-audit-log-'));
+    const auditLogPath = join(temporaryDirectory, 'AUDIT_LOG.md');
+
+    await Bun.write(auditLogPath, await createAuditLogForCompletedSteps('Codex'));
+
+    try {
+      const result = await runPowerShellScript(CODEX_AUDIT_ONLY_SCRIPT_PATH, ['-MaxIterations', '1', '-AuditLogPath', auditLogPath, '-CodexCommand', '__missing_codex_command_for_test__']);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
+      expect(result.combinedOutput).toContain('Every completed step already has an audit log entry for Codex.');
+      expect(result.combinedOutput).not.toContain('Codex CLI command not found');
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
+  });
+
+  test('codex audit-only script treats Claude Code audits as still eligible for Codex', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-codex-audit-log-'));
+    const auditLogPath = join(temporaryDirectory, 'AUDIT_LOG.md');
+    const fakeCodexCommandPath = join(temporaryDirectory, 'codex.cmd');
+
+    await Bun.write(auditLogPath, await createAuditLogForCompletedSteps('Claude Code'));
+    await Bun.write(
+      fakeCodexCommandPath,
+      [
+        '@echo off',
+        'if "%~1"=="--version" (',
+        '  echo codex-fake 1.0',
+        '  exit /b 0',
+        ')',
+        'echo RLP_STATUS: COMPLETED',
+        'echo RLP_AUDITED_STEPS: 00-001',
+        'echo RLP_AGENT: Codex',
+        'echo RLP_MODEL: gpt-5.5',
+        'echo RLP_EFFORT: xhigh',
+        'echo RLP_FILES_CHANGED: D:\\Projects\\doom-in-typescript\\plan_fps\\AUDIT_LOG.md',
+        'echo RLP_TEST_COMMANDS: bun test',
+        'echo RLP_AUDIT_LOG_UPDATED: YES',
+        'echo RLP_FINDINGS: NONE',
+        'echo RLP_CORRECTIVE_ACTION: NONE',
+        'echo RLP_REASON: fake audit completed',
+        'exit /b 0',
+        '',
+      ].join('\r\n'),
+    );
+
+    try {
+      const result = await runPowerShellScript(CODEX_AUDIT_ONLY_SCRIPT_PATH, ['-MaxIterations', '1', '-AuditLogPath', auditLogPath, '-CodexCommand', fakeCodexCommandPath]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.combinedOutput).toContain('Selected audit steps:');
+      expect(result.combinedOutput).toContain('LOOP_STATUS: COMPLETED');
+      expect(result.combinedOutput).toContain('LOOP_AUDIT_LOG_UPDATED: YES');
+      expect(result.combinedOutput).not.toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
+  });
+
   test('audit pre-prompt targets completed plan_fps steps without advancing the checklist', async () => {
     const promptText = await Bun.file(PRE_PROMPT_PATH).text();
 
     expect(promptText).toContain('Audit pass for `D:\\Projects\\doom-in-typescript`.');
     expect(promptText).toContain('Treat `D:\\Projects\\doom-in-typescript\\plan_fps\\` as the only active planning and execution control center.');
     expect(promptText).toContain('Open `D:\\Projects\\doom-in-typescript\\plan_fps\\MASTER_CHECKLIST.md`.');
+    expect(promptText).toContain('Open `D:\\Projects\\doom-in-typescript\\plan_fps\\AUDIT_LOG.md`.');
     expect(promptText).toContain('Open the selected step file under `D:\\Projects\\doom-in-typescript\\plan_fps\\steps\\`.');
     expect(promptText).toContain('Do NOT modify `D:\\Projects\\doom-in-typescript\\plan_fps\\MASTER_CHECKLIST.md`.');
-    expect(promptText).toContain('RLP_STATUS: COMPLETED|BLOCKED|LIMIT_REACHED');
+    expect(promptText).toContain('Append audit results to `D:\\Projects\\doom-in-typescript\\plan_fps\\AUDIT_LOG.md`.');
+    expect(promptText).toContain('A completed step is ineligible only when `AUDIT_LOG.md` already contains an entry for the same `step_id` and the same `agent`.');
+    expect(promptText).toContain('A completed step audited by another agent remains eligible for this execution agent.');
+    expect(promptText).toContain('Audit target supplied by the audit-only launcher');
+    expect(promptText).toContain('RLP_STATUS: COMPLETED|BLOCKED|NO_ELIGIBLE_STEP|LIMIT_REACHED');
     expect(promptText).toContain('Use the execution metadata supplied at the top of this prompt.');
     expect(promptText).toContain('Biome is the formatter.');
     expect(promptText).toContain('run `bun run format` before the verification sequence below.');
     expect(promptText).toContain('RLP_AGENT: <execution metadata agent or unknown>');
     expect(promptText).toContain('RLP_MODEL: <execution metadata model or unknown>');
     expect(promptText).toContain('RLP_EFFORT: <execution metadata effort or unknown>');
-    expect(promptText).toContain('If the audit pass changes any files, commit the verified audit fixes and push them before reporting `RLP_STATUS: COMPLETED`.');
+    expect(promptText).toContain('RLP_AUDIT_LOG_UPDATED: YES|NO');
+    expect(promptText).toContain('RLP_FINDINGS: <one-line correctness/performance/improvement findings summary or NONE>');
+    expect(promptText).toContain('RLP_CORRECTIVE_ACTION: <one-line corrective action summary or NONE>');
+    expect(promptText).toContain('Because every completed audit appends to `AUDIT_LOG.md`, every completed audit pass changes files and must commit and push before reporting `RLP_STATUS: COMPLETED`.');
     expect(promptText).toContain('Do not open a pull request.');
     expect(promptText).toContain('Do not use GitHub apps, GitHub API tools, issue automation, release automation, or pull request workflows.');
     expect(promptText).not.toMatch(/D:\\Projects\\bun-win32|doom_codex|\\plans\\/);
@@ -338,15 +480,34 @@ describe('Ralph-loop PowerShell scripts', () => {
     expect(await Bun.file('plan_fps/loop_logs/.gitkeep').exists()).toBe(true);
   });
 
-  test('readme documents both Claude and Codex Ralph-loop scripts', async () => {
+  test('audit log defines agent-scoped completed-step audit entries', async () => {
+    const auditLogText = await Bun.file(AUDIT_LOG_PATH).text();
+
+    expect(auditLogText).toContain('Append-only record of completed-step audits.');
+    expect(auditLogText).toContain('one entry per auditing agent');
+    expect(auditLogText).toContain('An entry by `Codex` makes that step ineligible for future Codex audits');
+    expect(auditLogText).toContain('it does not make the step ineligible for `Claude Code`');
+    expect(auditLogText).toContain('- status: completed|blocked');
+    expect(auditLogText).toContain('- agent: Codex|Claude Code');
+    expect(auditLogText).toContain('- correctness_findings: <summary or none>');
+    expect(auditLogText).toContain('- performance_findings: <summary or none>');
+    expect(auditLogText).toContain('- improvement_findings: <summary or none>');
+    expect(auditLogText).toContain('- corrective_action: <summary or none>');
+  });
+
+  test('readme documents Claude and Codex Ralph-loop scripts', async () => {
     const readmeText = await Bun.file(README_PATH).text();
 
     expect(readmeText).toContain('`RALPH_LOOP_CLAUDE_CODE.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md`.');
+    expect(readmeText).toContain('`RALPH_LOOP_CLAUDE_CODE_AUDIT_ONLY.ps1`: repeatedly audits completed steps from `PRE_PROMPT.md` with Claude Code until no unaudited completed step remains for Claude Code.');
     expect(readmeText).toContain('`RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md`.');
     expect(readmeText).toContain('`RALPH_LOOP_CODEX.ps1`: runs an audit pass from `PRE_PROMPT.md`, then a forward step from `PROMPT.md` through `codex exec`.');
+    expect(readmeText).toContain('`RALPH_LOOP_CODEX_AUDIT_ONLY.ps1`: repeatedly audits completed steps from `PRE_PROMPT.md` through `codex exec` until no unaudited completed step remains for Codex.');
     expect(readmeText).toContain('`RALPH_LOOP_CODEX_NO_AUDIT.ps1`: runs only the forward step from `PROMPT.md` through `codex exec`.');
     expect(readmeText).toContain('The Codex scripts require the Codex CLI terminal command on `PATH`, or `-CodexCommand <full CLI path>`.');
     expect(readmeText).toContain('Run `bun run format` with Biome, then run verification in the listed order.');
     expect(readmeText).toContain('Handoff entries must record `agent`, `model`, and `effort`.');
+    expect(readmeText).toContain('Audit entries must record `agent`, `model`, `effort`, `step_id`, findings, corrective action, files changed, and tests run.');
+    expect(readmeText).toContain('A step audited by `Codex` remains eligible for one `Claude Code` audit, and a step audited by `Claude Code` remains eligible for one `Codex` audit.');
   });
 });

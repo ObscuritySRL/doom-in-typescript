@@ -1,6 +1,6 @@
 Audit pass for `D:\Projects\doom-in-typescript`.
 
-This turn is NOT a new step implementation. Select 1 to 3 previously completed steps at random and perform a thorough correctness, performance, and improvement audit, then fix every issue you uncover inside the audited step scope.
+This turn is NOT a new step implementation. Select 1 to 3 previously completed steps that this execution agent has not already audited, perform a thorough correctness, performance, and improvement audit, then fix every issue you uncover inside the audited step scope.
 
 Use the execution metadata supplied at the top of this prompt. Do not infer or rewrite it. If no execution metadata is supplied, record `unknown` for agent, model, and effort in the final status block.
 
@@ -13,13 +13,20 @@ Workspace boundaries:
 - Do not write anything under `D:\Projects\doom-in-typescript\doom\`, `D:\Projects\doom-in-typescript\iwad\`, or `D:\Projects\doom-in-typescript\reference\`.
 - Do NOT modify `D:\Projects\doom-in-typescript\plan_fps\MASTER_CHECKLIST.md`. This audit pass does not advance, add, or uncheck steps.
 - Do NOT append to `D:\Projects\doom-in-typescript\plan_fps\HANDOFF_LOG.md`. Handoffs are for forward step completion, not audits.
+- Append audit results to `D:\Projects\doom-in-typescript\plan_fps\AUDIT_LOG.md`.
 
 Step selection:
 
 - Open `D:\Projects\doom-in-typescript\plan_fps\MASTER_CHECKLIST.md`.
+- Open `D:\Projects\doom-in-typescript\plan_fps\AUDIT_LOG.md`.
 - Enumerate every step marked `[x]`.
-- Pick 1 to 3 of them uniformly at random. Prefer a spread across different phases when possible.
+- Determine the current execution agent from the execution metadata. Use exactly `Codex`, `Claude Code`, or `unknown`.
+- A completed step is ineligible only when `AUDIT_LOG.md` already contains an entry for the same `step_id` and the same `agent`.
+- A completed step audited by another agent remains eligible for this execution agent. Before auditing it, read the other agent's prior audit entry and carry forward whether it succeeded, what it found, what corrective action it took, what tests it ran, and any follow-up.
+- If the launcher supplies an `Audit target supplied by the audit-only launcher` block, audit exactly those selected steps and do not select any additional steps.
+- If the launcher does not supply selected steps, pick 1 to 3 eligible completed steps uniformly at random. Prefer a spread across different phases when possible.
 - If no step is marked `[x]`, stop and report `RLP_STATUS: BLOCKED` with `RLP_AUDITED_STEPS: NONE`.
+- If completed steps exist but every completed step already has an audit entry for this execution agent, stop and report `RLP_STATUS: NO_ELIGIBLE_STEP` with `RLP_AUDITED_STEPS: NONE`.
 - Record the exact selected step IDs and titles at the very top of your response before doing any work.
 
 For each selected step, perform the full audit below. Do not skip any subsection.
@@ -66,6 +73,10 @@ For each selected step, perform the full audit below. Do not skip any subsection
 
 Shared-log behavior:
 
+- Append one entry per audited step to `D:\Projects\doom-in-typescript\plan_fps\AUDIT_LOG.md`.
+- Each `AUDIT_LOG.md` entry must include: `status`, `agent`, `model`, `effort`, `step_id`, `step_title`, `prior_audits`, `correctness_findings`, `performance_findings`, `improvement_findings`, `corrective_action`, `files_changed`, `tests_run`, and `follow_up`.
+- Use `status: completed` when the audit and required verification completed, even if findings were `none`.
+- Use `status: blocked` only when the audit cannot be completed or verified.
 - If the audit surfaces a reusable new fact about the reference, the runtime, or the codebase, append it to `D:\Projects\doom-in-typescript\plan_fps\FACT_LOG.md`.
 - If the audit changes a prior decision, update `D:\Projects\doom-in-typescript\plan_fps\DECISION_LOG.md`.
 - If the audit refreshes an oracle artifact, update `D:\Projects\doom-in-typescript\plan_fps\REFERENCE_ORACLES.md`.
@@ -73,8 +84,8 @@ Shared-log behavior:
 
 Publishing behavior:
 
-- If the audit pass changes any files, commit the verified audit fixes and push them before reporting `RLP_STATUS: COMPLETED`.
-- If the audit pass changes no files, do not create an empty commit.
+- Because every completed audit appends to `AUDIT_LOG.md`, every completed audit pass changes files and must commit and push before reporting `RLP_STATUS: COMPLETED`.
+- If the audit pass cannot append `AUDIT_LOG.md`, cannot verify, cannot commit, or cannot push, report `RLP_STATUS: BLOCKED`.
 - Make repository changes, commits, and pushes as the configured human user only.
 - Do not override `user.name`, `user.email`, commit author, commit committer, or publishing identity to an AI or agent identity.
 - References to tools, models, or agents are allowed when technically relevant, but they are not authors or publishing identities for this repository.
@@ -99,13 +110,16 @@ Output requirements:
 - If the audit pass completed successfully, the only valid success token is `COMPLETED`.
 - At the end, print exactly one machine-readable status block in this format:
 
-RLP_STATUS: COMPLETED|BLOCKED|LIMIT_REACHED
+RLP_STATUS: COMPLETED|BLOCKED|NO_ELIGIBLE_STEP|LIMIT_REACHED
 RLP_AUDITED_STEPS: <semicolon-separated step ids or NONE>
 RLP_AGENT: <execution metadata agent or unknown>
 RLP_MODEL: <execution metadata model or unknown>
 RLP_EFFORT: <execution metadata effort or unknown>
 RLP_FILES_CHANGED: <semicolon-separated absolute paths or NONE>
 RLP_TEST_COMMANDS: <semicolon-separated commands or NONE>
+RLP_AUDIT_LOG_UPDATED: YES|NO
+RLP_FINDINGS: <one-line correctness/performance/improvement findings summary or NONE>
+RLP_CORRECTIVE_ACTION: <one-line corrective action summary or NONE>
 RLP_REASON: <one-line reason>
 
 Special limit rule:
