@@ -2093,3 +2093,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-003 preserve-demo-playback-menu-interaction
 - open_risks: none
+
+## 2026-04-25 - 07-003 preserve-demo-playback-menu-interaction
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-003
+- step_title: preserve-demo-playback-menu-interaction
+- summary: Added the playable demo-playback menu-interaction surface at `src/playable/front-end-menus/preserveDemoPlaybackMenuInteraction.ts`. The module exports an exact Bun-only contract plus `preserveDemoPlaybackMenuInteraction`, which validates the `bun run doom.ts` runtime path, keeps `menuActive` synchronized between the attract-loop sequencer and `menus.ts`, opens the main menu or the correct Read This overlay from demo playback, and routes active-overlay keys through the menu layer without advancing the attract loop or ending demo playback. Added focused test `test/playable/front-end-menus/preserve-demo-playback-menu-interaction.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, demo-playback menu transitions, active-overlay routing, and wrong-command rejection.
+- files_changed: src/playable/front-end-menus/preserveDemoPlaybackMenuInteraction.ts; test/playable/front-end-menus/preserve-demo-playback-menu-interaction.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun after the source-hash patch applied no fixes); bun test test/playable/front-end-menus/preserve-demo-playback-menu-interaction.test.ts (8 pass, 0 fail, 54 expect() calls); bun test (7063 pass, 0 fail, 691764 expect() calls across 287 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-004 implement-main-menu
+- open_risks: none

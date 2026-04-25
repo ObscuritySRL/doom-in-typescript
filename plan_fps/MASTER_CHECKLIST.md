@@ -144,7 +144,7 @@
 
 - [x] `07-001` `render-title-screen` | prereqs: `06-014` | file: `plan_fps/steps/07-001-render-title-screen.md`
 - [x] `07-002` `implement-attract-loop-state-machine` | prereqs: `07-001` | file: `plan_fps/steps/07-002-implement-attract-loop-state-machine.md`
-- [ ] `07-003` `preserve-demo-playback-menu-interaction` | prereqs: `07-002` | file: `plan_fps/steps/07-003-preserve-demo-playback-menu-interaction.md`
+- [x] `07-003` `preserve-demo-playback-menu-interaction` | prereqs: `07-002` | file: `plan_fps/steps/07-003-preserve-demo-playback-menu-interaction.md`
 - [ ] `07-004` `implement-main-menu` | prereqs: `07-003` | file: `plan_fps/steps/07-004-implement-main-menu.md`
 - [ ] `07-005` `implement-new-game-menu` | prereqs: `07-004` | file: `plan_fps/steps/07-005-implement-new-game-menu.md`
 - [ ] `07-006` `implement-episode-select-menu` | prereqs: `07-005` | file: `plan_fps/steps/07-006-implement-episode-select-menu.md`
