@@ -977,3 +977,21 @@
 - oracle_changes: OR-FPS-030 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-intermission-path.json` with refresh command `bun test test/oracles/capture-scripted-intermission-path.test.ts`
 - next_eligible_steps: 02-026 capture-live-save-load-roundtrip
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted intermission framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-026 capture-live-save-load-roundtrip
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-026
+- step_title: capture-live-save-load-roundtrip
+- summary: Added the live save/load roundtrip oracle fixture at `test/oracles/fixtures/capture-live-save-load-roundtrip.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, scripted capture arguments from clean launch through E1M1 save slot 0, post-save state mutation, load, and restored-state verification, tic/frame capture window, exact abstract roundtrip trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference capture tooling directly. Added focused test `test/oracles/capture-live-save-load-roundtrip.test.ts` to lock the full fixture value, trace hash, save/load transition, command contract, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-live-save-load-roundtrip.json; test/oracles/capture-live-save-load-roundtrip.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript caught two focused-test assertion typing issues: first an overly narrow literal tuple inference caused by `as const`, then a readonly-vs-mutable array comparison for inherited source hashes. Removed the const assertion and compared spread arrays, then reran formatting and verification in order.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-live-save-load-roundtrip.test.ts (5 pass, 0 fail, 23 expect() calls); bun test (6718 pass, 0 fail, 690846 expect() calls across 225 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on tuple inference); bun run format (post-recovery, No fixes applied); bun test test/oracles/capture-live-save-load-roundtrip.test.ts (post-recovery, 5 pass, 0 fail, 23 expect() calls); bun test (post-recovery, 6718 pass, 0 fail, 690846 expect() calls across 225 files); bun x tsc --noEmit --project tsconfig.json (post-recovery failed on readonly source hash assertion); bun run format (post-source-hash-recovery, Fixed 1 file); bun test test/oracles/capture-live-save-load-roundtrip.test.ts (post-source-hash-recovery, 5 pass, 0 fail, 23 expect() calls); bun test (post-source-hash-recovery, 6718 pass, 0 fail, 690846 expect() calls across 225 files); bun x tsc --noEmit --project tsconfig.json (post-source-hash-recovery, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-031 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-live-save-load-roundtrip.json` with refresh command `bun test test/oracles/capture-live-save-load-roundtrip.test.ts`
+- next_eligible_steps: 02-027 capture-sfx-hash-windows
+- open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live save/load roundtrip framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
