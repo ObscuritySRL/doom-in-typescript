@@ -3066,3 +3066,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-010 play-level-music
 - open_risks: none
+
+## 2026-04-25 - 10-010 play-level-music
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-010
+- step_title: play-level-music
+- summary: Added the playable level music surface at `src/playable/audio-product-integration/playLevelMusic.ts`. The module exports the exact `bun run doom.ts` command contract plus `playLevelMusic`, validates the product runtime command before music-state mutation or live dispatch, resolves Doom episode map names from `E1M1` through `E3M9` to vanilla level music numbers and `D_ExMy` lumps, routes playback through `changeMusic` with looping enabled, optionally forwards music device actions to an injected live dispatcher, and returns frozen handle-free replay evidence with a locked checksum. Added focused test `test/playable/audio-product-integration/play-level-music.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, formatted source SHA-256, exact E1M1 transition evidence, repeat-track no-op checksum, wrong-command rejection, and unsupported-map rejection.
+- files_changed: src/playable/audio-product-integration/playLevelMusic.ts; test/playable/audio-product-integration/play-level-music.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders while locking exact values; captured source SHA-256 `b4e3f730d22bd885a475f16b1354d63260a0563a5bfd0c3db5a2067b50441d13`, E1M1 replayChecksum `3716162403`, and repeat-track replayChecksum `3686880548`, replaced the placeholders, reran formatting, and reran verification. Later TypeScript verification exposed that the test's minimal MUS fixture needed the full `MusScore`/`MusHeader` shape and `Buffer`-typed `scoreData`; completed the fixture structurally without casts and reran verification successfully.
+- tests_run: bun run format (initial pass formatted 2 files and fixed 1 file; reruns after exact-value and fixture recovery reported no fixes); bun test test/playable/audio-product-integration/play-level-music.test.ts (placeholder run failed as expected while locking exact values; final run 6 pass, 0 fail, 23 expect() calls); bun test (final run 7512 pass, 0 fail, 693401 expect() calls across 341 files); bun x tsc --noEmit --project tsconfig.json (final run clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-011 play-intermission-finale-music
+- open_risks: none

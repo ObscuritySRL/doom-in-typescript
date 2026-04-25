@@ -207,7 +207,7 @@
 - [x] `10-007` `preserve-opl-mus-timing` | prereqs: `10-006` | file: `plan_fps/steps/10-007-preserve-opl-mus-timing.md`
 - [x] `10-008` `pause-and-resume-audio` | prereqs: `10-007` | file: `plan_fps/steps/10-008-pause-and-resume-audio.md`
 - [x] `10-009` `play-menu-sounds` | prereqs: `10-008` | file: `plan_fps/steps/10-009-play-menu-sounds.md`
-- [ ] `10-010` `play-level-music` | prereqs: `10-009` | file: `plan_fps/steps/10-010-play-level-music.md`
+- [x] `10-010` `play-level-music` | prereqs: `10-009` | file: `plan_fps/steps/10-010-play-level-music.md`
 - [ ] `10-011` `play-intermission-finale-music` | prereqs: `10-010` | file: `plan_fps/steps/10-011-play-intermission-finale-music.md`
 - [ ] `10-012` `wire-volume-controls` | prereqs: `10-011` | file: `plan_fps/steps/10-012-wire-volume-controls.md`
 - [ ] `10-013` `shutdown-audio-cleanly` | prereqs: `10-012` | file: `plan_fps/steps/10-013-shutdown-audio-cleanly.md`
