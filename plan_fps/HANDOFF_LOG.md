@@ -905,3 +905,21 @@
 - oracle_changes: OR-FPS-026 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-combat-path.json` with refresh command `bun test test/oracles/capture-scripted-combat-path.test.ts`
 - next_eligible_steps: 02-022 capture-scripted-pickup-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted combat framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-022 capture-scripted-pickup-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-022
+- step_title: capture-scripted-pickup-path
+- summary: Added the scripted pickup path oracle fixture at `test/oracles/fixtures/capture-scripted-pickup-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, scripted input/capture arguments from clean launch through E1M1 pickup contact, tic/frame capture window, exact abstract pickup trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-scripted-pickup-path.test.ts` to lock the command contract, capture window, trace hash, pickup transition, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-scripted-pickup-path.json; test/oracles/capture-scripted-pickup-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-scripted-pickup-path.test.ts (5 pass, 0 fail, 59 expect() calls); bun test (6696 pass, 0 fail, 690762 expect() calls across 221 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-027 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-pickup-path.json` with refresh command `bun test test/oracles/capture-scripted-pickup-path.test.ts`
+- next_eligible_steps: 02-023 capture-scripted-door-use-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted pickup framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
