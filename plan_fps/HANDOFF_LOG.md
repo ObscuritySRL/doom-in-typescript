@@ -1355,3 +1355,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-001 create-bun-compatible-win32-window
 - open_risks: none
+
+## 2026-04-25 - 04-001 create-bun-compatible-win32-window
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-001
+- step_title: create-bun-compatible-win32-window
+- summary: Added the playable Bun window-host creation surface at `src/playable/window-host/createBunCompatibleWin32Window.ts`. The module exports an exact Bun-compatible Win32 window contract plus `createBunCompatibleWin32Window`, which validates the `bun run doom.ts` command, records the audited current `src/launcher/win32.ts` launcher transition from 01-006, derives aspect-corrected client dimensions from the host window policy, and keeps deterministic replay compatibility explicit by limiting the surface to native window-plan creation only. Added focused test `test/playable/window-host/create-bun-compatible-win32-window.test.ts` to lock the exact contract value, stable SHA-256 hash, audited host transition and source evidence, happy-path window plan, and failure modes.
+- files_changed: src/playable/window-host/createBunCompatibleWin32Window.ts; test/playable/window-host/create-bun-compatible-win32-window.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run Formatted 2 files in 3ms, fixed 1 file; rerun Formatted 2 files in 3ms, No fixes applied); bun test test/playable/window-host/create-bun-compatible-win32-window.test.ts (4 pass, 0 fail, 21 expect() calls); bun test (6821 pass, 0 fail, 691208 expect() calls across 246 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-002 set-window-title-policy
+- open_risks: none
