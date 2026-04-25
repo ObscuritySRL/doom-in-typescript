@@ -1247,3 +1247,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-010 create-game-context
 - open_risks: none
+
+## 2026-04-25 - 03-010 create-game-context
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-010
+- step_title: create-game-context
+- summary: Added the Bun runtime game context surface at `src/playable/bun-runtime-entry-point/createGameContext.ts`. The module exports an exact create-game-context contract and `createGameContext` helper that builds context metadata from explicit IWAD/config/map inputs, defaults map/skill/scale to the launcher values, validates missing context inputs before launcher/session creation, and records deterministic replay compatibility with no IWAD byte loading, window creation, launcher session creation, replay input consumption, global mutation, or simulation mutation. Added focused test `test/playable/bun-runtime-entry-point/create-game-context.test.ts` to lock the exact contract value, SHA-256 hash, 01-007 audit manifest transition, command reconstruction, package start evidence, context creation result, and missing-input failure modes.
+- files_changed: src/playable/bun-runtime-entry-point/createGameContext.ts; test/playable/bun-runtime-entry-point/create-game-context.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript flagged the focused test's audit manifest reader because broad string/number fields were compared against the exact literal contract. Tightened the AuditManifest test type and type guard to prove the exact 01-007 command, current entrypoint, schemaVersion, and stepId literals, then reran formatting, focused tests, full tests, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; post-TypeScript recovery run formatted 2 files and fixed 1 file); bun test test/playable/bun-runtime-entry-point/create-game-context.test.ts (initial and post-TypeScript recovery runs both 5 pass, 0 fail, 13 expect() calls); bun test (initial and post-TypeScript recovery runs both 6791 pass, 0 fail, 691112 expect() calls across 240 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on broad manifest literal typing; post-TypeScript recovery run clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-011 enter-default-title-loop
+- open_risks: none
