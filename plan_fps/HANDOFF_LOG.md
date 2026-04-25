@@ -2597,3 +2597,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-011 wire-death-reborn-flow
 - open_risks: none
+
+## 2026-04-25 - 08-011 wire-death-reborn-flow
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-011
+- step_title: wire-death-reborn-flow
+- summary: Added the playable death/reborn flow surface at `src/playable/game-session-wiring/wireDeathRebornFlow.ts`. The module exports an exact `bun run doom.ts` command contract plus `wireDeathRebornFlow`, which validates the Bun runtime command, forces a death snapshot, rebuilds a fresh launcher session during `tryRunTics`, renders only during `display`, and returns deterministic phase, frame, framebuffer, death, and reborn evidence. Added focused test `test/playable/game-session-wiring/wire-death-reborn-flow.test.ts` to lock the exact command contract, 01-009 audit linkage, stable SHA-256 source hash, death-to-reborn transition, replay evidence, and wrong-command rejection.
+- files_changed: src/playable/game-session-wiring/wireDeathRebornFlow.ts; test/playable/game-session-wiring/wire-death-reborn-flow.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed one of the two new files on the first pass; reran `bun run format` after replacing the source-hash placeholder and got no fixes before verification.
+- tests_run: bun run format (formatted 2 files and fixed 1 file; rerun formatted 2 files with no fixes); bun test test/playable/game-session-wiring/wire-death-reborn-flow.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (7220 pass, 0 fail, 692201 expect() calls across 315 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-012 wire-level-exit-flow
+- open_risks: none
