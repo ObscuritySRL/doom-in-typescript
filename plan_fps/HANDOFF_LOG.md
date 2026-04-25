@@ -3156,3 +3156,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-001 implement-save-slot-ui
 - open_risks: none
+
+## 2026-04-25 - 11-001 implement-save-slot-ui
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-001
+- step_title: implement-save-slot-ui
+- summary: Added the playable save-slot UI surface at `src/playable/save-load-playability/implementSaveSlotUi.ts`. The module exports the exact `bun run doom.ts` command contract plus `implementSaveSlotUi`, validates the product runtime command before inspecting slot state, normalizes six deterministic save slots into frozen display rows using the canonical 24-byte save description limit, applies idle/up/down/confirm menu events, blocks empty load-slot confirmation, and returns handle-free replay evidence with locked signatures and checksums. Added focused test `test/playable/save-load-playability/implement-save-slot-ui.test.ts` to lock the command contract, 01-013 missing-save-load-UI audit linkage, formatted source SHA-256 `3041378e85acd2c5039fbb62417886b34e8a35bf4bd256fb56a2dacb7e7eabc8`, exact save-slot movement transition evidence, blocked empty-load behavior, and wrong-command prevalidation.
+- files_changed: src/playable/save-load-playability/implementSaveSlotUi.ts; test/playable/save-load-playability/implement-save-slot-ui.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test fixture inferred `playeringame` as `readonly number[]` instead of the four-entry `SaveGamePlayerPresence` tuple required by `SaveGameHeader`. Added a typed `createPlayerPresence` fixture helper using `SaveGamePlayerPresence`, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 1 file; reruns after source/test adjustments, placeholder replacement, and recovery edit reported no fixes); bun test test/playable/save-load-playability/implement-save-slot-ui.test.ts (3 pass, 0 fail, 15 expect() calls; rerun after recovery also passed); bun test (7553 pass, 0 fail, 693619 expect() calls across 346 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on focused test fixture tuple typing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-002 implement-save-descriptions
+- open_risks: none
