@@ -1391,3 +1391,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-003 lock-internal-320x200-framebuffer
 - open_risks: none
+
+## 2026-04-25 - 04-003 lock-internal-320x200-framebuffer
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-003
+- step_title: lock-internal-320x200-framebuffer
+- summary: Added the playable window-host framebuffer surface at `src/playable/window-host/lockInternal320x200Framebuffer.ts`. The module exports an exact internal-framebuffer contract plus `lockInternal320x200Framebuffer`, which validates the `bun run doom.ts` runtime path, locks the internal 320x200 geometry and byte lengths, anchors the audited 01-006 host transition, and keeps deterministic replay compatibility explicit by limiting the surface to framebuffer policy only. Added focused test `test/playable/window-host/lock-internal-320x200-framebuffer.test.ts` to lock the exact contract object, stable SHA-256 hash, audited host transition, live `src/launcher/win32.ts` evidence, and helper success and failure behavior.
+- files_changed: src/playable/window-host/lockInternal320x200Framebuffer.ts; test/playable/window-host/lock-internal-320x200-framebuffer.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript rejected comparing the exact literal contract objects against dynamically parsed manifest fields in the focused test. Narrowed the audit-manifest cross-check to individual field comparisons, reran formatting, the focused test, the full test suite, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; post-recovery run formatted 2 files and applied no fixes); bun test test/playable/window-host/lock-internal-320x200-framebuffer.test.ts (initial run: 6 pass, 0 fail, 9 expect() calls; post-recovery run: 6 pass, 0 fail, 13 expect() calls); bun test (initial run: 6832 pass, 0 fail, 691230 expect() calls across 248 files; post-recovery run: 6832 pass, 0 fail, 691234 expect() calls across 248 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on literal-vs-dynamic audit manifest comparisons; post-recovery run clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-004 present-windowed-framebuffer
+- open_risks: none

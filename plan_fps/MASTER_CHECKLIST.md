@@ -96,7 +96,7 @@
 
 - [x] `04-001` `create-bun-compatible-win32-window` | prereqs: `03-015` | file: `plan_fps/steps/04-001-create-bun-compatible-win32-window.md`
 - [x] `04-002` `set-window-title-policy` | prereqs: `04-001` | file: `plan_fps/steps/04-002-set-window-title-policy.md`
-- [ ] `04-003` `lock-internal-320x200-framebuffer` | prereqs: `04-002` | file: `plan_fps/steps/04-003-lock-internal-320x200-framebuffer.md`
+- [x] `04-003` `lock-internal-320x200-framebuffer` | prereqs: `04-002` | file: `plan_fps/steps/04-003-lock-internal-320x200-framebuffer.md`
 - [ ] `04-004` `present-windowed-framebuffer` | prereqs: `04-003` | file: `plan_fps/steps/04-004-present-windowed-framebuffer.md`
 - [ ] `04-005` `define-aspect-correction-policy` | prereqs: `04-004` | file: `plan_fps/steps/04-005-define-aspect-correction-policy.md`
 - [ ] `04-006` `define-integer-nearest-scaling-policy` | prereqs: `04-005` | file: `plan_fps/steps/04-006-define-integer-nearest-scaling-policy.md`
