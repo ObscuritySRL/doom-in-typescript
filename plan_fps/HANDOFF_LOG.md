@@ -1373,3 +1373,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-002 set-window-title-policy
 - open_risks: none
+
+## 2026-04-25 - 04-002 set-window-title-policy
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-002
+- step_title: set-window-title-policy
+- summary: Added the playable Bun window-title-policy surface at `src/playable/window-host/setWindowTitlePolicy.ts`. The module exports an exact window-title-policy contract plus `setWindowTitlePolicy`, which mirrors the audited `DOOM Codex - ${session.mapName}` launcher title template, validates the `bun run doom.ts` runtime path, anchors the default client size to the shared window policy, and keeps deterministic replay compatibility explicit by limiting the surface to title derivation only. Added focused test `test/playable/window-host/set-window-title-policy.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 audited launcher transition, live title evidence in `src/launcher/win32.ts`, shared window-policy client size, and helper success/failure behavior.
+- files_changed: src/playable/window-host/setWindowTitlePolicy.ts; test/playable/window-host/set-window-title-policy.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run incorrectly asserted that the 01-006 `src/main.ts` host call string should appear verbatim in `src/launcher/win32.ts`. Narrowed the live-source assertion to title-policy evidence that actually exists in `src/launcher/win32.ts`, reran formatting, the focused test, the full test suite, and TypeScript successfully.
+- tests_run: bun run format (formatted 2 files, fixed 1 file); bun test test/playable/window-host/set-window-title-policy.test.ts (initial run failed on incorrect live-source assertion); bun run format (post-recovery run formatted 2 files, no fixes applied); bun test test/playable/window-host/set-window-title-policy.test.ts (post-recovery: 5 pass, 0 fail, 13 expect() calls); bun test (6826 pass, 0 fail, 691221 expect() calls across 247 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-003 lock-internal-320x200-framebuffer
+- open_risks: none
