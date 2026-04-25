@@ -1121,3 +1121,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-003 add-dev-launch-smoke-test
 - open_risks: none
+
+## 2026-04-25 - 03-003 add-dev-launch-smoke-test
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-003
+- step_title: add-dev-launch-smoke-test
+- summary: Added the Bun runtime dev launch smoke test contract at `src/playable/bun-runtime-entry-point/addDevLaunchSmokeTest.ts`. The contract pins `bun run doom.ts --help`, derives it from the target `bun run doom.ts` command contract, records the current `src/main.ts` launcher surface from the 01-007 audit manifest, and marks the smoke path as process-contract-only with no window, IWAD load, game session, replay input, or game-state mutation. Added focused test `test/playable/bun-runtime-entry-point/add-dev-launch-smoke-test.test.ts` to lock the exact contract object, command reconstruction, transition, manifest schema/current launcher cross-checks, package script evidence, and deterministic replay compatibility.
+- files_changed: src/playable/bun-runtime-entry-point/addDevLaunchSmokeTest.ts; test/playable/bun-runtime-entry-point/add-dev-launch-smoke-test.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript caught a readonly-vs-mutable array expectation in the focused test after the first verification pass. Spread the readonly expected help usage lines before comparison, reran `bun run format`, and reran verification from the focused test.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/playable/bun-runtime-entry-point/add-dev-launch-smoke-test.test.ts (4 pass, 0 fail, 23 expect() calls); bun test (6754 pass, 0 fail, 690995 expect() calls across 233 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on readonly array expectation); bun run format (post-recovery, Formatted 2 files, No fixes applied); bun test test/playable/bun-runtime-entry-point/add-dev-launch-smoke-test.test.ts (post-recovery, 4 pass, 0 fail, 23 expect() calls); bun test (post-recovery, 6754 pass, 0 fail, 690995 expect() calls across 233 files); bun x tsc --noEmit --project tsconfig.json (post-recovery, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-004 wire-bun-native-file-loading
+- open_risks: none
