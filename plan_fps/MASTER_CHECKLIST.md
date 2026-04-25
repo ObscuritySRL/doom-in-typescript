@@ -216,7 +216,7 @@
 ## Phase 11: Save / Load Playability
 
 - [x] `11-001` `implement-save-slot-ui` | prereqs: `10-014` | file: `plan_fps/steps/11-001-implement-save-slot-ui.md`
-- [ ] `11-002` `implement-save-descriptions` | prereqs: `11-001` | file: `plan_fps/steps/11-002-implement-save-descriptions.md`
+- [x] `11-002` `implement-save-descriptions` | prereqs: `11-001` | file: `plan_fps/steps/11-002-implement-save-descriptions.md`
 - [ ] `11-003` `define-save-file-path-policy` | prereqs: `11-002` | file: `plan_fps/steps/11-003-define-save-file-path-policy.md`
 - [ ] `11-004` `wire-bun-native-save-read-write` | prereqs: `11-003` | file: `plan_fps/steps/11-004-wire-bun-native-save-read-write.md`
 - [ ] `11-005` `implement-live-game-save-load` | prereqs: `11-004` | file: `plan_fps/steps/11-005-implement-live-game-save-load.md`

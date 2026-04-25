@@ -3174,3 +3174,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-002 implement-save-descriptions
 - open_risks: none
+
+## 2026-04-25 - 11-002 implement-save-descriptions
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-002
+- step_title: implement-save-descriptions
+- summary: Added the playable save-description entry surface at `src/playable/save-load-playability/implementSaveDescriptions.ts`. The module exports the exact `bun run doom.ts` command contract plus `implementSaveDescriptions`, validates the product runtime command before applying edit events, applies deterministic byte-limited insert/backspace/clear/confirm events to the existing 24-byte save description field, serializes through the canonical save header layout, and returns frozen replay evidence with replay checksum `3659604491` and hash `660e28000248a0dc17760b2a7bb6192d872542fa5d9a2aea2b1ba7ac1b15028f`. Added focused test `test/playable/save-load-playability/implement-save-descriptions.test.ts` to lock the command contract, 01-013 save-description-entry audit linkage, formatted source SHA-256 `0c2da30c604a4e1272820c17c90527384800ba756edd980e11ea4f08ae37b8fe`, exact transition evidence, save-header serialization compatibility, wrong-command prevalidation, and invalid description rejection.
+- files_changed: src/playable/save-load-playability/implementSaveDescriptions.ts; test/playable/save-load-playability/implement-save-descriptions.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the module's local save-header fixture widened `playeringame` to `readonly number[]` and the focused test compared a mutable byte array directly against a readonly result array. Returned a contextually typed `SaveGameHeader` without `Object.freeze` tuple widening, compared the readonly result bytes via `Array.from`, refreshed the focused-test source hash, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; post-placeholder pass no fixes; post-recovery pass fixed 1 file; final post-hash pass no fixes); bun test test/playable/save-load-playability/implement-save-descriptions.test.ts (final run 5 pass, 0 fail, 15 expect() calls); bun test (final run 7558 pass, 0 fail, 693634 expect() calls across 347 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on tuple/readonly typing; final run passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-003 define-save-file-path-policy
+- open_risks: none
