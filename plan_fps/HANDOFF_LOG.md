@@ -1841,3 +1841,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-003 preserve-scan-code-config-relationship
 - open_risks: none
+
+## 2026-04-25 - 06-003 preserve-scan-code-config-relationship
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-003
+- step_title: preserve-scan-code-config-relationship
+- summary: Added the playable input scan-code/config relationship surface at `src/playable/input/preserveScanCodeConfigRelationship.ts`. The module exports an exact Bun-only contract plus `preserveScanCodeConfigRelationship`, which validates the `bun run doom.ts` runtime path, preserves configuration bindings in scan-code space via `extractScanCode`, derives Doom internal keys through `translateScanCode`, ignores the Win32 extended flag for config matching while still reporting it to callers, and preserves deterministic replay compatibility by keeping the downstream ticcmd surface neutral through `EMPTY_TICCMD` and `TICCMD_SIZE`. Added focused test `test/playable/input/preserve-scan-code-config-relationship.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, direct scan-code matching, extended-key behavior, mismatch behavior, and wrong-command plus invalid-config failure modes.
+- files_changed: src/playable/input/preserveScanCodeConfigRelationship.ts; test/playable/input/preserve-scan-code-config-relationship.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes); bun test test/playable/input/preserve-scan-code-config-relationship.test.ts (6 pass, 0 fail, 12 expect() calls); bun test (6971 pass, 0 fail, 691550 expect() calls across 273 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-004 preserve-key-down-up-ordering
+- open_risks: none
