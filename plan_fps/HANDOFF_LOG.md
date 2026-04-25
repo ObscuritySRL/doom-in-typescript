@@ -3048,3 +3048,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-009 play-menu-sounds
 - open_risks: none
+
+## 2026-04-25 - 10-009 play-menu-sounds
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-009
+- step_title: play-menu-sounds
+- summary: Added the playable menu sound surface at `src/playable/audio-product-integration/playMenuSounds.ts`. The module exports the exact `bun run doom.ts` command contract plus `playMenuSounds`, validates the product runtime command before channel mutation or live dispatch, maps deterministic menu events to the vanilla menu sound-effect ids, routes through the pure `startSound` path with anonymous menu origins, forwards only started actions to an injected live dispatcher, and returns handle-free replay evidence with exact event signatures and checksum data. Added focused test `test/playable/audio-product-integration/play-menu-sounds.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, formatted source SHA-256, exact dispatch/replay evidence, wrong-command rejection, and invalid-event prevalidation.
+- files_changed: src/playable/audio-product-integration/playMenuSounds.ts; test/playable/audio-product-integration/play-menu-sounds.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test typed `expectedDispatchActions` as a readonly fixture while asserting against a mutable dispatch collection. Retyped that fixture as `MenuSoundDispatchAction[]`, reran formatting, the focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; final rerun after TypeScript recovery formatted 2 files with no fixes); bun test test/playable/audio-product-integration/play-menu-sounds.test.ts (5 pass, 0 fail, 20 expect() calls; rerun after recovery also passed); bun test (7504 pass, 0 fail, 693376 expect() calls across 340 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on focused test fixture readonly typing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-010 play-level-music
+- open_risks: none
