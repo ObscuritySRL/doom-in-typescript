@@ -2759,3 +2759,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-006 render-intermission-screens
 - open_risks: none
+
+## 2026-04-25 - 09-006 render-intermission-screens
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-006
+- step_title: render-intermission-screens
+- summary: Added the playable intermission screen rendering surface at `src/playable/rendering-product-integration/renderIntermissionScreens.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderIntermissionScreens`, which validates the Bun runtime command, requires full 320x200 framebuffer and background buffers, validates all intermission patch layers before mutation, copies the deterministic background, composes nontransparent patch pixels with clipping, and returns replay-stable transition and framebuffer evidence for finished-to-entering and episode-complete intermission screens. Added focused test `test/playable/rendering-product-integration/render-intermission-screens.test.ts` to lock the command contract, 01-012 missing-rendering audit schema, exact framebuffer checksum and SHA-256, transition evidence, wrong-command rejection, and invalid-layer mutation guard.
+- files_changed: src/playable/rendering-product-integration/renderIntermissionScreens.ts; test/playable/rendering-product-integration/render-intermission-screens.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run used placeholders while locking the rendered frame; it failed with actual `drawnLayerPixelCount=9` and `framebufferChecksum=3888271315`. Recomputed the deterministic framebuffer SHA-256 (`407f74eca6f8b92bbea9c62263dbaff7798bd45c320cc4df405fb0b61904d4c0`), replaced the placeholders, reran formatting, and reran verification successfully.
+- tests_run: bun run format (initial pass formatted 2 files and fixed 1 file; rerun after expected-value update formatted 2 files with no fixes); bun test test/playable/rendering-product-integration/render-intermission-screens.test.ts (initial placeholder run failed as expected while locking exact values; final run 5 pass, 0 fail, 19 expect() calls); bun test (7271 pass, 0 fail, 692373 expect() calls across 324 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-007 render-finale-screens
+- open_risks: none
