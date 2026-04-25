@@ -2507,3 +2507,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-006 wire-player-command-application
 - open_risks: none
+
+## 2026-04-25 - 08-006 wire-player-command-application
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-006
+- step_title: wire-player-command-application
+- summary: Added the playable player-command application surface at `src/playable/game-session-wiring/wirePlayerCommandApplication.ts`. The module exports an exact Bun-only runtime contract plus `wirePlayerCommandApplication`, which validates the `bun run doom.ts` command, starts the existing `MainLoop` when needed, applies the provided `LauncherInputState` only during the `tryRunTics` phase through `advanceLauncherSession`, and returns replay-relevant before/after player state, command, phase, pre-loop, and frame-count evidence. Added focused test `test/playable/game-session-wiring/wire-player-command-application.test.ts` to lock the exact runtime contract, 01-009 audit linkage, stable SHA-256 source hash, exact E1M1 forward-run-turn-right transition, and wrong-command rejection before loop start.
+- files_changed: src/playable/game-session-wiring/wirePlayerCommandApplication.ts; test/playable/game-session-wiring/wire-player-command-application.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first two Bun probe attempts failed because PowerShell stripped inline JavaScript quote characters before Bun parsed the program. Reran the probe with PowerShell double-quoted command text and JavaScript single-quoted strings, then used the resulting formatted implementation hash and exact E1M1 transition values in the focused test. `bun run format` fixed the test file once after creation; the required format rerun applied no fixes.
+- tests_run: bun run format (implementation-only pass formatted 1 file with no fixes; after test creation formatted 2 files and fixed 1 file; rerun applied no fixes); bun test test/playable/game-session-wiring/wire-player-command-application.test.ts (5 pass, 0 fail, 13 expect() calls); bun test (7195 pass, 0 fail, 692108 expect() calls across 310 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-007 wire-gameplay-renderer-invocation
+- open_risks: none
