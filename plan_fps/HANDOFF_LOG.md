@@ -761,3 +761,21 @@
 - oracle_changes: OR-FPS-018 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-skill-menu-path.json` with refresh command `bun test test/oracles/capture-skill-menu-path.test.ts`
 - next_eligible_steps: 02-014 capture-options-menu-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live skill menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-014 capture-options-menu-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-014
+- step_title: capture-options-menu-path
+- summary: Added the options menu path oracle fixture at `test/oracles/fixtures/capture-options-menu-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape/ArrowDown/Enter input sequence, tic/frame capture window, exact abstract transition trace from attract loop to main menu to options menu, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-options-menu-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the options menu transition path, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-options-menu-path.json; test/oracles/capture-options-menu-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-options-menu-path.test.ts (5 pass, 0 fail, 20 expect() calls); bun test (6656 pass, 0 fail, 690568 expect() calls across 213 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (post-checklist rerun, Formatted 2 files, No fixes applied); bun test test/oracles/capture-options-menu-path.test.ts (post-checklist rerun, 5 pass, 0 fail, 20 expect() calls); bun test (post-checklist rerun, 6656 pass, 0 fail, 690568 expect() calls across 213 files); bun x tsc --noEmit --project tsconfig.json (post-checklist rerun, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-019 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-options-menu-path.json` with refresh command `bun test test/oracles/capture-options-menu-path.test.ts`
+- next_eligible_steps: 02-015 capture-sound-volume-menu-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live options menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
