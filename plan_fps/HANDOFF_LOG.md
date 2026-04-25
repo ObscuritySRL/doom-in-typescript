@@ -1427,3 +1427,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-005 define-aspect-correction-policy
 - open_risks: none
+
+## 2026-04-25 - 04-005 define-aspect-correction-policy
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-005
+- step_title: define-aspect-correction-policy
+- summary: Added the playable window-host aspect-correction surface at `src/playable/window-host/defineAspectCorrectionPolicy.ts`. The module exports an exact aspect-correction-policy contract plus `defineAspectCorrectionPolicy`, which validates the `bun run doom.ts` runtime path, locks the corrected 320x240 display policy and default 640x480 client presentation derived from `src/host/windowPolicy.ts`, mirrors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` launcher transition from 01-006, and keeps deterministic replay compatibility explicit by limiting the surface to pure presentation policy only. Added focused test `test/playable/window-host/define-aspect-correction-policy.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 audited launcher transition, live corrected-sizing source evidence, and wrong-command failure mode.
+- files_changed: src/playable/window-host/defineAspectCorrectionPolicy.ts; test/playable/window-host/define-aspect-correction-policy.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript rejected the focused test because dynamic manifest string/number fields were being used as expected literal values. Flipped those audit cross-check assertions so the manifest fields are the actual values and the exact contract literals remain the expected values, then reran formatting, the focused test, the full test suite, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; post-recovery run formatted 2 files and applied no fixes); bun test test/playable/window-host/define-aspect-correction-policy.test.ts (initial and post-recovery runs both 6 pass, 0 fail, 16 expect() calls); bun test (initial and post-recovery runs both 6842 pass, 0 fail, 691265 expect() calls across 250 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on literal-vs-dynamic audit manifest comparisons; post-recovery run clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-006 define-integer-nearest-scaling-policy
+- open_risks: none
