@@ -202,7 +202,7 @@
 - [x] `10-002` `connect-sfx-mixer` | prereqs: `10-001` | file: `plan_fps/steps/10-002-connect-sfx-mixer.md`
 - [x] `10-003` `lock-sfx-channel-count` | prereqs: `10-002` | file: `plan_fps/steps/10-003-lock-sfx-channel-count.md`
 - [x] `10-004` `implement-sfx-priority-eviction` | prereqs: `10-003` | file: `plan_fps/steps/10-004-implement-sfx-priority-eviction.md`
-- [ ] `10-005` `update-sfx-spatialization` | prereqs: `10-004` | file: `plan_fps/steps/10-005-update-sfx-spatialization.md`
+- [x] `10-005` `update-sfx-spatialization` | prereqs: `10-004` | file: `plan_fps/steps/10-005-update-sfx-spatialization.md`
 - [ ] `10-006` `connect-music-system` | prereqs: `10-005` | file: `plan_fps/steps/10-006-connect-music-system.md`
 - [ ] `10-007` `preserve-opl-mus-timing` | prereqs: `10-006` | file: `plan_fps/steps/10-007-preserve-opl-mus-timing.md`
 - [ ] `10-008` `pause-and-resume-audio` | prereqs: `10-007` | file: `plan_fps/steps/10-008-pause-and-resume-audio.md`

@@ -2976,3 +2976,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-005 update-sfx-spatialization
 - open_risks: none
+
+## 2026-04-25 - 10-005 update-sfx-spatialization
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-005
+- step_title: update-sfx-spatialization
+- summary: Added the playable SFX spatialization update surface at `src/playable/audio-product-integration/updateSfxSpatialization.ts`. The module exports the exact `bun run doom.ts` command contract plus `updateSfxSpatialization`, validates exactly eight deterministic channel snapshots, applies existing vanilla-style spatial adjustment for remote active sounds, emits handle-free update and inaudible stop actions, and returns replay-stable signature and checksum evidence. Added focused test `test/playable/audio-product-integration/update-sfx-spatialization.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, source SHA-256, exact local/listener/remote/inaudible/empty channel transition evidence, wrong-command rejection, and invalid remote-source mutation guard.
+- files_changed: src/playable/audio-product-integration/updateSfxSpatialization.ts; test/playable/audio-product-integration/update-sfx-spatialization.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (first pass formatted 4 files and fixed 1 file; final pre-verification pass formatted 2 files and fixed 1 file); bun test test/playable/audio-product-integration/update-sfx-spatialization.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (7434 pass, 0 fail, 693044 expect() calls across 336 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-006 connect-music-system
+- open_risks: none
