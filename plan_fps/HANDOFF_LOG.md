@@ -3192,3 +3192,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-003 define-save-file-path-policy
 - open_risks: none
+
+## 2026-04-25 - 11-003 define-save-file-path-policy
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-003
+- step_title: define-save-file-path-policy
+- summary: Added the playable save-file path policy surface at `src/playable/save-load-playability/defineSaveFilePathPolicy.ts`. The module exports the exact `bun run doom.ts` command contract plus `defineSaveFilePathPolicy`, validates the product runtime command before returning a path policy, defines six deterministic local save slots under the relative `savegames/` directory as `doomsavN.dsg`, rejects host-specific or escaping directories, ties the policy to the canonical save header sizes/version text, and returns frozen replay evidence with default replay checksum `2175975006`. Added focused test `test/playable/save-load-playability/define-save-file-path-policy.test.ts` to lock the command contract, 01-013 missing save-file-path-policy audit linkage, formatted source SHA-256 `1114c43d86cb3705d01a948431635ac9e18e9e0fd991ca73009f656cbe30c068`, exact default policy transition, custom nested directory checksum `3746428754`, wrong-command rejection, and invalid directory rejection.
+- files_changed: src/playable/save-load-playability/defineSaveFilePathPolicy.ts; test/playable/save-load-playability/define-save-file-path-policy.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass formatted 6 files and fixed 1 file; exact-value rerun formatted 6 files with no fixes); bun test test/playable/save-load-playability/define-save-file-path-policy.test.ts (5 pass, 0 fail, 15 expect() calls); bun test (7563 pass, 0 fail, 693649 expect() calls across 348 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-004 wire-bun-native-save-read-write
+- open_risks: none
