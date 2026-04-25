@@ -188,7 +188,7 @@
 - [x] `09-004` `compose-menu-overlay` | prereqs: `09-003` | file: `plan_fps/steps/09-004-compose-menu-overlay.md`
 - [x] `09-005` `render-title-help-credit-pages` | prereqs: `09-004` | file: `plan_fps/steps/09-005-render-title-help-credit-pages.md`
 - [x] `09-006` `render-intermission-screens` | prereqs: `09-005` | file: `plan_fps/steps/09-006-render-intermission-screens.md`
-- [ ] `09-007` `render-finale-screens` | prereqs: `09-006` | file: `plan_fps/steps/09-007-render-finale-screens.md`
+- [x] `09-007` `render-finale-screens` | prereqs: `09-006` | file: `plan_fps/steps/09-007-render-finale-screens.md`
 - [ ] `09-008` `render-automap-overlay-and-full-mode` | prereqs: `09-007` | file: `plan_fps/steps/09-008-render-automap-overlay-and-full-mode.md`
 - [ ] `09-009` `apply-palette-effects-and-gamma` | prereqs: `09-008` | file: `plan_fps/steps/09-009-apply-palette-effects-and-gamma.md`
 - [ ] `09-010` `render-detail-mode` | prereqs: `09-009` | file: `plan_fps/steps/09-010-render-detail-mode.md`

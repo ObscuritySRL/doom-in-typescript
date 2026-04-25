@@ -2777,3 +2777,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-007 render-finale-screens
 - open_risks: none
+
+## 2026-04-25 - 09-007 render-finale-screens
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-007
+- step_title: render-finale-screens
+- summary: Added the playable finale screen rendering surface at `src/playable/rendering-product-integration/renderFinaleScreens.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderFinaleScreens`, which validates the Bun runtime command, requires a full 320x200 framebuffer, validates the finale background and all transparent patch layers before mutation, composes deterministic finale pixels with clipping, and returns replay-stable transition, draw-count, clipping, transparency, and checksum evidence. Added focused test `test/playable/rendering-product-integration/render-finale-screens.test.ts` to lock the command contract, 01-012 missing-rendering audit manifest schema, stable SHA-256 source hash, exact framebuffer checksum and SHA-256, transition evidence, invalid-layer mutation guard, and wrong-command rejection.
+- files_changed: src/playable/rendering-product-integration/renderFinaleScreens.ts; test/playable/rendering-product-integration/render-finale-screens.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test pass intentionally used placeholders while locking exact values; it captured source SHA-256 `eda4fe86e2c73d46fe8ab5d8099c321fff14e8080f3d86a9f0d99bfcb4e0d037`, framebufferChecksum `3414621058`, and rendered framebuffer SHA-256 `24e7dde1b639e94aa8745b569ce7520e704cdfd50995a8433a6422bbdd07a99e`. Replaced the placeholders, reran `bun run format`, and reran verification successfully.
+- tests_run: bun run format (initial pass formatted 2 files and fixed 1 file; reruns after exact-value replacements formatted 2 files with no fixes); bun test test/playable/rendering-product-integration/render-finale-screens.test.ts (placeholder runs failed as expected while locking exact values; final run 5 pass, 0 fail, 17 expect() calls); bun test (7276 pass, 0 fail, 692390 expect() calls across 325 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-008 render-automap-overlay-and-full-mode
+- open_risks: none
