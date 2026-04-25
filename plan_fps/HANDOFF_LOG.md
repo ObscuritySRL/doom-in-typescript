@@ -2219,3 +2219,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-010 implement-screen-size-detail-gamma-controls
 - open_risks: none
+
+## 2026-04-25 - 07-010 implement-screen-size-detail-gamma-controls
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-010
+- step_title: implement-screen-size-detail-gamma-controls
+- summary: Added the playable screen-size/detail/gamma control surface at `src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts`. The module exports an exact Bun-only runtime contract plus `implementScreenSizeDetailGammaControls`, which validates the `bun run doom.ts` command, requires the active Options menu, routes screen-size adjustments through `menus.ts`, synthesizes the vanilla-style detail right/left-arrow toggle at the playable layer, synchronizes `frontEndSequence.ts` menu-active state, and cycles F11 gamma levels without disturbing replay-relevant front-end demo state. Added focused test `test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, screen-size/detail/gamma transitions, and wrong-command plus unimplemented-messages failure paths.
+- files_changed: src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts; test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; required rerun after the source-hash edit applied no fixes); bun test test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts (8 pass, 0 fail, 20 expect() calls); bun test (7105 pass, 0 fail, 691868 expect() calls across 294 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-011 implement-messages-toggle
+- open_risks: none
