@@ -689,3 +689,21 @@
 - oracle_changes: OR-FPS-014 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-demo3-playback-checkpoints.json` with refresh command `bun test test/oracles/capture-demo3-playback-checkpoints.test.ts`
 - next_eligible_steps: 02-010 capture-menu-open-close-behavior
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live demo3 framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-010 capture-menu-open-close-behavior
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-010
+- step_title: capture-menu-open-close-behavior
+- summary: Added the menu open/close behavior oracle fixture at `test/oracles/fixtures/capture-menu-open-close-behavior.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape key open/close input sequence, tic/frame capture window, exact abstract menu transition trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-menu-open-close-behavior.test.ts` to lock the fixture exactly, recompute the trace hash, verify menu open/close transitions and sounds, cross-check source-catalog authority and the 01-015 manifest, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-menu-open-close-behavior.json; test/oracles/capture-menu-open-close-behavior.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Removed unsupported `Bun.file().json<T>()` type parameters from the focused test after the first type-check failed on this project's Bun type definitions; typed local assignments now preserve the same fixture and manifest shapes.
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-menu-open-close-behavior.test.ts (5 pass, 0 fail, 14 expect() calls); bun test (6636 pass, 0 fail, 690492 expect() calls across 209 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on unsupported `Bun.file().json<T>()` type parameters); bun run format (recovery rerun, No fixes applied); bun test test/oracles/capture-menu-open-close-behavior.test.ts (5 pass, 0 fail, 14 expect() calls); bun test (6636 pass, 0 fail, 690492 expect() calls across 209 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-015 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-menu-open-close-behavior.json` with refresh command `bun test test/oracles/capture-menu-open-close-behavior.test.ts`
+- next_eligible_steps: 02-011 capture-new-game-menu-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.

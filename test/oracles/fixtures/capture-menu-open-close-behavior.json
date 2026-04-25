@@ -1,0 +1,145 @@
+{
+  "captureCommand": {
+    "arguments": ["-iwad", "doom/DOOM1.WAD", "-skill", "2"],
+    "binaryPath": "doom/DOOMD.EXE",
+    "commandLine": "doom/DOOMD.EXE -iwad doom/DOOM1.WAD -skill 2",
+    "inputSequence": [
+      {
+        "input": "keydown:Escape",
+        "tic": 1
+      },
+      {
+        "input": "keyup:Escape",
+        "tic": 2
+      },
+      {
+        "input": "keydown:Escape",
+        "tic": 17
+      },
+      {
+        "input": "keyup:Escape",
+        "tic": 18
+      }
+    ],
+    "iwadPath": "doom/DOOM1.WAD",
+    "scenario": "menu-open-close-behavior",
+    "status": "static-contract-pending-live-reference-capture",
+    "targetRuntimeCommand": "bun run doom.ts"
+  },
+  "captureWindow": {
+    "endFrame": 18,
+    "endTic": 18,
+    "frameRateMode": "one-frame-per-visible-tic",
+    "startFrame": 0,
+    "startTic": 0,
+    "ticRateHz": 35
+  },
+  "expectedHashes": {
+    "traceSerialization": "JSON.stringify(expectedTrace)",
+    "traceSha256": "aa425fc70db080d98adc293577191e3411d5c8157a55b63e29b7d3d62385d748"
+  },
+  "expectedTrace": [
+    {
+      "activeMenu": null,
+      "activeScreen": "title-loop",
+      "frame": 0,
+      "input": "none",
+      "menuState": "closed",
+      "selectedItem": null,
+      "soundEvent": null,
+      "tic": 0,
+      "transition": "baseline-closed"
+    },
+    {
+      "activeMenu": "main",
+      "activeScreen": "menu-overlay",
+      "frame": 1,
+      "input": "keydown:Escape",
+      "menuState": "open",
+      "selectedItem": "new game",
+      "soundEvent": "swtchn",
+      "tic": 1,
+      "transition": "open-main-menu"
+    },
+    {
+      "activeMenu": "main",
+      "activeScreen": "menu-overlay",
+      "frame": 2,
+      "input": "keyup:Escape",
+      "menuState": "open",
+      "selectedItem": "new game",
+      "soundEvent": null,
+      "tic": 2,
+      "transition": "hold-open"
+    },
+    {
+      "activeMenu": null,
+      "activeScreen": "title-loop",
+      "frame": 17,
+      "input": "keydown:Escape",
+      "menuState": "closed",
+      "selectedItem": null,
+      "soundEvent": "swtchx",
+      "tic": 17,
+      "transition": "close-menu"
+    },
+    {
+      "activeMenu": null,
+      "activeScreen": "title-loop",
+      "frame": 18,
+      "input": "keyup:Escape",
+      "menuState": "closed",
+      "selectedItem": null,
+      "soundEvent": null,
+      "tic": 18,
+      "transition": "hold-closed"
+    }
+  ],
+  "pendingLiveCapture": {
+    "reason": "The 02-010 step read scope does not permit opening or executing local reference binaries directly.",
+    "surfaces": ["framebuffer-hash", "audio-hash", "state-hash"]
+  },
+  "schemaVersion": 1,
+  "sourceAuthority": [
+    {
+      "authority": "local-primary-binary",
+      "id": "S-FPS-005",
+      "path": "doom/DOOMD.EXE",
+      "role": "reference binary",
+      "source": "local DOS executable"
+    },
+    {
+      "authority": "local-primary-data",
+      "id": "S-FPS-006",
+      "path": "doom/DOOM1.WAD",
+      "role": "reference data",
+      "source": "local IWAD"
+    },
+    {
+      "authority": "local-primary",
+      "id": "S-FPS-011",
+      "path": "src/main.ts",
+      "role": "current launcher evidence",
+      "source": "current launcher entry"
+    }
+  ],
+  "sourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "sizeBytes": 569
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "sizeBytes": 3239
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "sizeBytes": 645
+    }
+  ],
+  "stepId": "02-010",
+  "stepTitle": "capture-menu-open-close-behavior"
+}

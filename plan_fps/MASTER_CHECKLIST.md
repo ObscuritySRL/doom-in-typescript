@@ -51,7 +51,7 @@
 - [x] `02-007` `capture-demo1-playback-checkpoints` | prereqs: `02-006` | file: `plan_fps/steps/02-007-capture-demo1-playback-checkpoints.md`
 - [x] `02-008` `capture-demo2-playback-checkpoints` | prereqs: `02-007` | file: `plan_fps/steps/02-008-capture-demo2-playback-checkpoints.md`
 - [x] `02-009` `capture-demo3-playback-checkpoints` | prereqs: `02-008` | file: `plan_fps/steps/02-009-capture-demo3-playback-checkpoints.md`
-- [ ] `02-010` `capture-menu-open-close-behavior` | prereqs: `02-009` | file: `plan_fps/steps/02-010-capture-menu-open-close-behavior.md`
+- [x] `02-010` `capture-menu-open-close-behavior` | prereqs: `02-009` | file: `plan_fps/steps/02-010-capture-menu-open-close-behavior.md`
 - [ ] `02-011` `capture-new-game-menu-path` | prereqs: `02-010` | file: `plan_fps/steps/02-011-capture-new-game-menu-path.md`
 - [ ] `02-012` `capture-episode-menu-path` | prereqs: `02-011` | file: `plan_fps/steps/02-012-capture-episode-menu-path.md`
 - [ ] `02-013` `capture-skill-menu-path` | prereqs: `02-012` | file: `plan_fps/steps/02-013-capture-skill-menu-path.md`
