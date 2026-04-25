@@ -1337,3 +1337,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-015 implement-deterministic-reset-seed
 - open_risks: none
+
+## 2026-04-25 - 03-015 implement-deterministic-reset-seed
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 03-015
+- step_title: implement-deterministic-reset-seed
+- summary: Added the Bun runtime deterministic reset seed surface at `src/playable/bun-runtime-entry-point/implementDeterministicResetSeed.ts`. The module exports an exact deterministic-reset contract plus `implementDeterministicResetSeed`, which returns a fixed zero-seed reset plan only for `bun run doom.ts`, mirrors the audited `src/main.ts` launcher transition from 01-007, and keeps deterministic replay inputs, gameplay state, and direct global random-seed mutation untouched until later runtime integration. Added focused test `test/playable/bun-runtime-entry-point/implement-deterministic-reset-seed.test.ts` to lock the exact contract object, stable SHA-256 hash, command reconstruction, manifest/package/source evidence, happy-path reset plan, and wrong-command failure mode.
+- files_changed: src/playable/bun-runtime-entry-point/implementDeterministicResetSeed.ts; test/playable/bun-runtime-entry-point/implement-deterministic-reset-seed.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/playable/bun-runtime-entry-point/implement-deterministic-reset-seed.test.ts (6 pass, 0 fail, 17 expect() calls); bun test (6817 pass, 0 fail, 691187 expect() calls across 245 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-001 create-bun-compatible-win32-window
+- open_risks: none
