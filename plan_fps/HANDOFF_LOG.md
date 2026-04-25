@@ -959,3 +959,21 @@
 - oracle_changes: OR-FPS-029 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-damage-death-path.json` with refresh command `bun test test/oracles/capture-scripted-damage-death-path.test.ts`
 - next_eligible_steps: 02-025 capture-scripted-intermission-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted damage/death framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-025 capture-scripted-intermission-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-025
+- step_title: capture-scripted-intermission-path
+- summary: Added the scripted intermission path oracle fixture at `test/oracles/fixtures/capture-scripted-intermission-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the target `bun run doom.ts` command contract, scripted input/capture arguments from clean launch through E1M1 exit and first stable intermission frame, tic/frame capture window, exact abstract intermission transition trace, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-scripted-intermission-path.test.ts` to lock the full fixture value, trace hash, intermission transition, command contract, source-catalog authority, 01-015 manifest gaps, and oracle registration.
+- files_changed: test/oracles/fixtures/capture-scripted-intermission-path.json; test/oracles/capture-scripted-intermission-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 2 files); bun test test/oracles/capture-scripted-intermission-path.test.ts (6 pass, 0 fail, 14 expect() calls); bun test (6713 pass, 0 fail, 690823 expect() calls across 224 files); bun x tsc --noEmit --project tsconfig.json (clean); bun run format (post-checklist, Formatted 2 files, No fixes applied); bun test test/oracles/capture-scripted-intermission-path.test.ts (post-checklist, 6 pass, 0 fail, 14 expect() calls); bun test (post-checklist, 6713 pass, 0 fail, 690823 expect() calls across 224 files); bun x tsc --noEmit --project tsconfig.json (post-checklist, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-030 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-scripted-intermission-path.json` with refresh command `bun test test/oracles/capture-scripted-intermission-path.test.ts`
+- next_eligible_steps: 02-026 capture-live-save-load-roundtrip
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live scripted intermission framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
