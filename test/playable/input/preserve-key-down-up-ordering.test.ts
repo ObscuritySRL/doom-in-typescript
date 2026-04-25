@@ -51,6 +51,11 @@ test('exports the exact contract and stable hash', () => {
   } satisfies typeof PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT;
 
   expect(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT).toEqual(expectedContract);
+  expect(Object.isFrozen(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT)).toBe(true);
+  expect(Object.isFrozen(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT.orderingPolicy)).toBe(true);
+  expect(Object.isFrozen(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT.sourceModules)).toBe(true);
+  expect(Object.isFrozen(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT.supportedEventTypes)).toBe(true);
+  expect(Object.isFrozen(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT.ticCommandNeutralState)).toBe(true);
 
   const hasher = new Bun.CryptoHasher('sha256');
   hasher.update(JSON.stringify(PRESERVE_KEY_DOWN_UP_ORDERING_CONTRACT));
@@ -82,6 +87,13 @@ test('preserves keydown and keyup arrival order for mapped keys', () => {
     ticCommandSize: TICCMD_SIZE,
     ticCommandTemplate: EMPTY_TICCMD,
   });
+  expect(Object.isFrozen(result)).toBe(true);
+  expect(Object.isFrozen(result.orderedEvents)).toBe(true);
+  expect(result.ticCommandTemplate).toBe(EMPTY_TICCMD);
+
+  for (const orderedEvent of result.orderedEvents) {
+    expect(Object.isFrozen(orderedEvent)).toBe(true);
+  }
 });
 
 test('drops unmapped scan codes without reordering mapped transitions', () => {
@@ -97,6 +109,18 @@ test('drops unmapped scan codes without reordering mapped transitions', () => {
   ]);
   expect(result.ticCommandSize).toBe(TICCMD_SIZE);
   expect(result.ticCommandTemplate).toBe(EMPTY_TICCMD);
+  expect(Object.isFrozen(result)).toBe(true);
+  expect(Object.isFrozen(result.orderedEvents)).toBe(true);
+});
+
+test('returns a frozen empty result for an empty event list', () => {
+  const result = preserveKeyDownUpOrdering('bun run doom.ts', []);
+
+  expect(result.orderedEvents).toEqual([]);
+  expect(Object.isFrozen(result)).toBe(true);
+  expect(Object.isFrozen(result.orderedEvents)).toBe(true);
+  expect(result.ticCommandSize).toBe(TICCMD_SIZE);
+  expect(result.ticCommandTemplate).toBe(EMPTY_TICCMD);
 });
 
 test('rejects the wrong runtime command', () => {
@@ -105,4 +129,15 @@ test('rejects the wrong runtime command', () => {
 
 test('rejects unsupported key event types', () => {
   expect(() => preserveKeyDownUpOrdering('bun run doom.ts', [{ eventType: 'keypress', lparam: createLparam(0x11) }])).toThrow('Unsupported key event type: keypress');
+});
+
+test('throws on the first unsupported event type even when valid events precede it', () => {
+  expect(() =>
+    preserveKeyDownUpOrdering('bun run doom.ts', [
+      { eventType: 'keydown', lparam: createLparam(0x11) },
+      { eventType: 'keyup', lparam: createLparam(0x11) },
+      { eventType: 'wm_char', lparam: createLparam(0x20) },
+      { eventType: 'keyup', lparam: createLparam(0x20) },
+    ]),
+  ).toThrow('Unsupported key event type: wm_char');
 });

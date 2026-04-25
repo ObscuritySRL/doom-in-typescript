@@ -42,8 +42,11 @@ export function applyPlaypalPalette(options: ApplyPlaypalPaletteOptions): ApplyP
     throw new Error(`Expected runtime command ${APPLY_PLAYPAL_PALETTE_CONTRACT.runtimeCommand}, received ${options.runtimeCommand}`);
   }
 
-  if (options.indexedFramebuffer.length !== APPLY_PLAYPAL_PALETTE_CONTRACT.indexedFramebufferBytesLength) {
-    throw new Error(`Expected indexed framebuffer byte length ${APPLY_PLAYPAL_PALETTE_CONTRACT.indexedFramebufferBytesLength}, received ${options.indexedFramebuffer.length}`);
+  const indexedFramebuffer = options.indexedFramebuffer;
+  const indexedFramebufferLength = indexedFramebuffer.length;
+
+  if (indexedFramebufferLength !== APPLY_PLAYPAL_PALETTE_CONTRACT.indexedFramebufferBytesLength) {
+    throw new Error(`Expected indexed framebuffer byte length ${APPLY_PLAYPAL_PALETTE_CONTRACT.indexedFramebufferBytesLength}, received ${indexedFramebufferLength}`);
   }
 
   if (options.playpalPalette.length !== APPLY_PLAYPAL_PALETTE_CONTRACT.paletteBytesLength) {
@@ -53,8 +56,8 @@ export function applyPlaypalPalette(options: ApplyPlaypalPaletteOptions): ApplyP
   const paletteLookup = buildPaletteLookup(options.playpalPalette);
   const presentedFramebuffer = new Uint32Array(APPLY_PLAYPAL_PALETTE_CONTRACT.indexedFramebufferPixelCount);
 
-  for (let pixelIndex = 0; pixelIndex < options.indexedFramebuffer.length; pixelIndex += 1) {
-    presentedFramebuffer[pixelIndex] = paletteLookup[options.indexedFramebuffer[pixelIndex]!]!;
+  for (let pixelIndex = 0; pixelIndex < indexedFramebufferLength; pixelIndex += 1) {
+    presentedFramebuffer[pixelIndex] = paletteLookup[indexedFramebuffer[pixelIndex]!]!;
   }
 
   return Object.freeze({
@@ -65,15 +68,20 @@ export function applyPlaypalPalette(options: ApplyPlaypalPaletteOptions): ApplyP
 }
 
 function buildPaletteLookup(playpalPalette: Uint8Array): Uint32Array {
-  const paletteLookup = new Uint32Array(APPLY_PLAYPAL_PALETTE_CONTRACT.paletteEntries);
+  const paletteEntries = APPLY_PLAYPAL_PALETTE_CONTRACT.paletteEntries;
+  const paletteEntryBytes = APPLY_PLAYPAL_PALETTE_CONTRACT.paletteEntryBytes;
+  const greenShift = APPLY_PLAYPAL_PALETTE_CONTRACT.greenShift;
+  const redShift = APPLY_PLAYPAL_PALETTE_CONTRACT.redShift;
+  const alphaMask = APPLY_PLAYPAL_PALETTE_CONTRACT.alphaMask;
+  const paletteLookup = new Uint32Array(paletteEntries);
 
-  for (let colorIndex = 0; colorIndex < APPLY_PLAYPAL_PALETTE_CONTRACT.paletteEntries; colorIndex += 1) {
-    const paletteOffset = colorIndex * APPLY_PLAYPAL_PALETTE_CONTRACT.paletteEntryBytes;
-    const blue = playpalPalette[paletteOffset + 2]!;
-    const green = playpalPalette[paletteOffset + 1]!;
+  for (let colorIndex = 0; colorIndex < paletteEntries; colorIndex += 1) {
+    const paletteOffset = colorIndex * paletteEntryBytes;
     const red = playpalPalette[paletteOffset]!;
+    const green = playpalPalette[paletteOffset + 1]!;
+    const blue = playpalPalette[paletteOffset + 2]!;
 
-    paletteLookup[colorIndex] = blue | (green << APPLY_PLAYPAL_PALETTE_CONTRACT.greenShift) | (red << APPLY_PLAYPAL_PALETTE_CONTRACT.redShift) | APPLY_PLAYPAL_PALETTE_CONTRACT.alphaMask;
+    paletteLookup[colorIndex] = blue | (green << greenShift) | (red << redShift) | alphaMask;
   }
 
   return paletteLookup;

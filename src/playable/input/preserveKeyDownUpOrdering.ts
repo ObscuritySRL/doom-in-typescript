@@ -63,13 +63,17 @@ export function preserveKeyDownUpOrdering(runtimeCommand: string, inputEvents: r
   }
 
   const orderedEvents: OrderedDoomKeyEvent[] = [];
+  const inputEventCount = inputEvents.length;
 
-  for (const [inputIndex, inputEvent] of inputEvents.entries()) {
+  for (let inputIndex = 0; inputIndex < inputEventCount; inputIndex += 1) {
+    const inputEvent = inputEvents[inputIndex]!;
+
     if (!isSupportedEventType(inputEvent.eventType)) {
       throw new Error(`Unsupported key event type: ${inputEvent.eventType}`);
     }
 
-    const doomKey = translateScanCode(inputEvent.lparam);
+    const lparam = inputEvent.lparam;
+    const doomKey = translateScanCode(lparam);
 
     if (doomKey === 0) {
       continue;
@@ -79,9 +83,9 @@ export function preserveKeyDownUpOrdering(runtimeCommand: string, inputEvents: r
       Object.freeze({
         doomKey,
         eventType: inputEvent.eventType,
-        extendedKey: isExtendedKey(inputEvent.lparam),
+        extendedKey: isExtendedKey(lparam),
         inputIndex,
-        scanCode: extractScanCode(inputEvent.lparam),
+        scanCode: extractScanCode(lparam),
       }),
     );
   }
