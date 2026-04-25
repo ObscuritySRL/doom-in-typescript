@@ -60,12 +60,12 @@ export function schedulePresentation(input: SchedulePresentationInput): Schedule
     return null;
   }
 
-  return {
+  return Object.freeze({
     frameOrdinal: input.frameCount + 1,
     mainLoopPhase: PRESENTATION_PHASE,
     presentationScheduled: true,
     runtimeCommand: REQUIRED_RUNTIME_COMMAND,
     ticsPerSecond: TICS_PER_SECOND,
     totalTics: input.totalTics,
-  };
+  });
 }

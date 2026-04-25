@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 import { SCHEDULE_PRESENTATION_CONTRACT, schedulePresentation } from '../../../src/playable/real-time-main-loop/schedulePresentation.ts';
 
 interface AuditPlayableHostSurfaceManifest {
@@ -17,11 +15,11 @@ interface AuditPlayableHostSurfaceManifest {
 const HOST_SURFACE_MANIFEST_PATH = new URL('../../../plan_fps/manifests/01-006-audit-playable-host-surface.json', import.meta.url);
 
 async function loadHostSurfaceManifest(): Promise<AuditPlayableHostSurfaceManifest> {
-  return JSON.parse(await Bun.file(HOST_SURFACE_MANIFEST_PATH).text()) as AuditPlayableHostSurfaceManifest;
+  return (await Bun.file(HOST_SURFACE_MANIFEST_PATH).json()) as AuditPlayableHostSurfaceManifest;
 }
 
 function schedulePresentationContractHash(): string {
-  return createHash('sha256').update(JSON.stringify(SCHEDULE_PRESENTATION_CONTRACT)).digest('hex');
+  return new Bun.CryptoHasher('sha256').update(JSON.stringify(SCHEDULE_PRESENTATION_CONTRACT)).digest('hex');
 }
 
 describe('schedulePresentation', () => {
@@ -38,6 +36,7 @@ describe('schedulePresentation', () => {
       ticAuthority: ['TicAccumulator.advance()', 'TicAccumulator.totalTics'],
       ticsPerSecond: 35,
     });
+    expect(Object.isFrozen(SCHEDULE_PRESENTATION_CONTRACT)).toBe(true);
   });
 
   it('locks a stable schedule-presentation contract hash', () => {
@@ -53,14 +52,14 @@ describe('schedulePresentation', () => {
   });
 
   it('schedules presentation from the display phase without advancing simulation', () => {
-    expect(
-      schedulePresentation({
-        frameCount: 7,
-        mainLoopPhase: 'display',
-        runtimeCommand: 'bun run doom.ts',
-        totalTics: 12,
-      }),
-    ).toEqual({
+    const scheduled = schedulePresentation({
+      frameCount: 7,
+      mainLoopPhase: 'display',
+      runtimeCommand: 'bun run doom.ts',
+      totalTics: 12,
+    });
+
+    expect(scheduled).toEqual({
       frameOrdinal: 8,
       mainLoopPhase: 'display',
       presentationScheduled: true,
@@ -68,6 +67,33 @@ describe('schedulePresentation', () => {
       ticsPerSecond: 35,
       totalTics: 12,
     });
+    expect(Object.isFrozen(scheduled)).toBe(true);
+  });
+
+  it('skips presentation for every non-display phase', () => {
+    for (const phase of ['startFrame', 'tryRunTics', 'updateSounds'] as const) {
+      expect(
+        schedulePresentation({
+          frameCount: 0,
+          mainLoopPhase: phase,
+          runtimeCommand: 'bun run doom.ts',
+          totalTics: 0,
+        }),
+      ).toBeNull();
+    }
+  });
+
+  it('preserves the totalTics snapshot it observes from TicAccumulator', () => {
+    const scheduled = schedulePresentation({
+      frameCount: 0,
+      mainLoopPhase: 'display',
+      runtimeCommand: 'bun run doom.ts',
+      totalTics: 1234567,
+    });
+
+    expect(scheduled).not.toBeNull();
+    expect(scheduled?.totalTics).toBe(1234567);
+    expect(scheduled?.frameOrdinal).toBe(1);
   });
 
   it('skips presentation outside the display phase', () => {

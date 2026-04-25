@@ -119,13 +119,13 @@ const expectedDecisionBlock = `## D-FPS-011
 
 describe('00-011 define-side-by-side-acceptance-standard', () => {
   it('locks the parsed manifest payload exactly', async () => {
-    const manifest = JSON.parse(await Bun.file(manifestPath).text());
+    const manifest = await Bun.file(manifestPath).json();
 
     expect(manifest).toEqual(expectedManifest);
   });
 
   it('pins the ordered comparison pipeline and exact-match evidence families', async () => {
-    const manifest = JSON.parse(await Bun.file(manifestPath).text());
+    const manifest = await Bun.file(manifestPath).json();
 
     expect(manifest.comparisonPipeline.map((entry: { id: string }) => entry.id)).toEqual([
       'arrange-side-by-side-view',
@@ -147,9 +147,9 @@ describe('00-011 define-side-by-side-acceptance-standard', () => {
   });
 
   it('cross-checks the README mission and Bun-only workspace settings', async () => {
-    const packageJson = JSON.parse(await Bun.file(packageJsonPath).text());
+    const packageJson = await Bun.file(packageJsonPath).json();
     const readmeText = await Bun.file(readmePath).text();
-    const tsconfig = JSON.parse(await Bun.file(tsconfigPath).text());
+    const tsconfig = await Bun.file(tsconfigPath).json();
 
     expect(readmeText).toContain(
       'Convert the existing deterministic DOOM engine work into a Bun-run, windowed, playable, side-by-side-verifiable DOOM product while preserving vanilla/reference behavior exactly except for fullscreen-vs-windowed presentation.',
@@ -173,5 +173,45 @@ describe('00-011 define-side-by-side-acceptance-standard', () => {
 
       expect(await Bun.file(absolutePath).exists()).toBe(true);
     }
+  });
+
+  it('keeps evidence paths sorted with no duplicates', () => {
+    const evidencePaths = [...expectedManifest.evidencePaths];
+    const sortedEvidencePaths = [...evidencePaths].sort();
+
+    expect(evidencePaths).toEqual(sortedEvidencePaths);
+    expect(new Set(evidencePaths).size).toBe(evidencePaths.length);
+  });
+
+  it('keeps required evidence family ids alphabetical and unique', () => {
+    const familyIds = expectedManifest.requiredEvidenceFamilies.map((family) => family.id);
+    const sortedFamilyIds = [...familyIds].sort();
+
+    expect(familyIds).toEqual(sortedFamilyIds);
+    expect(new Set(familyIds).size).toBe(familyIds.length);
+  });
+
+  it('keeps comparison pipeline ids unique', () => {
+    const pipelineIds = expectedManifest.comparisonPipeline.map((step) => step.id);
+
+    expect(new Set(pipelineIds).size).toBe(pipelineIds.length);
+  });
+
+  it('routes every evidence family through the final acceptance gate', () => {
+    const finalGateStepId = expectedManifest.acceptanceGate.gateStepId;
+
+    for (const family of expectedManifest.requiredEvidenceFamilies) {
+      expect(family.gateStepIds).toContain(finalGateStepId);
+      expect(family.oracleStepIds.length).toBeGreaterThan(0);
+      expect(new Set(family.gateStepIds).size).toBe(family.gateStepIds.length);
+      expect(new Set(family.oracleStepIds).size).toBe(family.oracleStepIds.length);
+    }
+  });
+
+  it('uses the runtime command pinned by D-FPS-003 as the acceptance-gate target', () => {
+    expect(expectedManifest.runtimeTarget.command).toBe('bun run doom.ts');
+    expect(expectedManifest.runtimeTarget.decisionId).toBe('D-FPS-003');
+    expect(expectedManifest.acceptanceGate.requiresDeterministicReplay).toBe(true);
+    expect(expectedManifest.acceptanceGate.requiresCleanLaunch).toBe(true);
   });
 });
