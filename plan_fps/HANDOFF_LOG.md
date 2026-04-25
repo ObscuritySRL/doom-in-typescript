@@ -3102,3 +3102,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-012 wire-volume-controls
 - open_risks: none
+
+## 2026-04-25 - 10-012 wire-volume-controls
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-012
+- step_title: wire-volume-controls
+- summary: Added the playable volume-control surface at `src/playable/audio-product-integration/wireVolumeControls.ts`. The module exports the exact `bun run doom.ts` command contract plus `wireVolumeControls`, validates the product runtime command before any mutation or live dispatch, prevalidates music and sound-effects volume ranges, routes music volume through `setMusicVolume`, updates replay-safe sound-effects volume state, and returns frozen deterministic transition evidence with replay checksum `4280210275`. Added focused test `test/playable/audio-product-integration/wire-volume-controls.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, sound-effects volume range constants, formatted source SHA-256 `37feb646a3cf163d872a7330779132a0475ff341c8b3d32985026d80d4a4471c`, exact transition evidence, wrong-command rejection, and invalid-volume prevalidation.
+- files_changed: src/playable/audio-product-integration/wireVolumeControls.ts; test/playable/audio-product-integration/wire-volume-controls.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass formatted 6 files and fixed 1 file; exact-value rerun formatted 6 files with no fixes); bun test test/playable/audio-product-integration/wire-volume-controls.test.ts (5 pass, 0 fail, 22 expect() calls); bun test (7540 pass, 0 fail, 693556 expect() calls across 343 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-013 shutdown-audio-cleanly
+- open_risks: none
