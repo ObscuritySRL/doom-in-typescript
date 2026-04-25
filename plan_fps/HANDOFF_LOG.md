@@ -3120,3 +3120,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-013 shutdown-audio-cleanly
 - open_risks: none
+
+## 2026-04-25 - 10-013 shutdown-audio-cleanly
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-013
+- step_title: shutdown-audio-cleanly
+- summary: Added the playable clean audio shutdown surface at `src/playable/audio-product-integration/shutdownAudioCleanly.ts`. The module exports the exact `bun run doom.ts` command contract plus `shutdownAudioCleanly`, validates the runtime command and eight sound-effect channel snapshots before any mutation or dispatch, routes music teardown through `stopMusic` to preserve resume-before-stop ordering, clears sound-effect channels without retaining host handles, optionally dispatches replay-safe stop actions, and returns frozen deterministic transition evidence with replay checksum `3712582611`. Added focused test `test/playable/audio-product-integration/shutdown-audio-cleanly.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, formatted source SHA-256 `8089bd9f5000915071a9230a9eed68957ca0ee4f688094c9d839c38f6c9227db`, paused-music shutdown order, sound-effect channel clearing, no-op shutdown checksum, wrong-command rejection, and invalid-channel prevalidation.
+- files_changed: src/playable/audio-product-integration/shutdownAudioCleanly.ts; test/playable/audio-product-integration/shutdown-audio-cleanly.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test runs intentionally used placeholders while locking exact values; captured the formatted source SHA-256, active replay signature/checksum, and no-op checksum, then replaced the placeholders. The first TypeScript verification pass failed because the test compared a mutable dispatch array directly against the readonly result action array; changed the assertion to compare against `Array.from(result.actions)` without weakening types, then reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass formatted 6 files and fixed 1 file; exact-value and recovery reruns reported no fixes); bun test test/playable/audio-product-integration/shutdown-audio-cleanly.test.ts (placeholder runs failed as expected while locking exact values; final rerun 5 pass, 0 fail, 36 expect() calls); bun test (final rerun 7545 pass, 0 fail, 693592 expect() calls across 344 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on readonly assertion typing; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-014 capture-audio-hash-windows
+- open_risks: none
