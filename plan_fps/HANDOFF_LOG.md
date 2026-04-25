@@ -1823,3 +1823,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-002 map-internal-doom-keys
 - open_risks: none
+
+## 2026-04-25 - 06-002 map-internal-doom-keys
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-002
+- step_title: map-internal-doom-keys
+- summary: Added the playable input Doom-key mapping surface at `src/playable/input/mapInternalDoomKeys.ts`. The module exports an exact Bun-only contract plus `mapInternalDoomKeys`, which validates the `bun run doom.ts` runtime path, maps the 01-010 documented control set from Doom internal key codes to deterministic semantic actions and frozen ticcmd deltas using `src/input/keyboard.ts` and `src/input/ticcmd.ts`, preserves host-only controls like automap and quit outside tic mutation, and keeps replay compatibility by avoiding timestamps or live tic accumulation. Added focused test `test/playable/input/map-internal-doom-keys.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, gameplay and host mapping behavior, null unmapped behavior, and wrong-command rejection.
+- files_changed: src/playable/input/mapInternalDoomKeys.ts; test/playable/input/map-internal-doom-keys.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused-test run failed because the contract `documentedControls` order did not match the 01-010 manifest `sourceOrder`; reordered the contract and focused test to match the audited control order, recomputed the contract hash, then fixed a follow-up TypeScript matcher overload by spreading the readonly contract controls into a mutable array in the manifest assertion before rerunning format, the focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun before verification applied no fixes; rerun after the focused-test recovery edit applied no fixes; rerun after the TypeScript recovery edit applied no fixes); bun test test/playable/input/map-internal-doom-keys.test.ts (initial run failed 5 pass, 1 fail; rerun after the ordering recovery passed 6 pass, 0 fail, 15 expect() calls; final rerun after the TypeScript recovery passed 6 pass, 0 fail, 15 expect() calls); bun test (initial run passed 6965 pass, 0 fail, 691538 expect() calls; rerun after the TypeScript recovery passed 6965 pass, 0 fail, 691538 expect() calls); bun x tsc --noEmit --project tsconfig.json (initial run failed on the readonly matcher overload; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-003 preserve-scan-code-config-relationship
+- open_risks: none
