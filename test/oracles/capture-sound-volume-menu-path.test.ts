@@ -269,11 +269,10 @@ const expectedFixture = {
 
 const requiredMissingSurfaces = ['audio-hash-comparison', 'framebuffer-hash-comparison', 'reference-oracle-replay-capture', 'state-hash-comparison'] as const;
 
-async function hashTrace(trace: unknown): Promise<string> {
-  const bytes = new TextEncoder().encode(JSON.stringify(trace));
-  const digest = await crypto.subtle.digest('SHA-256', bytes);
-
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+function hashTrace(trace: unknown): string {
+  const hasher = new Bun.CryptoHasher('sha256');
+  hasher.update(JSON.stringify(trace));
+  return hasher.digest('hex');
 }
 
 function isLaunchSurfaceManifest(value: unknown): value is LaunchSurfaceManifest {
@@ -308,20 +307,22 @@ function isSurfaceRecord(value: unknown): value is { surface: string } {
   return isRecord(value) && typeof value.surface === 'string';
 }
 
-function parseJson(text: string): unknown {
-  return JSON.parse(text);
-}
-
 describe('capture sound volume menu path oracle', () => {
   test('locks the complete fixture by exact value', async () => {
-    const fixture = parseJson(await Bun.file(fixturePath).text());
+    const fixture: unknown = await Bun.file(fixturePath).json();
 
     expect(fixture).toEqual(expectedFixture);
   });
 
   test('locks the deterministic trace hash and sound volume transition', async () => {
-    expect(await hashTrace(expectedTrace)).toBe(expectedFixture.expectedHashes.traceSha256);
-    expect(expectedTrace[8]).toEqual({
+    const fixture: unknown = await Bun.file(fixturePath).json();
+
+    if (!isRecord(fixture) || !Array.isArray(fixture.expectedTrace) || !isRecord(fixture.expectedHashes) || typeof fixture.expectedHashes.traceSha256 !== 'string') {
+      throw new Error('Sound volume oracle fixture shape changed');
+    }
+
+    expect(hashTrace(fixture.expectedTrace)).toBe(fixture.expectedHashes.traceSha256);
+    expect(fixture.expectedTrace[8]).toEqual({
       event: 'options-selection-moved',
       frame: 8,
       input: 'ArrowDown',
@@ -330,7 +331,7 @@ describe('capture sound volume menu path oracle', () => {
       sound: 'sfx_pstop',
       tick: 8,
     });
-    expect(expectedTrace[9]).toEqual({
+    expect(fixture.expectedTrace[9]).toEqual({
       event: 'submenu-opened',
       frame: 9,
       input: 'Enter',
@@ -342,7 +343,7 @@ describe('capture sound volume menu path oracle', () => {
   });
 
   test('cross-checks the launch-surface manifest command contract and missing hash surfaces', async () => {
-    const manifest = parseJson(await Bun.file(launchSurfaceManifestPath).text());
+    const manifest: unknown = await Bun.file(launchSurfaceManifestPath).json();
 
     expect(isLaunchSurfaceManifest(manifest)).toBe(true);
 

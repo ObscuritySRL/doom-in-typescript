@@ -230,13 +230,7 @@ function requireRecord(value: unknown, label: string): Record<string, unknown> {
 }
 
 async function sha256Hex(relativePath: string): Promise<string> {
-  const digest = await crypto.subtle.digest('SHA-256', await Bun.file(new URL(relativePath, projectRoot)).arrayBuffer());
-  const hashBytes = new Uint8Array(digest);
-  const hashCharacters: string[] = [];
-
-  for (const hashByte of hashBytes) {
-    hashCharacters.push(hashByte.toString(16).padStart(2, '0'));
-  }
-
-  return hashCharacters.join('');
+  const hasher = new Bun.CryptoHasher('sha256');
+  hasher.update(await Bun.file(new URL(relativePath, projectRoot)).bytes());
+  return hasher.digest('hex');
 }
