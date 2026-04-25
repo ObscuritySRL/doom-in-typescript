@@ -1589,3 +1589,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-014 add-screenshot-capture-hooks
 - open_risks: none
+
+## 2026-04-25 - 04-014 add-screenshot-capture-hooks
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-014
+- step_title: add-screenshot-capture-hooks
+- summary: Added the playable window-host screenshot-capture-hooks surface at `src/playable/window-host/addScreenshotCaptureHooks.ts`. The module exports an exact add-screenshot-capture-hooks contract plus `addScreenshotCaptureHooks`, which validates the `bun run doom.ts` runtime path, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, records the live `renderLauncherFrame(session);` -> `convertIndexedFrame(session.framebuffer, indexedFrameBuffer, paletteLookup);` -> `presentFrame(user32.symbols, gdi32.symbols, windowHandle, indexedFrameBytes, indexedFrameHeader, backgroundFillBytes, backgroundFillHeader);` sequence from `src/launcher/win32.ts`, preserves the shared 320x200 framebuffer and 640x480 default client area from `src/host/windowPolicy.ts`, and keeps deterministic replay compatibility explicit by limiting the hooks to observe-only capture points. Added focused test `test/playable/window-host/add-screenshot-capture-hooks.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live source ordering, Bun runtime happy path, and wrong-command failure mode.
+- files_changed: src/playable/window-host/addScreenshotCaptureHooks.ts; test/playable/window-host/add-screenshot-capture-hooks.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; pre-publish rerun formatted 2 files and applied no fixes); bun test test/playable/window-host/add-screenshot-capture-hooks.test.ts (5 pass, 0 fail, 11 expect() calls); bun test (6889 pass, 0 fail, 691394 expect() calls across 259 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-001 schedule-35hz-game-tics
+- open_risks: none
