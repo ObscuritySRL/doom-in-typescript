@@ -2075,3 +2075,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-002 implement-attract-loop-state-machine
 - open_risks: none
+
+## 2026-04-25 - 07-002 implement-attract-loop-state-machine
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-002
+- step_title: implement-attract-loop-state-machine
+- summary: Added the playable attract-loop state-machine surface at `src/playable/front-end-menus/implementAttractLoopStateMachine.ts`. The module exports an exact Bun-only contract plus `implementAttractLoopStateMachine`, `tickAttractLoopStateMachine`, `syncAttractLoopMenuState`, and `completeAttractLoopDemo`, which wrap the existing front-end sequencer and menu state into a deterministic clean-launch attract loop that starts on `TITLEPIC`, keeps page ticking active while the menu overlay is up, and advances to the next attract state only on the tick after demo completion. Added focused test `test/playable/front-end-menus/implement-attract-loop-state-machine.test.ts` to lock the exact contract object and SHA-256 hash, the 01-008 launch audit linkage, the initial `TITLEPIC` transition, menu-active `DEMO1` progression, the post-demo `CREDIT` transition, and wrong-command plus invalid demo-completion failure modes.
+- files_changed: src/playable/front-end-menus/implementAttractLoopStateMachine.ts; test/playable/front-end-menus/implement-attract-loop-state-machine.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes); bun test test/playable/front-end-menus/implement-attract-loop-state-machine.test.ts (6 pass, 0 fail, 17 expect() calls); bun test (7055 pass, 0 fail, 691710 expect() calls across 286 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-003 preserve-demo-playback-menu-interaction
+- open_risks: none
