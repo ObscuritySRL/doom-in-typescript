@@ -1751,3 +1751,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-009 reject-visible-interpolation
 - open_risks: none
+
+## 2026-04-25 - 05-009 reject-visible-interpolation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-009
+- step_title: reject-visible-interpolation
+- summary: Added the playable real-time-main-loop interpolation surface at `src/playable/real-time-main-loop/rejectVisibleInterpolation.ts`. The module exports an exact reject-visible-interpolation contract plus `rejectVisibleInterpolation`, which validates the `bun run doom.ts` runtime path, ties interpolation rejection to the `display` phase in `src/mainLoop.ts`, records `TicAccumulator.advance()` and `TicAccumulator.totalTics` as the discrete timing authorities from `src/host/ticAccumulator.ts`, preserves the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` launcher transition from 01-006, and keeps presentation from inventing blended frames between game tics. Added focused test `test/playable/real-time-main-loop/reject-visible-interpolation.test.ts` to lock the exact contract object, stable SHA-256 hash, audited launcher transition, live timing evidence, display-phase behavior, non-display no-op behavior, and wrong-command rejection.
+- files_changed: src/playable/real-time-main-loop/rejectVisibleInterpolation.ts; test/playable/real-time-main-loop/reject-visible-interpolation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because Bun's matcher overload inferred the literal-string contract field type for the manifest-transition assertion. Inverted the assertion so the parsed manifest string is the matcher subject, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; immediate rerun applied no fixes; post-recovery reruns applied no fixes); bun test test/playable/real-time-main-loop/reject-visible-interpolation.test.ts (initial run: 6 pass, 0 fail, 11 expect() calls; post-recovery reruns: 6 pass, 0 fail, 11 expect() calls); bun test (initial run: 6940 pass, 0 fail, 691485 expect() calls; post-recovery reruns: 6940 pass, 0 fail, 691485 expect() calls); bun x tsc --noEmit --project tsconfig.json (initial run failed on the focused-test matcher overload; second post-recovery rerun: clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-010 implement-clean-main-loop-shutdown
+- open_risks: none
