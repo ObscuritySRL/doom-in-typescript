@@ -2201,3 +2201,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-009 implement-sound-volume-menu
 - open_risks: none
+
+## 2026-04-25 - 07-009 implement-sound-volume-menu
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-009
+- step_title: implement-sound-volume-menu
+- summary: Added the playable sound-volume-menu surface at `src/playable/front-end-menus/implementSoundVolumeMenu.ts`. The module exports an exact Bun-only runtime contract plus `implementSoundVolumeMenu`, which validates the `bun run doom.ts` command, requires the active Options-menu Sound Volume selection, routes the transition through `menus.ts` with `KEY_ENTER`, synchronizes `frontEndSequence.ts` menu-active state, and preserves replay-relevant demo playback state while opening the Sound Volume menu. Added focused test `test/playable/front-end-menus/implement-sound-volume-menu.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, the options-menu to sound-volume-menu transition, and wrong-command plus wrong-selection rejection paths.
+- files_changed: src/playable/front-end-menus/implementSoundVolumeMenu.ts; test/playable/front-end-menus/implement-sound-volume-menu.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because control-flow narrowing kept `menu.currentMenu` pinned to `MenuKind.Options` after the pre-transition guard, even though `handleMenuKey` mutates the menu state. Reworked the post-transition validation to rely on the returned `openMenu` action plus the focused Sound Volume slider index, refreshed the locked source hash in the focused test, reran formatting, and reran the verification tail successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; reruns after recovery edits applied no fixes); bun test test/playable/front-end-menus/implement-sound-volume-menu.test.ts (initial run: 4 pass, 0 fail, 12 expect() calls; reruns after recovery: 4 pass, 0 fail, 12 expect() calls); bun test (initial run: 7097 pass, 0 fail, 691848 expect() calls across 293 files; reruns after recovery: 7097 pass, 0 fail, 691848 expect() calls across 293 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on the narrowed `menu.currentMenu` Sound Volume comparison; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-010 implement-screen-size-detail-gamma-controls
+- open_risks: none
