@@ -707,3 +707,21 @@
 - oracle_changes: OR-FPS-015 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-menu-open-close-behavior.json` with refresh command `bun test test/oracles/capture-menu-open-close-behavior.test.ts`
 - next_eligible_steps: 02-011 capture-new-game-menu-path
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-011 capture-new-game-menu-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-011
+- step_title: capture-new-game-menu-path
+- summary: Added the new game menu path oracle fixture at `test/oracles/fixtures/capture-new-game-menu-path.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference capture command contract, Escape/Enter input sequence, tick/frame capture window, exact abstract transition trace from attract loop to main menu to episode menu, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-new-game-menu-path.test.ts` to lock the fixture exactly, recompute the trace hash, verify the new-game menu transition path, cross-check source-catalog authority and the 01-015 manifest, verify the pending reference-capture gap, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-new-game-menu-path.json; test/oracles/capture-new-game-menu-path.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-new-game-menu-path.test.ts (5 pass, 0 fail, 15 expect() calls); bun test (6641 pass, 0 fail, 690507 expect() calls); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-016 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-new-game-menu-path.json` with refresh command `bun test test/oracles/capture-new-game-menu-path.test.ts`
+- next_eligible_steps: 02-012 capture-episode-menu-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live new-game menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
