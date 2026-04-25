@@ -2237,3 +2237,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-011 implement-messages-toggle
 - open_risks: none
+
+## 2026-04-25 - 07-011 implement-messages-toggle
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-011
+- step_title: implement-messages-toggle
+- summary: Added the playable messages-toggle surface at `src/playable/front-end-menus/implementMessagesToggle.ts`. The module exports an exact Bun-only runtime contract plus `implementMessagesToggle`, which validates the `bun run doom.ts` command, requires the active Options-menu Messages selection, routes the toggle through `menus.ts` with `KEY_ENTER`, synchronizes `frontEndSequence.ts` menu-active state, preserves replay-relevant demo playback state, and returns the vanilla-style `Messages ON` or `Messages OFF` status text for the new toggle state. Added focused test `test/playable/front-end-menus/implement-messages-toggle.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, the messages-toggle transition, and wrong-command plus wrong-selection rejection paths.
+- files_changed: src/playable/front-end-menus/implementMessagesToggle.ts; test/playable/front-end-menus/implement-messages-toggle.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused contract assertion compared `MenuKind.Options` against the raw string `options`. Changed the locked expectation to `MenuKind.Options`, reran formatting, then reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; clean rerun after the source-hash patch applied no fixes; clean rerun after the enum-literal recovery edit applied no fixes); bun test test/playable/front-end-menus/implement-messages-toggle.test.ts (initial run: 6 pass, 0 fail, 14 expect() calls; rerun after the enum-literal recovery edit: 6 pass, 0 fail, 14 expect() calls); bun test (initial run: 7111 pass, 0 fail, 691882 expect() calls across 295 files; rerun after the enum-literal recovery edit: 7111 pass, 0 fail, 691882 expect() calls across 295 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on the raw-string `options` expectation; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-012 implement-save-game-menu
+- open_risks: none
