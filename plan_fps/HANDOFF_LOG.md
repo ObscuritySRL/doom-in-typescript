@@ -1877,3 +1877,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-005 preserve-key-repeat-behavior
 - open_risks: none
+
+## 2026-04-25 - 06-005 preserve-key-repeat-behavior
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-005
+- step_title: preserve-key-repeat-behavior
+- summary: Added the playable input key-repeat surface at `src/playable/input/preserveKeyRepeatBehavior.ts`. The module exports an exact Bun-only contract plus `preserveKeyRepeatBehavior`, which validates the `bun run doom.ts` runtime path, expands Win32 keydown repeat counts from the message long parameter into repeated arrivals without deduping, drops unmapped scan codes without reordering mapped input, and stays replay-safe by anchoring neutrality to `EMPTY_TICCMD` and `TICCMD_SIZE` from `src/input/ticcmd.ts`. Added focused test `test/playable/input/preserve-key-repeat-behavior.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, repeat-expansion behavior, mapped-order preservation, and wrong-command plus invalid-repeat-count failure modes.
+- files_changed: src/playable/input/preserveKeyRepeatBehavior.ts; test/playable/input/preserve-key-repeat-behavior.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes); bun test test/playable/input/preserve-key-repeat-behavior.test.ts (7 pass, 0 fail, 10 expect() calls); bun test (6984 pass, 0 fail, 691571 expect() calls across 275 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-006 map-mouse-buttons
+- open_risks: none
