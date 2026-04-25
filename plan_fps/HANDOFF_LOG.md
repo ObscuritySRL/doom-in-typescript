@@ -1463,3 +1463,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-007 define-resize-policy
 - open_risks: none
+
+## 2026-04-25 - 04-007 define-resize-policy
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-007
+- step_title: define-resize-policy
+- summary: Added the playable window-host resize-policy surface at `src/playable/window-host/defineResizePolicy.ts`. The module exports an exact resize-policy contract plus `defineResizePolicy`, which validates the `bun run doom.ts` runtime path, derives an integer-fit resize plan from the live client area using the shared window policy, clamps undersized resize requests to the 1x 320x240 aspect-correct minimum, centers the applied presentation area, anchors the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, and keeps deterministic replay compatibility explicit by limiting the surface to presentation-only resize policy. Added focused test `test/playable/window-host/define-resize-policy.test.ts` to lock the exact contract object, stable SHA-256 hash, audit/source evidence, oversized resize behavior, minimum-size clamping, and wrong-command failure mode.
+- files_changed: src/playable/window-host/defineResizePolicy.ts; test/playable/window-host/define-resize-policy.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (formatted 2 files and fixed 1 file; pre-publish rerun formatted 2 files and applied no fixes); bun test test/playable/window-host/define-resize-policy.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (6853 pass, 0 fail, 691295 expect() calls across 252 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-008 handle-window-focus
+- open_risks: none
