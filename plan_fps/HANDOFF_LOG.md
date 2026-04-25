@@ -2129,3 +2129,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-005 implement-new-game-menu
 - open_risks: none
+
+## 2026-04-25 - 07-005 implement-new-game-menu
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-005
+- step_title: implement-new-game-menu
+- summary: Added the playable new-game-menu surface at `src/playable/front-end-menus/implementNewGameMenu.ts`. The module exports an exact Bun-only runtime contract plus `implementNewGameMenu`, which validates the `bun run doom.ts` command, requires the active Main-menu New Game selection, routes the transition through `menus.ts` with `KEY_ENTER`, synchronizes `frontEndSequence.ts` menu-active state, and preserves replay-relevant demo playback state while opening the Episode menu. Added focused test `test/playable/front-end-menus/implement-new-game-menu.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, the main-menu to episode-menu transition, and wrong-command plus wrong-selection rejection paths.
+- files_changed: src/playable/front-end-menus/implementNewGameMenu.ts; test/playable/front-end-menus/implement-new-game-menu.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; post-hash-lock rerun applied no fixes); bun test test/playable/front-end-menus/implement-new-game-menu.test.ts (6 pass, 0 fail, 11 expect() calls); bun test (7075 pass, 0 fail, 691792 expect() calls across 289 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-006 implement-episode-select-menu
+- open_risks: none
