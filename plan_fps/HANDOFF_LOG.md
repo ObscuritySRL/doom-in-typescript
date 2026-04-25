@@ -1103,3 +1103,21 @@
 - oracle_changes: none
 - next_eligible_steps: 03-002 wire-root-doom-ts-entrypoint
 - open_risks: none
+
+## 2026-04-25 - 03-002 wire-root-doom-ts-entrypoint
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-002
+- step_title: wire-root-doom-ts-entrypoint
+- summary: Added the Bun-only root `doom.ts` entrypoint wire surface at `src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts`. The wire contract records the target `bun run doom.ts` command, current `src/main.ts` launcher transition, Bun runtime argument/file APIs, 01-007 audit manifest authority, and deterministic replay compatibility metadata with no import side effects, replay inputs, or simulation mutations. Added focused test `test/playable/bun-runtime-entry-point/wire-root-doom-ts-entrypoint.test.ts` to lock the exact wire object and cross-check the transition against the 01-007 audit manifest, `package.json`, `src/main.ts`, and the deterministic replay metadata.
+- files_changed: src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts; test/playable/bun-runtime-entry-point/wire-root-doom-ts-entrypoint.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; rerun no fixes); bun test test/playable/bun-runtime-entry-point/wire-root-doom-ts-entrypoint.test.ts (4 pass, 0 fail, 9 expect() calls); bun test (6750 pass, 0 fail, 690972 expect() calls across 232 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-003 add-dev-launch-smoke-test
+- open_risks: none

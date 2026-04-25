@@ -77,7 +77,7 @@
 ## Phase 03: Bun Runtime Entry Point
 
 - [x] `03-001` `add-root-doom-ts-command-contract` | prereqs: `02-031` | file: `plan_fps/steps/03-001-add-root-doom-ts-command-contract.md`
-- [ ] `03-002` `wire-root-doom-ts-entrypoint` | prereqs: `03-001` | file: `plan_fps/steps/03-002-wire-root-doom-ts-entrypoint.md`
+- [x] `03-002` `wire-root-doom-ts-entrypoint` | prereqs: `03-001` | file: `plan_fps/steps/03-002-wire-root-doom-ts-entrypoint.md`
 - [ ] `03-003` `add-dev-launch-smoke-test` | prereqs: `03-002` | file: `plan_fps/steps/03-003-add-dev-launch-smoke-test.md`
 - [ ] `03-004` `wire-bun-native-file-loading` | prereqs: `03-003` | file: `plan_fps/steps/03-004-wire-bun-native-file-loading.md`
 - [ ] `03-005` `wire-bun-native-process-oracle-helpers` | prereqs: `03-004` | file: `plan_fps/steps/03-005-wire-bun-native-process-oracle-helpers.md`
