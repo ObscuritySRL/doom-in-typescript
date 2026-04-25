@@ -211,7 +211,7 @@
 - [x] `10-011` `play-intermission-finale-music` | prereqs: `10-010` | file: `plan_fps/steps/10-011-play-intermission-finale-music.md`
 - [x] `10-012` `wire-volume-controls` | prereqs: `10-011` | file: `plan_fps/steps/10-012-wire-volume-controls.md`
 - [x] `10-013` `shutdown-audio-cleanly` | prereqs: `10-012` | file: `plan_fps/steps/10-013-shutdown-audio-cleanly.md`
-- [ ] `10-014` `capture-audio-hash-windows` | prereqs: `10-013` | file: `plan_fps/steps/10-014-capture-audio-hash-windows.md`
+- [x] `10-014` `capture-audio-hash-windows` | prereqs: `10-013` | file: `plan_fps/steps/10-014-capture-audio-hash-windows.md`
 
 ## Phase 11: Save / Load Playability
 

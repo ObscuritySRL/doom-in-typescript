@@ -3138,3 +3138,21 @@
 - oracle_changes: none
 - next_eligible_steps: 10-014 capture-audio-hash-windows
 - open_risks: none
+
+## 2026-04-25 - 10-014 capture-audio-hash-windows
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-014
+- step_title: capture-audio-hash-windows
+- summary: Added the playable audio hash window capture surface at `src/playable/audio-product-integration/captureAudioHashWindows.ts`. The module exports the exact `bun run doom.ts` command contract plus `captureAudioHashWindows`, validates the product runtime command before inspecting windows, normalizes replay-safe music device actions and sound-effect start results without host handles, emits frozen per-window SHA-256 signatures, and returns aggregate capture hash evidence with replay checksum `334685769`. Added focused test `test/playable/audio-product-integration/capture-audio-hash-windows.test.ts` to lock the command contract, 01-011 missing-live-audio audit linkage, formatted source SHA-256 `c158497f6bd14eb49c2fb1f0818fdd4242d9205fc641f7366c8af2b6c3611a45`, exact window hashes, wrong-command prevalidation, and out-of-window event rejection.
+- files_changed: src/playable/audio-product-integration/captureAudioHashWindows.ts; test/playable/audio-product-integration/capture-audio-hash-windows.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Replaced focused-test placeholders after formatting with exact capture hashes and the formatted source SHA-256. Renamed the module's numeric validation helper before locking exact hashes so it accurately describes all non-negative integer fields being checked.
+- tests_run: bun run format (initial pass formatted 6 files and fixed 1 file; recovery and exact-value reruns reported no fixes); bun test test/playable/audio-product-integration/capture-audio-hash-windows.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (7550 pass, 0 fail, 693604 expect() calls across 345 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-001 implement-save-slot-ui
+- open_risks: none
