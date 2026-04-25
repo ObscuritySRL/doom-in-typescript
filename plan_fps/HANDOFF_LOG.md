@@ -2741,3 +2741,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-005 render-title-help-credit-pages
 - open_risks: none
+
+## 2026-04-25 - 09-005 render-title-help-credit-pages
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-005
+- step_title: render-title-help-credit-pages
+- summary: Added the playable title/help/credit page rendering surface at `src/playable/rendering-product-integration/renderTitleHelpCreditPages.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderTitleHelpCreditPages`, which validates the Bun runtime command, requires a full 320x200 framebuffer and full-screen page pixels, copies the selected TITLEPIC/HELP1/HELP2/CREDIT page into the replay-visible framebuffer, and returns deterministic page, transition, byte-count, and framebuffer signature evidence. Added focused test `test/playable/rendering-product-integration/render-title-help-credit-pages.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable SHA-256 source hash, exact title framebuffer transition, title/help/credit transition evidence, wrong-command rejection, and invalid-page mutation guard.
+- files_changed: src/playable/rendering-product-integration/renderTitleHelpCreditPages.ts; test/playable/rendering-product-integration/render-title-help-credit-pages.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test fixture helper widened page buffers to `Uint8Array<ArrayBufferLike>`, which did not satisfy Bun's typed-array `expect(...).toEqual(...)` overload. Narrowed the helper return types to `Uint8Array<ArrayBuffer>`, reran formatting, and reran the focused test, full `bun test`, and TypeScript verification successfully.
+- tests_run: bun run format (initial passes formatted 4 files with no fixes; recovery pass also no fixes); bun test test/playable/rendering-product-integration/render-title-help-credit-pages.test.ts (6 pass, 0 fail, 16 expect() calls; rerun after recovery also passed); bun test (7266 pass, 0 fail, 692354 expect() calls across 323 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on typed-array helper widening; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-006 render-intermission-screens
+- open_risks: none
