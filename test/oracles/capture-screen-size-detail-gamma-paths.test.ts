@@ -432,6 +432,36 @@ describe('capture-screen-size-detail-gamma-paths oracle', () => {
     });
     expect(launchSurfaceManifest.explicitNullSurfaces.map((surface) => surface.surface)).toEqual(expect.arrayContaining(['audio-hash-comparison', 'framebuffer-hash-comparison', 'reference-oracle-replay-capture', 'state-hash-comparison']));
     expect(fixture.pendingLiveHashes.map((hash) => hash.hashKind)).toEqual(['audio', 'framebuffer', 'state']);
+
+    for (const pendingHash of fixture.pendingLiveHashes) {
+      expect(pendingHash.status).toBe('pending-reference-capture-surface');
+      expect(pendingHash.reason.length).toBeGreaterThan(0);
+    }
+  });
+
+  test('locks the structural invariants of the trace, input sequence, and capture window', async () => {
+    const fixture: OracleFixture = await Bun.file(FIXTURE_PATH).json();
+    const traceFrames = fixture.expectedTrace.map((entry) => entry.frame);
+    const traceTics = fixture.expectedTrace.map((entry) => entry.tic);
+    const inputTics = fixture.inputSequence.map((event) => event.tic);
+
+    expect(traceFrames).toEqual([...traceFrames].sort((left, right) => left - right));
+    expect(traceTics).toEqual([...traceTics].sort((left, right) => left - right));
+    expect(inputTics).toEqual([...inputTics].sort((left, right) => left - right));
+    expect(new Set(traceFrames).size).toBe(traceFrames.length);
+    expect(new Set(traceTics).size).toBe(traceTics.length);
+    expect(new Set(inputTics).size).toBe(inputTics.length);
+    expect(fixture.captureWindow.startFrame).toBe(0);
+    expect(fixture.captureWindow.startTic).toBe(0);
+    expect(fixture.captureWindow.endFrame).toBe(fixture.captureWindow.endTic);
+    expect(fixture.expectedTrace.at(0)?.frame).toBe(fixture.captureWindow.startFrame);
+    expect(fixture.expectedTrace.at(0)?.tic).toBe(fixture.captureWindow.startTic);
+    expect(fixture.expectedTrace.at(-1)?.frame).toBe(fixture.captureWindow.endFrame);
+    expect(fixture.expectedTrace.at(-1)?.tic).toBe(fixture.captureWindow.endTic);
+
+    for (const event of fixture.inputSequence) {
+      expect(traceTics).toContain(event.tic);
+    }
   });
 
   test('is registered as OR-FPS-021', async () => {

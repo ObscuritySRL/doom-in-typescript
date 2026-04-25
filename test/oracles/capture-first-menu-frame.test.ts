@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 
 const fixturePath = 'test/oracles/fixtures/capture-first-menu-frame.json';
 const manifestPath = 'plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json';
+const prerequisiteOraclePath = 'test/oracles/fixtures/capture-initial-title-frame.json';
 const referenceOraclesPath = 'plan_fps/REFERENCE_ORACLES.md';
 const sourceCatalogPath = 'plan_fps/SOURCE_CATALOG.md';
 
@@ -104,41 +105,32 @@ const expectedFixture = {
 
 describe('capture-first-menu-frame oracle', () => {
   test('locks the fixture exactly', async () => {
-    const fixtureText = await Bun.file(fixturePath).text();
-    const fixtureJson: unknown = JSON.parse(fixtureText);
+    const fixtureJson: unknown = await Bun.file(fixturePath).json();
 
     expect(fixtureJson).toEqual(expectedFixture);
   });
 
-  test('locks the trace hash and first menu transition', () => {
-    const traceHash = new Bun.CryptoHasher('sha256').update(JSON.stringify(expectedFixture.expectedTrace)).digest('hex');
+  test('locks the trace hash, monotonic capture window, and pending-live framebuffer boundary against the on-disk fixture', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as typeof expectedFixture;
+    const traceHash = new Bun.CryptoHasher('sha256').update(JSON.stringify(fixture.expectedTrace)).digest('hex');
 
-    expect(traceHash).toBe(expectedFixture.traceHash);
-    expect(expectedFixture.captureCommand.inputSequence).toEqual([
-      {
-        action: 'launch-reference',
-        frame: 0,
-        tic: 0,
-      },
-      {
-        action: 'wait-for-initial-title-frame',
-        frame: 0,
-        tic: 0,
-      },
-      {
-        action: 'press-escape',
-        frame: 1,
-        tic: 1,
-      },
-      {
-        action: 'capture-first-menu-frame',
-        frame: 2,
-        tic: 2,
-      },
-    ]);
-    expect(expectedFixture.captureWindow.inputTic).toBeLessThan(expectedFixture.captureWindow.captureTic);
-    expect(expectedFixture.expectedTrace).toContain('state:menu-active main-menu');
-    expect(expectedFixture.expectedTrace).toContain('selection:0 New Game');
+    expect(traceHash).toBe(fixture.traceHash);
+    expect(fixture.traceHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(fixture.expectedTrace).toContain('state:menu-active main-menu');
+    expect(fixture.expectedTrace).toContain('selection:0 New Game');
+
+    const inputFrames = fixture.captureCommand.inputSequence.map((event) => event.frame);
+    const inputTics = fixture.captureCommand.inputSequence.map((event) => event.tic);
+
+    expect(inputFrames).toEqual([...inputFrames].sort((left, right) => left - right));
+    expect(inputTics).toEqual([...inputTics].sort((left, right) => left - right));
+    expect(fixture.captureWindow.inputTic).toBeLessThan(fixture.captureWindow.captureTic);
+    expect(fixture.captureWindow.firstFrame).toBe(fixture.captureWindow.captureFrame);
+    expect(fixture.captureWindow.lastFrame).toBe(fixture.captureWindow.captureFrame);
+    expect(fixture.captureWindow.firstTic).toBe(fixture.captureWindow.captureTic);
+    expect(fixture.captureWindow.lastTic).toBe(fixture.captureWindow.captureTic);
+    expect(fixture.framebufferHash.sha256).toBeNull();
+    expect(fixture.framebufferHash.status).toBe('pending-live-capture');
   });
 
   test('cross-checks source catalog authority rows', async () => {
@@ -149,8 +141,7 @@ describe('capture-first-menu-frame oracle', () => {
   });
 
   test('cross-checks the allowed side-by-side audit manifest', async () => {
-    const manifestText = await Bun.file(manifestPath).text();
-    const manifestJson: unknown = JSON.parse(manifestText);
+    const manifestJson: unknown = await Bun.file(manifestPath).json();
 
     expect(manifestJson).toMatchObject({
       commandContracts: {
@@ -173,11 +164,12 @@ describe('capture-first-menu-frame oracle', () => {
     });
   });
 
-  test('registers the captured oracle artifact', async () => {
+  test('registers the captured oracle artifact and reaches the OR-FPS-009 prerequisite oracle on disk', async () => {
     const referenceOraclesText = await Bun.file(referenceOraclesPath).text();
 
     expect(referenceOraclesText).toContain(
       '| OR-FPS-010 | `test/oracles/fixtures/capture-first-menu-frame.json` | first menu frame capture contract derived from local DOS binary authority and `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json` | `bun test test/oracles/capture-first-menu-frame.test.ts` |',
     );
+    expect(await Bun.file(prerequisiteOraclePath).exists()).toBe(true);
   });
 });

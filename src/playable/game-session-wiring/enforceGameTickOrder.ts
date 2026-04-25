@@ -94,7 +94,7 @@ export function enforceGameTickOrder(options: EnforceGameTickOrderOptions): Enfo
     advancedTics: options.session.levelTime - levelTimeBeforeFrame,
     frameCount: loop.frameCount,
     framebuffer,
-    orderedPhases: Object.freeze([...orderedPhases]),
+    orderedPhases: Object.freeze(orderedPhases),
     replayLevelTime: options.session.levelTime,
     session: options.session,
   });
