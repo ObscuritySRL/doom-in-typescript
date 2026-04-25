@@ -1967,3 +1967,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-010 route-menu-input
 - open_risks: none
+
+## 2026-04-25 - 06-010 route-menu-input
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-010
+- step_title: route-menu-input
+- summary: Added the playable menu-input routing surface at `src/playable/input/routeMenuInput.ts`. The module exports an exact Bun-only contract plus `routeMenuInput`, which validates the `bun run doom.ts` runtime path, opens the menu from gameplay on Escape keydown, routes active-menu navigation and activation keys in the menu domain, ignores keyup and unmapped input, and preserves deterministic replay compatibility by returning the neutral `EMPTY_TICCMD` plus `TICCMD_SIZE` without mutating live tic state. Added focused test `test/playable/input/route-menu-input.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, routed menu behavior, ignored inputs, and wrong-command plus unsupported-event failure modes.
+- files_changed: src/playable/input/routeMenuInput.ts; test/playable/input/route-menu-input.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun applied no fixes); bun test test/playable/input/route-menu-input.test.ts (8 pass, 0 fail, 16 expect() calls); bun test (7019 pass, 0 fail, 691632 expect() calls across 280 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-011 route-gameplay-input
+- open_risks: none

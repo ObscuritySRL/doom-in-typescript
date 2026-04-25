@@ -134,7 +134,7 @@
 - [x] `06-007` `accumulate-mouse-movement` | prereqs: `06-006` | file: `plan_fps/steps/06-007-accumulate-mouse-movement.md`
 - [x] `06-008` `define-mouse-capture-policy` | prereqs: `06-007` | file: `plan_fps/steps/06-008-define-mouse-capture-policy.md`
 - [x] `06-009` `release-input-on-focus-loss` | prereqs: `06-008` | file: `plan_fps/steps/06-009-release-input-on-focus-loss.md`
-- [ ] `06-010` `route-menu-input` | prereqs: `06-009` | file: `plan_fps/steps/06-010-route-menu-input.md`
+- [x] `06-010` `route-menu-input` | prereqs: `06-009` | file: `plan_fps/steps/06-010-route-menu-input.md`
 - [ ] `06-011` `route-gameplay-input` | prereqs: `06-010` | file: `plan_fps/steps/06-011-route-gameplay-input.md`
 - [ ] `06-012` `inject-demo-scripted-input` | prereqs: `06-011` | file: `plan_fps/steps/06-012-inject-demo-scripted-input.md`
 - [ ] `06-013` `record-input-trace-format` | prereqs: `06-012` | file: `plan_fps/steps/06-013-record-input-trace-format.md`
