@@ -1859,3 +1859,21 @@
 - oracle_changes: none
 - next_eligible_steps: 06-004 preserve-key-down-up-ordering
 - open_risks: none
+
+## 2026-04-25 - 06-004 preserve-key-down-up-ordering
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 06-004
+- step_title: preserve-key-down-up-ordering
+- summary: Added the playable input key-ordering surface at `src/playable/input/preserveKeyDownUpOrdering.ts`. The module exports an exact Bun-only contract plus `preserveKeyDownUpOrdering`, which validates the `bun run doom.ts` runtime path, translates scan codes through `src/input/keyboard.ts`, preserves the original keydown/keyup arrival order without deduping or timestamp sorting, drops unmapped scan codes without reordering mapped events, and keeps downstream tic mutation replay-safe through the neutral `EMPTY_TICCMD` and `TICCMD_SIZE` surface from `src/input/ticcmd.ts`. Added focused test `test/playable/input/preserve-key-down-up-ordering.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-010 audit-manifest linkage, keydown/keyup ordering behavior, unmapped-event handling, and wrong-command plus unsupported-event failure modes.
+- files_changed: src/playable/input/preserveKeyDownUpOrdering.ts; test/playable/input/preserve-key-down-up-ordering.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files); bun test test/playable/input/preserve-key-down-up-ordering.test.ts (6 pass, 0 fail, 11 expect() calls); bun test (6977 pass, 0 fail, 691561 expect() calls across 274 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 06-005 preserve-key-repeat-behavior
+- open_risks: none

@@ -128,7 +128,7 @@
 - [x] `06-001` `translate-keyboard-events` | prereqs: `05-011` | file: `plan_fps/steps/06-001-translate-keyboard-events.md`
 - [x] `06-002` `map-internal-doom-keys` | prereqs: `06-001` | file: `plan_fps/steps/06-002-map-internal-doom-keys.md`
 - [x] `06-003` `preserve-scan-code-config-relationship` | prereqs: `06-002` | file: `plan_fps/steps/06-003-preserve-scan-code-config-relationship.md`
-- [ ] `06-004` `preserve-key-down-up-ordering` | prereqs: `06-003` | file: `plan_fps/steps/06-004-preserve-key-down-up-ordering.md`
+- [x] `06-004` `preserve-key-down-up-ordering` | prereqs: `06-003` | file: `plan_fps/steps/06-004-preserve-key-down-up-ordering.md`
 - [ ] `06-005` `preserve-key-repeat-behavior` | prereqs: `06-004` | file: `plan_fps/steps/06-005-preserve-key-repeat-behavior.md`
 - [ ] `06-006` `map-mouse-buttons` | prereqs: `06-005` | file: `plan_fps/steps/06-006-map-mouse-buttons.md`
 - [ ] `06-007` `accumulate-mouse-movement` | prereqs: `06-006` | file: `plan_fps/steps/06-007-accumulate-mouse-movement.md`
