@@ -2489,3 +2489,21 @@
 - oracle_changes: none
 - next_eligible_steps: 08-005 wire-world-thinker-ticking
 - open_risks: none
+
+## 2026-04-25 - 08-005 wire-world-thinker-ticking
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 08-005
+- step_title: wire-world-thinker-ticking
+- summary: Added the playable world-thinker ticking surface at `src/playable/game-session-wiring/wireWorldThinkerTicking.ts`. The module exports an exact Bun-only runtime contract plus `wireWorldThinkerTicking`, which validates the `bun run doom.ts` command, advances exactly one started `MainLoop` frame, runs `advanceLauncherSession` only from the `tryRunTics` phase, and returns replay-relevant tick evidence for frame count, level time, thinker count, and Player 1 thinker linkage. Added focused test `test/playable/game-session-wiring/wire-world-thinker-ticking.test.ts` to lock the exact runtime contract, 01-009 audit linkage, stable SHA-256 source hash, one-tic transition, and wrong-command rejection before world state mutation.
+- files_changed: src/playable/game-session-wiring/wireWorldThinkerTicking.ts; test/playable/game-session-wiring/wire-world-thinker-ticking.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Replaced the focused test's temporary source-hash placeholder with the formatted implementation SHA-256 before running the required focused verification.
+- tests_run: bun run format (passed twice; no fixes applied after initial file creation and after source-hash refresh); bun test test/playable/game-session-wiring/wire-world-thinker-ticking.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (7190 pass, 0 fail, 692095 expect() calls across 309 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 08-006 wire-player-command-application
+- open_risks: none
