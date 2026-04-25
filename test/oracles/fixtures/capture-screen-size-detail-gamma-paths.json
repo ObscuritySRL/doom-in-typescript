@@ -1,0 +1,242 @@
+{
+  "captureCommand": {
+    "arguments": ["-iwad", "doom/DOOM1.WAD"],
+    "executable": "doom/DOOMD.EXE",
+    "mode": "abstract-reference-menu-control-capture",
+    "workingDirectory": "D:/Projects/doom-in-typescript"
+  },
+  "captureWindow": {
+    "endFrame": 19,
+    "endTic": 19,
+    "framePolicy": "one abstract oracle frame per captured menu-control tic",
+    "startFrame": 0,
+    "startTic": 0
+  },
+  "expectedTrace": [
+    {
+      "frame": 0,
+      "menu": null,
+      "selectedItem": null,
+      "state": "attract-loop-title",
+      "tic": 0
+    },
+    {
+      "frame": 1,
+      "menu": "main",
+      "selectedItem": "new-game",
+      "state": "main-menu-open",
+      "tic": 1
+    },
+    {
+      "frame": 3,
+      "menu": "main",
+      "selectedItem": "options",
+      "state": "main-menu-selection",
+      "tic": 3
+    },
+    {
+      "frame": 5,
+      "menu": "options",
+      "selectedItem": "end-game",
+      "state": "options-menu-open",
+      "tic": 5
+    },
+    {
+      "frame": 7,
+      "menu": "options",
+      "selectedItem": "messages",
+      "state": "options-menu-selection",
+      "tic": 7
+    },
+    {
+      "frame": 9,
+      "menu": "options",
+      "selectedItem": "detail",
+      "state": "options-menu-selection",
+      "tic": 9
+    },
+    {
+      "frame": 11,
+      "menu": "options",
+      "selectedItem": "screen-size",
+      "state": "options-menu-selection",
+      "tic": 11
+    },
+    {
+      "control": {
+        "axis": "screen-size",
+        "direction": "increase",
+        "stepDelta": 1
+      },
+      "frame": 13,
+      "menu": "options",
+      "selectedItem": "screen-size",
+      "state": "screen-size-adjusted",
+      "tic": 13
+    },
+    {
+      "frame": 15,
+      "menu": "options",
+      "selectedItem": "detail",
+      "state": "options-menu-selection",
+      "tic": 15
+    },
+    {
+      "control": {
+        "axis": "detail",
+        "direction": "toggle",
+        "stepDelta": 1
+      },
+      "frame": 17,
+      "menu": "options",
+      "selectedItem": "detail",
+      "state": "detail-mode-toggled",
+      "tic": 17
+    },
+    {
+      "control": {
+        "axis": "gamma-correction",
+        "direction": "increase",
+        "stepDelta": 1
+      },
+      "frame": 19,
+      "menu": "options",
+      "selectedItem": "detail",
+      "state": "gamma-correction-cycled",
+      "tic": 19
+    }
+  ],
+  "inheritedLaunchSurfaceSourceHashes": [
+    {
+      "path": "package.json",
+      "sha256": "9075b8e3bd095247d470794741803868200ffa6788e43482988ab1b0907384fe",
+      "sizeBytes": 569
+    },
+    {
+      "path": "src/main.ts",
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "sizeBytes": 3239
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "49105a2f714747072109fdd48aebdd831c4f6df5eaaaddc3d0204df368f62b62",
+      "sizeBytes": 645
+    }
+  ],
+  "inputSequence": [
+    {
+      "action": "open-main-menu",
+      "key": "Escape",
+      "target": "main-menu",
+      "tic": 1
+    },
+    {
+      "action": "select-options",
+      "key": "ArrowDown",
+      "target": "options",
+      "tic": 3
+    },
+    {
+      "action": "open-options-menu",
+      "key": "Enter",
+      "target": "options-menu",
+      "tic": 5
+    },
+    {
+      "action": "select-messages",
+      "key": "ArrowDown",
+      "target": "messages",
+      "tic": 7
+    },
+    {
+      "action": "select-detail",
+      "key": "ArrowDown",
+      "target": "detail",
+      "tic": 9
+    },
+    {
+      "action": "select-screen-size",
+      "key": "ArrowDown",
+      "target": "screen-size",
+      "tic": 11
+    },
+    {
+      "action": "increase-screen-size",
+      "key": "ArrowRight",
+      "target": "screen-size",
+      "tic": 13
+    },
+    {
+      "action": "select-detail",
+      "key": "ArrowUp",
+      "target": "detail",
+      "tic": 15
+    },
+    {
+      "action": "toggle-detail",
+      "key": "Enter",
+      "target": "detail",
+      "tic": 17
+    },
+    {
+      "action": "cycle-gamma-correction",
+      "key": "F11",
+      "target": "gamma-correction",
+      "tic": 19
+    }
+  ],
+  "pendingLiveHashes": [
+    {
+      "hashKind": "audio",
+      "reason": "No audio hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending-reference-capture-surface"
+    },
+    {
+      "hashKind": "framebuffer",
+      "reason": "No framebuffer hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending-reference-capture-surface"
+    },
+    {
+      "hashKind": "state",
+      "reason": "No state hash comparison surface is exposed in the allowed 01-015 launch-surface manifest.",
+      "status": "pending-reference-capture-surface"
+    }
+  ],
+  "schemaVersion": 1,
+  "sourceAuthority": {
+    "binary": {
+      "authority": "local-primary-binary",
+      "path": "doom/DOOMD.EXE",
+      "sourceCatalogId": "S-FPS-005"
+    },
+    "data": {
+      "authority": "local-primary-data",
+      "path": "doom/DOOM1.WAD",
+      "sourceCatalogId": "S-FPS-006"
+    },
+    "mode": "local DOS binary authority plus local IWAD data, represented as an abstract capture contract because this step cannot execute reference binaries"
+  },
+  "sourceCatalogEvidence": [
+    {
+      "authority": "local-primary-binary",
+      "path": "doom/DOOMD.EXE",
+      "source": "local DOS executable",
+      "sourceCatalogId": "S-FPS-005"
+    },
+    {
+      "authority": "local-primary-data",
+      "path": "doom/DOOM1.WAD",
+      "source": "local IWAD",
+      "sourceCatalogId": "S-FPS-006"
+    }
+  ],
+  "sourceManifest": {
+    "path": "plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json",
+    "schemaVersion": 1,
+    "stepId": "01-015",
+    "stepTitle": "audit-missing-side-by-side-replay"
+  },
+  "stepId": "02-016",
+  "stepTitle": "capture-screen-size-detail-gamma-paths",
+  "traceSha256": "b3a24ab51038157cd702471239085a41b826a23f63d0bde05e0663c6dbe06c57"
+}

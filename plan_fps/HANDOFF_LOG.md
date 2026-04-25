@@ -797,3 +797,21 @@
 - oracle_changes: OR-FPS-020 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-sound-volume-menu-path.json` with refresh command `bun test test/oracles/capture-sound-volume-menu-path.test.ts`
 - next_eligible_steps: 02-016 capture-screen-size-detail-gamma-paths
 - open_risks: The selected step did not permit opening or executing reference binaries directly, so live sound volume menu framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.
+
+## 2026-04-25 - 02-016 capture-screen-size-detail-gamma-paths
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-016
+- step_title: capture-screen-size-detail-gamma-paths
+- summary: Added the screen size, detail, and gamma paths oracle fixture at `test/oracles/fixtures/capture-screen-size-detail-gamma-paths.json`, derived from local DOS binary/IWAD authority and the allowed 01-015 launch-surface manifest. The fixture records the reference command contract, Escape/ArrowDown/Enter/ArrowRight/ArrowUp/F11 input sequence through the options menu, tic/frame capture window, exact abstract transition trace for screen-size adjustment, detail toggle, and gamma correction, deterministic trace SHA-256, source authority, inherited launch-surface source hashes, and pending live framebuffer/audio/state hash status because the step read scope does not permit opening or executing reference binaries directly. Added focused test `test/oracles/capture-screen-size-detail-gamma-paths.test.ts` to lock the fixture exactly, recompute the trace hash, verify the control transition path, cross-check source-catalog authority and the 01-015 manifest, verify pending reference-capture gaps, and assert oracle registration.
+- files_changed: test/oracles/fixtures/capture-screen-size-detail-gamma-paths.json; test/oracles/capture-screen-size-detail-gamma-paths.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files, Fixed 1 file); bun test test/oracles/capture-screen-size-detail-gamma-paths.test.ts (5 pass, 0 fail, 16 expect() calls); bun test (6666 pass, 0 fail, 690605 expect() calls across 215 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: OR-FPS-021 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-screen-size-detail-gamma-paths.json` with refresh command `bun test test/oracles/capture-screen-size-detail-gamma-paths.test.ts`
+- next_eligible_steps: 02-017 capture-save-load-menu-path
+- open_risks: The selected step did not permit opening or executing reference binaries directly, so live screen size/detail/gamma framebuffer/audio/state hashes remain pending for later capture steps that may run a reference capture path.

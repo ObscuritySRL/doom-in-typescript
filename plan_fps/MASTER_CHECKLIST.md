@@ -57,7 +57,7 @@
 - [x] `02-013` `capture-skill-menu-path` | prereqs: `02-012` | file: `plan_fps/steps/02-013-capture-skill-menu-path.md`
 - [x] `02-014` `capture-options-menu-path` | prereqs: `02-013` | file: `plan_fps/steps/02-014-capture-options-menu-path.md`
 - [x] `02-015` `capture-sound-volume-menu-path` | prereqs: `02-014` | file: `plan_fps/steps/02-015-capture-sound-volume-menu-path.md`
-- [ ] `02-016` `capture-screen-size-detail-gamma-paths` | prereqs: `02-015` | file: `plan_fps/steps/02-016-capture-screen-size-detail-gamma-paths.md`
+- [x] `02-016` `capture-screen-size-detail-gamma-paths` | prereqs: `02-015` | file: `plan_fps/steps/02-016-capture-screen-size-detail-gamma-paths.md`
 - [ ] `02-017` `capture-save-load-menu-path` | prereqs: `02-016` | file: `plan_fps/steps/02-017-capture-save-load-menu-path.md`
 - [ ] `02-018` `capture-quit-confirmation-path` | prereqs: `02-017` | file: `plan_fps/steps/02-018-capture-quit-confirmation-path.md`
 - [ ] `02-019` `capture-e1m1-start-from-clean-launch` | prereqs: `02-018` | file: `plan_fps/steps/02-019-capture-e1m1-start-from-clean-launch.md`
