@@ -3,10 +3,10 @@ import { SCREENHEIGHT, SCREENWIDTH } from '../../render/projection.ts';
 const FRAMEBUFFER_BYTE_LENGTH = SCREENWIDTH * SCREENHEIGHT;
 const MAX_PALETTE_INDEX = 0xff;
 
-export const RENDER_INTERMISSION_SCREENS_COMMAND_CONTRACT = {
+export const RENDER_INTERMISSION_SCREENS_COMMAND_CONTRACT = Object.freeze({
   entryFile: 'doom.ts',
   runtimeCommand: 'bun run doom.ts',
-} as const;
+} as const);
 
 export interface IntermissionPatchLayer {
   readonly height: number;
@@ -105,9 +105,10 @@ export function renderIntermissionScreens(options: RenderIntermissionScreensOpti
 
 function computeFramebufferChecksum(framebuffer: Uint8Array): number {
   let checksum = 0x811c9dc5;
+  const byteCount = framebuffer.length;
 
-  for (const paletteIndex of framebuffer) {
-    checksum ^= paletteIndex;
+  for (let byteIndex = 0; byteIndex < byteCount; byteIndex += 1) {
+    checksum ^= framebuffer[byteIndex]!;
     checksum = Math.imul(checksum, 0x01000193) >>> 0;
   }
 
@@ -115,30 +116,38 @@ function computeFramebufferChecksum(framebuffer: Uint8Array): number {
 }
 
 function drawLayer(framebuffer: Uint8Array, layer: IntermissionPatchLayer): number {
+  const layerHeight = layer.height;
+  const layerWidth = layer.width;
+  const layerOriginX = layer.x;
+  const layerOriginY = layer.y;
+  const layerPixels = layer.pixels;
+  const transparentPaletteIndex = layer.transparentPaletteIndex;
   let drawnPixelCount = 0;
 
-  for (let layerRowIndex = 0; layerRowIndex < layer.height; layerRowIndex += 1) {
-    const framebufferRowIndex = layer.y + layerRowIndex;
+  for (let layerRowIndex = 0; layerRowIndex < layerHeight; layerRowIndex += 1) {
+    const framebufferRowIndex = layerOriginY + layerRowIndex;
 
     if (framebufferRowIndex < 0 || framebufferRowIndex >= SCREENHEIGHT) {
       continue;
     }
 
-    for (let layerColumnIndex = 0; layerColumnIndex < layer.width; layerColumnIndex += 1) {
-      const framebufferColumnIndex = layer.x + layerColumnIndex;
+    const layerRowOffset = layerRowIndex * layerWidth;
+    const framebufferRowOffset = framebufferRowIndex * SCREENWIDTH;
+
+    for (let layerColumnIndex = 0; layerColumnIndex < layerWidth; layerColumnIndex += 1) {
+      const framebufferColumnIndex = layerOriginX + layerColumnIndex;
 
       if (framebufferColumnIndex < 0 || framebufferColumnIndex >= SCREENWIDTH) {
         continue;
       }
 
-      const layerPixelIndex = layerRowIndex * layer.width + layerColumnIndex;
-      const paletteIndex = layer.pixels[layerPixelIndex]!;
+      const paletteIndex = layerPixels[layerRowOffset + layerColumnIndex]!;
 
-      if (paletteIndex === layer.transparentPaletteIndex) {
+      if (paletteIndex === transparentPaletteIndex) {
         continue;
       }
 
-      framebuffer[framebufferRowIndex * SCREENWIDTH + framebufferColumnIndex] = paletteIndex;
+      framebuffer[framebufferRowOffset + framebufferColumnIndex] = paletteIndex;
       drawnPixelCount += 1;
     }
   }
@@ -157,6 +166,14 @@ function validateLayer(layer: IntermissionPatchLayer, layerIndex: number): void 
 
   if (!Number.isInteger(layer.width) || layer.width <= 0) {
     throw new Error(`Intermission layer ${layerIndex} width must be a positive integer.`);
+  }
+
+  if (!Number.isInteger(layer.x)) {
+    throw new Error(`Intermission layer ${layerIndex} x must be an integer.`);
+  }
+
+  if (!Number.isInteger(layer.y)) {
+    throw new Error(`Intermission layer ${layerIndex} y must be an integer.`);
   }
 
   if (layer.pixels.length !== layer.width * layer.height) {

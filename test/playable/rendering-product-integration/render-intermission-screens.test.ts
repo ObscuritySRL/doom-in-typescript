@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { RENDER_INTERMISSION_SCREENS_COMMAND_CONTRACT, renderIntermissionScreens, type IntermissionPatchLayer } from '../../../src/playable/rendering-product-integration/renderIntermissionScreens.ts';
+import { RENDER_INTERMISSION_SCREENS_COMMAND_CONTRACT, renderIntermissionScreens, type IntermissionPatchLayer, type RenderIntermissionScreensOptions } from '../../../src/playable/rendering-product-integration/renderIntermissionScreens.ts';
 import { SCREENHEIGHT, SCREENWIDTH } from '../../../src/render/projection.ts';
 
 const FRAMEBUFFER_BYTE_LENGTH = SCREENWIDTH * SCREENHEIGHT;
@@ -13,6 +13,7 @@ describe('renderIntermissionScreens', () => {
       entryFile: 'doom.ts',
       runtimeCommand: 'bun run doom.ts',
     });
+    expect(Object.isFrozen(RENDER_INTERMISSION_SCREENS_COMMAND_CONTRACT)).toBe(true);
     expect(manifest.commandContracts.target).toEqual({
       entryFile: 'doom.ts',
       runtimeCommand: 'bun run doom.ts',
@@ -89,6 +90,110 @@ describe('renderIntermissionScreens', () => {
     expect(hashBytes(framebuffer)).toBe(hashBytes(backgroundPixels));
   });
 
+  test('renders entering-screen evidence with empty layers list and matches background', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+
+    const evidence = renderIntermissionScreens({
+      framebuffer,
+      resources: {
+        backgroundPixels,
+        layers: [],
+        screenKind: 'entering',
+        sourceName: 'WIMAP1',
+      },
+      runtimeCommand: 'bun run doom.ts',
+      transition: {
+        completedMap: 'E1M1',
+        enteringMap: 'E1M2',
+        totalTics: 0,
+      },
+    });
+
+    expect(evidence.drawnLayerPixelCount).toBe(0);
+    expect(evidence.layerCount).toBe(0);
+    expect(evidence.screenKind).toBe('entering');
+    expect(evidence.transitionKind).toBe('finished-to-entering');
+    expect(evidence.totalTics).toBe(0);
+    expect(hashBytes(framebuffer)).toBe(hashBytes(backgroundPixels));
+  });
+
+  test('skips transparent layer pixels without writing to the framebuffer', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    const transparentLayer: IntermissionPatchLayer = {
+      height: 2,
+      pixels: new Uint8Array([255, 255, 255, 255]),
+      transparentPaletteIndex: 255,
+      width: 2,
+      x: 0,
+      y: 0,
+    };
+
+    const evidence = renderIntermissionScreens({
+      framebuffer,
+      resources: { backgroundPixels, layers: [transparentLayer], screenKind: 'finished', sourceName: 'WIMAP0' },
+      runtimeCommand: 'bun run doom.ts',
+      transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 1 },
+    });
+
+    expect(evidence.drawnLayerPixelCount).toBe(0);
+    expect(framebuffer[0]).toBe(backgroundPixels[0]);
+    expect(framebuffer[1]).toBe(backgroundPixels[1]);
+    expect(framebuffer[SCREENWIDTH]).toBe(backgroundPixels[SCREENWIDTH]);
+    expect(framebuffer[SCREENWIDTH + 1]).toBe(backgroundPixels[SCREENWIDTH + 1]);
+    expect(hashBytes(framebuffer)).toBe(hashBytes(backgroundPixels));
+  });
+
+  test('clips layer pixels that fall outside the screen edges without writing', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    const offScreenLayer: IntermissionPatchLayer = {
+      height: 4,
+      pixels: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]),
+      transparentPaletteIndex: 0,
+      width: 4,
+      x: SCREENWIDTH - 2,
+      y: SCREENHEIGHT - 2,
+    };
+
+    const evidence = renderIntermissionScreens({
+      framebuffer,
+      resources: { backgroundPixels, layers: [offScreenLayer], screenKind: 'finished', sourceName: 'WIMAP0' },
+      runtimeCommand: 'bun run doom.ts',
+      transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 1 },
+    });
+
+    expect(evidence.drawnLayerPixelCount).toBe(4);
+    expect(framebuffer[(SCREENHEIGHT - 2) * SCREENWIDTH + (SCREENWIDTH - 2)]).toBe(1);
+    expect(framebuffer[(SCREENHEIGHT - 2) * SCREENWIDTH + (SCREENWIDTH - 1)]).toBe(2);
+    expect(framebuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + (SCREENWIDTH - 2)]).toBe(5);
+    expect(framebuffer[(SCREENHEIGHT - 1) * SCREENWIDTH + (SCREENWIDTH - 1)]).toBe(6);
+  });
+
+  test('clips layer pixels that fall above and to the left of the screen', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    const offScreenLayer: IntermissionPatchLayer = {
+      height: 3,
+      pixels: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      transparentPaletteIndex: 0,
+      width: 3,
+      x: -2,
+      y: -2,
+    };
+
+    const evidence = renderIntermissionScreens({
+      framebuffer,
+      resources: { backgroundPixels, layers: [offScreenLayer], screenKind: 'finished', sourceName: 'WIMAP0' },
+      runtimeCommand: 'bun run doom.ts',
+      transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 1 },
+    });
+
+    expect(evidence.drawnLayerPixelCount).toBe(1);
+    expect(framebuffer[0]).toBe(9);
+  });
+
   test('rejects wrong runtime commands before mutating the framebuffer', () => {
     const backgroundPixels = createBackgroundPixels();
     const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
@@ -145,6 +250,187 @@ describe('renderIntermissionScreens', () => {
       }),
     ).toThrow('Intermission layer 0 pixel buffer must match width * height.');
     expect(framebuffer.every((paletteIndex) => paletteIndex === 88)).toBe(true);
+  });
+
+  test.each<{ readonly framebufferLength: number }>([
+    { framebufferLength: 0 },
+    { framebufferLength: FRAMEBUFFER_BYTE_LENGTH - 1 },
+    { framebufferLength: FRAMEBUFFER_BYTE_LENGTH + 1 },
+  ])('rejects framebuffers whose length is $framebufferLength', ({ framebufferLength }) => {
+    const backgroundPixels = createBackgroundPixels();
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer: new Uint8Array(framebufferLength),
+        resources: { backgroundPixels, screenKind: 'finished', sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission framebuffer must be 320x200.');
+  });
+
+  test.each<{ readonly backgroundLength: number }>([{ backgroundLength: 0 }, { backgroundLength: FRAMEBUFFER_BYTE_LENGTH - 1 }, { backgroundLength: FRAMEBUFFER_BYTE_LENGTH + 1 }])('rejects backgrounds whose length is $backgroundLength', ({
+    backgroundLength,
+  }) => {
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels: new Uint8Array(backgroundLength), screenKind: 'finished', sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission background must be 320x200.');
+  });
+
+  test('rejects an unknown screen kind', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels, screenKind: 'unknown' as RenderIntermissionScreensOptions['resources']['screenKind'], sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission screen kind must be entering, finished, or stats.');
+  });
+
+  test('rejects an empty source name', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels, screenKind: 'finished', sourceName: '' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission source name is required.');
+  });
+
+  test('rejects an empty completed map', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels, screenKind: 'finished', sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: '', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission completed map is required.');
+  });
+
+  test('rejects an empty entering map when present', () => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels, screenKind: 'finished', sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: '', totalTics: 0 },
+      }),
+    ).toThrow('Intermission entering map must be non-empty when present.');
+  });
+
+  test.each<{ readonly totalTics: number }>([{ totalTics: -1 }, { totalTics: 1.5 }, { totalTics: Number.NaN }])('rejects total tics $totalTics', ({ totalTics }) => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels, screenKind: 'finished', sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics },
+      }),
+    ).toThrow('Intermission total tics must be a non-negative integer.');
+  });
+
+  test.each<{ readonly height: number }>([{ height: 0 }, { height: -1 }, { height: 1.5 }, { height: Number.NaN }])('rejects layers with height $height', ({ height }) => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: {
+          backgroundPixels,
+          layers: [{ height, pixels: new Uint8Array(0), transparentPaletteIndex: 255, width: 1, x: 0, y: 0 }],
+          screenKind: 'finished',
+          sourceName: 'WIMAP0',
+        },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission layer 0 height must be a positive integer.');
+  });
+
+  test.each<{ readonly width: number }>([{ width: 0 }, { width: -1 }, { width: 1.5 }, { width: Number.NaN }])('rejects layers with width $width', ({ width }) => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: {
+          backgroundPixels,
+          layers: [{ height: 1, pixels: new Uint8Array(0), transparentPaletteIndex: 255, width, x: 0, y: 0 }],
+          screenKind: 'finished',
+          sourceName: 'WIMAP0',
+        },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission layer 0 width must be a positive integer.');
+  });
+
+  test.each<{ readonly transparentPaletteIndex: number }>([
+    { transparentPaletteIndex: -1 },
+    { transparentPaletteIndex: 256 },
+    { transparentPaletteIndex: 1.5 },
+    { transparentPaletteIndex: Number.NaN },
+  ])('rejects layers with transparent palette index $transparentPaletteIndex', ({ transparentPaletteIndex }) => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: {
+          backgroundPixels,
+          layers: [{ height: 1, pixels: new Uint8Array(1), transparentPaletteIndex, width: 1, x: 0, y: 0 }],
+          screenKind: 'finished',
+          sourceName: 'WIMAP0',
+        },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow('Intermission layer 0 transparent palette index must be 0..255.');
+  });
+
+  test.each<{ readonly axis: 'x' | 'y'; readonly value: number }>([
+    { axis: 'x', value: 1.5 },
+    { axis: 'x', value: Number.NaN },
+    { axis: 'y', value: 1.5 },
+    { axis: 'y', value: Number.NaN },
+  ])('rejects layers with non-integer $axis value $value', ({ axis, value }) => {
+    const backgroundPixels = createBackgroundPixels();
+    const framebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH);
+    const layer: IntermissionPatchLayer = {
+      height: 1,
+      pixels: new Uint8Array(1),
+      transparentPaletteIndex: 255,
+      width: 1,
+      x: axis === 'x' ? value : 0,
+      y: axis === 'y' ? value : 0,
+    };
+
+    expect(() =>
+      renderIntermissionScreens({
+        framebuffer,
+        resources: { backgroundPixels, layers: [layer], screenKind: 'finished', sourceName: 'WIMAP0' },
+        runtimeCommand: 'bun run doom.ts',
+        transition: { completedMap: 'E1M1', enteringMap: 'E1M2', totalTics: 0 },
+      }),
+    ).toThrow(`Intermission layer 0 ${axis} must be an integer.`);
   });
 });
 

@@ -108,9 +108,10 @@ function captureFramebufferHash(options: CaptureFramebufferHashOptions, viewport
 }
 
 function computeByteChecksum(framebuffer: Uint8Array): number {
+  const byteCount = framebuffer.length;
   let checksum = 0;
 
-  for (let byteIndex = 0; byteIndex < framebuffer.length; byteIndex += 1) {
+  for (let byteIndex = 0; byteIndex < byteCount; byteIndex += 1) {
     checksum = (checksum + framebuffer[byteIndex]! * (byteIndex + 1)) >>> 0;
   }
 
@@ -135,13 +136,19 @@ function computeTransitionHash(previousFramebuffer: Uint8Array | undefined, fram
 }
 
 function computeViewportChecksum(framebuffer: Uint8Array, viewport: Viewport): number {
+  const viewWindowY = viewport.viewWindowY;
+  const viewWindowX = viewport.viewWindowX;
+  const viewHeight = viewport.viewHeight;
+  const scaledViewWidth = viewport.scaledViewWidth;
+  const yEnd = viewWindowY + viewHeight;
+  const xEnd = viewWindowX + scaledViewWidth;
   let checksum = 0;
   let viewportByteIndex = 0;
 
-  for (let y = viewport.viewWindowY; y < viewport.viewWindowY + viewport.viewHeight; y += 1) {
+  for (let y = viewWindowY; y < yEnd; y += 1) {
     const rowOffset = y * SCREENWIDTH;
 
-    for (let x = viewport.viewWindowX; x < viewport.viewWindowX + viewport.scaledViewWidth; x += 1) {
+    for (let x = viewWindowX; x < xEnd; x += 1) {
       viewportByteIndex += 1;
       checksum = (checksum + framebuffer[rowOffset + x]! * viewportByteIndex) >>> 0;
     }
@@ -152,19 +159,25 @@ function computeViewportChecksum(framebuffer: Uint8Array, viewport: Viewport): n
 
 function computeViewportHash(framebuffer: Uint8Array, viewport: Viewport): string {
   const hasher = new Bun.CryptoHasher('sha256');
+  const viewWindowY = viewport.viewWindowY;
+  const viewWindowX = viewport.viewWindowX;
+  const viewHeight = viewport.viewHeight;
+  const scaledViewWidth = viewport.scaledViewWidth;
+  const yEnd = viewWindowY + viewHeight;
 
-  for (let y = viewport.viewWindowY; y < viewport.viewWindowY + viewport.viewHeight; y += 1) {
-    const rowOffset = y * SCREENWIDTH + viewport.viewWindowX;
-    hasher.update(framebuffer.subarray(rowOffset, rowOffset + viewport.scaledViewWidth));
+  for (let y = viewWindowY; y < yEnd; y += 1) {
+    const rowOffset = y * SCREENWIDTH + viewWindowX;
+    hasher.update(framebuffer.subarray(rowOffset, rowOffset + scaledViewWidth));
   }
 
   return hasher.digest('hex');
 }
 
 function countChangedBytes(previousFramebuffer: Uint8Array, framebuffer: Uint8Array): number {
+  const byteCount = framebuffer.length;
   let changedByteCount = 0;
 
-  for (let byteIndex = 0; byteIndex < framebuffer.length; byteIndex += 1) {
+  for (let byteIndex = 0; byteIndex < byteCount; byteIndex += 1) {
     if (previousFramebuffer[byteIndex] !== framebuffer[byteIndex]) {
       changedByteCount += 1;
     }

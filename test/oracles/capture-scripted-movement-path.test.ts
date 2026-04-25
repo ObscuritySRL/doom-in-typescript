@@ -214,124 +214,83 @@ const expectedFixture = {
   },
 } as const;
 
+interface CaptureScriptedMovementFixture {
+  readonly expectedTrace: readonly { readonly event: string; readonly frame: number; readonly tic: number }[];
+  readonly hashStatus: readonly { readonly hash: null; readonly kind: string; readonly reason: string; readonly status: string }[];
+  readonly inputScript: { readonly sequence: readonly { readonly durationTics: number; readonly keys: readonly string[]; readonly startTic: number }[] };
+  readonly traceSha256: string;
+  readonly window: { readonly captureFrames: readonly number[]; readonly endFrame: number; readonly endTic: number; readonly startFrame: number; readonly startTic: number };
+}
+
 const hashJson = (value: unknown): string => new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
-
-const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
-
-const readJson = async (path: string): Promise<unknown> => {
-  const parsedJson: unknown = JSON.parse(await Bun.file(path).text());
-  return parsedJson;
-};
-
-const requireArrayMember = (record: Record<string, unknown>, key: string): readonly unknown[] => {
-  const value = record[key];
-
-  if (!Array.isArray(value)) {
-    throw new TypeError(`Expected ${key} to be an array.`);
-  }
-
-  return value;
-};
-
-const requireRecord = (value: unknown): Record<string, unknown> => {
-  if (!isRecord(value)) {
-    throw new TypeError('Expected a record.');
-  }
-
-  return value;
-};
-
-const requireRecordMember = (record: Record<string, unknown>, key: string): Record<string, unknown> => {
-  const value = record[key];
-
-  if (!isRecord(value)) {
-    throw new TypeError(`Expected ${key} to be a record.`);
-  }
-
-  return value;
-};
 
 describe('capture scripted movement path oracle', () => {
   test('locks the exact fixture structure', async () => {
-    await expect(readJson(fixturePath)).resolves.toEqual(expectedFixture);
+    await expect(Bun.file(fixturePath).json()).resolves.toEqual(expectedFixture);
   });
 
-  test('locks the deterministic movement trace and hash', async () => {
-    const fixture = requireRecord(await readJson(fixturePath));
-    const expectedTrace = requireArrayMember(fixture, 'expectedTrace');
+  test('recomputes the on-disk trace hash and locks structural invariants', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as CaptureScriptedMovementFixture;
 
-    expect(hashJson(expectedTrace)).toBe(expectedFixture.traceSha256);
-    expect(expectedFixture.expectedTrace.map((traceEntry) => traceEntry.event)).toEqual([
-      'clean-launch',
-      'open-main-menu',
-      'select-new-game',
-      'select-knee-deep-in-the-dead',
-      'select-hurt-me-plenty',
-      'spawn-player',
-      'hold-forward',
-      'turn-right-while-moving',
-      'release-forward',
-    ]);
-    expect(expectedFixture.expectedTrace[8]).toEqual({
-      angle: 'south',
-      event: 'release-forward',
-      frame: 96,
-      input: ['ArrowRight'],
-      map: 'E1M1',
-      movement: 'complete-scripted-movement-window',
-      state: 'gameplay',
-      tic: 96,
-    });
-    expect(expectedFixture.window).toEqual({
-      captureFrames: [0, 1, 2, 3, 4, 5, 40, 70, 96],
-      endFrame: 96,
-      endTic: 96,
-      map: 'E1M1',
-      startFrame: 0,
-      startTic: 0,
-    });
+    expect(fixture.traceSha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(hashJson(fixture.expectedTrace)).toBe(fixture.traceSha256);
+
+    const traceFrames = fixture.expectedTrace.map((entry) => entry.frame);
+    const traceTics = fixture.expectedTrace.map((entry) => entry.tic);
+    expect(traceFrames).toEqual([...traceFrames].sort((leftFrame, rightFrame) => leftFrame - rightFrame));
+    expect(traceTics).toEqual([...traceTics].sort((leftTic, rightTic) => leftTic - rightTic));
+    expect(new Set(traceFrames).size).toBe(traceFrames.length);
+    expect(new Set(traceTics).size).toBe(traceTics.length);
+
+    const eventNames = fixture.expectedTrace.map((entry) => entry.event);
+    expect(new Set(eventNames).size).toBe(eventNames.length);
+
+    expect(fixture.window.startFrame).toBe(fixture.expectedTrace[0]!.frame);
+    expect(fixture.window.startTic).toBe(fixture.expectedTrace[0]!.tic);
+    expect(fixture.window.endFrame).toBe(fixture.expectedTrace[fixture.expectedTrace.length - 1]!.frame);
+    expect(fixture.window.endTic).toBe(fixture.expectedTrace[fixture.expectedTrace.length - 1]!.tic);
+    expect(fixture.window.captureFrames).toEqual(traceFrames);
+
+    const inputStartTics = fixture.inputScript.sequence.map((entry) => entry.startTic);
+    expect(inputStartTics).toEqual([...inputStartTics].sort((leftTic, rightTic) => leftTic - rightTic));
+    for (const entry of fixture.inputScript.sequence) {
+      expect(entry.keys.length).toBeGreaterThan(0);
+      expect(entry.durationTics).toBeGreaterThan(0);
+    }
   });
 
   test('cross-checks source authority and inherited launch-surface data', async () => {
     const sourceCatalog = await Bun.file(sourceCatalogPath).text();
-    const launchSurfaceManifest = requireRecord(await readJson(launchSurfaceManifestPath));
-    const commandContracts = requireRecordMember(launchSurfaceManifest, 'commandContracts');
-    const targetPlayable = requireRecordMember(commandContracts, 'targetPlayable');
-    const targetReplayContract = requireRecordMember(launchSurfaceManifest, 'targetReplayContract');
-    const sourceHashes = requireArrayMember(launchSurfaceManifest, 'sourceHashes');
+    const launchSurfaceManifest = (await Bun.file(launchSurfaceManifestPath).json()) as {
+      readonly commandContracts: { readonly targetPlayable: unknown };
+      readonly sourceHashes: unknown;
+      readonly targetReplayContract: unknown;
+    };
 
     for (const sourceAuthority of expectedFixture.sourceAuthority) {
-      expect(sourceCatalog).toContain(`| ${sourceAuthority.catalogIdentifier} |`);
-      expect(sourceCatalog).toContain(`| ${sourceAuthority.authority} |`);
-      expect(sourceCatalog).toContain(`\`${sourceAuthority.path}\``);
+      const catalogRow = sourceCatalog.split('\n').find((line) => line.startsWith(`| ${sourceAuthority.catalogIdentifier} |`));
+      expect(catalogRow).toBeDefined();
+      expect(catalogRow).toContain(`| ${sourceAuthority.authority} |`);
+      expect(catalogRow).toContain(`\`${sourceAuthority.path}\``);
     }
 
-    expect(targetPlayable).toEqual(expectedFixture.captureCommand.targetCommandContract);
-    expect(targetReplayContract).toEqual(expectedFixture.inheritedLaunchSurface.targetReplayContract);
-    expect(sourceHashes).toEqual(expectedFixture.inheritedLaunchSurface.sourceHashes);
+    expect(launchSurfaceManifest.commandContracts.targetPlayable).toEqual(expectedFixture.captureCommand.targetCommandContract);
+    expect(launchSurfaceManifest.targetReplayContract).toEqual(expectedFixture.inheritedLaunchSurface.targetReplayContract);
+    expect(launchSurfaceManifest.sourceHashes).toEqual(expectedFixture.inheritedLaunchSurface.sourceHashes);
   });
 
-  test('records pending live capture gaps explicitly', () => {
-    expect(expectedFixture.hashStatus).toEqual([
-      {
-        hash: null,
-        kind: 'audio',
-        reason: 'The 02-020 read scope does not permit executing the local DOS binary or a reference capture bridge.',
-        status: 'pending-reference-capture',
-      },
-      {
-        hash: null,
-        kind: 'framebuffer',
-        reason: 'The 02-020 read scope does not permit executing the local DOS binary or a reference capture bridge.',
-        status: 'pending-reference-capture',
-      },
-      {
-        hash: null,
-        kind: 'state',
-        reason: 'The 02-020 read scope does not permit executing the local DOS binary or a reference capture bridge.',
-        status: 'pending-reference-capture',
-      },
-    ]);
+  test('records the three pending live capture surfaces explicitly', async () => {
+    const fixture = (await Bun.file(fixturePath).json()) as CaptureScriptedMovementFixture;
+
+    const hashKinds = fixture.hashStatus.map((entry) => entry.kind);
+    expect([...hashKinds].sort()).toEqual(['audio', 'framebuffer', 'state']);
+    expect(new Set(hashKinds).size).toBe(hashKinds.length);
+
+    for (const entry of fixture.hashStatus) {
+      expect(entry.hash).toBeNull();
+      expect(entry.status).toBe('pending-reference-capture');
+      expect(entry.reason.length).toBeGreaterThan(0);
+    }
   });
 
   test('registers the oracle artifact', async () => {
