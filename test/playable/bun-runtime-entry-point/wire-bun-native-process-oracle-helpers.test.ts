@@ -45,7 +45,7 @@ const expectedWireBunNativeProcessOracleHelpers = {
     subcommand: 'run',
     workspacePath: 'doom.ts',
   },
-} satisfies WireBunNativeProcessOracleHelpers;
+} as const satisfies WireBunNativeProcessOracleHelpers;
 
 describe('wireBunNativeProcessOracleHelpers', () => {
   test('locks the exact Bun process oracle helper contract', () => {

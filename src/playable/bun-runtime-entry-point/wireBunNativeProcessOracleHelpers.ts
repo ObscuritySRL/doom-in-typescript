@@ -90,4 +90,4 @@ export const wireBunNativeProcessOracleHelpers = {
     subcommand: 'run',
     workspacePath: 'doom.ts',
   },
-} satisfies WireBunNativeProcessOracleHelpers;
+} as const satisfies WireBunNativeProcessOracleHelpers;
