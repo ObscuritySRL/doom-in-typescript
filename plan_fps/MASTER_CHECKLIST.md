@@ -118,7 +118,7 @@
 - [x] `05-005` `schedule-presentation` | prereqs: `05-004` | file: `plan_fps/steps/05-005-schedule-presentation.md`
 - [x] `05-006` `handle-long-stall-panic` | prereqs: `05-005` | file: `plan_fps/steps/05-006-handle-long-stall-panic.md`
 - [x] `05-007` `handle-pause-focus-timing` | prereqs: `05-006` | file: `plan_fps/steps/05-007-handle-pause-focus-timing.md`
-- [ ] `05-008` `prevent-frame-rate-dependent-simulation` | prereqs: `05-007` | file: `plan_fps/steps/05-008-prevent-frame-rate-dependent-simulation.md`
+- [x] `05-008` `prevent-frame-rate-dependent-simulation` | prereqs: `05-007` | file: `plan_fps/steps/05-008-prevent-frame-rate-dependent-simulation.md`
 - [ ] `05-009` `reject-visible-interpolation` | prereqs: `05-008` | file: `plan_fps/steps/05-009-reject-visible-interpolation.md`
 - [ ] `05-010` `implement-clean-main-loop-shutdown` | prereqs: `05-009` | file: `plan_fps/steps/05-010-implement-clean-main-loop-shutdown.md`
 - [ ] `05-011` `add-timing-instrumentation` | prereqs: `05-010` | file: `plan_fps/steps/05-011-add-timing-instrumentation.md`

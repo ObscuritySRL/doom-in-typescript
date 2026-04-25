@@ -1733,3 +1733,21 @@
 - oracle_changes: none
 - next_eligible_steps: 05-008 prevent-frame-rate-dependent-simulation
 - open_risks: none
+
+## 2026-04-25 - 05-008 prevent-frame-rate-dependent-simulation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 05-008
+- step_title: prevent-frame-rate-dependent-simulation
+- summary: Added the playable real-time-main-loop frame-rate-independence surface at `src/playable/real-time-main-loop/preventFrameRateDependentSimulation.ts`. The module exports an exact prevent-frame-rate-dependent-simulation contract plus `preventFrameRateDependentSimulation`, which validates the `bun run doom.ts` runtime path, ties simulation gating to the `tryRunTics` phase in `src/mainLoop.ts`, records `TicAccumulator.advance()` and `TicAccumulator.totalTics` as the discrete timing authorities from `src/host/ticAccumulator.ts`, explicitly ignores presentation-frame count, and advances simulation only from runnable tic counts to preserve deterministic replay compatibility. Added focused test `test/playable/real-time-main-loop/prevent-frame-rate-dependent-simulation.test.ts` to lock the exact contract object, stable SHA-256 hash, live main-loop and tic-accumulator evidence, frame-rate-independent behavior, no-op behavior outside `tryRunTics`, and wrong-command rejection.
+- files_changed: src/playable/real-time-main-loop/preventFrameRateDependentSimulation.ts; test/playable/real-time-main-loop/prevent-frame-rate-dependent-simulation.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 2 files; clean rerun formatted 2 files and applied no fixes); bun test test/playable/real-time-main-loop/prevent-frame-rate-dependent-simulation.test.ts (6 pass, 0 fail, 9 expect() calls); bun test (6934 pass, 0 fail, 691474 expect() calls across 267 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-009 reject-visible-interpolation
+- open_risks: none
