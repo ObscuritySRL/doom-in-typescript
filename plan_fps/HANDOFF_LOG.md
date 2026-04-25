@@ -52,7 +52,7 @@
 - step_title: pin-bun-run-doom-entrypoint
 - summary: Pinned the C1 runtime command contract as exactly `bun run doom.ts` and decomposed it into program (`bun`), subcommand (`run`), and workspace-root entry file (`doom.ts`). Wrote `plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json` (schema v1) tying decision D-FPS-003, the literal runtimeCommand, the commandContract triple, the workspace-relative + absolute entry-point paths with `presentOnDisk=false`, the implementation owner step (03-002 wire-root-doom-ts-entrypoint), the current launcher (`package.json` `start` script value `bun run src/main.ts`, current entry `src/main.ts`, `matchesRuntimeCommand=false`), the cross-reference to the 00-002 control-center manifest, and an evidence-paths list. Added focused test `test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts` (16 tests, 91 expects) that locks every manifest field by exact value, asserts `runtimeCommand === program + " " + subcommand + " " + entryFile`, verifies `doom.ts` does not exist while `src/main.ts` does, cross-checks `package.json` scripts.start against the recorded scriptValue, cross-checks the 00-002 control-center manifest's runtimeTarget against this manifest's runtimeCommand, verifies README.md still pins `Final command: bun run doom.ts`, verifies MASTER_CHECKLIST.md still pins `Runtime target: bun run doom.ts`, and verifies the D-FPS-003 section in DECISION_LOG.md is accepted, pins the exact decision sentence, and now cites this manifest as evidence.
 - files_changed: plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json; test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts; plan_fps/DECISION_LOG.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
-- recovery_edit: none
+- recovery_edit: Reordered `RenderFullFrameEveryVisibleTicEvidence` fields and return-object keys to satisfy the repo's ASCIIbetical ordering rule, then refreshed the focused test's locked implementation SHA-256.
 - tests_run: bun run format (Formatted 2 files, No fixes applied); bun test test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts (16 pass, 0 fail, 91 expects); bun test plan_fps/validate-plan.test.ts (2 pass, 0 fail, 6 expects); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps, First step: 00-001); bun test (6384 pass, 0 fail, 688032 expects across 174 files); bun x tsc --noEmit --project tsconfig.json (clean)
 - new_facts: none
 - decision_changes: D-FPS-003 evidence extended to cite `plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json`; status remains accepted
@@ -2668,4 +2668,22 @@
 - decision_changes: none
 - oracle_changes: none
 - next_eligible_steps: 09-001 render-full-frame-every-visible-tic
+- open_risks: none
+
+## 2026-04-25 - 09-001 render-full-frame-every-visible-tic
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-001
+- step_title: render-full-frame-every-visible-tic
+- summary: Added the playable rendering product integration surface at `src/playable/rendering-product-integration/renderFullFrameEveryVisibleTic.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderFullFrameEveryVisibleTic`, which validates the Bun runtime command, requires a full 320x200 framebuffer, invokes the supplied full-frame renderer exactly once for a visible tic, requires the renderer to reuse the provided framebuffer, and returns deterministic framebuffer and viewport evidence. Added `renderGameplayFullFrameEveryVisibleTic` as the adapter to the existing gameplay renderer without introducing wall-clock or random state. Added focused test `test/playable/rendering-product-integration/render-full-frame-every-visible-tic.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable SHA-256 source hash, exact one-render framebuffer transition, wrong-command rejection, and partial-framebuffer rejection.
+- files_changed: src/playable/rendering-product-integration/renderFullFrameEveryVisibleTic.ts; test/playable/rendering-product-integration/render-full-frame-every-visible-tic.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (implementation pass formatted 1 file with no fixes; pre-verification pass formatted 2 files with no fixes); bun test test/playable/rendering-product-integration/render-full-frame-every-visible-tic.test.ts (5 pass, 0 fail, 13 expect() calls); bun test (7241 pass, 0 fail, 692267 expect() calls across 319 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-002 render-viewport-borders
 - open_risks: none
