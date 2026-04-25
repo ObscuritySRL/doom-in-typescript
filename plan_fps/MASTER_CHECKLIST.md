@@ -193,7 +193,7 @@
 - [x] `09-009` `apply-palette-effects-and-gamma` | prereqs: `09-008` | file: `plan_fps/steps/09-009-apply-palette-effects-and-gamma.md`
 - [x] `09-010` `render-detail-mode` | prereqs: `09-009` | file: `plan_fps/steps/09-010-render-detail-mode.md`
 - [x] `09-011` `render-screenblocks` | prereqs: `09-010` | file: `plan_fps/steps/09-011-render-screenblocks.md`
-- [ ] `09-012` `render-wipe-transition-effects` | prereqs: `09-011` | file: `plan_fps/steps/09-012-render-wipe-transition-effects.md`
+- [x] `09-012` `render-wipe-transition-effects` | prereqs: `09-011` | file: `plan_fps/steps/09-012-render-wipe-transition-effects.md`
 - [ ] `09-013` `add-framebuffer-hash-test-hooks` | prereqs: `09-012` | file: `plan_fps/steps/09-013-add-framebuffer-hash-test-hooks.md`
 
 ## Phase 10: Audio Product Integration

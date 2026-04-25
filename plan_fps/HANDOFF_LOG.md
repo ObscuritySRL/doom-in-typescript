@@ -2867,3 +2867,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-012 render-wipe-transition-effects
 - open_risks: none
+
+## 2026-04-25 - 09-012 render-wipe-transition-effects
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-012
+- step_title: render-wipe-transition-effects
+- summary: Added the playable wipe transition rendering surface at `src/playable/rendering-product-integration/renderWipeTransitionEffects.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderWipeTransitionEffects`, which validates full 320x200 start/end/destination framebuffers and per-column revealed-row state before mutation, composes a deterministic start-to-end melt-column reveal into the destination framebuffer, and returns replay-stable changed-pixel, revealed-pixel, completion, and checksum evidence. Added focused test `test/playable/rendering-product-integration/render-wipe-transition-effects.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable source SHA-256, exact partial-wipe framebuffer SHA-256/checksum, complete-wipe behavior, wrong-command rejection, and invalid-column mutation guard.
+- files_changed: src/playable/rendering-product-integration/renderWipeTransitionEffects.ts; test/playable/rendering-product-integration/render-wipe-transition-effects.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run failed because the changed-pixel count had been probed against a zero-filled destination while the test fixture intentionally fills the destination with 0xee; corrected the exact expected count to 63792. The first TypeScript verification pass then failed because the focused test fixture helper widened generated framebuffers to `Uint8Array<ArrayBufferLike>` for Bun's typed-array matcher overload; narrowed `createFramebuffer` to `Uint8Array<ArrayBuffer>`, reran formatting, and reran the focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass formatted 2 files with no fixes; placeholder-replacement pass formatted 2 files with no fixes; recovery pass formatted 2 files with no fixes; TypeScript recovery pass formatted 4 files with no fixes); bun test test/playable/rendering-product-integration/render-wipe-transition-effects.test.ts (initial run failed 5 pass/1 fail while correcting changedPixelCount; final runs 6 pass, 0 fail, 18 expect() calls); bun test (7311 pass, 0 fail, 692578 expect() calls before TypeScript recovery; final rerun 7335 pass, 0 fail, 692614 expect() calls across 330 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on focused test typed-array helper widening; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-013 add-framebuffer-hash-test-hooks
+- open_risks: none
