@@ -1085,3 +1085,21 @@
 - oracle_changes: OR-FPS-036 registered in `plan_fps/REFERENCE_ORACLES.md` for `test/oracles/fixtures/capture-final-side-by-side-replay.json` with refresh command `bun test test/oracles/capture-final-side-by-side-replay.test.ts`
 - next_eligible_steps: 03-001 add-root-doom-ts-command-contract
 - open_risks: The selected step did not permit opening or executing reference capture tooling directly, so live final side-by-side framebuffer/audio/state hashes remain pending for later implementation steps that add a side-by-side replay runner and comparison report surface.
+
+## 2026-04-25 - 03-001 add-root-doom-ts-command-contract
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-001
+- step_title: add-root-doom-ts-command-contract
+- summary: Added the Bun runtime command contract surface at `src/playable/bun-runtime-entry-point/addRootDoomTsCommandContract.ts`. The contract pins `bun run doom.ts`, records the full current `src/main.ts` launcher audit surface from the 01-007 manifest, and explicitly marks the step as `contract-definition-only` with no launch side effects or replay-state inputs. Added focused test `test/playable/bun-runtime-entry-point/add-root-doom-ts-command-contract.test.ts` to lock the exact contract object, reconstruct the command from its parts, cross-check the target/current entrypoint values against `plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json`, and assert the Bun-only deterministic replay compatibility metadata.
+- files_changed: src/playable/bun-runtime-entry-point/addRootDoomTsCommandContract.ts; test/playable/bun-runtime-entry-point/add-root-doom-ts-command-contract.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: First focused test run exposed that the currentEntrypoint contract only captured command/path while the audit manifest also records helpUsageLines, scriptName, and sourceCatalogId; expanded the contract to mirror the manifest exactly. The first TypeScript check then caught mutable tuple inference for the exported contract constant; annotated it as AddRootDoomTsCommandContract to preserve readonly tuple typing.
+- tests_run: bun run format (initial run fixed 1 file, rerun no fixes); bun test test/playable/bun-runtime-entry-point/add-root-doom-ts-command-contract.test.ts (initial failed on currentEntrypoint shape, recovery run passed 3 tests/8 expects); bun test (passed 6746 tests, 690963 expects across 231 files before readonly recovery); bun x tsc --noEmit --project tsconfig.json (initial failed on readonly tuple mismatch); bun run format (post-readonly recovery, no fixes); bun test test/playable/bun-runtime-entry-point/add-root-doom-ts-command-contract.test.ts (post-readonly recovery, 3 pass, 8 expects); bun test (post-readonly recovery, 6746 pass, 690963 expects across 231 files); bun x tsc --noEmit --project tsconfig.json (post-readonly recovery, clean); bun run format (post-control update, no fixes); bun test test/playable/bun-runtime-entry-point/add-root-doom-ts-command-contract.test.ts (post-control update, 3 pass, 8 expects); bun test (post-control update, 6746 pass, 690963 expects across 231 files); bun x tsc --noEmit --project tsconfig.json (post-control update, clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-002 wire-root-doom-ts-entrypoint
+- open_risks: none
