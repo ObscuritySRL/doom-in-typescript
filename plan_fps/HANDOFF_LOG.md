@@ -1553,3 +1553,21 @@
 - oracle_changes: none
 - next_eligible_steps: 04-012 apply-playpal-palette
 - open_risks: none
+
+## 2026-04-25 - 04-012 apply-playpal-palette
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 04-012
+- step_title: apply-playpal-palette
+- summary: Added the playable window-host palette surface at `src/playable/window-host/applyPlaypalPalette.ts`. The module exports an exact apply-playpal-palette contract plus `applyPlaypalPalette`, which validates the `bun run doom.ts` runtime path, locks the audited `runLauncherWindow(session, { scale, title: \`DOOM Codex - ${session.mapName}\` })` host transition from 01-006, records the live `buildPaletteLookup(session.palette)` / `convertIndexedFrame(session.framebuffer, indexedFrameBuffer, paletteLookup)` / ARGB packing evidence from `src/launcher/win32.ts`, converts the 320x200 indexed framebuffer through a deterministic PLAYPAL lookup, and keeps deterministic replay compatibility explicit by limiting the surface to pure palette application. Added focused test `test/playable/window-host/apply-playpal-palette.test.ts` to lock the exact contract object, stable SHA-256 hash, 01-006 manifest linkage, live palette source evidence, deterministic palette application behavior, and wrong-command failure mode.
+- files_changed: src/playable/window-host/applyPlaypalPalette.ts; test/playable/window-host/apply-playpal-palette.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial run formatted 2 files and fixed 1 file; rerun formatted 2 files and applied no fixes); bun test test/playable/window-host/apply-playpal-palette.test.ts (4 pass, 0 fail, 19 expect() calls); bun test (6879 pass, 0 fail, 691370 expect() calls across 257 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 prevent-host-filtering
+- open_risks: none
