@@ -2705,3 +2705,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-003 render-status-bar-product-frame
 - open_risks: none
+
+## 2026-04-25 - 09-003 render-status-bar-product-frame
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-003
+- step_title: render-status-bar-product-frame
+- summary: Added the playable status-bar product-frame rendering surface at `src/playable/rendering-product-integration/renderStatusBarProductFrame.ts`. The module exports the exact `bun run doom.ts` command contract plus `renderStatusBarProductFrame`, which validates the Bun runtime command, requires full 320x200 framebuffer and 320x32 status-bar frame byte lengths, copies the status-bar product frame into the bottom 32-pixel framebuffer region, and returns deterministic placement evidence for replay verification. Added focused test `test/playable/rendering-product-integration/render-status-bar-product-frame.test.ts` to lock the command contract, 01-012 missing-rendering audit linkage, stable SHA-256 source hash, exact framebuffer transition hash, invalid-input mutation guard, wrong-command rejection, and exact status-bar area.
+- files_changed: src/playable/rendering-product-integration/renderStatusBarProductFrame.ts; test/playable/rendering-product-integration/render-status-bar-product-frame.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test SHA helper accepted `Uint8Array<ArrayBufferLike>` where Web Crypto requires an `ArrayBuffer`-backed `BufferSource`. Narrowed the helper parameter to `Uint8Array<ArrayBuffer>`, reran formatting, and reran the focused test, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` successfully.
+- tests_run: bun run format (initial pass and hash-replacement pass formatted 2 files with no fixes; recovery pass also no fixes); bun test test/playable/rendering-product-integration/render-status-bar-product-frame.test.ts (7 pass, 0 fail, 19 expect() calls; rerun after recovery also passed); bun test (7254 pass, 0 fail, 692318 expect() calls across 321 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on the test SHA helper buffer type; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 09-004 compose-menu-overlay
+- open_risks: none
