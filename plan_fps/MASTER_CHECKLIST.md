@@ -148,7 +148,7 @@
 - [x] `07-004` `implement-main-menu` | prereqs: `07-003` | file: `plan_fps/steps/07-004-implement-main-menu.md`
 - [x] `07-005` `implement-new-game-menu` | prereqs: `07-004` | file: `plan_fps/steps/07-005-implement-new-game-menu.md`
 - [x] `07-006` `implement-episode-select-menu` | prereqs: `07-005` | file: `plan_fps/steps/07-006-implement-episode-select-menu.md`
-- [ ] `07-007` `implement-skill-select-menu` | prereqs: `07-006` | file: `plan_fps/steps/07-007-implement-skill-select-menu.md`
+- [x] `07-007` `implement-skill-select-menu` | prereqs: `07-006` | file: `plan_fps/steps/07-007-implement-skill-select-menu.md`
 - [ ] `07-008` `implement-options-menu` | prereqs: `07-007` | file: `plan_fps/steps/07-008-implement-options-menu.md`
 - [ ] `07-009` `implement-sound-volume-menu` | prereqs: `07-008` | file: `plan_fps/steps/07-009-implement-sound-volume-menu.md`
 - [ ] `07-010` `implement-screen-size-detail-gamma-controls` | prereqs: `07-009` | file: `plan_fps/steps/07-010-implement-screen-size-detail-gamma-controls.md`

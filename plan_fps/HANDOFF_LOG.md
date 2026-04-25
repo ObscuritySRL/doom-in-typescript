@@ -2165,3 +2165,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-007 implement-skill-select-menu
 - open_risks: none
+
+## 2026-04-25 - 07-007 implement-skill-select-menu
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-007
+- step_title: implement-skill-select-menu
+- summary: Added the playable skill-select-menu surface at `src/playable/front-end-menus/implementSkillSelectMenu.ts`. The module exports an exact Bun-only runtime contract plus `implementSkillSelectMenu`, which validates the `bun run doom.ts` command, requires the active Skill-menu state, routes the selection through `menus.ts` with `KEY_ENTER`, preserves replay-relevant demo playback state, synchronizes `frontEndSequence.ts` menu-active state, and either emits the selected skill or opens the Nightmare confirmation overlay. Added focused test `test/playable/front-end-menus/implement-skill-select-menu.test.ts` to lock the exact contract object, stable SHA-256 source hash, 01-008 audit linkage, the normal skill-selection path, the Nightmare confirmation path, and wrong-command plus invalid-selection rejection.
+- files_changed: src/playable/front-end-menus/implementSkillSelectMenu.ts; test/playable/front-end-menus/implement-skill-select-menu.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 2 files in 2ms. No fixes applied.); bun test test/playable/front-end-menus/implement-skill-select-menu.test.ts (7 pass, 0 fail, 21 expect() calls); bun test (7088 pass, 0 fail, 691826 expect() calls across 291 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-008 implement-options-menu
+- open_risks: none
