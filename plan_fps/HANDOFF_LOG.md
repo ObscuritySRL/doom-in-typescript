@@ -2885,3 +2885,21 @@
 - oracle_changes: none
 - next_eligible_steps: 09-013 add-framebuffer-hash-test-hooks
 - open_risks: none
+
+## 2026-04-25 - 09-013 add-framebuffer-hash-test-hooks
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 09-013
+- step_title: add-framebuffer-hash-test-hooks
+- summary: Added deterministic framebuffer hash test hooks at `src/playable/rendering-product-integration/addFramebufferHashTestHooks.ts`. The module exports the exact `bun run doom.ts` command contract plus `addFramebufferHashTestHooks`, validates full 320x200 framebuffers, derives the active viewport from `computeViewport`, captures full-frame SHA-256/checksum evidence, captures viewport SHA-256/checksum evidence, records previous-frame transition hashes, and reports changed-byte counts for replay-stable visible-frame checks. Added focused test `test/playable/rendering-product-integration/add-framebuffer-hash-test-hooks.test.ts` to lock the command contract, 01-012 missing-rendering audit surface, exact full-frame hash/checksum evidence, exact viewport evidence, transition hash, wrong-command rejection, and invalid previous-framebuffer guard.
+- files_changed: src/playable/rendering-product-integration/addFramebufferHashTestHooks.ts; test/playable/rendering-product-integration/add-framebuffer-hash-test-hooks.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Resumed an existing 09-013 recovery log from a previous blocked attempt. The earlier full-suite blocker in `applyPaletteEffectsAndGamma` did not reproduce in this invocation; no files outside the 09-013 expected-change scope were edited or staged.
+- tests_run: bun run format (Formatted 4 files, No fixes applied); bun test test/playable/rendering-product-integration/add-framebuffer-hash-test-hooks.test.ts (4 pass, 0 fail, 13 expect() calls); bun test (7363 pass, 0 fail, 692709 expect() calls across 331 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 10-001 select-and-open-bun-win32-audio-host
+- open_risks: none
