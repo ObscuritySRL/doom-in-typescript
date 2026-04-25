@@ -3210,3 +3210,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-004 wire-bun-native-save-read-write
 - open_risks: none
+
+## 2026-04-25 - 11-004 wire-bun-native-save-read-write
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-004
+- step_title: wire-bun-native-save-read-write
+- summary: Added the playable Bun-native save read/write surface at `src/playable/save-load-playability/wireBunNativeSaveReadWrite.ts`. The module exports the exact `bun run doom.ts` command contract plus `wireBunNativeSaveReadWrite`, validates the product runtime command before any save file I/O, validates local save paths, reads with `Bun.file`, writes with `Bun.write`, parses the canonical Doom 1.9 save header when present, and returns handle-free deterministic replay evidence with locked SHA-256 hashes and read/write replay checksums. Added focused test `test/playable/save-load-playability/wire-bun-native-save-read-write.test.ts` to lock the command contract, 01-013 save/load audit linkage, formatted source SHA-256 `b3b8708c715af26ae709e54c5117a8b4d33cbf935f412c5ea92c95fdd0b4b82e`, exact Bun write/read evidence, wrong-command prevalidation, and invalid-path prevalidation.
+- files_changed: src/playable/save-load-playability/wireBunNativeSaveReadWrite.ts; test/playable/save-load-playability/wire-bun-native-save-read-write.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun fixed 1 file; checklist rerun no fixes); bun test test/playable/save-load-playability/wire-bun-native-save-read-write.test.ts (5 pass, 0 fail, 13 expect() calls; rerun after checklist update also passed); bun test (7568 pass, 0 fail, 693662 expect() calls across 349 files; rerun after checklist update also passed); bun x tsc --noEmit --project tsconfig.json (clean; rerun after checklist update also clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-005 implement-live-game-save-load
+- open_risks: none
