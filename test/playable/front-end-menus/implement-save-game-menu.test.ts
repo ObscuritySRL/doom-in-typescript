@@ -49,7 +49,7 @@ describe('implementSaveGameMenu', () => {
   });
 
   it('locks the source hash', () => {
-    expect(sourceHash).toBe('2b552fa9140c539a9859904eaad24c4781235c1fecfae2cc94f0fe9a87684511');
+    expect(sourceHash).toBe('48d18e93cb7325bbd8f0e6bc4ddbf4c458b804e2803e154dfe612666afbfa745');
   });
 
   it('opens the save menu and preserves replay-relevant demo state', () => {
@@ -79,6 +79,44 @@ describe('implementSaveGameMenu', () => {
     expect(frontEndSequence.menuActive).toBe(true);
   });
 
+  it('reports demoPlaybackActive false when the title loop is not playing a demo', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    expect(frontEndSequence.inDemoPlayback).toBe(false);
+
+    const menu = createMenuState();
+    openMenu(menu, MenuKind.Main);
+    menu.itemOn = 3;
+
+    const result = implementSaveGameMenu({
+      command: 'bun run doom.ts',
+      frontEndSequence,
+      menu,
+    });
+
+    expect(result.demoPlaybackActive).toBe(false);
+    expect(result.menuActive).toBe(true);
+    expect(frontEndSequence.menuActive).toBe(true);
+  });
+
+  it('returns the frozen module-level transition action singleton across calls', () => {
+    const seqA = createFrontEndSequence('shareware');
+    const menuA = createMenuState();
+    openMenu(menuA, MenuKind.Main);
+    menuA.itemOn = 3;
+
+    const seqB = createFrontEndSequence('shareware');
+    const menuB = createMenuState();
+    openMenu(menuB, MenuKind.Main);
+    menuB.itemOn = 3;
+
+    const resultA = implementSaveGameMenu({ command: 'bun run doom.ts', frontEndSequence: seqA, menu: menuA });
+    const resultB = implementSaveGameMenu({ command: 'bun run doom.ts', frontEndSequence: seqB, menu: menuB });
+
+    expect(resultA.action).toBe(resultB.action);
+    expect(Object.isFrozen(resultA.action)).toBe(true);
+    expect(Object.isFrozen(resultA)).toBe(true);
+  });
+
   it('rejects a non-Bun runtime command', () => {
     const frontEndSequence = createFrontEndSequence('shareware');
     const menu = createMenuState();
@@ -88,6 +126,21 @@ describe('implementSaveGameMenu', () => {
     expect(() =>
       implementSaveGameMenu({
         command: 'bun run src/main.ts',
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow('implementSaveGameMenu requires the exact Bun runtime command "bun run doom.ts".');
+  });
+
+  it('rejects an empty runtime command', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    openMenu(menu, MenuKind.Main);
+    menu.itemOn = 3;
+
+    expect(() =>
+      implementSaveGameMenu({
+        command: '',
         frontEndSequence,
         menu,
       }),
@@ -107,5 +160,58 @@ describe('implementSaveGameMenu', () => {
         menu,
       }),
     ).toThrow('implementSaveGameMenu requires the active Main menu Save Game selection.');
+  });
+
+  it('rejects an inactive menu state even when the cursor is on the Save row', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    menu.currentMenu = MenuKind.Main;
+    menu.itemOn = 3;
+    expect(menu.active).toBe(false);
+
+    expect(() =>
+      implementSaveGameMenu({
+        command: 'bun run doom.ts',
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow('implementSaveGameMenu requires the active Main menu Save Game selection.');
+  });
+
+  it('rejects a non-Main currentMenu even when the cursor is on row 3', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = 3;
+
+    expect(() =>
+      implementSaveGameMenu({
+        command: 'bun run doom.ts',
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow('implementSaveGameMenu requires the active Main menu Save Game selection.');
+  });
+
+  it('does not mutate the menu when the runtime command is rejected', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    openMenu(menu, MenuKind.Main);
+    menu.itemOn = 3;
+    const beforeMenu = menu.currentMenu;
+    const beforeItemOn = menu.itemOn;
+    const beforeMenuActive = frontEndSequence.menuActive;
+
+    expect(() =>
+      implementSaveGameMenu({
+        command: 'bun run src/main.ts',
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow();
+
+    expect(menu.currentMenu).toBe(beforeMenu);
+    expect(menu.itemOn).toBe(beforeItemOn);
+    expect(frontEndSequence.menuActive).toBe(beforeMenuActive);
   });
 });

@@ -25,6 +25,11 @@ export const IMPLEMENT_SAVE_GAME_MENU_CONTRACT = Object.freeze({
   }),
 } as const);
 
+const SAVE_MENU_TRANSITION_ACTION = Object.freeze({
+  kind: 'openMenu' as const,
+  target: MenuKind.Save as const,
+});
+
 export interface ImplementSaveGameMenuOptions {
   readonly command: string;
   readonly frontEndSequence: FrontEndSequenceState;
@@ -41,6 +46,42 @@ export interface ImplementSaveGameMenuResult {
   readonly menuActive: true;
 }
 
+/**
+ * Open the vanilla Save Game menu from the active Main-menu Save Game row.
+ *
+ * Validates the Bun runtime contract and the Main menu's active Save Game
+ * selection (item index 3, lump M_SAVEG), captures `inDemoPlayback` for
+ * deterministic replay observers, then dispatches KEY_ENTER through
+ * {@link handleMenuKey} so the menu state machine transitions to
+ * {@link MenuKind.Save}. Mirrors vanilla m_menu.c's `M_SaveGame` →
+ * `M_SetupNextMenu(&SaveDef)` transition (file I/O and `usergame` /
+ * `gamestate` guards are out of scope for this menu-navigation step).
+ * Synchronizes the front-end sequencer's menu-active gate so the attract
+ * loop continues to suppress advance-demo keystrokes while the Save
+ * overlay is consuming them.
+ *
+ * @param options Bun runtime command plus the live menu and front-end states.
+ * @returns The dispatched menu action together with the synchronized post-transition state.
+ * @example
+ * ```ts
+ * import { createFrontEndSequence } from "../../ui/frontEndSequence.ts";
+ * import { createMenuState, MenuKind, openMenu } from "../../ui/menus.ts";
+ * import { implementSaveGameMenu } from "./implementSaveGameMenu.ts";
+ *
+ * const frontEndSequence = createFrontEndSequence("shareware");
+ * const menu = createMenuState();
+ * openMenu(menu, MenuKind.Main);
+ * menu.itemOn = 3;
+ *
+ * const result = implementSaveGameMenu({
+ *   command: "bun run doom.ts",
+ *   frontEndSequence,
+ *   menu,
+ * });
+ *
+ * console.log(result.currentMenu); // "save"
+ * ```
+ */
 export function implementSaveGameMenu(options: ImplementSaveGameMenuOptions): ImplementSaveGameMenuResult {
   if (options.command !== REQUIRED_RUNTIME_COMMAND) {
     throw new Error('implementSaveGameMenu requires the exact Bun runtime command "bun run doom.ts".');
@@ -51,20 +92,16 @@ export function implementSaveGameMenu(options: ImplementSaveGameMenuOptions): Im
   }
 
   const demoPlaybackActive = options.frontEndSequence.inDemoPlayback;
-  const action = handleMenuKey(options.menu, KEY_ENTER);
+  const dispatched = handleMenuKey(options.menu, KEY_ENTER);
 
-  if (action.kind !== 'openMenu' || action.target !== MenuKind.Save) {
+  if (dispatched.kind !== 'openMenu' || dispatched.target !== MenuKind.Save) {
     throw new Error('Save Game activation failed to open the Save menu.');
   }
 
-  setMenuActive(options.frontEndSequence, options.menu.active);
-
-  if (!options.frontEndSequence.menuActive) {
-    throw new Error('Save Game activation must keep the front-end menu overlay active.');
-  }
+  setMenuActive(options.frontEndSequence, true);
 
   return Object.freeze({
-    action: Object.freeze({ kind: 'openMenu', target: MenuKind.Save } as const),
+    action: SAVE_MENU_TRANSITION_ACTION,
     currentMenu: MenuKind.Save,
     demoPlaybackActive,
     menuActive: true,
