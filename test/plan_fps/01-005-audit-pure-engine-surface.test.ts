@@ -161,21 +161,23 @@ const expectedManifest = {
   },
 };
 
+const MANIFEST_PATH = 'plan_fps/manifests/01-005-audit-pure-engine-surface.json';
+
 describe('01-005 audit pure engine surface manifest', () => {
   test('locks the exact manifest payload', async () => {
-    const manifest = await readJsonFile('plan_fps/manifests/01-005-audit-pure-engine-surface.json');
+    const manifest = await Bun.file(MANIFEST_PATH).json();
 
     expect(manifest).toEqual(expectedManifest);
   });
 
   test('cross-checks live file hashes and Bun command contracts', async () => {
-    const manifest = expectRecord(await readJsonFile('plan_fps/manifests/01-005-audit-pure-engine-surface.json'), 'manifest');
+    const manifest = expectRecord(await Bun.file(MANIFEST_PATH).json(), 'manifest');
     const commandContracts = getRecord(manifest, 'commandContracts');
-    const packageJson = expectRecord(await readJsonFile('package.json'), 'package.json');
+    const packageJson = expectRecord(await Bun.file('package.json').json(), 'package.json');
     const scripts = getRecord(packageJson, 'scripts');
     const srcMain = getRecord(manifest, 'srcMain');
     const sourceCatalog = getRecord(manifest, 'sourceCatalog');
-    const tsconfigJson = expectRecord(await readJsonFile('tsconfig.json'), 'tsconfig.json');
+    const tsconfigJson = expectRecord(await Bun.file('tsconfig.json').json(), 'tsconfig.json');
     const compilerOptions = getRecord(tsconfigJson, 'compilerOptions');
 
     expect(commandContracts.currentLauncherCommand).toBe('bun run src/main.ts');
@@ -217,25 +219,26 @@ describe('01-005 audit pure engine surface manifest', () => {
   });
 
   test('verifies catalog evidence and explicit null pure-engine surfaces', async () => {
-    const manifest = expectRecord(await readJsonFile('plan_fps/manifests/01-005-audit-pure-engine-surface.json'), 'manifest');
+    const manifest = expectRecord(await Bun.file(MANIFEST_PATH).json(), 'manifest');
     const explicitNullSurfaces = getArray(manifest, 'explicitNullSurfaces');
     const pureEngineSurface = getRecord(manifest, 'pureEngineSurface');
     const sourceCatalog = await Bun.file('plan_fps/SOURCE_CATALOG.md').text();
+    const surfaceNames = explicitNullSurfaces.map((surface) => getString(expectRecord(surface, 'surface'), 'surface'));
 
     expect(pureEngineSurface.directPureEngineImportCount).toBe(0);
     expect(pureEngineSurface.directPureEngineImportsFromCurrentLauncher).toEqual([]);
     expect(pureEngineSurface.explicitNullSurfaceCount).toBe(explicitNullSurfaces.length);
-    expect(explicitNullSurfaces.map((surface) => getString(expectRecord(surface, 'surface'), 'surface'))).toEqual([
-      'broadPureEngineModuleInventory',
-      'deterministicTickApi',
-      'pureEngineEntrypoint',
-      'saveStateSerializationApi',
-      'sideEffectFreeRendererApi',
-      'simulationStateHashApi',
-    ]);
+    expect(surfaceNames).toEqual(['broadPureEngineModuleInventory', 'deterministicTickApi', 'pureEngineEntrypoint', 'saveStateSerializationApi', 'sideEffectFreeRendererApi', 'simulationStateHashApi']);
+    expect(surfaceNames).toEqual([...surfaceNames].sort());
+    expect(new Set(surfaceNames).size).toBe(surfaceNames.length);
 
     for (const surface of explicitNullSurfaces) {
-      expect(expectRecord(surface, 'surface').value).toBeNull();
+      const surfaceRecord = expectRecord(surface, 'explicitNullSurfaces[]');
+      expect(surfaceRecord.value).toBeNull();
+      expect(typeof surfaceRecord.evidence).toBe('string');
+      expect(typeof surfaceRecord.reason).toBe('string');
+      expect((surfaceRecord.evidence as string).length).toBeGreaterThan(0);
+      expect((surfaceRecord.reason as string).length).toBeGreaterThan(0);
     }
 
     for (const row of expectedManifest.sourceCatalog.relevantRows) {
@@ -253,16 +256,7 @@ describe('01-005 audit pure engine surface manifest', () => {
 });
 
 async function hashFile(path: string): Promise<string> {
-  const bytes = await Bun.file(path).arrayBuffer();
-  const hasher = new Bun.CryptoHasher('sha256');
-
-  hasher.update(bytes);
-
-  return hasher.digest('hex');
-}
-
-async function readJsonFile(path: string): Promise<unknown> {
-  return JSON.parse(await Bun.file(path).text());
+  return new Bun.CryptoHasher('sha256').update(await Bun.file(path).bytes()).digest('hex');
 }
 
 function expectRecord(value: unknown, label: string): Record<string, unknown> {

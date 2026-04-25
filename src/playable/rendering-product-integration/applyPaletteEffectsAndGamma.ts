@@ -71,22 +71,32 @@ export function applyPaletteEffectsAndGamma(context: PaletteEffectsAndGammaConte
   assertByteLength('presentationFramebuffer', context.presentationFramebuffer, PRESENTATION_FRAMEBUFFER_BYTE_LENGTH);
   assertPaletteEffect(context.paletteEffect);
 
+  const framebuffer = context.framebuffer;
+  const gammaTable = context.gammaTable;
+  const palette = context.palette;
+  const presentationFramebuffer = context.presentationFramebuffer;
+  const paletteEffect = context.paletteEffect;
+  const strength = paletteEffect.strength;
+  const inverseStrength = 0x100 - strength;
+  const targetRedScaled = paletteEffect.red * strength;
+  const targetGreenScaled = paletteEffect.green * strength;
+  const targetBlueScaled = paletteEffect.blue * strength;
+
   let framebufferChecksum = 0x811c_9dc5;
   let presentationChecksum = 0x811c_9dc5;
-  const inverseStrength = 0x100 - context.paletteEffect.strength;
+  let presentationOffset = 0;
 
   for (let pixelIndex = 0; pixelIndex < FRAMEBUFFER_PIXEL_COUNT; pixelIndex += 1) {
-    const paletteIndex = context.framebuffer[pixelIndex]!;
+    const paletteIndex = framebuffer[pixelIndex]!;
     const paletteOffset = paletteIndex * 3;
-    const presentationOffset = pixelIndex * PRESENTATION_BYTES_PER_PIXEL;
-    const blue = context.gammaTable[blendChannel(context.palette[paletteOffset + 2]!, context.paletteEffect.blue, context.paletteEffect.strength, inverseStrength)]!;
-    const green = context.gammaTable[blendChannel(context.palette[paletteOffset + 1]!, context.paletteEffect.green, context.paletteEffect.strength, inverseStrength)]!;
-    const red = context.gammaTable[blendChannel(context.palette[paletteOffset]!, context.paletteEffect.red, context.paletteEffect.strength, inverseStrength)]!;
+    const red = gammaTable[((palette[paletteOffset]! * inverseStrength + targetRedScaled + 0x80) >> 8) & 0xff]!;
+    const green = gammaTable[((palette[paletteOffset + 1]! * inverseStrength + targetGreenScaled + 0x80) >> 8) & 0xff]!;
+    const blue = gammaTable[((palette[paletteOffset + 2]! * inverseStrength + targetBlueScaled + 0x80) >> 8) & 0xff]!;
 
-    context.presentationFramebuffer[presentationOffset] = red;
-    context.presentationFramebuffer[presentationOffset + 1] = green;
-    context.presentationFramebuffer[presentationOffset + 2] = blue;
-    context.presentationFramebuffer[presentationOffset + 3] = 0xff;
+    presentationFramebuffer[presentationOffset] = red;
+    presentationFramebuffer[presentationOffset + 1] = green;
+    presentationFramebuffer[presentationOffset + 2] = blue;
+    presentationFramebuffer[presentationOffset + 3] = 0xff;
 
     framebufferChecksum ^= paletteIndex;
     framebufferChecksum = Math.imul(framebufferChecksum, 0x0100_0193) >>> 0;
@@ -98,17 +108,19 @@ export function applyPaletteEffectsAndGamma(context: PaletteEffectsAndGammaConte
     presentationChecksum = Math.imul(presentationChecksum, 0x0100_0193) >>> 0;
     presentationChecksum ^= 0xff;
     presentationChecksum = Math.imul(presentationChecksum, 0x0100_0193) >>> 0;
+
+    presentationOffset += PRESENTATION_BYTES_PER_PIXEL;
   }
 
   return {
     commandContract: PALETTE_EFFECTS_AND_GAMMA_COMMAND_CONTRACT,
     framebufferChecksum,
-    gammaTableByteLength: context.gammaTable.byteLength,
-    paletteByteLength: context.palette.byteLength,
-    paletteEffect: context.paletteEffect,
+    gammaTableByteLength: gammaTable.byteLength,
+    paletteByteLength: palette.byteLength,
+    paletteEffect,
     pixelCount: FRAMEBUFFER_PIXEL_COUNT,
     presentationChecksum,
-    presentationFramebuffer: context.presentationFramebuffer,
+    presentationFramebuffer,
     transition: 'palette-effects-and-gamma-applied',
   };
 }
@@ -130,8 +142,4 @@ function assertPaletteEffect(paletteEffect: PaletteEffect): void {
   assertChannel('paletteEffect.green', paletteEffect.green, 0xff);
   assertChannel('paletteEffect.red', paletteEffect.red, 0xff);
   assertChannel('paletteEffect.strength', paletteEffect.strength, 0x100);
-}
-
-function blendChannel(source: number, target: number, strength: number, inverseStrength: number): number {
-  return ((source * inverseStrength + target * strength + 0x80) >> 8) & 0xff;
 }
