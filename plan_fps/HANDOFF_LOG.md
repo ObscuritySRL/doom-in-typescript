@@ -2363,3 +2363,21 @@
 - oracle_changes: none
 - next_eligible_steps: 07-018 render-menu-text
 - open_risks: none
+
+## 2026-04-25 - 07-018 render-menu-text
+
+- status: completed
+- agent: Codex
+- model: gpt-5.4
+- effort: max
+- step_id: 07-018
+- step_title: render-menu-text
+- summary: Added the playable menu-text render surface at `src/playable/front-end-menus/renderMenuText.ts`. The module exports an exact Bun-only runtime contract plus `renderMenuText`, which validates the `bun run doom.ts` command, synchronizes `frontEndSequence.ts` menu-active state with the menu layer, derives the current menu's patch-text draw list directly from `menus.ts` while preserving spacer-row vertical gaps, and preserves replay-relevant front-end demo state. Added focused test `test/playable/front-end-menus/render-menu-text.test.ts` to lock the exact runtime contract, stable SHA-256 source hash, 01-008 audit linkage, exact Options-menu render output, blank-lump Load-menu behavior, and inactive-menu plus wrong-command rejection paths.
+- files_changed: src/playable/front-end-menus/renderMenuText.ts; test/playable/front-end-menus/render-menu-text.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused contract/manifest assertions compared frozen literal contract values against wider manifest strings and numbers. Reversed those expectation directions in the test, reran formatting, and reran the verification tail successfully.
+- tests_run: bun run format (initial run after file creation applied no fixes; rerun after the source-hash edit applied no fixes; rerun after the typecheck recovery edit applied no fixes); bun test test/playable/front-end-menus/render-menu-text.test.ts (initial run: 6 pass, 0 fail, 11 expect() calls; rerun after the typecheck recovery edit: 6 pass, 0 fail, 11 expect() calls); bun test (initial run: 7155 pass, 0 fail, 691982 expect() calls across 302 files; rerun after the typecheck recovery edit: 7155 pass, 0 fail, 691982 expect() calls across 302 files); bun x tsc --noEmit --project tsconfig.json (initial run failed on literal-narrowed test expectations; final rerun passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-019 preserve-menu-timing-idle-behavior
+- open_risks: none
