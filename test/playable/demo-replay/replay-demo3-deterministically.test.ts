@@ -92,6 +92,50 @@ describe('replayDemo3Deterministically', () => {
   test('rejects DEMO3 replay evidence without any tic commands', () => {
     expect(() => replayDemo3Deterministically(EMPTY_DEMO3_BUFFER)).toThrow('DEMO3 deterministic replay requires at least one tic');
   });
+
+  test('produces identical evidence across repeated calls with the same buffer', () => {
+    const firstEvidence = replayDemo3Deterministically(DEMO3_COMPATIBLE_BUFFER);
+    const secondEvidence = replayDemo3Deterministically(DEMO3_COMPATIBLE_BUFFER);
+
+    expect(secondEvidence.replayHash).toBe(firstEvidence.replayHash);
+    expect(secondEvidence.ticCommandHash).toBe(firstEvidence.ticCommandHash);
+    expect(secondEvidence.ticCount).toBe(firstEvidence.ticCount);
+    expect(secondEvidence.ticSignatures).toEqual(firstEvidence.ticSignatures);
+    expect(secondEvidence.finalSnapshot).toEqual(firstEvidence.finalSnapshot);
+  });
+
+  test('does not mutate the input demo buffer', () => {
+    const inputBuffer = Buffer.from(DEMO3_COMPATIBLE_BUFFER);
+    const originalBytes = Buffer.from(inputBuffer);
+
+    replayDemo3Deterministically(inputBuffer);
+
+    expect(inputBuffer.equals(originalBytes)).toBe(true);
+  });
+
+  test('flips replayHash when any tic byte changes', () => {
+    const baselineEvidence = replayDemo3Deterministically(DEMO3_COMPATIBLE_BUFFER);
+    const mutatedBuffer = Buffer.from(DEMO3_COMPATIBLE_BUFFER);
+    mutatedBuffer[13] = 99;
+    const mutatedEvidence = replayDemo3Deterministically(mutatedBuffer);
+
+    expect(mutatedEvidence.replayHash).not.toBe(baselineEvidence.replayHash);
+    expect(mutatedEvidence.ticCommandHash).not.toBe(baselineEvidence.ticCommandHash);
+    expect(mutatedEvidence.ticSignatures[0]?.commandHash).not.toBe(baselineEvidence.ticSignatures[0]?.commandHash);
+    expect(mutatedEvidence.ticSignatures[1]?.commandHash).toBe(baselineEvidence.ticSignatures[1]?.commandHash);
+  });
+
+  test('locks ticSignatures to contiguous zero-based indices that match the final snapshot', () => {
+    const evidence = replayDemo3Deterministically(DEMO3_COMPATIBLE_BUFFER);
+
+    expect(evidence.ticCount).toBe(evidence.ticSignatures.length);
+    expect(evidence.ticCount).toBe(evidence.finalSnapshot.ticIndex);
+    for (const [arrayIndex, signature] of evidence.ticSignatures.entries()) {
+      expect(signature.ticIndex).toBe(arrayIndex);
+      expect(signature.activePlayerCount).toBeGreaterThan(0);
+      expect(signature.commandHash).toMatch(/^[0-9a-f]{64}$/);
+    }
+  });
 });
 
 interface SideBySideReplayAuditManifest {

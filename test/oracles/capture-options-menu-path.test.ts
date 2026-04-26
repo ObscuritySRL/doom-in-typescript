@@ -298,7 +298,9 @@ describe('capture options menu path oracle', () => {
     expect(fixture.captureWindow.endFrame).toBeGreaterThanOrEqual(fixture.captureWindow.startFrame);
     expect(fixture.captureWindow.endTic).toBeGreaterThanOrEqual(fixture.captureWindow.startTic);
     expect(fixture.captureWindow.endFrame).toBe(fixture.captureWindow.endTic);
+    expect(fixture.captureWindow.ticRateHz).toBe(35);
     expect(fixture.expectedTrace).toHaveLength(fixture.captureWindow.endFrame - fixture.captureWindow.startFrame + 1);
+    expect(fixture.expectedTrace.length).toBeGreaterThan(0);
 
     for (const [expectedTraceEventIndex, expectedTraceEvent] of fixture.expectedTrace.entries()) {
       const expectedFrame = fixture.captureWindow.startFrame + expectedTraceEventIndex;
@@ -316,6 +318,31 @@ describe('capture options menu path oracle', () => {
       expect(expectedTraceEvent?.input).toBe(inputSequenceEvent.key);
       expect(expectedTraceEvent?.tic).toBe(inputSequenceEvent.tic);
     }
+  });
+
+  test('every trace event with a real input maps to exactly one input sequence event', async () => {
+    const fixture = await loadFixture();
+    const inputSequenceFrames = new Set<number>();
+    const traceFramesWithInput = new Set<number>();
+
+    for (const inputSequenceEvent of fixture.inputSequence) {
+      expect(inputSequenceFrames.has(inputSequenceEvent.frame)).toBe(false);
+      inputSequenceFrames.add(inputSequenceEvent.frame);
+    }
+
+    for (let inputSequenceIndex = 1; inputSequenceIndex < fixture.inputSequence.length; inputSequenceIndex += 1) {
+      const previousInputEvent = fixture.inputSequence[inputSequenceIndex - 1];
+      const currentInputEvent = fixture.inputSequence[inputSequenceIndex];
+      expect(currentInputEvent && previousInputEvent && currentInputEvent.frame > previousInputEvent.frame).toBe(true);
+    }
+
+    for (const expectedTraceEvent of fixture.expectedTrace) {
+      if (expectedTraceEvent.input !== 'none') {
+        traceFramesWithInput.add(expectedTraceEvent.frame);
+      }
+    }
+
+    expect([...traceFramesWithInput].sort((leftFrame, rightFrame) => leftFrame - rightFrame)).toEqual([...inputSequenceFrames].sort((leftFrame, rightFrame) => leftFrame - rightFrame));
   });
 
   test('records the options menu transition path', async () => {
