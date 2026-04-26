@@ -3336,3 +3336,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-011 add-live-save-load-roundtrip-hash-tests
 - open_risks: none
+
+## 2026-04-26 - 11-011 add-live-save-load-roundtrip-hash-tests
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-011
+- step_title: add-live-save-load-roundtrip-hash-tests
+- summary: Added the playable live save/load roundtrip hash-test surface at `src/playable/save-load-playability/addLiveSaveLoadRoundtripHashTests.ts`. The module exports the exact `bun run doom.ts` command contract plus `addLiveSaveLoadRoundtripHashTests`, validates the product runtime command before serializing save data, builds canonical Doom 1.9 save headers with deterministic live-section bytes and the Doom save EOF marker, reloads the header through the canonical parser, rejects lossy roundtrips, and returns frozen replay evidence with locked save/load SHA-256 hashes, transition signatures, byte counts, and replay checksums. Added focused test `test/playable/save-load-playability/add-live-save-load-roundtrip-hash-tests.test.ts` to lock the command contract, 01-013 save/load roundtrip audit linkage, formatted source SHA-256 `ad30433236dedcc547f4aea3a49006526a62a2135608582741c6123ebf8ff622`, exact default/custom roundtrip evidence, wrong-command prevalidation, and lossy-description rejection.
+- files_changed: src/playable/save-load-playability/addLiveSaveLoadRoundtripHashTests.ts; test/playable/save-load-playability/add-live-save-load-roundtrip-hash-tests.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun no fixes); bun test test/playable/save-load-playability/add-live-save-load-roundtrip-hash-tests.test.ts (6 pass, 0 fail, 10 expect() calls); bun test (7623 pass, 0 fail, 693806 expect() calls across 356 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-001 load-default-config
+- open_risks: none
