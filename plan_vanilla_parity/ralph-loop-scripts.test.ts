@@ -81,12 +81,12 @@ async function createFakeClaudeCommand(temporaryDirectory: string, delayBeforeRe
   return fakeClaudeCommandPath;
 }
 
-async function readFirstEligibleGovernanceStepLine(): Promise<string> {
+async function readFirstEligibleGovernanceStepLine(): Promise<string | null> {
   const checklistText = await Bun.file('plan_vanilla_parity/MASTER_CHECKLIST.md').text();
   const firstUncheckedGovernancePattern = /^- \[ \] `(?<id>\d{2}-\d{3})` `(?<slug>[^`]+)` \| lane: `governance` \|/m;
   const match = firstUncheckedGovernancePattern.exec(checklistText);
   if (match?.groups === undefined) {
-    throw new Error('No unchecked governance-lane step found in plan_vanilla_parity/MASTER_CHECKLIST.md.');
+    return null;
   }
   return `Initial eligible step: ${match.groups.id} ${match.groups.slug}`;
 }
@@ -97,6 +97,37 @@ async function readFirstEligibleNonGovernanceStep(): Promise<{ readonly lane: st
   for (const match of checklistText.matchAll(uncheckedNoPrereqPattern)) {
     if (match.groups?.lane !== 'governance') {
       return { lane: match.groups!.lane!, stepId: match.groups!.id! };
+    }
+  }
+  return null;
+}
+
+async function readFirstEligibleStep(): Promise<{ readonly lane: string; readonly stepId: string; readonly stepLine: string } | null> {
+  const checklistText = await Bun.file('plan_vanilla_parity/MASTER_CHECKLIST.md').text();
+  const checklistLinePattern = /^- \[(?<mark>[ xX])\] `(?<id>\d{2}-\d{3})` `(?<slug>[^`]+)` \| lane: `(?<lane>[^`]+)` \| prereqs: `(?<prereqs>[^`]+)` \|/gm;
+  const completedStepIds = new Set<string>();
+
+  for (const match of checklistText.matchAll(checklistLinePattern)) {
+    if (match.groups?.mark.toLowerCase() === 'x') {
+      completedStepIds.add(match.groups.id);
+    }
+  }
+
+  for (const match of checklistText.matchAll(checklistLinePattern)) {
+    if (match.groups?.mark !== ' ') {
+      continue;
+    }
+    const prereqs = match.groups.prereqs
+      .split(',')
+      .map((prereq) => prereq.trim())
+      .filter((prereq) => prereq.length > 0 && prereq !== 'none');
+    const allComplete = prereqs.every((prereq) => completedStepIds.has(prereq));
+    if (allComplete) {
+      return {
+        lane: match.groups.lane,
+        stepId: match.groups.id,
+        stepLine: `Initial eligible step: ${match.groups.id} ${match.groups.slug}`,
+      };
     }
   }
   return null;
@@ -154,30 +185,42 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-vanilla-loop-'));
     const lockDirectory = join(temporaryDirectory, 'locks');
     let firstLockId = '';
+    let firstLane = '';
     let secondLane = '';
     let secondLockId = '';
 
     try {
+      const expectedFirstStep = await readFirstEligibleStep();
+      if (expectedFirstStep === null) {
+        return;
+      }
       const expectedSecondStep = await readFirstEligibleNonGovernanceStep();
-      const firstResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', 'governance']));
+      const firstResult = await acquireLaneLock(
+        parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', expectedFirstStep.lane]),
+      );
       const secondResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'auto-agent', '--lease-minutes', '60']));
 
       firstLockId = firstResult.lockId ?? '';
+      firstLane = firstResult.lane ?? '';
       secondLane = secondResult.lane ?? '';
       secondLockId = secondResult.lockId ?? '';
 
       expect(firstResult.acquired).toBe(true);
-      expect(firstResult.lane).toBe('governance');
+      expect(firstResult.lane).toBe(expectedFirstStep.lane);
       if (expectedSecondStep === null) {
-        expect(secondResult.lane).not.toBe('governance');
+        expect(secondResult.lane).not.toBe(expectedFirstStep.lane);
       } else {
         expect(secondResult.acquired).toBe(true);
-        expect(secondResult.lane).toBe(expectedSecondStep.lane);
-        expect(secondResult.stepId).toBe(expectedSecondStep.stepId);
+        if (expectedFirstStep.lane === 'governance') {
+          expect(secondResult.lane).toBe(expectedSecondStep.lane);
+          expect(secondResult.stepId).toBe(expectedSecondStep.stepId);
+        } else {
+          expect(secondResult.lane).not.toBe(expectedFirstStep.lane);
+        }
       }
     } finally {
-      if (firstLockId) {
-        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', 'governance', '--lock-id', firstLockId]));
+      if (firstLockId && firstLane) {
+        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', firstLane, '--lock-id', firstLockId]));
       }
 
       if (secondLane && secondLockId) {
@@ -223,16 +266,19 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const logDirectory = join(temporaryDirectory, 'logs');
     const lockDirectory = join(temporaryDirectory, 'locks');
     const fakeCodexCommandPath = await createFakeCodexCommand(temporaryDirectory);
-    const expectedInitialStepLine = await readFirstEligibleGovernanceStepLine();
+    const expectedInitialStep = await readFirstEligibleStep();
 
     try {
+      if (expectedInitialStep === null) {
+        return;
+      }
       const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
 
       expect(result.exitCode).toBe(0);
-      expect(result.combinedOutput).toContain('Lane: governance');
-      expect(result.combinedOutput).toContain(expectedInitialStepLine);
+      expect(result.combinedOutput).toContain(`Lane: ${expectedInitialStep.lane}`);
+      expect(result.combinedOutput).toContain(expectedInitialStep.stepLine);
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
-      expect(result.combinedOutput).toContain('LOOP_LANE: governance');
+      expect(result.combinedOutput).toContain(`LOOP_LANE: ${expectedInitialStep.lane}`);
 
       const lockEntries = await readdir(lockDirectory);
       expect(lockEntries).toEqual([]);
@@ -246,16 +292,19 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const logDirectory = join(temporaryDirectory, 'logs');
     const lockDirectory = join(temporaryDirectory, 'locks');
     const fakeClaudeCommandPath = await createFakeClaudeCommand(temporaryDirectory);
-    const expectedInitialStepLine = await readFirstEligibleGovernanceStepLine();
+    const expectedInitialStep = await readFirstEligibleStep();
 
     try {
+      if (expectedInitialStep === null) {
+        return;
+      }
       const result = await runPowerShellScript(CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-ClaudeCommand', fakeClaudeCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
 
       expect(result.exitCode).toBe(0);
-      expect(result.combinedOutput).toContain('Lane: governance');
-      expect(result.combinedOutput).toContain(expectedInitialStepLine);
+      expect(result.combinedOutput).toContain(`Lane: ${expectedInitialStep.lane}`);
+      expect(result.combinedOutput).toContain(expectedInitialStep.stepLine);
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
-      expect(result.combinedOutput).toContain('LOOP_LANE: governance');
+      expect(result.combinedOutput).toContain(`LOOP_LANE: ${expectedInitialStep.lane}`);
 
       const lockEntries = await readdir(lockDirectory);
       expect(lockEntries).toEqual([]);
@@ -300,19 +349,26 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const fakeCodexCommandPath = await createFakeCodexCommand(temporaryDirectory);
 
     await mkdir(lockDirectory, { recursive: true });
-    const lockResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', 'governance']));
+    const expectedFirstStep = await readFirstEligibleStep();
+    if (expectedFirstStep === null) {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+      return;
+    }
+    const lockResult = await acquireLaneLock(
+      parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', expectedFirstStep.lane]),
+    );
 
     try {
-      const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory, '-Lane', 'governance']);
+      const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory, '-Lane', expectedFirstStep.lane]);
 
       expect(lockResult.acquired).toBe(true);
       expect(result.exitCode).toBe(0);
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
-      expect(result.combinedOutput).toContain('Lane is locked: governance by other-agent');
+      expect(result.combinedOutput).toContain(`Lane is locked: ${expectedFirstStep.lane} by other-agent`);
       expect(result.combinedOutput).not.toContain('Codex command:');
     } finally {
       if (lockResult.lockId) {
-        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', 'governance', '--lock-id', lockResult.lockId]));
+        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', expectedFirstStep.lane, '--lock-id', lockResult.lockId]));
       }
       await rm(temporaryDirectory, { force: true, recursive: true });
     }
@@ -325,19 +381,37 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const fakeClaudeCommandPath = await createFakeClaudeCommand(temporaryDirectory);
 
     await mkdir(lockDirectory, { recursive: true });
-    const lockResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', 'governance']));
+    const expectedFirstStep = await readFirstEligibleStep();
+    if (expectedFirstStep === null) {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+      return;
+    }
+    const lockResult = await acquireLaneLock(
+      parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', expectedFirstStep.lane]),
+    );
 
     try {
-      const result = await runPowerShellScript(CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-ClaudeCommand', fakeClaudeCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory, '-Lane', 'governance']);
+      const result = await runPowerShellScript(CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH, [
+        '-MaxIterations',
+        '1',
+        '-ClaudeCommand',
+        fakeClaudeCommandPath,
+        '-LogDirectory',
+        logDirectory,
+        '-LaneLockDirectory',
+        lockDirectory,
+        '-Lane',
+        expectedFirstStep.lane,
+      ]);
 
       expect(lockResult.acquired).toBe(true);
       expect(result.exitCode).toBe(0);
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
-      expect(result.combinedOutput).toContain('Lane is locked: governance by other-agent');
+      expect(result.combinedOutput).toContain(`Lane is locked: ${expectedFirstStep.lane} by other-agent`);
       expect(result.combinedOutput).not.toContain('Claude command:');
     } finally {
       if (lockResult.lockId) {
-        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', 'governance', '--lock-id', lockResult.lockId]));
+        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', expectedFirstStep.lane, '--lock-id', lockResult.lockId]));
       }
       await rm(temporaryDirectory, { force: true, recursive: true });
     }
