@@ -46,24 +46,32 @@ export function renderScreenblocks(options: RenderScreenblocksOptions): RenderSc
     top: viewport.viewWindowY,
     width: viewport.scaledViewWidth,
   };
+  const sourceFramebuffer = options.sourceFramebuffer;
+  const destinationFramebuffer = options.destinationFramebuffer;
+  const top = viewportEvidence.top;
+  const left = viewportEvidence.left;
+  const width = viewportEvidence.width;
+  const height = viewportEvidence.height;
+  const bottomBound = top + height;
+  const rightBound = left + width;
   let changedPixelCount = 0;
 
-  for (let y = viewportEvidence.top; y < viewportEvidence.top + viewportEvidence.height; y += 1) {
+  for (let y = top; y < bottomBound; y += 1) {
     const rowOffset = y * SCREENWIDTH;
 
-    for (let x = viewportEvidence.left; x < viewportEvidence.left + viewportEvidence.width; x += 1) {
+    for (let x = left; x < rightBound; x += 1) {
       const framebufferOffset = rowOffset + x;
-      const sourcePixel = options.sourceFramebuffer[framebufferOffset]!;
+      const sourcePixel = sourceFramebuffer[framebufferOffset]!;
 
-      if (options.destinationFramebuffer[framebufferOffset] !== sourcePixel) {
+      if (destinationFramebuffer[framebufferOffset] !== sourcePixel) {
         changedPixelCount += 1;
       }
 
-      options.destinationFramebuffer[framebufferOffset] = sourcePixel;
+      destinationFramebuffer[framebufferOffset] = sourcePixel;
     }
   }
 
-  const copiedPixelCount = viewportEvidence.width * viewportEvidence.height;
+  const copiedPixelCount = width * height;
 
   return {
     changedPixelCount,

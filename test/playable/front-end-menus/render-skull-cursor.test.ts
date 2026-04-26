@@ -140,4 +140,21 @@ describe('renderSkullCursor', () => {
       }),
     ).toThrow('renderSkullCursor requires an active menu state.');
   });
+
+  test('rejects out-of-range cursor positions before mutating front-end state', () => {
+    const frontEndSequenceState = createFrontEndSequence('shareware');
+    const menuState = createMenuState();
+
+    openMenu(menuState, MenuKind.Main);
+    menuState.itemOn = 999;
+
+    expect(() =>
+      renderSkullCursor({
+        frontEndSequenceState,
+        menuState,
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toThrow('renderSkullCursor requires an in-range menu cursor position.');
+    expect(frontEndSequenceState.menuActive).toBe(false);
+  });
 });

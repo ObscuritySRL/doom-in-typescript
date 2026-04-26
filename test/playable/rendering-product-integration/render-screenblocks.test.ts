@@ -18,7 +18,7 @@ describe('renderScreenblocks', () => {
   });
 
   test('locks the implementation source hash', async () => {
-    expect(await sha256File(SOURCE_PATH)).toBe('4cf95d3c14dc5ae2cd06ebd9d435182dd61ac4b25efea55c086c87d1f4d61839');
+    expect(await sha256File(SOURCE_PATH)).toBe('d3aaa138c0fadf9f2f2a5a70fdb74d2816310056e9fe1e01a31e846ee1a1c1ff');
   });
 
   test('copies only the vanilla screenblocks viewport into the replay framebuffer', () => {
@@ -116,6 +116,87 @@ describe('renderScreenblocks', () => {
       }),
     ).toThrow('sourceFramebuffer must contain exactly 64000 bytes.');
     expect(destinationFramebuffer).toEqual(originalDestination);
+  });
+
+  test('clamps setBlocks below the vanilla minimum to MIN_SETBLOCKS=3', () => {
+    const destinationFramebuffer = new Uint8Array(RENDER_SCREENBLOCKS_FRAMEBUFFER_BYTE_LENGTH);
+    const sourceFramebuffer = createSourceFramebuffer();
+
+    const evidence = renderScreenblocks({
+      command: RENDER_SCREENBLOCKS_RUNTIME_COMMAND,
+      destinationFramebuffer,
+      detailMode: DetailMode.high,
+      setBlocks: 0,
+      sourceFramebuffer,
+    });
+
+    expect(evidence.setBlocks).toBe(3);
+    expect(evidence.viewport).toEqual({ height: 48, left: 112, top: 60, width: 96 });
+    expect(evidence.copiedPixelCount).toBe(96 * 48);
+  });
+
+  test('clamps setBlocks above the vanilla maximum to MAX_SETBLOCKS=11', () => {
+    const destinationFramebuffer = new Uint8Array(RENDER_SCREENBLOCKS_FRAMEBUFFER_BYTE_LENGTH);
+    const sourceFramebuffer = createSourceFramebuffer();
+
+    const evidence = renderScreenblocks({
+      command: RENDER_SCREENBLOCKS_RUNTIME_COMMAND,
+      destinationFramebuffer,
+      detailMode: DetailMode.high,
+      setBlocks: 50,
+      sourceFramebuffer,
+    });
+
+    expect(evidence.setBlocks).toBe(11);
+    expect(evidence.viewport).toEqual({ height: SCREENHEIGHT, left: 0, top: 0, width: SCREENWIDTH });
+    expect(evidence.copiedPixelCount).toBe(SCREENWIDTH * SCREENHEIGHT);
+  });
+
+  test('truncates fractional setBlocks toward zero before clamping', () => {
+    const destinationFramebuffer = new Uint8Array(RENDER_SCREENBLOCKS_FRAMEBUFFER_BYTE_LENGTH);
+
+    const evidence = renderScreenblocks({
+      command: RENDER_SCREENBLOCKS_RUNTIME_COMMAND,
+      destinationFramebuffer,
+      detailMode: DetailMode.high,
+      setBlocks: 9.95,
+      sourceFramebuffer: createSourceFramebuffer(),
+    });
+
+    expect(evidence.setBlocks).toBe(9);
+  });
+
+  test('rejects non-finite setBlocks before mutation', () => {
+    const destinationFramebuffer = new Uint8Array(RENDER_SCREENBLOCKS_FRAMEBUFFER_BYTE_LENGTH);
+    const originalDestination = new Uint8Array(destinationFramebuffer);
+
+    for (const setBlocks of [Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]) {
+      expect(() =>
+        renderScreenblocks({
+          command: RENDER_SCREENBLOCKS_RUNTIME_COMMAND,
+          destinationFramebuffer,
+          detailMode: DetailMode.high,
+          setBlocks,
+          sourceFramebuffer: createSourceFramebuffer(),
+        }),
+      ).toThrow('setBlocks must be a finite number.');
+    }
+
+    expect(destinationFramebuffer).toEqual(originalDestination);
+  });
+
+  test('treats any non-zero detail-mode integer as low detail', () => {
+    const destinationFramebuffer = new Uint8Array(RENDER_SCREENBLOCKS_FRAMEBUFFER_BYTE_LENGTH);
+
+    const evidence = renderScreenblocks({
+      command: RENDER_SCREENBLOCKS_RUNTIME_COMMAND,
+      destinationFramebuffer,
+      detailMode: 7 as DetailMode,
+      setBlocks: 11,
+      sourceFramebuffer: createSourceFramebuffer(),
+    });
+
+    expect(evidence.detailMode).toBe(DetailMode.low);
   });
 });
 
