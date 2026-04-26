@@ -192,8 +192,9 @@ describe('01-003 audit existing oracle fixtures', () => {
 });
 
 async function hashFile(path: string): Promise<string> {
-  const fileBytes = await Bun.file(path).arrayBuffer();
-  const digest = await crypto.subtle.digest('SHA-256', fileBytes);
+  const hasher = new Bun.CryptoHasher('sha256');
 
-  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+  hasher.update(await Bun.file(path).bytes());
+
+  return hasher.digest('hex');
 }

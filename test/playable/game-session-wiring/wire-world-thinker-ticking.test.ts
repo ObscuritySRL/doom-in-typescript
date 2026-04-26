@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'bun:test';
+import { beforeAll, describe, expect, test } from 'bun:test';
 
+import type { LauncherResources } from '../../../src/launcher/session.ts';
 import type { PreLoopCallbacks } from '../../../src/mainLoop.ts';
 
 import { createLauncherSession, loadLauncherResources } from '../../../src/launcher/session.ts';
@@ -28,6 +29,12 @@ const NOOP_PRE_LOOP_CALLBACKS: PreLoopCallbacks = Object.freeze({
   startGameLoop() {},
 });
 
+let launcherResources: LauncherResources;
+
+beforeAll(async () => {
+  launcherResources = await loadLauncherResources('doom/DOOM1.WAD');
+});
+
 describe('wireWorldThinkerTicking', () => {
   test('locks the Bun runtime command contract', () => {
     expect(WIRE_WORLD_THINKER_TICKING_RUNTIME_CONTRACT).toEqual({
@@ -54,9 +61,8 @@ describe('wireWorldThinkerTicking', () => {
     expect(await hashSourceFile(SOURCE_PATH)).toBe(SOURCE_SHA256);
   });
 
-  test('advances one world thinker tic during tryRunTics', async () => {
-    const resources = await loadLauncherResources('doom/DOOM1.WAD');
-    const session = createLauncherSession(resources, { mapName: 'E1M1', skill: 2 });
+  test('advances one world thinker tic during tryRunTics', () => {
+    const session = createLauncherSession(launcherResources, { mapName: 'E1M1', skill: 2 });
     const mainLoop = new MainLoop();
 
     mainLoop.setup(NOOP_PRE_LOOP_CALLBACKS);
@@ -81,9 +87,8 @@ describe('wireWorldThinkerTicking', () => {
     expect(result.thinkerCountBefore).toBeGreaterThan(0);
   });
 
-  test('rejects non-target runtime commands before ticking the world', async () => {
-    const resources = await loadLauncherResources('doom/DOOM1.WAD');
-    const session = createLauncherSession(resources, { mapName: 'E1M1', skill: 2 });
+  test('rejects non-target runtime commands before ticking the world', () => {
+    const session = createLauncherSession(launcherResources, { mapName: 'E1M1', skill: 2 });
     const mainLoop = new MainLoop();
 
     mainLoop.setup(NOOP_PRE_LOOP_CALLBACKS);
