@@ -1,5 +1,5 @@
 import type { MainLoopPhase, PreLoopStep } from '../../mainLoop.ts';
-import type { LauncherResources, LauncherSession } from '../../launcher/session.ts';
+import type { LauncherResources } from '../../launcher/session.ts';
 
 import { MainLoop } from '../../mainLoop.ts';
 import { EMPTY_LAUNCHER_INPUT, advanceLauncherSession, createLauncherSession, renderLauncherFrame } from '../../launcher/session.ts';
@@ -31,7 +31,6 @@ export interface LevelExitTransitionEvidence {
 export interface WireLevelExitFlowOptions {
   readonly command: string;
   readonly currentMapName?: string;
-  readonly loop?: MainLoop;
   readonly nextMapName?: string;
   readonly skill?: number;
 }
@@ -62,41 +61,39 @@ export function wireLevelExitFlow(resources: LauncherResources, options: WireLev
     mapName: currentMapName,
     skill,
   });
-  const loop = options.loop ?? new MainLoop();
+  const currentLevelTimeBeforeExit = currentSession.levelTime;
+  const loop = new MainLoop();
   const phaseTrace: MainLoopPhase[] = [];
   const preLoopTrace: PreLoopStep[] = [];
   const flowEvidence: {
-    activeSession: LauncherSession;
-    displayedFramebuffer: Uint8Array | null;
+    activeSession: ReturnType<typeof createLauncherSession>;
+    framebufferByteLength: number;
     transition: LevelExitTransitionEvidence | null;
   } = {
     activeSession: currentSession,
-    displayedFramebuffer: null,
+    framebufferByteLength: 0,
     transition: null,
   };
-  const currentLevelTimeBeforeExit = currentSession.levelTime;
 
-  if (!loop.started) {
-    loop.setup({
-      executeSetViewSize() {
-        preLoopTrace.push('executeSetViewSize');
-      },
-      initialTryRunTics() {
-        preLoopTrace.push('initialTryRunTics');
-      },
-      restoreBuffer() {
-        preLoopTrace.push('restoreBuffer');
-      },
-      startGameLoop() {
-        preLoopTrace.push('startGameLoop');
-      },
-    });
-  }
+  loop.setup({
+    executeSetViewSize() {
+      preLoopTrace.push('executeSetViewSize');
+    },
+    initialTryRunTics() {
+      preLoopTrace.push('initialTryRunTics');
+    },
+    restoreBuffer() {
+      preLoopTrace.push('restoreBuffer');
+    },
+    startGameLoop() {
+      preLoopTrace.push('startGameLoop');
+    },
+  });
 
   loop.runOneFrame({
     display() {
       phaseTrace.push('display');
-      flowEvidence.displayedFramebuffer = renderLauncherFrame(flowEvidence.activeSession);
+      flowEvidence.framebufferByteLength = renderLauncherFrame(flowEvidence.activeSession).byteLength;
     },
     startFrame() {
       phaseTrace.push('startFrame');
@@ -104,12 +101,12 @@ export function wireLevelExitFlow(resources: LauncherResources, options: WireLev
     tryRunTics() {
       phaseTrace.push('tryRunTics');
       advanceLauncherSession(currentSession, EMPTY_LAUNCHER_INPUT);
-      flowEvidence.transition = {
+      flowEvidence.transition = Object.freeze({
         fromMapName: currentMapName,
         phase: 'tryRunTics',
         reason: 'level-exit',
         toMapName: nextMapName,
-      };
+      });
       flowEvidence.activeSession = createLauncherSession(resources, {
         mapName: nextMapName,
         skill,
@@ -120,14 +117,14 @@ export function wireLevelExitFlow(resources: LauncherResources, options: WireLev
     },
   });
 
-  if (flowEvidence.displayedFramebuffer === null || flowEvidence.transition === null) {
+  if (flowEvidence.transition === null) {
     throw new Error('level exit flow did not reach display after transition');
   }
 
   return Object.freeze({
     commandContract: WIRE_LEVEL_EXIT_FLOW_COMMAND_CONTRACT,
     currentMapName,
-    framebufferByteLength: flowEvidence.displayedFramebuffer.byteLength,
+    framebufferByteLength: flowEvidence.framebufferByteLength,
     frameCount: loop.frameCount,
     levelTime: Object.freeze({
       currentAfterExit: currentSession.levelTime,
@@ -138,7 +135,7 @@ export function wireLevelExitFlow(resources: LauncherResources, options: WireLev
     phaseTrace: Object.freeze([...phaseTrace]),
     preLoopTrace: Object.freeze([...preLoopTrace]),
     renderedMapName: flowEvidence.activeSession.mapName,
-    transition: Object.freeze(flowEvidence.transition),
+    transition: flowEvidence.transition,
   });
 }
 

@@ -25,7 +25,7 @@ interface AuditManifest {
 
 const IMPLEMENTATION_PATH = 'src/playable/game-session-wiring/wireLevelExitFlow.ts';
 const IWAD_PATH = 'doom/DOOM1.WAD';
-const SOURCE_SHA256 = 'a148f72dba044994bc8c081300a99a11e5d8c40c5f46a1d92d5e4fbc214f848a';
+const SOURCE_SHA256 = '6b8b6b5ec40c6808832370204a98e6b2ccbf04374afba7bc19cf4bfa380c4725';
 
 describe('wireLevelExitFlow', () => {
   test('locks the exact Bun command contract and audit linkage', async () => {
@@ -120,6 +120,59 @@ describe('wireLevelExitFlow', () => {
         nextMapName: 'E1M1',
       }),
     ).toThrow('level exit flow requires distinct maps, got E1M1');
+  });
+
+  test('normalizes lowercase and mixed-case map names to uppercase before validating availability', async () => {
+    const resources = await loadLauncherResources(IWAD_PATH);
+
+    const result = wireLevelExitFlow(resources, {
+      command: 'bun run doom.ts',
+      currentMapName: 'e1m1',
+      nextMapName: 'E1m2',
+    });
+
+    expect(result.currentMapName).toBe('E1M1');
+    expect(result.nextMapName).toBe('E1M2');
+    expect(result.renderedMapName).toBe('E1M2');
+    expect(result.transition).toEqual({
+      fromMapName: 'E1M1',
+      phase: 'tryRunTics',
+      reason: 'level-exit',
+      toMapName: 'E1M2',
+    });
+  });
+
+  test('rejects empty current and next map name overrides', async () => {
+    const resources = await loadLauncherResources(IWAD_PATH);
+
+    expect(() =>
+      wireLevelExitFlow(resources, {
+        command: 'bun run doom.ts',
+        currentMapName: '',
+      }),
+    ).toThrow('map name must not be empty');
+
+    expect(() =>
+      wireLevelExitFlow(resources, {
+        command: 'bun run doom.ts',
+        nextMapName: '',
+      }),
+    ).toThrow('map name must not be empty');
+  });
+
+  test('deep-freezes the result and its replay-evidence sub-objects', async () => {
+    const resources = await loadLauncherResources(IWAD_PATH);
+
+    const result = wireLevelExitFlow(resources, {
+      command: 'bun run doom.ts',
+    });
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.commandContract)).toBe(true);
+    expect(Object.isFrozen(result.levelTime)).toBe(true);
+    expect(Object.isFrozen(result.phaseTrace)).toBe(true);
+    expect(Object.isFrozen(result.preLoopTrace)).toBe(true);
+    expect(Object.isFrozen(result.transition)).toBe(true);
   });
 });
 
