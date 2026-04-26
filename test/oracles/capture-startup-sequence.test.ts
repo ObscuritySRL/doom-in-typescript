@@ -54,7 +54,7 @@ function isJsonObject(value: unknown): value is JsonObject {
 }
 
 async function readJsonObject(path: string): Promise<JsonObject> {
-  const parsedJson: unknown = JSON.parse(await Bun.file(path).text());
+  const parsedJson: unknown = await Bun.file(path).json();
 
   if (!isJsonObject(parsedJson)) {
     throw new Error(`Expected ${path} to contain a JSON object`);
@@ -63,10 +63,18 @@ async function readJsonObject(path: string): Promise<JsonObject> {
   return parsedJson;
 }
 
-async function sha256Hex(content: string): Promise<string> {
-  const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(content));
+function getSourceCatalogRow(sourceCatalogText: string, sourceIdentifier: string): string {
+  const sourceCatalogRow = sourceCatalogText.split('\n').find((line) => line.startsWith(`| ${sourceIdentifier} |`));
 
-  return Array.from(new Uint8Array(hashBuffer), (byteValue) => byteValue.toString(16).padStart(2, '0')).join('');
+  if (sourceCatalogRow === undefined) {
+    throw new Error(`Expected ${SOURCE_CATALOG_PATH} to contain ${sourceIdentifier}`);
+  }
+
+  return sourceCatalogRow;
+}
+
+function sha256Hex(content: string | Uint8Array): string {
+  return new Bun.CryptoHasher('sha256').update(content).digest('hex');
 }
 
 function toJsonObjects(values: JsonArray, label: string): JsonObject[] {
@@ -224,11 +232,54 @@ describe('capture-startup-sequence oracle', () => {
     const startupTraceEntries = toJsonObjects(expectedStartupTrace, 'expectedStartupTrace');
     const phaseNames = startupTraceEntries.map((startupTraceEntry) => getString(startupTraceEntry, 'phase'));
 
-    expect(await sha256Hex(JSON.stringify(expectedStartupTrace))).toBe(getString(expectedTraceHash, 'value'));
+    expect(sha256Hex(JSON.stringify(expectedStartupTrace))).toBe(getString(expectedTraceHash, 'value'));
     expect(phaseNames).toEqual(['bun-argv-command-line', 'default-gameplay-map', 'list-maps-early-return', 'launcher-session-creation', 'gameplay-first-console-message', 'launcher-window-entry']);
     expect(phaseNames.indexOf('launcher-session-creation')).toBeLessThan(phaseNames.indexOf('launcher-window-entry'));
     expect(startupTraceEntries.map((startupTraceEntry) => getNumber(startupTraceEntry, 'tic'))).toEqual([0, 1, 2, 3, 4, 5]);
     expect(startupTraceEntries.map((startupTraceEntry) => getNumber(startupTraceEntry, 'frame'))).toEqual([0, 1, 2, 3, 4, 5]);
+  });
+
+  test('locks capture-window and trace boundary invariants', async () => {
+    const fixture = await readJsonObject(FIXTURE_PATH);
+    const captureWindow = getJsonObject(fixture, 'captureWindow');
+    const expectedStartupTrace = getJsonArray(fixture, 'expectedStartupTrace');
+    const expectedTraceHash = getJsonObject(fixture, 'expectedTraceHash');
+    const sourceHashes = toJsonObjects(getJsonArray(fixture, 'sourceHashes'), 'sourceHashes');
+    const startupTraceEntries = toJsonObjects(expectedStartupTrace, 'expectedStartupTrace');
+    const frameValues = startupTraceEntries.map((startupTraceEntry) => getNumber(startupTraceEntry, 'frame'));
+    const phaseNames = startupTraceEntries.map((startupTraceEntry) => getString(startupTraceEntry, 'phase'));
+    const ticValues = startupTraceEntries.map((startupTraceEntry) => getNumber(startupTraceEntry, 'tic'));
+
+    expect(getNumber(captureWindow, 'startTic')).toBe(ticValues[0]);
+    expect(getNumber(captureWindow, 'endTic')).toBe(ticValues[ticValues.length - 1]);
+    expect(getNumber(captureWindow, 'startFrame')).toBe(frameValues[0]);
+    expect(getNumber(captureWindow, 'endFrame')).toBe(frameValues[frameValues.length - 1]);
+    expect(getNumber(captureWindow, 'ticRateHz')).toBe(35);
+    expect(getString(expectedTraceHash, 'algorithm')).toBe('sha256');
+    expect(getString(expectedTraceHash, 'input')).toBe('JSON.stringify(expectedStartupTrace)');
+    expect(getString(expectedTraceHash, 'value')).toMatch(/^[0-9a-f]{64}$/);
+
+    expect(ticValues).toEqual([...ticValues].sort((leftValue, rightValue) => leftValue - rightValue));
+    expect(frameValues).toEqual([...frameValues].sort((leftValue, rightValue) => leftValue - rightValue));
+    expect(new Set(ticValues).size).toBe(ticValues.length);
+    expect(new Set(frameValues).size).toBe(frameValues.length);
+    expect(new Set(phaseNames).size).toBe(phaseNames.length);
+
+    for (const ticValue of ticValues) {
+      expect(Number.isInteger(ticValue)).toBe(true);
+      expect(ticValue).toBeGreaterThanOrEqual(0);
+    }
+
+    for (const frameValue of frameValues) {
+      expect(Number.isInteger(frameValue)).toBe(true);
+      expect(frameValue).toBeGreaterThanOrEqual(0);
+    }
+
+    for (const sourceHash of sourceHashes) {
+      expect(getString(sourceHash, 'path').length).toBeGreaterThan(0);
+      expect(getString(sourceHash, 'sha256')).toMatch(/^[0-9a-f]{64}$/);
+      expect(getNumber(sourceHash, 'sizeBytes')).toBeGreaterThan(0);
+    }
   });
 
   test('cross-checks trace evidence against the allowed manifest observations', async () => {
@@ -255,12 +306,27 @@ describe('capture-startup-sequence oracle', () => {
     const sourceAuthorityEntries = toJsonObjects(getJsonArray(fixture, 'sourceAuthority'), 'sourceAuthority');
 
     for (const sourceAuthorityEntry of sourceAuthorityEntries) {
-      expect(sourceCatalogText).toContain(getString(sourceAuthorityEntry, 'sourceIdentifier'));
-      expect(sourceCatalogText).toContain(`\`${getString(sourceAuthorityEntry, 'path')}\``);
+      const sourceCatalogRow = getSourceCatalogRow(sourceCatalogText, getString(sourceAuthorityEntry, 'sourceIdentifier'));
+
+      expect(sourceCatalogRow).toContain(`\`${getString(sourceAuthorityEntry, 'path')}\``);
+      expect(sourceCatalogRow).toContain(getString(sourceAuthorityEntry, 'authority'));
     }
 
     expect(referenceOraclesText).toContain('OR-FPS-008');
     expect(referenceOraclesText).toContain(`\`${FIXTURE_PATH}\``);
     expect(referenceOraclesText).toContain('`bun test test/oracles/capture-startup-sequence.test.ts`');
+  });
+
+  test('matches inherited source hashes against live source files', async () => {
+    const fixture = await readJsonObject(FIXTURE_PATH);
+    const sourceHashes = toJsonObjects(getJsonArray(fixture, 'sourceHashes'), 'sourceHashes');
+
+    for (const sourceHash of sourceHashes) {
+      const sourcePath = getString(sourceHash, 'path');
+      const sourceBytes = await Bun.file(sourcePath).bytes();
+
+      expect(sourceBytes.byteLength).toBe(getNumber(sourceHash, 'sizeBytes'));
+      expect(sha256Hex(sourceBytes)).toBe(getString(sourceHash, 'sha256'));
+    }
   });
 });

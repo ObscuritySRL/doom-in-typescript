@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { existsSync } from 'node:fs';
-
 import classificationManifest from '../../plan_fps/manifests/existing-plan-classification.json';
 import controlCenterManifest from '../../plan_fps/manifests/00-002-declare-plan-fps-control-center.json';
 import manifest from '../../plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json';
@@ -34,18 +32,18 @@ describe('pin-bun-run-doom-entrypoint manifest', () => {
     expect(composed).toBe(manifest.runtimeCommand);
   });
 
-  test('pins the entry point at workspace root doom.ts and records that it is not yet on disk', () => {
+  test('pins the entry point at workspace root doom.ts and records that it is not yet on disk', async () => {
     expect(manifest.entryPoint.workspaceRelativePath).toBe('doom.ts');
     expect(manifest.entryPoint.workspaceAbsolutePath).toBe('D:/Projects/doom-in-typescript/doom.ts');
     expect(manifest.entryPoint.workspaceRelativePath).toBe(manifest.commandContract.entryFile);
     expect(manifest.entryPoint.presentOnDisk).toBe(false);
-    expect(existsSync(manifest.entryPoint.workspaceRelativePath)).toBe(false);
+    expect(await Bun.file(manifest.entryPoint.workspaceRelativePath).exists()).toBe(false);
   });
 
-  test('assigns the implementation owner to step 03-002 wire-root-doom-ts-entrypoint and the file exists', () => {
+  test('assigns the implementation owner to step 03-002 wire-root-doom-ts-entrypoint and the file exists', async () => {
     expect(manifest.entryPoint.ownerStepId).toBe('03-002');
     expect(manifest.entryPoint.ownerStepFilePath).toBe('plan_fps/steps/03-002-wire-root-doom-ts-entrypoint.md');
-    expect(existsSync(manifest.entryPoint.ownerStepFilePath)).toBe(true);
+    expect(await Bun.file(manifest.entryPoint.ownerStepFilePath).exists()).toBe(true);
   });
 
   test('records the current package.json start script and entry file, and flags that they do not match the contract', () => {
@@ -61,21 +59,21 @@ describe('pin-bun-run-doom-entrypoint manifest', () => {
   test('current package.json scripts.start matches the recorded scriptValue and the entry file exists on disk', async () => {
     const packageJson = (await Bun.file(PACKAGE_JSON_PATH).json()) as { scripts?: Record<string, string> };
     expect(packageJson.scripts?.[manifest.currentLauncher.scriptName]).toBe(manifest.currentLauncher.scriptValue);
-    expect(existsSync(manifest.currentLauncher.entryFile)).toBe(true);
+    expect(await Bun.file(manifest.currentLauncher.entryFile).exists()).toBe(true);
   });
 
-  test('control-center manifest cross-reference exists and ties to the same runtime target string', () => {
+  test('control-center manifest cross-reference exists and ties to the same runtime target string', async () => {
     expect(manifest.controlCenterManifestPath).toBe('plan_fps/manifests/00-002-declare-plan-fps-control-center.json');
-    expect(existsSync(manifest.controlCenterManifestPath)).toBe(true);
+    expect(await Bun.file(manifest.controlCenterManifestPath).exists()).toBe(true);
     expect(controlCenterManifest.runtimeTarget).toBe(manifest.runtimeCommand);
   });
 
-  test('every evidence path exists on disk and lives outside the read-only reference roots', () => {
+  test('every evidence path exists on disk and lives outside the read-only reference roots', async () => {
     expect(Array.isArray(manifest.evidencePaths)).toBe(true);
     expect(manifest.evidencePaths.length).toBeGreaterThanOrEqual(6);
     for (const evidencePath of manifest.evidencePaths) {
       expect(typeof evidencePath).toBe('string');
-      expect(existsSync(evidencePath)).toBe(true);
+      expect(await Bun.file(evidencePath).exists()).toBe(true);
       expect(evidencePath.startsWith('doom/')).toBe(false);
       expect(evidencePath.startsWith('iwad/')).toBe(false);
       expect(evidencePath.startsWith('reference/')).toBe(false);
@@ -121,9 +119,9 @@ describe('pin-bun-run-doom-entrypoint manifest', () => {
     expect(sectionBody).toContain('plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json');
   });
 
-  test('package.json and tsconfig.json (the read-only inputs to this step) exist on disk', () => {
-    expect(existsSync(PACKAGE_JSON_PATH)).toBe(true);
-    expect(existsSync(TSCONFIG_JSON_PATH)).toBe(true);
+  test('package.json and tsconfig.json (the read-only inputs to this step) exist on disk', async () => {
+    expect(await Bun.file(PACKAGE_JSON_PATH).exists()).toBe(true);
+    expect(await Bun.file(TSCONFIG_JSON_PATH).exists()).toBe(true);
   });
 
   test('command contract entry file matches the basename portion of the entry point workspace path', () => {

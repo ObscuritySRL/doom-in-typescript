@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 import { DEFAULT_DETERMINISTIC_RESET_SEED, deterministicResetSeedContract, implementDeterministicResetSeed } from '../../../src/playable/bun-runtime-entry-point/implementDeterministicResetSeed.ts';
 
 type AuditManifest = {
@@ -31,9 +29,13 @@ function assertAuditManifest(value: unknown): asserts value is AuditManifest {
 }
 
 function assertPackageJson(value: unknown): asserts value is PackageJson {
-  if (typeof value !== 'object' || value === null || !('scripts' in value) || typeof value.scripts !== 'object' || value.scripts === null || !('start' in value.scripts)) {
+  if (typeof value !== 'object' || value === null || !('scripts' in value) || typeof value.scripts !== 'object' || value.scripts === null || !('start' in value.scripts) || typeof value.scripts.start !== 'string') {
     throw new Error('Expected package.json start script data.');
   }
+}
+
+function hashJson(value: unknown): string {
+  return new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
 }
 
 async function loadAuditManifest(): Promise<AuditManifest> {
@@ -88,9 +90,7 @@ describe('implementDeterministicResetSeed', () => {
   });
 
   test('keeps a stable contract hash', () => {
-    const contractHash = createHash('sha256').update(JSON.stringify(deterministicResetSeedContract)).digest('hex');
-
-    expect(contractHash).toBe('5380c066ce8169e38a9d0d492c1a15f26c5ce68c24a4a1f9b3106cbb99067012');
+    expect(hashJson(deterministicResetSeedContract)).toBe('5380c066ce8169e38a9d0d492c1a15f26c5ce68c24a4a1f9b3106cbb99067012');
   });
 
   test('reconstructs the Bun runtime command and default reset seed', () => {
@@ -127,7 +127,11 @@ describe('implementDeterministicResetSeed', () => {
     });
   });
 
-  test('rejects non-Bun-runtime commands', () => {
-    expect(() => implementDeterministicResetSeed('bun run src/main.ts')).toThrow('implementDeterministicResetSeed only supports bun run doom.ts, got "bun run src/main.ts".');
+  test('rejects empty, whitespace, and altered runtime commands', () => {
+    const unsupportedRuntimeCommands = ['', ' ', 'bun run src/main.ts', 'bun run doom.ts --demo DEMO1', 'BUN run doom.ts'];
+
+    for (const unsupportedRuntimeCommand of unsupportedRuntimeCommands) {
+      expect(() => implementDeterministicResetSeed(unsupportedRuntimeCommand)).toThrow(`implementDeterministicResetSeed only supports bun run doom.ts, got "${unsupportedRuntimeCommand}".`);
+    }
   });
 });

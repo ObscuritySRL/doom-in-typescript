@@ -1215,3 +1215,54 @@ Required entry shape:
 - files_changed: D:/Projects/doom-in-typescript/test/oracles/capture-demo2-playback-checkpoints.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
 - tests_run: bun run format (Formatted 9 files in 10ms. No fixes applied.); bun test test/oracles/capture-demo2-playback-checkpoints.test.ts (6 pass, 0 fail, 79 expects); bun test (7790 pass, 0 fail, 694639 expects across 371 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
 - follow_up: none
+
+## 2026-04-26T03:54:15Z - 02-003 capture-startup-sequence - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-003
+- step_title: capture-startup-sequence
+- prior_audits: none
+- correctness_findings: Fixture and oracle registration satisfy the Expected Changes and the focused test is meaningful with no skipped or `.only` tests. Test-gap findings: the focused test did not lock capture-window boundary invariants, inherited live source-hash drift, or same-row source-catalog authority/path matching.
+- performance_findings: The focused test hashed the trace with WebCrypto plus a new TextEncoder and byte-to-hex conversion instead of Bun.CryptoHasher. This is not a product hot path, but it is avoidable test-time allocation and inconsistent with sibling oracle tests.
+- improvement_findings: JSON fixture loading used manual text plus JSON.parse instead of Bun.file(...).json(); source-catalog checks could pass from id and path appearing on different rows; trace tics/frames, phase dedupe, nonnegative integer boundaries, and source hash shape were not independently asserted.
+- corrective_action: Updated the focused test to parse with Bun.file(...).json(), hash with Bun.CryptoHasher, add capture-window/trace/source-hash boundary invariants, match source-catalog id/authority/path on the same row, and recompute inherited source hashes from live files.
+- files_changed: D:/Projects/doom-in-typescript/test/oracles/capture-startup-sequence.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 9 files in 9ms. No fixes applied.); bun test test/oracles/capture-startup-sequence.test.ts (7 pass, 0 fail, 87 expects); bun test (7801 pass, 0 fail, 694724 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T03:54:15Z - 03-015 implement-deterministic-reset-seed - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 03-015
+- step_title: implement-deterministic-reset-seed
+- prior_audits: none
+- correctness_findings: The implementation satisfies the Expected Changes: it exposes the Bun-runtime deterministic reset seed surface, accepts only `bun run doom.ts`, returns a zero-seed reset plan before title-loop entry, and leaves gameplay state, global random seed mutation, and replay input untouched. Test-gap findings: package.json shape validation did not require scripts.start to be a string, and the rejection test covered only one wrong command instead of empty, whitespace, extra-argument, and case-drift boundaries.
+- performance_findings: The focused test used node:crypto createHash for the stable contract hash even though Bun.CryptoHasher is available. This is not a product hot path, but it violates the Bun-native preference in selected scope.
+- improvement_findings: Boundary coverage for exact runtime-command matching was weaker than adjacent runtime-entry-point tests.
+- corrective_action: Replaced node:crypto hashing with Bun.CryptoHasher, tightened the package.json start-script guard to require a string, and expanded rejection coverage to empty, whitespace, old launcher, extra-argument, and case-drift runtime commands.
+- files_changed: D:/Projects/doom-in-typescript/test/playable/bun-runtime-entry-point/implement-deterministic-reset-seed.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 9 files in 9ms. No fixes applied.); bun test test/playable/bun-runtime-entry-point/implement-deterministic-reset-seed.test.ts (6 pass, 0 fail, 21 expects); bun test (7801 pass, 0 fail, 694724 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T03:54:15Z - 00-003 pin-bun-run-doom-entrypoint - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 00-003
+- step_title: pin-bun-run-doom-entrypoint
+- prior_audits: none
+- correctness_findings: The manifest and decision-log evidence still satisfy the Expected Changes: D-FPS-003 pins `bun run doom.ts`, decomposes the Bun command into program/subcommand/entryFile, records the absent root doom.ts entry point with owner step 03-002, and cross-checks README, MASTER_CHECKLIST, package.json, tsconfig.json, and classification evidence. The focused test is meaningful with no skipped or `.only` tests.
+- performance_findings: none; this step is a static governance manifest and focused test, not a product hot path.
+- improvement_findings: The focused test used node:fs existsSync for file-boundary checks where Bun.file(...).exists() is sufficient and matches the repository's Bun-native rule.
+- corrective_action: Replaced existsSync checks with Bun.file(...).exists() and converted the affected tests to async.
+- files_changed: D:/Projects/doom-in-typescript/test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 9 files in 9ms. No fixes applied.); bun test test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts (19 pass, 0 fail, 98 expects); bun test (7801 pass, 0 fail, 694724 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
+- follow_up: none
