@@ -93,7 +93,7 @@
 
 ## Phase 03: Launch / Host / Window / Input
 
-- [ ] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
+- [x] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
 - [ ] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
 - [ ] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
 - [ ] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
@@ -165,7 +165,7 @@
 
 ## Phase 05: WAD / Assets / Data
 
-- [ ] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
+- [x] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
 - [ ] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
 - [ ] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
 - [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
