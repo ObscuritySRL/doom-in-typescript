@@ -28,7 +28,7 @@
 
 ## Phase 01: Current State Inventory
 
-- [ ] `01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `none` | file: `plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md`
+- [x] `01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `none` | file: `plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md`
 - [ ] `01-002` `inventory-simplified-launcher-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md`
 - [ ] `01-003` `inventory-src-bootstrap-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-003-inventory-src-bootstrap-surface.md`
 - [ ] `01-004` `inventory-src-playable-contract-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md`
