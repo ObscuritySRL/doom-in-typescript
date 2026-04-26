@@ -3354,3 +3354,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-001 load-default-config
 - open_risks: none
+
+## 2026-04-26 - 12-001 load-default-config
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-001
+- step_title: load-default-config
+- summary: Added the playable default config loading surface at `src/playable/config-persistence/loadDefaultConfig.ts`. The module exports the exact `bun run doom.ts` command contract plus `loadDefaultConfig`, validates the product runtime command before any config path handling, loads optional `default.cfg` and `chocolate-doom.cfg` files through `Bun.file`, falls back to the existing parser defaults when files are absent, and returns frozen deterministic replay evidence for default, loaded-file, and missing-file paths. Added focused test `test/playable/config-persistence/load-default-config.test.ts` to lock the command contract, 01-014 missing config persistence audit linkage, formatted source SHA-256 `ebe00386faf7ed528feea07b43d4aa33d31193880821b5fc5771f6cb30543f1b`, default replay checksum/hash `1517864489`/`d297b0aa7695d2eae9ff37270c371e1b439e08b9a6f6b3973ec0f93a49afe258`, loaded replay checksum/hash `2965749322`/`7de4eb69e2d7eb5c34ddce93147f0c49ddb8a32b8964e9ec0dfb5564323230ac`, missing replay checksum/hash `329318743`/`634764f7eb5702ffa91b751c720cea152ab3917abd50e1180ce539744d290361`, wrong-command prevalidation, and invalid path rejection.
+- files_changed: src/playable/config-persistence/loadDefaultConfig.ts; test/playable/config-persistence/load-default-config.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test runs intentionally used placeholders to capture the formatted source hash and replay hashes/checksums. Replaced placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun no fixes; post-control pass fixed 2 files; final rerun no fixes); bun test test/playable/config-persistence/load-default-config.test.ts (6 pass, 0 fail, 37 expect() calls); bun test (7641 pass, 0 fail, 693881 expect() calls across 357 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-002 write-config-back
+- open_risks: none

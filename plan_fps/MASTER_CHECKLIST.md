@@ -229,7 +229,7 @@
 
 ## Phase 12: Config / Persistence
 
-- [ ] `12-001` `load-default-config` | prereqs: `11-011` | file: `plan_fps/steps/12-001-load-default-config.md`
+- [x] `12-001` `load-default-config` | prereqs: `11-011` | file: `plan_fps/steps/12-001-load-default-config.md`
 - [ ] `12-002` `write-config-back` | prereqs: `12-001` | file: `plan_fps/steps/12-002-write-config-back.md`
 - [ ] `12-003` `persist-key-bindings` | prereqs: `12-002` | file: `plan_fps/steps/12-003-persist-key-bindings.md`
 - [ ] `12-004` `persist-mouse-settings` | prereqs: `12-003` | file: `plan_fps/steps/12-004-persist-mouse-settings.md`
