@@ -120,6 +120,76 @@ describe('wireLiveSoundMusicTriggers', () => {
       }),
     ).toThrow('No episode-map music trigger is defined for MAP01.');
   });
+
+  test('emits a deactivated listener trigger when player.mo is null', () => {
+    const result = wireLiveSoundMusicTriggers({
+      runtimeCommand: WIRE_LIVE_SOUND_MUSIC_TRIGGERS_COMMAND_CONTRACT.command,
+      session: {
+        ...E1M1_AUDIO_SESSION,
+        player: { mo: null },
+      },
+    });
+
+    expect(result.soundTrigger).toEqual({
+      angle: null,
+      kind: 'update-listener-sounds',
+      listenerActive: false,
+      listenerX: null,
+      listenerY: null,
+      phase: 'updateSounds',
+      tic: 0,
+      view: 'gameplay',
+    });
+    expect(result.musicTrigger).toEqual({
+      kind: 'start-level-music',
+      lumpName: 'D_E1M1',
+      mapName: 'E1M1',
+      phase: 'updateSounds',
+      tic: 0,
+    });
+  });
+
+  test('reports automap view when showAutomap is true', () => {
+    const result = wireLiveSoundMusicTriggers({
+      runtimeCommand: WIRE_LIVE_SOUND_MUSIC_TRIGGERS_COMMAND_CONTRACT.command,
+      session: {
+        ...E1M1_AUDIO_SESSION,
+        showAutomap: true,
+      },
+    });
+
+    expect(result.soundTrigger.view).toBe('automap');
+    expect(result.soundTrigger.listenerActive).toBe(true);
+    expect(result.soundTrigger.listenerX).toBe(109_314_048);
+    expect(result.soundTrigger.listenerY).toBe(-54_657_024);
+  });
+
+  test('uppercases lowercase episode-map names before forming the music lump', () => {
+    const result = wireLiveSoundMusicTriggers({
+      runtimeCommand: WIRE_LIVE_SOUND_MUSIC_TRIGGERS_COMMAND_CONTRACT.command,
+      session: {
+        ...E1M1_AUDIO_SESSION,
+        mapName: 'e3m7',
+      },
+    });
+
+    expect(result.musicTrigger.mapName).toBe('E3M7');
+    expect(result.musicTrigger.lumpName).toBe('D_E3M7');
+  });
+
+  test('advances the loop frame counter and traces the canonical phase order', () => {
+    const result = wireLiveSoundMusicTriggers({
+      runtimeCommand: WIRE_LIVE_SOUND_MUSIC_TRIGGERS_COMMAND_CONTRACT.command,
+      session: { ...E1M1_AUDIO_SESSION, levelTime: 105 },
+    });
+
+    expect(result.frameCountBefore).toBe(0);
+    expect(result.frameCountAfter).toBe(1);
+    expect(result.phaseTrace).toEqual(['startFrame', 'tryRunTics', 'updateSounds', 'display']);
+    expect(result.preLoopTrace).toEqual(['initialTryRunTics', 'restoreBuffer', 'executeSetViewSize', 'startGameLoop']);
+    expect(result.musicTrigger.tic).toBe(105);
+    expect(result.soundTrigger.tic).toBe(105);
+  });
 });
 
 async function sha256(path: string): Promise<string> {
