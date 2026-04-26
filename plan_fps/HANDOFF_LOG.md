@@ -3606,3 +3606,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-006 preserve-demo-termination-behavior
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-006 preserve-demo-termination-behavior
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-006
+- step_title: preserve-demo-termination-behavior
+- summary: Added the playable demo termination preservation surface at `src/playable/demo-replay/preserveDemoTerminationBehavior.ts`. The module exports the exact `bun run doom.ts` command contract plus `preserveDemoTerminationBehavior`, validates the product runtime command before parsing demo bytes, consumes `DemoPlayback` streams through the marker boundary, preserves advance-demo and single-demo quit completion evidence, emits deterministic demo-playback input scripts, and returns frozen replay evidence with locked SHA-256 hashes. Added focused test `test/playable/demo-replay/preserve-demo-termination-behavior.test.ts` to lock the command contract, 01-015 side-by-side audit linkage, formatted source SHA-256 `1240580357c90dc19cbee774f971410ab780e0f77c144a22c88cbce2017d1c9b`, exact advance-demo and quit marker transitions, replay hashes, tic command hash, wrong-command prevalidation, and raw `DemoPlayback` marker timing.
+- files_changed: src/playable/demo-replay/preserveDemoTerminationBehavior.ts; test/playable/demo-replay/preserve-demo-termination-behavior.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Resumed from an existing progress log. The prior run had already created the step files and captured exact hash locks, then stopped after unrelated dirty save/load work complicated full-suite verification. This run reran formatting, focused verification, full `bun test`, and TypeScript successfully without staging unrelated dirty files.
+- tests_run: bun run format (resumed run no fixes); bun test test/playable/demo-replay/preserve-demo-termination-behavior.test.ts (5 pass, 0 fail, 27 expect() calls); bun test (7790 pass, 0 fail, 694639 expect() calls across 371 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-007 replay-scripted-input-from-clean-launch
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
