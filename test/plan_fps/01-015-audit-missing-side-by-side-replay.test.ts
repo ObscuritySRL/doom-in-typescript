@@ -335,12 +335,37 @@ describe('01-015 audit-missing-side-by-side-replay manifest', () => {
 
     expect(surfaces).toEqual(sortedSurfaces);
     expect(new Set(surfaces).size).toBe(surfaces.length);
+    expect(manifest.explicitNullSurfaces.length).toBe(expectedManifest.explicitNullSurfaces.length);
 
     for (const explicitNullSurface of manifest.explicitNullSurfaces) {
       expect(explicitNullSurface.path).toBeNull();
       expect(explicitNullSurface.evidencePaths).toEqual(['package.json', 'tsconfig.json', 'src/main.ts']);
       expect(explicitNullSurface.reason).toContain('No ');
     }
+  });
+
+  test('locks the help usage lines verbatim against the live launcher source', async () => {
+    const mainSource = await Bun.file('src/main.ts').text();
+    const { helpUsageLines } = expectedManifest.commandContracts.currentLauncher;
+
+    expect(helpUsageLines).toBeDefined();
+    expect((helpUsageLines ?? []).length).toBeGreaterThan(0);
+
+    for (const helpUsageLine of helpUsageLines ?? []) {
+      expect(mainSource).toContain(helpUsageLine);
+    }
+  });
+
+  test('keeps the target replay contract aligned with the playable runtime command', async () => {
+    const manifest = await readJsonFile<SideBySideReplayManifest>(manifestPath);
+    const targetRuntimeCommand = manifest.commandContracts.targetPlayable.runtimeCommand;
+
+    expect(typeof targetRuntimeCommand).toBe('string');
+    expect(manifest.targetReplayContract.requiredCommand).toBe(targetRuntimeCommand ?? '');
+    expect(manifest.targetReplayContract.requiredCommand).toBe(expectedManifest.targetReplayContract.requiredCommand);
+    expect(manifest.commandContracts.targetPlayable.entryFile).toBe('doom.ts');
+    expect(manifest.commandContracts.currentLauncher.entryFile).toBe('src/main.ts');
+    expect(manifest.observedLaunchSurfaces.length).toBe(expectedManifest.observedLaunchSurfaces.length);
   });
 
   test('verifies source-catalog and fact-log evidence', async () => {

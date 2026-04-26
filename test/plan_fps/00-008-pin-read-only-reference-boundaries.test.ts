@@ -229,7 +229,34 @@ describe('00-008 pin-read-only-reference-boundaries manifest', () => {
     }
   });
 
+  test('keeps evidence paths in ASCII order with no duplicates', () => {
+    const sortedEvidencePaths = [...manifest.evidencePaths].sort();
+
+    expect(manifest.evidencePaths).toEqual(sortedEvidencePaths);
+    expect(new Set(manifest.evidencePaths).size).toBe(manifest.evidencePaths.length);
+  });
+
+  test('keeps writable artifact examples present on disk and outside read-only roots', () => {
+    for (const writableArtifactExample of manifest.writePolicy.writableArtifactExamples) {
+      const writableArtifactPath = toPosixPath(resolve(writableArtifactExample));
+
+      expect(existsSync(writableArtifactPath)).toBe(true);
+      expect(statSync(writableArtifactPath).isDirectory()).toBe(true);
+
+      for (const readOnlyReferenceRoot of manifest.readOnlyReferenceRoots) {
+        expect(isSamePathOrInsideRoot(writableArtifactPath, readOnlyReferenceRoot.absolutePath)).toBe(false);
+      }
+    }
+  });
+
   test('records D-FPS-009 with the exact decision text', () => {
     expect(getDecisionSection(decisionLogText, manifest.decisionId)).toBe(expectedDecisionSection);
+  });
+
+  test('keeps D-FPS-009 as a single section in the decision log', () => {
+    const occurrenceMatches = decisionLogText.match(new RegExp(`^## ${manifest.decisionId}\\b`, 'gm'));
+
+    expect(occurrenceMatches).not.toBeNull();
+    expect(occurrenceMatches?.length).toBe(1);
   });
 });

@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test';
 import { createHash } from 'node:crypto';
 
 import { createFrontEndSequence } from '../../../src/ui/frontEndSequence.ts';
-import { createMenuState, MenuKind, openMenu } from '../../../src/ui/menus.ts';
+import { createMenuState, MENU_TREE, MenuItemStatus, MenuKind, openMenu } from '../../../src/ui/menus.ts';
 import { IMPLEMENT_MAIN_MENU_CONTRACT, implementMainMenu } from '../../../src/playable/front-end-menus/implementMainMenu.ts';
 
 const IMPLEMENT_MAIN_MENU_SOURCE_URL = new URL('../../../src/playable/front-end-menus/implementMainMenu.ts', import.meta.url);
@@ -31,6 +31,7 @@ interface LaunchAuditManifest {
     readonly reason: string;
     readonly surface: string;
   }>;
+  readonly sourceHashes: Readonly<Record<string, string>>;
 }
 
 function isLaunchAuditManifest(value: unknown): value is LaunchAuditManifest {
@@ -47,6 +48,7 @@ function isLaunchAuditManifest(value: unknown): value is LaunchAuditManifest {
       reason?: unknown;
       surface?: unknown;
     }>;
+    sourceHashes?: Record<string, unknown>;
   };
 
   if (typeof candidate.audit?.stepId !== 'string' || typeof candidate.audit?.title !== 'string') {
@@ -54,6 +56,14 @@ function isLaunchAuditManifest(value: unknown): value is LaunchAuditManifest {
   }
 
   if (!Array.isArray(candidate.explicitNullSurfaces)) {
+    return false;
+  }
+
+  if (typeof candidate.sourceHashes !== 'object' || candidate.sourceHashes === null) {
+    return false;
+  }
+
+  if (!Object.values(candidate.sourceHashes).every((entry) => typeof entry === 'string')) {
     return false;
   }
 
@@ -149,5 +159,37 @@ describe('implementMainMenu', () => {
         runtimeCommand: 'bun run src/main.ts',
       }),
     ).toThrow('implementMainMenu requires bun run doom.ts');
+  });
+
+  test('keeps every Main menu item selectable so the default cursor lands on a real action', () => {
+    const mainMenuItems = MENU_TREE[MenuKind.Main].items;
+
+    expect(mainMenuItems.length).toBeGreaterThan(0);
+    for (const mainMenuItem of mainMenuItems) {
+      expect(mainMenuItem.status === MenuItemStatus.Regular || mainMenuItem.status === MenuItemStatus.Slider).toBe(true);
+      expect(mainMenuItem.lump.length).toBeGreaterThan(0);
+    }
+  });
+
+  test('exposes a frozen contract and frozen result so downstream callers cannot mutate them', () => {
+    const frontEnd = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    const result = implementMainMenu({
+      frontEnd,
+      menu,
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(Object.isFrozen(IMPLEMENT_MAIN_MENU_CONTRACT)).toBe(true);
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.menuLumpNames)).toBe(true);
+  });
+
+  test('detects launch-audit manifest staleness against the live src/main.ts source', async () => {
+    const auditManifest = await loadLaunchAuditManifest();
+    const liveMainBytes = await Bun.file(new URL('../../../src/main.ts', import.meta.url)).bytes();
+    const liveMainHash = createHash('sha256').update(liveMainBytes).digest('hex');
+
+    expect(auditManifest.sourceHashes['src/main.ts']).toBe(liveMainHash);
   });
 });
