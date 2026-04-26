@@ -1368,3 +1368,20 @@ Required entry shape:
 - files_changed: D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
 - tests_run: bun run format (Formatted 8 files in 6ms. No fixes applied.); bun test test/oracles/capture-framebuffer-hash-windows.test.ts (5 pass, 0 fail, 31 expects); bun test (7804 pass, 0 fail, 694738 expects across 372 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
 - follow_up: none
+
+## 2026-04-26T04:08:30Z - 10-003 lock-sfx-channel-count - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 10-003
+- step_title: lock-sfx-channel-count
+- prior_audits: Claude Code/completed: found the implementation correct, added twelve focused regression tests for channel-index boundaries, all-empty/all-occupied tables, zero origin/sfxId preservation, non-integer/nullability errors, under/over length errors, first-slot mismatch, negative channel index, empty runtime command, and freeze invariants; no production source change was needed.
+- correctness_findings: Implementation and focused test satisfy the Expected Changes. The implementation pins `bun run doom.ts`, locks eight SFX channels with indexes 0..7, rejects wrong runtime commands, rejects under/over length tables, rejects sparse missing slots, validates channel-index/slot equality, validates non-null origin and sfxId as integers, preserves legitimate zero values with nullish coalescing, emits handle-free frozen replay evidence, and computes an unsigned 32-bit FNV-1a checksum with `Math.imul` and `>>> 0`. The focused test is meaningful and has no skipped or `.only` tests.
+- performance_findings: Product code has no problematic hot-path behavior for this scope: it performs a fixed eight-slot pass and a small deterministic checksum over eight signatures. Test-only finding: the source-hash guard used `node:crypto` `createHash` instead of Bun's native `Bun.CryptoHasher`.
+- improvement_findings: The focused test's SHA-256 helper was inconsistent with sibling audio-product tests that already use `Bun.CryptoHasher`, and it weakened the selected step's Bun-native API posture.
+- corrective_action: Replaced the `node:crypto` import and `createHash('sha256')` call in the focused test with `new Bun.CryptoHasher('sha256').update(sourceText).digest('hex')`. No production source change was needed.
+- files_changed: D:/Projects/doom-in-typescript/test/playable/audio-product-integration/lock-sfx-channel-count.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format; bun test test/playable/audio-product-integration/lock-sfx-channel-count.test.ts; bun test; bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json
+- follow_up: none

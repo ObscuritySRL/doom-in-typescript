@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 import type { SfxChannelSnapshot } from '../../../src/playable/audio-product-integration/lockSfxChannelCount.ts';
 import { LOCK_SFX_CHANNEL_COUNT_RUNTIME_COMMAND, LOCKED_SFX_CHANNEL_COUNT, SFX_CHANNEL_INDEX_MAXIMUM, SFX_CHANNEL_INDEX_MINIMUM, lockSfxChannelCount } from '../../../src/playable/audio-product-integration/lockSfxChannelCount.ts';
 
@@ -36,7 +34,7 @@ describe('lockSfxChannelCount', () => {
 
   test('locks exact source hash and deterministic eight-channel replay evidence', async () => {
     const sourceText = await Bun.file(SOURCE_PATH).text();
-    const sourceSha256 = createHash('sha256').update(sourceText).digest('hex');
+    const sourceSha256 = new Bun.CryptoHasher('sha256').update(sourceText).digest('hex');
     const channelSnapshots = createChannelSnapshots();
 
     const result = lockSfxChannelCount({
