@@ -28,7 +28,7 @@
 
 ## Phase 01: Current State Inventory
 
-- [ ] `01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md`
+- [ ] `01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `none` | file: `plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md`
 - [ ] `01-002` `inventory-simplified-launcher-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md`
 - [ ] `01-003` `inventory-src-bootstrap-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-003-inventory-src-bootstrap-surface.md`
 - [ ] `01-004` `inventory-src-playable-contract-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md`
@@ -55,7 +55,7 @@
 
 ## Phase 02: Reference / Oracle Capture Foundation
 
-- [ ] `02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-001-catalog-local-reference-binaries-and-configs.md`
+- [ ] `02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `none` | file: `plan_vanilla_parity/steps/02-001-catalog-local-reference-binaries-and-configs.md`
 - [ ] `02-002` `verify-local-reference-file-hashes` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-002-verify-local-reference-file-hashes.md`
 - [ ] `02-003` `define-read-only-reference-sandbox-copy-policy` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-003-define-read-only-reference-sandbox-copy-policy.md`
 - [ ] `02-004` `define-reference-process-launch-manifest` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md`
@@ -93,7 +93,7 @@
 
 ## Phase 03: Launch / Host / Window / Input
 
-- [ ] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
+- [ ] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
 - [ ] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
 - [ ] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
 - [ ] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
@@ -132,7 +132,7 @@
 
 ## Phase 04: Core Timing / Fixed / RNG / Demo Sync
 
-- [ ] `04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-001-audit-fixed-point-constants.md`
+- [ ] `04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `none` | file: `plan_vanilla_parity/steps/04-001-audit-fixed-point-constants.md`
 - [ ] `04-002` `audit-fixed-multiply-overflow-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-002-audit-fixed-multiply-overflow-semantics.md`
 - [ ] `04-003` `audit-fixed-divide-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-003-audit-fixed-divide-semantics.md`
 - [ ] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
@@ -165,7 +165,7 @@
 
 ## Phase 05: WAD / Assets / Data
 
-- [ ] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
+- [ ] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
 - [ ] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
 - [ ] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
 - [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`

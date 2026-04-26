@@ -18,7 +18,7 @@ Deliver the smallest verified increment for audit fixed point constants while pr
 
 ## prerequisites
 
-- 00-018
+- none
 
 ## parallel-safe-with
 

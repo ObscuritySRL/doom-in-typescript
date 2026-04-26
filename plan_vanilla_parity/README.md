@@ -29,11 +29,12 @@ Build a full playable TypeScript/Bun DOOM that is indistinguishable from the rel
 1. Read `AGENTS.md`, this README, `MASTER_CHECKLIST.md`, and the selected step file.
 2. Choose the first unchecked step whose prerequisites are complete in the lane assigned by the Ralph-loop launcher. If no lane is supplied, the launcher acquires the first eligible unlocked lane.
 3. Read only the selected step's listed read-only paths plus shared plan files.
-4. Touch only the selected step's write lock and expected changes, plus required plan control updates.
-5. Add or update tests for every implementation change.
-6. Run `bun run format`, focused `bun test <path>`, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` in order.
-7. Commit and push directly with local git commands before marking a step complete.
-8. Never use GitHub API, GitHub apps, PR workflow, npm, yarn, pnpm, npx, node, jest, vitest, mocha, ts-node, or tsx.
+4. Forward/no-audit loop agents must not read or update any `AUDIT_LOG.md`; audit logs are reserved for explicit audit-only workflows.
+5. Touch only the selected step's write lock and expected changes, plus required plan control updates.
+6. Add or update tests for every implementation change.
+7. Run `bun run format`, focused `bun test <path>`, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` in order.
+8. Commit and push directly with local git commands before marking a step complete.
+9. Never use GitHub API, GitHub apps, PR workflow, npm, yarn, pnpm, npx, node, jest, vitest, mocha, ts-node, or tsx.
 
 ## Ralph Loop Scripts
 
@@ -45,7 +46,9 @@ Build a full playable TypeScript/Bun DOOM that is indistinguishable from the rel
 - `loop_logs/`: ignored local response and recovery logs.
 - `lane_locks/`: ignored durable lane leases shared by parallel loop processes.
 
-Use `-Lane <lane>` to pin a loop to one lane. Omit `-Lane` to let the launcher pick the first eligible lane that is not currently locked. Lane locks are lease-based and heartbeated while Codex is running. A normal exit releases the lock; a premature Ctrl-C or process loss leaves a lock file that expires and can be reclaimed after the lease.
+Use `-Lane <lane>` to pin a loop to one lane. Omit `-Lane` to let the launcher pick the first eligible lane that is not currently locked. Lane locks are lease-based and heartbeated while the agent is running. A normal exit releases the lock; a premature Ctrl-C or process loss leaves a lock file that expires and can be reclaimed after the lease.
+
+The immediate lane roots are `governance`, `inventory`, `oracle`, `launch`, `core`, and `wad`. If one of those lanes is locked, auto-selection must skip it and acquire the next eligible unlocked lane.
 
 ## Acceptance Standard
 

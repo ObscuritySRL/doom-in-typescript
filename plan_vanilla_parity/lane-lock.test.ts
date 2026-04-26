@@ -75,6 +75,22 @@ describe('vanilla parity lane lock helper', () => {
     }
   });
 
+  test('auto-picks the next eligible lane when the first eligible lane is locked', async () => {
+    const fixture = await createFixturePlan();
+    try {
+      const firstResult = await acquireLaneLock(createArguments(fixture.planDirectory, fixture.lockDirectory));
+      const secondResult = await acquireLaneLock(createArguments(fixture.planDirectory, fixture.lockDirectory));
+
+      expect(firstResult.acquired).toBe(true);
+      expect(firstResult.lane).toBe('governance');
+      expect(secondResult.acquired).toBe(true);
+      expect(secondResult.lane).toBe('oracle');
+      expect(secondResult.stepId).toBe('02-001');
+    } finally {
+      await rm(fixture.rootDirectory, { force: true, recursive: true });
+    }
+  });
+
   test('lets a requested unlocked lane acquire its own eligible step', async () => {
     const fixture = await createFixturePlan();
     try {

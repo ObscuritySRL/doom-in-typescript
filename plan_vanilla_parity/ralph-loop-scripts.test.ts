@@ -102,9 +102,60 @@ describe('vanilla parity Ralph-loop scripts', () => {
     expect(readmeText).toContain('Use `-Lane <lane>` to pin a loop to one lane.');
     expect(readmeText).toContain('Omit `-Lane` to let the launcher pick the first eligible lane that is not currently locked.');
     expect(readmeText).toContain('premature Ctrl-C or process loss leaves a lock file that expires and can be reclaimed after the lease');
+    expect(readmeText).toContain('Forward/no-audit loop agents must not read or update any `AUDIT_LOG.md`');
+    expect(readmeText).toContain('The immediate lane roots are `governance`, `inventory`, `oracle`, `launch`, `core`, and `wad`.');
     expect(promptText).toContain('choose the first unchecked step in that lane whose prerequisites are complete');
     expect(promptText).toContain('Do not switch lanes.');
+    expect(promptText).toContain('forbidden to read or update `plan_vanilla_parity/AUDIT_LOG.md`');
     expect(promptText).toContain('RLP_LANE: <assigned lane or NONE>');
+  });
+
+  test('actual plan exposes immediate lane roots for parallel startup', async () => {
+    const checklistText = await Bun.file('plan_vanilla_parity/MASTER_CHECKLIST.md').text();
+
+    for (const stepId of ['00-001', '01-001', '02-001', '03-001', '04-001', '05-001']) {
+      expect(checklistText).toContain(`\`${stepId}\``);
+    }
+
+    expect(checklistText).toContain('`00-001` `establish-vanilla-parity-control-center` | lane: `governance` | prereqs: `none`');
+    expect(checklistText).toContain('`01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `none`');
+    expect(checklistText).toContain('`02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `none`');
+    expect(checklistText).toContain('`03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none`');
+    expect(checklistText).toContain('`04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `none`');
+    expect(checklistText).toContain('`05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none`');
+  });
+
+  test('auto-select skips locked governance and acquires another immediate lane in the actual plan', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-vanilla-loop-'));
+    const lockDirectory = join(temporaryDirectory, 'locks');
+    let firstLockId = '';
+    let secondLane = '';
+    let secondLockId = '';
+
+    try {
+      const firstResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', 'governance']));
+      const secondResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'auto-agent', '--lease-minutes', '60']));
+
+      firstLockId = firstResult.lockId ?? '';
+      secondLane = secondResult.lane ?? '';
+      secondLockId = secondResult.lockId ?? '';
+
+      expect(firstResult.acquired).toBe(true);
+      expect(firstResult.lane).toBe('governance');
+      expect(secondResult.acquired).toBe(true);
+      expect(secondResult.lane).toBe('inventory');
+      expect(secondResult.stepId).toBe('01-001');
+    } finally {
+      if (firstLockId) {
+        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', 'governance', '--lock-id', firstLockId]));
+      }
+
+      if (secondLane && secondLockId) {
+        await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', secondLane, '--lock-id', secondLockId]));
+      }
+
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
   });
 
   test('Codex scripts default to the vanilla parity plan and lane lock directories', async () => {

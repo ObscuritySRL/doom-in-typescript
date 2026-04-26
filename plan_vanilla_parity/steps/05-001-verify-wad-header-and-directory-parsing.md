@@ -18,7 +18,7 @@ Deliver the smallest verified increment for verify wad header and directory pars
 
 ## prerequisites
 
-- 00-018
+- none
 
 ## parallel-safe-with
 

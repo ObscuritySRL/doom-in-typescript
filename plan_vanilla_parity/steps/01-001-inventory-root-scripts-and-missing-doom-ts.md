@@ -18,7 +18,7 @@ Deliver the smallest verified increment for inventory root scripts and missing d
 
 ## prerequisites
 
-- 00-018
+- none
 
 ## parallel-safe-with
 

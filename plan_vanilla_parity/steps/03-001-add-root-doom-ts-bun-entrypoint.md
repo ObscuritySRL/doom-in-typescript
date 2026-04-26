@@ -18,7 +18,7 @@ Deliver the smallest verified increment for add root doom ts bun entrypoint whil
 
 ## prerequisites
 
-- 00-018
+- none
 
 ## parallel-safe-with
 

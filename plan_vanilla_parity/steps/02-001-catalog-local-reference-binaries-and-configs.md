@@ -18,7 +18,7 @@ Deliver the smallest verified increment for catalog local reference binaries and
 
 ## prerequisites
 
-- 01-024
+- none
 
 ## parallel-safe-with
 

@@ -4,7 +4,9 @@ Continue the Ralph loop using `plan_vanilla_parity/` as the only active planning
 
 Select exactly one step. If the Ralph-loop launcher supplies `RLP_LANE` or lane lock metadata, choose the first unchecked step in that lane whose prerequisites are complete. Do not switch lanes. If no lane metadata is supplied, choose the first unchecked step in `MASTER_CHECKLIST.md` whose prerequisites are complete.
 
-Before editing, read the selected step file and only the paths listed in its read-only paths section. Change only paths listed in its write lock and expected changes, plus required plan control updates to `MASTER_CHECKLIST.md`, `HANDOFF_LOG.md`, `AUDIT_LOG.md`, `REFERENCE_ORACLES.md`, and active local recovery logs under `loop_logs/`.
+Before editing, read the selected step file and only the paths listed in its read-only paths section. Change only paths listed in its write lock and expected changes, plus required plan control updates to `MASTER_CHECKLIST.md`, `HANDOFF_LOG.md`, `REFERENCE_ORACLES.md`, and active local recovery logs under `loop_logs/`.
+
+Forward Ralph-loop agents are forbidden to read or update `plan_vanilla_parity/AUDIT_LOG.md` or any other `AUDIT_LOG.md` file. Audit logs are reserved for explicit audit-only workflows, not lane execution loops.
 
 Every implementation step must add or update tests. If behavior cannot be verified from local binaries, IWAD data, id Software source, or Chocolate Doom source, create or update an oracle-capture step instead of guessing.
 
