@@ -293,4 +293,38 @@ describe('capture-music-event-hash-windows oracle', () => {
     expect(referenceOraclesText).toContain(`\`${fixturePath}\``);
     expect(referenceOraclesText).toContain('`bun test test/oracles/capture-music-event-hash-windows.test.ts`');
   });
+
+  test('locks ordered, non-overlapping music event windows that fit the capture window', () => {
+    const trace = expectedFixture.musicEventHashTrace;
+    const captureWindow = expectedFixture.captureWindow;
+
+    for (const window of trace) {
+      expect(window.frameWindow.start).toBeLessThanOrEqual(window.frameWindow.end);
+      expect(window.ticWindow.start).toBeLessThanOrEqual(window.ticWindow.end);
+      expect(window.frameWindow).toEqual(window.ticWindow);
+      expect(window.frameWindow.start).toBeGreaterThanOrEqual(captureWindow.frameWindow.start);
+      expect(window.frameWindow.end).toBeLessThanOrEqual(captureWindow.frameWindow.end);
+    }
+
+    for (let traceIndex = 1; traceIndex < trace.length; traceIndex += 1) {
+      const previousWindow = trace[traceIndex - 1];
+      const currentWindow = trace[traceIndex];
+
+      if (previousWindow === undefined || currentWindow === undefined) {
+        throw new Error('Trace window index out of range.');
+      }
+
+      expect(currentWindow.frameWindow.start).toBeGreaterThan(previousWindow.frameWindow.end);
+    }
+  });
+
+  test('locks the actual launch-surface file hashes against drift', async () => {
+    for (const sourceHash of expectedFixture.sourceHashes) {
+      const fileBytes = new Uint8Array(await Bun.file(sourceHash.path).arrayBuffer());
+      const fileSha256 = new Bun.CryptoHasher('sha256').update(fileBytes).digest('hex');
+
+      expect(fileBytes.length).toBe(sourceHash.sizeBytes);
+      expect(fileSha256).toBe(sourceHash.sha256);
+    }
+  });
 });

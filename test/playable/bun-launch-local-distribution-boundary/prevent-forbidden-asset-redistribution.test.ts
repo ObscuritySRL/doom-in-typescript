@@ -105,7 +105,49 @@ describe('preventForbiddenAssetRedistribution', () => {
   test('locks the formatted product source hash', async () => {
     const sourceText = await Bun.file(PRODUCT_SOURCE_PATH).text();
 
-    expect(sha256Hex(sourceText)).toBe('61cd9f71bab413c2b9472e0addf8ce5e450528835edfc95c6ca708c12fa04cbf');
+    expect(sha256Hex(sourceText)).toBe('3d3f5f6026a6b5bdc5b05ddabd41437ff64ab9520bda77eef5bebed221ef617f');
+  });
+
+  test('aggregates multiple forbidden asset paths into a single comma-separated error', () => {
+    const assetCandidates: ReadonlyArray<AssetRedistributionCandidate> = [
+      {
+        kind: 'proprietary-iwad',
+        path: 'dist\\DOOM1.WAD',
+        redistributesBytes: true,
+        source: 'bundled-artifact',
+      },
+      {
+        kind: 'reference-executable',
+        path: 'dist\\DOOMD.EXE',
+        redistributesBytes: true,
+        source: 'bundled-artifact',
+      },
+    ];
+
+    expect(() => preventForbiddenAssetRedistribution({ assetCandidates })).toThrow('Forbidden asset redistribution detected: dist\\DOOM1.WAD, dist\\DOOMD.EXE.');
+  });
+
+  test('rejects redistribution of user-local IWAD bytes', () => {
+    const assetCandidates: ReadonlyArray<AssetRedistributionCandidate> = [
+      {
+        kind: 'user-local-iwad',
+        path: 'dist\\DOOM1.WAD',
+        redistributesBytes: true,
+        source: 'mislabelled-bundle',
+      },
+    ];
+
+    expect(() => preventForbiddenAssetRedistribution({ assetCandidates })).toThrow('Forbidden asset redistribution detected: dist\\DOOM1.WAD.');
+  });
+
+  test('produces a deterministic policy hash for empty asset candidates', () => {
+    const firstEvidence = preventForbiddenAssetRedistribution({ assetCandidates: [] });
+    const secondEvidence = preventForbiddenAssetRedistribution({ assetCandidates: [] });
+
+    expect(firstEvidence.assetAssessments).toEqual([]);
+    expect(firstEvidence.blockedAssetPaths).toEqual([]);
+    expect(firstEvidence.assetPolicyHash).toHaveLength(64);
+    expect(firstEvidence.assetPolicyHash).toBe(secondEvidence.assetPolicyHash);
   });
 });
 

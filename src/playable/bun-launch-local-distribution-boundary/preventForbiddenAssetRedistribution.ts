@@ -63,7 +63,7 @@ export const LOCAL_DISTRIBUTION_ASSET_CANDIDATES: ReadonlyArray<AssetRedistribut
   }),
 ]);
 
-const FORBIDDEN_REDISTRIBUTABLE_ASSET_KINDS: ReadonlySet<AssetRedistributionKind> = new Set(['proprietary-iwad', 'reference-executable']);
+const FORBIDDEN_REDISTRIBUTABLE_ASSET_KINDS: ReadonlySet<AssetRedistributionKind> = new Set(['proprietary-iwad', 'reference-executable', 'user-local-iwad']);
 
 /**
  * Verifies that the Bun product launch path does not redistribute forbidden local DOOM assets.
