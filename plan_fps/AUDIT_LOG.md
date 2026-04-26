@@ -1267,6 +1267,57 @@ Required entry shape:
 - tests_run: bun run format (Formatted 9 files in 9ms. No fixes applied.); bun test test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts (19 pass, 0 fail, 98 expects); bun test (7801 pass, 0 fail, 694724 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
 - follow_up: none
 
+## 2026-04-26T04:03:09Z - 06-002 map-internal-doom-keys - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 06-002
+- step_title: map-internal-doom-keys
+- prior_audits: none
+- correctness_findings: Implementation still satisfies the Expected Changes: it exposes the Bun-only runtime contract, maps the selected Doom internal key values to deterministic frozen ticcmd deltas, returns null for unmapped keys, and rejects non-target runtime commands before lookup. The focused test exists, is meaningful, and has no skipped or only-scoped tests. Test-gap finding: boundary coverage did not lock zero, negative, out-of-byte, uppercase-letter, empty-command, whitespace-command, case-drift, or extra-argument behavior.
+- performance_findings: The focused test used node:crypto createHash even though Bun.CryptoHasher is available. This is test-only and not a product hot path, but it conflicts with the selected Bun-native API preference. No production hot-path issue found; the key lookup map is built once at module load and lookup is O(1).
+- improvement_findings: Unsupported runtime command coverage exercised only the prior launcher command, and unmapped-key coverage exercised only one ordinary lowercase key.
+- corrective_action: Replaced the test hash helper with Bun.CryptoHasher, added unmapped key boundary checks for 0, -1, 0x100, Number.MAX_SAFE_INTEGER, and uppercase W, and expanded runtime-command rejection coverage to empty, whitespace, case-drift, extra-argument, and old launcher command variants. No production source change was needed.
+- files_changed: D:/Projects/doom-in-typescript/test/playable/input/map-internal-doom-keys.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 7 files in 9ms. No fixes applied.); bun test test/playable/input/map-internal-doom-keys.test.ts (7 pass, 0 fail, 24 expects); bun test (7805 pass, 0 fail, 694747 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T04:03:09Z - 00-006 record-bun-native-api-preference - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 00-006
+- step_title: record-bun-native-api-preference
+- prior_audits: none
+- correctness_findings: Manifest and D-FPS-007 decision log entry still satisfy the Expected Changes: the manifest pins the Bun-native API list, import group order, forbidden Node-only dependencies, required runtime target, Bun-only/control-center manifest links, current Bun workspace posture, and evidence paths; DECISION_LOG.md records the accepted governance decision and cites the manifest. The focused test exists, is meaningful, and has no skipped or only-scoped tests.
+- performance_findings: The focused test used node:fs existsSync for file-existence checks where Bun.file(...).exists() is available. This is test-only and not a product hot path, but it performs synchronous Node filesystem calls in the step that explicitly records Bun-native API preference.
+- improvement_findings: File-boundary checks in the focused test contradicted the selected manifest's own Bun-native preference and made the test a weaker guard against future Node API drift.
+- corrective_action: Removed the node:fs import and converted all existsSync checks in the focused test to Bun.file(...).exists(), making the affected tests async. Manifest and decision log content were unchanged.
+- files_changed: D:/Projects/doom-in-typescript/test/plan_fps/00-006-record-bun-native-api-preference.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 7 files in 9ms. No fixes applied.); bun test test/plan_fps/00-006-record-bun-native-api-preference.test.ts (17 pass, 0 fail, 416 expects); bun test (7805 pass, 0 fail, 694747 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T04:03:09Z - 02-006 capture-full-attract-loop-cycle - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-006
+- step_title: capture-full-attract-loop-cycle
+- prior_audits: none
+- correctness_findings: Fixture and oracle registration still satisfy every Expected Changes bullet: source authority, capture command, pending live tick/frame window, exact abstract trace and SHA-256, deferred null live hashes, 01-015 manifest linkage, and OR-FPS-011 registration are all locked by the focused test. The focused test exists, is meaningful, and has no skipped or only-scoped tests.
+- performance_findings: No product hot path is present in this static oracle fixture. The test helper manually read JSON as text and then called JSON.parse instead of using Bun.file(...).json(); this is minor test-time work but unnecessary under the Bun-native preference.
+- improvement_findings: The JSON fixture helper duplicated parsing logic that Bun already provides and was inconsistent with newer sibling oracle tests.
+- corrective_action: Replaced the helper's manual text read plus JSON.parse with Bun.file(...).json(). Fixture, oracle registry, trace hash, and production code were unchanged.
+- files_changed: D:/Projects/doom-in-typescript/test/oracles/capture-full-attract-loop-cycle.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 7 files in 9ms. No fixes applied.); bun test test/oracles/capture-full-attract-loop-cycle.test.ts (5 pass, 0 fail, 11 expects); bun test (7805 pass, 0 fail, 694747 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
+- follow_up: none
+
 ## 2026-04-26T03:58:30Z - 09-003 render-status-bar-product-frame - Claude Code
 
 - status: completed

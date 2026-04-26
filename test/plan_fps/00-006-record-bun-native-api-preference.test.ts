@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { existsSync } from 'node:fs';
-
 import bunOnlyManifest from '../../plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json';
 import controlCenterManifest from '../../plan_fps/manifests/00-002-declare-plan-fps-control-center.json';
 import entryPointManifest from '../../plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json';
@@ -146,35 +144,35 @@ describe('record-bun-native-api-preference manifest', () => {
     }
   });
 
-  test('requiredRuntimeTarget cross-references D-FPS-003 and matches the 00-003 manifest runtime command', () => {
+  test('requiredRuntimeTarget cross-references D-FPS-003 and matches the 00-003 manifest runtime command', async () => {
     expect(manifest.requiredRuntimeTarget.runtimeCommand).toBe('bun run doom.ts');
     expect(manifest.requiredRuntimeTarget.decisionId).toBe('D-FPS-003');
     expect(manifest.requiredRuntimeTarget.manifestPath).toBe('plan_fps/manifests/00-003-pin-bun-run-doom-entrypoint.json');
-    expect(existsSync(manifest.requiredRuntimeTarget.manifestPath)).toBe(true);
+    expect(await Bun.file(manifest.requiredRuntimeTarget.manifestPath).exists()).toBe(true);
     expect(entryPointManifest.runtimeCommand).toBe(manifest.requiredRuntimeTarget.runtimeCommand);
     expect(entryPointManifest.decisionId).toBe(manifest.requiredRuntimeTarget.decisionId);
   });
 
-  test('bunOnlyManifestPath cross-references the 00-005 Bun-only manifest (D-FPS-006) and its runtime target matches this manifest', () => {
+  test('bunOnlyManifestPath cross-references the 00-005 Bun-only manifest (D-FPS-006) and its runtime target matches this manifest', async () => {
     expect(manifest.bunOnlyManifestPath).toBe('plan_fps/manifests/00-005-pin-bun-runtime-and-package-manager.json');
-    expect(existsSync(manifest.bunOnlyManifestPath)).toBe(true);
+    expect(await Bun.file(manifest.bunOnlyManifestPath).exists()).toBe(true);
     expect(bunOnlyManifest.decisionId).toBe('D-FPS-006');
     expect(bunOnlyManifest.requiredRuntimeTarget.runtimeCommand).toBe(manifest.requiredRuntimeTarget.runtimeCommand);
     expect(bunOnlyManifest.requiredRuntimeTarget.decisionId).toBe(manifest.requiredRuntimeTarget.decisionId);
   });
 
-  test('controlCenterManifestPath cross-references the 00-002 manifest and its runtime target matches this manifest', () => {
+  test('controlCenterManifestPath cross-references the 00-002 manifest and its runtime target matches this manifest', async () => {
     expect(manifest.controlCenterManifestPath).toBe('plan_fps/manifests/00-002-declare-plan-fps-control-center.json');
-    expect(existsSync(manifest.controlCenterManifestPath)).toBe(true);
+    expect(await Bun.file(manifest.controlCenterManifestPath).exists()).toBe(true);
     expect(controlCenterManifest.runtimeTarget).toBe(manifest.requiredRuntimeTarget.runtimeCommand);
   });
 
   test('currentWorkspace pins tsconfig types=["bun"] and package.json @bun-win32 FFI provider scope with exactly five scoped dependencies', async () => {
     expect(manifest.currentWorkspace.tsconfigJsonPath).toBe(TSCONFIG_JSON_PATH);
-    expect(existsSync(manifest.currentWorkspace.tsconfigJsonPath)).toBe(true);
+    expect(await Bun.file(manifest.currentWorkspace.tsconfigJsonPath).exists()).toBe(true);
     expect(manifest.currentWorkspace.tsconfigCompilerOptionsTypes).toEqual(['bun']);
     expect(manifest.currentWorkspace.packageJsonPath).toBe(PACKAGE_JSON_PATH);
-    expect(existsSync(manifest.currentWorkspace.packageJsonPath)).toBe(true);
+    expect(await Bun.file(manifest.currentWorkspace.packageJsonPath).exists()).toBe(true);
     expect(manifest.currentWorkspace.ffiProviderScope).toBe('@bun-win32');
     expect(manifest.currentWorkspace.ffiProviderDependencies).toEqual(['@bun-win32/core', '@bun-win32/gdi32', '@bun-win32/kernel32', '@bun-win32/user32', '@bun-win32/winmm']);
     expect(new Set(manifest.currentWorkspace.ffiProviderDependencies).size).toBe(manifest.currentWorkspace.ffiProviderDependencies.length);
@@ -190,12 +188,12 @@ describe('record-bun-native-api-preference manifest', () => {
     }
   });
 
-  test('every evidencePath exists on disk, lives outside read-only reference roots, and the list contains no duplicates', () => {
+  test('every evidencePath exists on disk, lives outside read-only reference roots, and the list contains no duplicates', async () => {
     expect(Array.isArray(manifest.evidencePaths)).toBe(true);
     expect(manifest.evidencePaths.length).toBeGreaterThanOrEqual(8);
     for (const evidencePath of manifest.evidencePaths) {
       expect(typeof evidencePath).toBe('string');
-      expect(existsSync(evidencePath)).toBe(true);
+      expect(await Bun.file(evidencePath).exists()).toBe(true);
       expect(evidencePath.startsWith('doom/')).toBe(false);
       expect(evidencePath.startsWith('iwad/')).toBe(false);
       expect(evidencePath.startsWith('reference/')).toBe(false);

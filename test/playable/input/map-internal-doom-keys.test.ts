@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 import { KEY_DOWNARROW, KEY_ESCAPE, KEY_LEFTARROW, KEY_PGDN, KEY_PGUP, KEY_RIGHTARROW, KEY_RSHIFT, KEY_TAB, KEY_UPARROW } from '../../../src/input/keyboard.ts';
 import { ANGLE_TURN, EMPTY_TICCMD, FORWARD_MOVE, packTicCommand, SIDE_MOVE } from '../../../src/input/ticcmd.ts';
 import { MAP_INTERNAL_DOOM_KEYS_CONTRACT, mapInternalDoomKeys } from '../../../src/playable/input/mapInternalDoomKeys.ts';
@@ -201,7 +199,7 @@ const EXPECTED_CONTRACT = {
 const EXPECTED_CONTRACT_HASH = '91942e1644e6e9aef2d6b107b6af1dbc5c8323a10e4e7b6b64e465486dd68c77';
 
 function computeHash(value: unknown): string {
-  return createHash('sha256').update(JSON.stringify(value)).digest('hex');
+  return new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
 }
 
 function isAuditDocumentedInputControl(value: unknown): value is AuditDocumentedInputControl {
@@ -279,7 +277,19 @@ describe('mapInternalDoomKeys', () => {
     expect(mapInternalDoomKeys({ doomKey: 'g'.charCodeAt(0), runtimeCommand: MAP_INTERNAL_DOOM_KEYS_CONTRACT.runtimeCommand })).toBeNull();
   });
 
-  it('rejects unsupported runtime commands', () => {
-    expect(() => mapInternalDoomKeys({ doomKey: KEY_UPARROW, runtimeCommand: 'bun run src/main.ts' })).toThrow('Unsupported runtime command: bun run src/main.ts. Expected bun run doom.ts.');
+  it('leaves unmapped boundary key values null', () => {
+    const unmappedDoomKeys = [0, -1, 0x100, Number.MAX_SAFE_INTEGER, 'W'.charCodeAt(0)] as const;
+
+    for (const unmappedDoomKey of unmappedDoomKeys) {
+      expect(mapInternalDoomKeys({ doomKey: unmappedDoomKey, runtimeCommand: MAP_INTERNAL_DOOM_KEYS_CONTRACT.runtimeCommand })).toBeNull();
+    }
+  });
+
+  it('rejects unsupported runtime commands before mapping keys', () => {
+    const unsupportedRuntimeCommands = ['', ' ', 'Bun run doom.ts', 'bun run doom.ts --demo', 'bun run src/main.ts'] as const;
+
+    for (const unsupportedRuntimeCommand of unsupportedRuntimeCommands) {
+      expect(() => mapInternalDoomKeys({ doomKey: KEY_UPARROW, runtimeCommand: unsupportedRuntimeCommand })).toThrow(`Unsupported runtime command: ${unsupportedRuntimeCommand}. Expected bun run doom.ts.`);
+    }
   });
 });

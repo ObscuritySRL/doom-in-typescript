@@ -233,7 +233,7 @@ function hashJson(value: unknown): string {
 }
 
 async function readJsonObject(path: string): Promise<Record<string, unknown>> {
-  const parsedJson: unknown = JSON.parse(await Bun.file(path).text());
+  const parsedJson: unknown = await Bun.file(path).json();
 
   return getRecord(parsedJson);
 }
