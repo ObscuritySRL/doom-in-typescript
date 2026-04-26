@@ -126,14 +126,16 @@ describe('capture scripted door use path oracle', () => {
 
     expect(fixture.captureCommand.command).toBe('bun run doom.ts');
     expect(fixture.captureCommand.arguments).toEqual(['--iwad', 'doom/DOOM1.WAD', '--oracle', 'capture-scripted-door-use-path', '--scripted-input', 'capture-scripted-door-use-path', '--capture-start-tic', '0', '--capture-end-tic', '560']);
+    expect(fixture.captureCommand.implementationStatus).toBe('pending future replay and reference-capture surface');
     expect(fixture.captureWindow).toEqual({
-      endFrame: 17,
+      endFrame: 560,
       endTic: 560,
       firstGameplayTic: 70,
       startFrame: 0,
       startTic: 0,
       ticRateHz: 35,
     });
+    expect(fixture.captureWindow.endFrame).toBe(fixture.captureWindow.endTic);
   });
 
   test('locks the scripted input sequence through the first door use', () => {
