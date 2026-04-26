@@ -92,27 +92,27 @@ export function mapMouseButtons(args: UnknownMouseButtonArgs): MouseButtonMappin
     throw new Error(`Unsupported mouse button event type: ${args.eventType}`);
   }
 
-  let buttonSlot = -1;
-  let semanticAction: MouseButtonSemanticAction | null = null;
-  let ticCommandDelta = EMPTY_TICCMD;
+  let buttonSlot: number;
+  let semanticAction: MouseButtonSemanticAction;
+  let pressedDelta: TicCommand;
 
   switch (args.buttonName) {
     case 'left': {
       buttonSlot = 0;
       semanticAction = 'attack';
-      ticCommandDelta = LEFT_BUTTON_ATTACK_DELTA;
-      break;
-    }
-    case 'middle': {
-      buttonSlot = 2;
-      semanticAction = 'move-forward';
-      ticCommandDelta = MIDDLE_BUTTON_FORWARD_DELTA;
+      pressedDelta = LEFT_BUTTON_ATTACK_DELTA;
       break;
     }
     case 'right': {
       buttonSlot = 1;
       semanticAction = 'strafe-modifier';
-      ticCommandDelta = EMPTY_TICCMD;
+      pressedDelta = EMPTY_TICCMD;
+      break;
+    }
+    case 'middle': {
+      buttonSlot = 2;
+      semanticAction = 'move-forward';
+      pressedDelta = MIDDLE_BUTTON_FORWARD_DELTA;
       break;
     }
     default: {
@@ -120,16 +120,12 @@ export function mapMouseButtons(args: UnknownMouseButtonArgs): MouseButtonMappin
     }
   }
 
-  if (semanticAction === null) {
-    return null;
-  }
-
   return Object.freeze({
     buttonName: args.buttonName,
     buttonSlot,
     eventType: args.eventType,
     semanticAction,
-    ticCommandDelta: args.eventType === 'down' ? ticCommandDelta : EMPTY_TICCMD,
+    ticCommandDelta: args.eventType === 'down' ? pressedDelta : EMPTY_TICCMD,
     ticCommandSize: TICCMD_SIZE,
   });
 }
