@@ -1,0 +1,1 @@
+Runtime loop logs are ignored. Keep this directory so Ralph-loop scripts can write local recovery output.

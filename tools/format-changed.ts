@@ -1,5 +1,5 @@
 const READ_ONLY_ROOTS = ['doom/', 'iwad/', 'reference/'] as const;
-const UNTRACKED_FORMAT_ROOTS = ['plan_fps/', 'src/', 'test/', 'tools/'] as const;
+const UNTRACKED_FORMAT_ROOTS = ['plan_fps/', 'plan_vanilla_parity/', 'src/', 'test/', 'tools/'] as const;
 const UNTRACKED_FORMAT_FILES = ['biome.json', 'package.json', 'tsconfig.json'] as const;
 
 const changedPaths = new Set<string>();

@@ -15,3 +15,7 @@ iwad/
 plan_engine/loop_logs/*.txt
 plan_fps/loop_logs/*.txt
 !plan_fps/loop_logs/.gitkeep
+plan_vanilla_parity/loop_logs/*.txt
+plan_vanilla_parity/lane_locks/*.lock/
+!plan_vanilla_parity/loop_logs/.gitkeep
+!plan_vanilla_parity/lane_locks/.gitkeep
