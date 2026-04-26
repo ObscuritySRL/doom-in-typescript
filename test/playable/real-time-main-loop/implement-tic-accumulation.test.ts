@@ -31,7 +31,7 @@ describe('IMPLEMENT_TIC_ACCUMULATION_CONTRACT', () => {
   });
 
   test('matches the main-loop phase and audited launcher transition', async () => {
-    const hostSurfaceManifest = JSON.parse(await Bun.file(HOST_SURFACE_MANIFEST_PATH).text()) as {
+    const hostSurfaceManifest = (await Bun.file(HOST_SURFACE_MANIFEST_PATH).json()) as {
       currentLauncherHostTransition: { call: string };
       stepId: string;
     };

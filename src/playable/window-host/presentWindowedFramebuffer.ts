@@ -85,19 +85,11 @@ export function presentWindowedFramebuffer(options: PresentWindowedFramebufferOp
   }
 
   return Object.freeze({
+    ...PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT,
     clientArea: Object.freeze({
       height: options.clientHeight,
       width: options.clientWidth,
     }),
-    currentLauncherCommand: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.currentLauncherCommand,
-    currentLauncherHostTransition: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.currentLauncherHostTransition,
-    deferredPolicies: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.deferredPolicies,
-    deterministicReplayCompatibility: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.deterministicReplayCompatibility,
-    presentationSurface: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.presentationSurface,
-    runtimeCommand: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.runtimeCommand,
-    sourceFramebuffer: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.sourceFramebuffer,
-    stepId: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.stepId,
-    stepTitle: PRESENT_WINDOWED_FRAMEBUFFER_CONTRACT.stepTitle,
     title: normalizedTitle,
   });
 }

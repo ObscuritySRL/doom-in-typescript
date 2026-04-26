@@ -139,4 +139,64 @@ describe('presentWindowedFramebuffer', () => {
       }),
     ).toThrow('presentWindowedFramebuffer requires a non-empty window title');
   });
+
+  test('rejects fractional, NaN, and Infinity client dimensions', () => {
+    for (const badWidth of [1.5, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]) {
+      expect(() =>
+        presentWindowedFramebuffer({
+          clientHeight: 480,
+          clientWidth: badWidth,
+          command: 'bun run doom.ts',
+          title: 'DOOM Codex - E1M1',
+        }),
+      ).toThrow(`presentWindowedFramebuffer requires a positive integer clientWidth, received ${badWidth}`);
+    }
+
+    for (const badHeight of [2.25, Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 0]) {
+      expect(() =>
+        presentWindowedFramebuffer({
+          clientHeight: badHeight,
+          clientWidth: 640,
+          command: 'bun run doom.ts',
+          title: 'DOOM Codex - E1M1',
+        }),
+      ).toThrow(`presentWindowedFramebuffer requires a positive integer clientHeight, received ${badHeight}`);
+    }
+  });
+
+  test('preserves internal whitespace in the title and rejects tab-only titles', () => {
+    const plan = presentWindowedFramebuffer({
+      clientHeight: 480,
+      clientWidth: 640,
+      command: 'bun run doom.ts',
+      title: '\tDOOM\tCodex - E1M1\n',
+    });
+
+    expect(plan.title).toBe('DOOM\tCodex - E1M1');
+    expect(Object.isFrozen(plan)).toBe(true);
+    expect(Object.isFrozen(plan.clientArea)).toBe(true);
+
+    expect(() =>
+      presentWindowedFramebuffer({
+        clientHeight: 480,
+        clientWidth: 640,
+        command: 'bun run doom.ts',
+        title: '\t\n\r ',
+      }),
+    ).toThrow('presentWindowedFramebuffer requires a non-empty window title');
+  });
+
+  test('accepts MAX_SAFE_INTEGER client dimensions', () => {
+    const plan = presentWindowedFramebuffer({
+      clientHeight: Number.MAX_SAFE_INTEGER,
+      clientWidth: Number.MAX_SAFE_INTEGER,
+      command: 'bun run doom.ts',
+      title: 'DOOM Codex',
+    });
+
+    expect(plan.clientArea).toEqual({
+      height: Number.MAX_SAFE_INTEGER,
+      width: Number.MAX_SAFE_INTEGER,
+    });
+  });
 });

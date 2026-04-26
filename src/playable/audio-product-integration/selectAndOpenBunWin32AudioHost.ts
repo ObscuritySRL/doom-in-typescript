@@ -31,6 +31,9 @@ export const OPEN_AUDIO_HOST_TRANSITION = 'missing-live-audio-host->bun-win32-au
 /** Device role opened by the audio host. */
 export type BunWin32AudioHostDeviceRole = 'music' | 'sfx';
 
+/** Roles opened by this audio host, in deterministic order. */
+const SELECTED_ROLES: readonly BunWin32AudioHostDeviceRole[] = Object.freeze(['music', 'sfx']);
+
 /** Request passed to the live WinMM opener for each device role. */
 export interface BunWin32AudioHostDeviceOpenRequest {
   readonly bufferSampleCount: number;
@@ -48,6 +51,9 @@ export interface BunWin32AudioHostDeviceOpenReceipt {
   readonly role: BunWin32AudioHostDeviceRole;
 }
 
+/** Closer used to release receipts that this step opened. */
+export type BunWin32AudioHostDeviceCloser = (receipt: BunWin32AudioHostDeviceOpenReceipt) => void;
+
 /** Deterministic host selection shared by music and sfx. */
 export interface BunWin32AudioHostSelection {
   readonly bufferSampleCount: number;
@@ -63,6 +69,12 @@ export interface BunWin32AudioHostSelection {
 export interface SelectAndOpenBunWin32AudioHostRequest {
   readonly bufferSampleCount?: number;
   readonly channelCount?: number;
+  /**
+   * Optional closer invoked on every receipt this call has opened when a
+   * later open or validation throws. The original failure is re-thrown
+   * after cleanup; closer errors are swallowed so they cannot mask it.
+   */
+  readonly closeDevice?: BunWin32AudioHostDeviceCloser;
   readonly openDevice: (request: BunWin32AudioHostDeviceOpenRequest) => BunWin32AudioHostDeviceOpenReceipt;
   readonly openedAtTic: number;
   readonly platform: string;
@@ -150,13 +162,39 @@ export function selectAndOpenBunWin32AudioHost(request: SelectAndOpenBunWin32Aud
     sampleRateHz,
   });
 
-  const musicDevice = openAudioDevice(request.openDevice, selection, 'music');
-  const sfxDevice = openAudioDevice(request.openDevice, selection, 'sfx');
-  const selectedRoles = Object.freeze<BunWin32AudioHostDeviceRole[]>(['music', 'sfx']);
+  const opened: BunWin32AudioHostDeviceOpenReceipt[] = [];
+  try {
+    for (const role of SELECTED_ROLES) {
+      const openRequest: BunWin32AudioHostDeviceOpenRequest = Object.freeze({
+        bufferSampleCount: selection.bufferSampleCount,
+        channelCount: selection.channelCount,
+        hostKind: selection.hostKind,
+        provider: selection.provider,
+        role,
+        sampleRateHz: selection.sampleRateHz,
+      });
+      const receipt = request.openDevice(openRequest);
+      opened.push(receipt);
+      validateOpenReceipt(receipt, role);
+    }
+  } catch (error) {
+    closeOpenedDevices(opened, request.closeDevice);
+    throw error;
+  }
+
+  const liveDevices = Object.freeze(
+    opened.map((receipt) =>
+      Object.freeze({
+        deviceName: receipt.deviceName,
+        handle: receipt.handle,
+        role: receipt.role,
+      }),
+    ),
+  );
 
   return Object.freeze({
     deterministicReplayCompatible: true,
-    liveDevices: Object.freeze([musicDevice, sfxDevice]),
+    liveDevices,
     replayEvidence: Object.freeze({
       bufferSampleCount,
       channelCount,
@@ -166,7 +204,7 @@ export function selectAndOpenBunWin32AudioHost(request: SelectAndOpenBunWin32Aud
       provider: BUN_WIN32_AUDIO_HOST_PROVIDER,
       runtimeCommand: BUN_WIN32_AUDIO_HOST_RUNTIME_COMMAND,
       sampleRateHz,
-      selectedRoles,
+      selectedRoles: SELECTED_ROLES,
       sourceAuditStepId: LIVE_AUDIO_HOST_AUDIT_STEP_ID,
       sourceNullSurface: LIVE_AUDIO_HOST_NULL_SURFACE,
       transition: OPEN_AUDIO_HOST_TRANSITION,
@@ -176,24 +214,17 @@ export function selectAndOpenBunWin32AudioHost(request: SelectAndOpenBunWin32Aud
   });
 }
 
-function openAudioDevice(openDevice: SelectAndOpenBunWin32AudioHostRequest['openDevice'], selection: BunWin32AudioHostSelection, role: BunWin32AudioHostDeviceRole): BunWin32AudioHostDeviceOpenReceipt {
-  const openRequest: BunWin32AudioHostDeviceOpenRequest = Object.freeze({
-    bufferSampleCount: selection.bufferSampleCount,
-    channelCount: selection.channelCount,
-    hostKind: selection.hostKind,
-    provider: selection.provider,
-    role,
-    sampleRateHz: selection.sampleRateHz,
-  });
-  const receipt = openDevice(openRequest);
-
-  validateOpenReceipt(receipt, role);
-
-  return Object.freeze({
-    deviceName: receipt.deviceName,
-    handle: receipt.handle,
-    role: receipt.role,
-  });
+function closeOpenedDevices(receipts: readonly BunWin32AudioHostDeviceOpenReceipt[], closeDevice: BunWin32AudioHostDeviceCloser | undefined): void {
+  if (!closeDevice) {
+    return;
+  }
+  for (const receipt of receipts) {
+    try {
+      closeDevice(receipt);
+    } catch {
+      // Swallow close errors during cleanup; the original failure must take precedence.
+    }
+  }
 }
 
 function validateNonNegativeInteger(name: string, value: number): void {
@@ -206,10 +237,10 @@ function validateOpenReceipt(receipt: BunWin32AudioHostDeviceOpenReceipt, expect
   if (receipt.role !== expectedRole) {
     throw new Error(`audio host opener returned role ${receipt.role} for ${expectedRole}`);
   }
-  if (receipt.deviceName.length === 0) {
+  if (typeof receipt.deviceName !== 'string' || receipt.deviceName.length === 0) {
     throw new Error(`audio host opener returned an empty device name for ${expectedRole}`);
   }
-  if (receipt.handle <= 0n) {
+  if (typeof receipt.handle !== 'bigint' || receipt.handle <= 0n) {
     throw new Error(`audio host opener returned an invalid handle for ${expectedRole}`);
   }
 }
