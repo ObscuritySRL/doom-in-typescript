@@ -3426,3 +3426,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-005 persist-sound-settings
 - open_risks: none
+
+## 2026-04-26 - 12-005 persist-sound-settings
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-005
+- step_title: persist-sound-settings
+- summary: Added the playable sound-settings persistence surface at `src/playable/config-persistence/persistSoundSettings.ts`. The module exports the exact `bun run doom.ts` command contract plus `persistSoundSettings`, validates the product runtime command before applying settings, persists vanilla `default.cfg` sound volume/device/channel fields and Chocolate Doom `chocolate-doom.cfg` host audio fields, preserves unrelated config values, rejects invalid ranges and config-line strings, and returns frozen deterministic replay evidence with locked signatures, SHA-256 hashes, and replay checksums. Added focused test `test/playable/config-persistence/persist-sound-settings.test.ts` to lock the command contract, 01-014 missing config persistence audit linkage, formatted source SHA-256 `fede7f0c98e65e980e2ed2e5253148ce81837bd5d16dc9ef9400c33befaba884`, exact default/custom sound transition evidence, wrong-command prevalidation, invalid sound-setting rejection, and non-sound config preservation.
+- files_changed: src/playable/config-persistence/persistSoundSettings.ts; test/playable/config-persistence/persist-sound-settings.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders to capture the formatted source hash and deterministic replay hash/checksum values. Replaced placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value and post-control reruns no fixes); bun test test/playable/config-persistence/persist-sound-settings.test.ts (7 pass, 0 fail, 52 expect() calls); bun test (7697 pass, 0 fail, 694126 expect() calls across 361 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-006 persist-screen-settings
+- open_risks: none
