@@ -11,6 +11,7 @@ param(
     [string]$CodexCommand = "codex",
     [int]$LockLeaseMinutes = 120,
     [int]$MaxIterations = 2147483647,
+    [int]$ProgressStatusSeconds = 180,
     [int]$SleepSeconds = 0
 )
 
@@ -28,6 +29,7 @@ $scriptPath = Join-Path $PSScriptRoot "RALPH_LOOP_CODEX_NO_AUDIT.ps1"
     -CodexCommand $CodexCommand `
     -LockLeaseMinutes $LockLeaseMinutes `
     -MaxIterations $MaxIterations `
+    -ProgressStatusSeconds $ProgressStatusSeconds `
     -SleepSeconds $SleepSeconds
 
 exit $LASTEXITCODE

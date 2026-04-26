@@ -46,7 +46,7 @@ Build a full playable TypeScript/Bun DOOM that is indistinguishable from the rel
 - `loop_logs/`: ignored local response and recovery logs.
 - `lane_locks/`: ignored durable lane leases shared by parallel loop processes.
 
-Use `-Lane <lane>` to pin a loop to one lane. Omit `-Lane` to let the launcher pick the first eligible lane that is not currently locked. Lane locks are lease-based and heartbeated while the agent is running. A normal exit releases the lock; a premature Ctrl-C or process loss leaves a lock file that expires and can be reclaimed after the lease.
+Use `-Lane <lane>` to pin a loop to one lane. Omit `-Lane` to let the launcher pick the first eligible lane that is not currently locked. Lane locks are lease-based and heartbeated while the agent is running. A normal exit releases the lock; a premature Ctrl-C or process loss leaves a lock file that expires and can be reclaimed after the lease. Long-running process status prints every 180 seconds by default; pass `-ProgressStatusSeconds 0` to suppress repeated status lines.
 
 The immediate lane roots are `governance`, `inventory`, `oracle`, `launch`, `core`, and `wad`. If one of those lanes is locked, auto-selection must skip it and acquire the next eligible unlocked lane.
 

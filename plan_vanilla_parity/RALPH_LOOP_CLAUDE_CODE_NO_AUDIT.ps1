@@ -11,6 +11,7 @@ param(
     [string]$ClaudeCommand = "claude",
     [int]$LockLeaseMinutes = 120,
     [int]$MaxIterations = 2147483647,
+    [int]$ProgressStatusSeconds = 180,
     [int]$SleepSeconds = 0
 )
 
@@ -175,7 +176,9 @@ function Invoke-ClaudeCommand {
         [Parameter(Mandatory = $true)]
         [string]$WorkingDirectory,
         [Parameter(Mandatory = $true)]
-        [string]$ResponsePath
+        [string]$ResponsePath,
+        [Parameter(Mandatory = $true)]
+        [int]$ProgressStatusSeconds
     )
 
     $standardInputPath = [System.IO.Path]::GetTempFileName()
@@ -186,10 +189,15 @@ function Invoke-ClaudeCommand {
         [System.IO.File]::WriteAllText($standardInputPath, $InputText, (New-Object System.Text.UTF8Encoding($false)))
         $argumentText = ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
         $process = Start-Process -FilePath $Command -ArgumentList $argumentText -WorkingDirectory $WorkingDirectory -RedirectStandardInput $standardInputPath -RedirectStandardOutput $standardOutputPath -RedirectStandardError $standardErrorPath -NoNewWindow -PassThru
+        $lastProgressStatusUtc = [DateTime]::UtcNow
 
         while (-not $process.WaitForExit(1000)) {
             Update-LaneLockHeartbeat
-            Write-Host "Claude Code is still running; final response will be saved to $ResponsePath"
+            $nowUtc = [DateTime]::UtcNow
+            if ($ProgressStatusSeconds -gt 0 -and ($nowUtc - $lastProgressStatusUtc).TotalSeconds -ge $ProgressStatusSeconds) {
+                Write-Host "Claude Code is still running; final response will be saved to $ResponsePath"
+                $lastProgressStatusUtc = $nowUtc
+            }
         }
 
         $standardOutputText = [System.IO.File]::ReadAllText($standardOutputPath)
@@ -374,6 +382,10 @@ if ($MaxIterations -lt 0) {
     throw "MaxIterations must be 0 or greater."
 }
 
+if ($ProgressStatusSeconds -lt 0) {
+    throw "ProgressStatusSeconds must be 0 or greater."
+}
+
 New-Item -ItemType Directory -Force -Path $LogDirectory | Out-Null
 New-Item -ItemType Directory -Force -Path $LaneLockDirectory | Out-Null
 
@@ -464,7 +476,7 @@ try {
             Write-Host "Execution effort: $executionEffort"
             Write-Host "Saving final response to $responsePath"
 
-            $result = Invoke-ClaudeCommand -Command $resolvedClaudeCommand -Arguments $claudeArguments -InputText $prompt -WorkingDirectory $WorkingDirectory -ResponsePath $responsePath
+            $result = Invoke-ClaudeCommand -Command $resolvedClaudeCommand -Arguments $claudeArguments -InputText $prompt -WorkingDirectory $WorkingDirectory -ResponsePath $responsePath -ProgressStatusSeconds $ProgressStatusSeconds
             $response = $result.Response
             $exitCode = $result.ExitCode
 

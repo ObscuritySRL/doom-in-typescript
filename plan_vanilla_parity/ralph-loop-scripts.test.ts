@@ -13,7 +13,7 @@ const CLAUDE_CODE_SCRIPT_PATH = 'plan_vanilla_parity/RALPH_LOOP_CLAUDE_CODE.ps1'
 const PROMPT_PATH = 'plan_vanilla_parity/PROMPT.md';
 const README_PATH = 'plan_vanilla_parity/README.md';
 
-async function createFakeCodexCommand(temporaryDirectory: string): Promise<string> {
+async function createFakeCodexCommand(temporaryDirectory: string, delayBeforeResponseSeconds = 0): Promise<string> {
   const fakeCodexCommandPath = join(temporaryDirectory, 'codex.cmd');
 
   await Bun.write(
@@ -24,6 +24,7 @@ async function createFakeCodexCommand(temporaryDirectory: string): Promise<strin
       '  echo codex-fake 1.0',
       '  exit /b 0',
       ')',
+      ...(delayBeforeResponseSeconds > 0 ? [`ping -n ${delayBeforeResponseSeconds + 1} 127.0.0.1 >nul`] : []),
       'echo RLP_STATUS: NO_ELIGIBLE_STEP',
       'echo RLP_STEP_ID: NONE',
       'echo RLP_STEP_TITLE: NONE',
@@ -46,7 +47,7 @@ async function createFakeCodexCommand(temporaryDirectory: string): Promise<strin
   return fakeCodexCommandPath;
 }
 
-async function createFakeClaudeCommand(temporaryDirectory: string): Promise<string> {
+async function createFakeClaudeCommand(temporaryDirectory: string, delayBeforeResponseSeconds = 0): Promise<string> {
   const fakeClaudeCommandPath = join(temporaryDirectory, 'claude.cmd');
 
   await Bun.write(
@@ -57,6 +58,7 @@ async function createFakeClaudeCommand(temporaryDirectory: string): Promise<stri
       '  echo claude-fake 1.0',
       '  exit /b 0',
       ')',
+      ...(delayBeforeResponseSeconds > 0 ? [`ping -n ${delayBeforeResponseSeconds + 1} 127.0.0.1 >nul`] : []),
       'echo RLP_STATUS: NO_ELIGIBLE_STEP',
       'echo RLP_STEP_ID: NONE',
       'echo RLP_STEP_TITLE: NONE',
@@ -123,6 +125,8 @@ describe('vanilla parity Ralph-loop scripts', () => {
     expect(readmeText).toContain('Use `-Lane <lane>` to pin a loop to one lane.');
     expect(readmeText).toContain('Omit `-Lane` to let the launcher pick the first eligible lane that is not currently locked.');
     expect(readmeText).toContain('premature Ctrl-C or process loss leaves a lock file that expires and can be reclaimed after the lease');
+    expect(readmeText).toContain('Long-running process status prints every 180 seconds by default');
+    expect(readmeText).toContain('pass `-ProgressStatusSeconds 0` to suppress repeated status lines');
     expect(readmeText).toContain('Forward/no-audit loop agents must not read or update any `AUDIT_LOG.md`');
     expect(readmeText).toContain('The immediate lane roots are `governance`, `inventory`, `oracle`, `launch`, `core`, and `wad`.');
     expect(promptText).toContain('choose the first unchecked step in that lane whose prerequisites are complete');
@@ -189,6 +193,8 @@ describe('vanilla parity Ralph-loop scripts', () => {
       expect(scriptText).toContain('plan_vanilla_parity\\lane_locks');
       expect(scriptText).toContain('[string]$Lane = ""');
       expect(scriptText).toContain('[int]$LockLeaseMinutes = 120');
+      expect(scriptText).toContain('[int]$ProgressStatusSeconds = 180');
+      expect(scriptText).toContain('-ProgressStatusSeconds $ProgressStatusSeconds');
       expect(scriptText).not.toContain('plan_fps\\PROMPT.md');
     }
   });
@@ -202,6 +208,8 @@ describe('vanilla parity Ralph-loop scripts', () => {
       expect(scriptText).toContain('plan_vanilla_parity\\lane_locks');
       expect(scriptText).toContain('[string]$Lane = ""');
       expect(scriptText).toContain('[int]$LockLeaseMinutes = 120');
+      expect(scriptText).toContain('[int]$ProgressStatusSeconds = 180');
+      expect(scriptText).toContain('-ProgressStatusSeconds $ProgressStatusSeconds');
       expect(scriptText).not.toContain('plan_fps\\PROMPT.md');
     }
   });
@@ -247,6 +255,35 @@ describe('vanilla parity Ralph-loop scripts', () => {
 
       const lockEntries = await readdir(lockDirectory);
       expect(lockEntries).toEqual([]);
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
+  });
+
+  test('Claude Code no-audit loop suppresses repeated running status before the progress interval', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-vanilla-loop-'));
+    const logDirectory = join(temporaryDirectory, 'logs');
+    const lockDirectory = join(temporaryDirectory, 'locks');
+    const fakeClaudeCommandPath = await createFakeClaudeCommand(temporaryDirectory, 2);
+
+    try {
+      const result = await runPowerShellScript(CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH, [
+        '-MaxIterations',
+        '1',
+        '-ClaudeCommand',
+        fakeClaudeCommandPath,
+        '-LogDirectory',
+        logDirectory,
+        '-LaneLockDirectory',
+        lockDirectory,
+        '-ProgressStatusSeconds',
+        '180',
+      ]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.combinedOutput).toContain('Saving final response to');
+      expect(result.combinedOutput).not.toContain('Claude Code is still running; final response will be saved to');
+      expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
     } finally {
       await rm(temporaryDirectory, { force: true, recursive: true });
     }
