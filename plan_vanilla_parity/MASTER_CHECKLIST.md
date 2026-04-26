@@ -9,8 +9,8 @@
 
 - [x] `00-001` `establish-vanilla-parity-control-center` | lane: `governance` | prereqs: `none` | file: `plan_vanilla_parity/steps/00-001-establish-vanilla-parity-control-center.md`
 - [x] `00-002` `declare-plan-fps-and-plan-engine-prior-art-only` | lane: `governance` | prereqs: `00-001` | file: `plan_vanilla_parity/steps/00-002-declare-plan-fps-and-plan-engine-prior-art-only.md`
-- [ ] `00-003` `pin-shareware-doom-one-point-nine-primary-target` | lane: `governance` | prereqs: `00-002` | file: `plan_vanilla_parity/steps/00-003-pin-shareware-doom-one-point-nine-primary-target.md`
-- [ ] `00-004` `pin-user-supplied-registered-and-ultimate-iwad-scope` | lane: `governance` | prereqs: `00-003` | file: `plan_vanilla_parity/steps/00-004-pin-user-supplied-registered-and-ultimate-iwad-scope.md`
+- [x] `00-003` `pin-shareware-doom-one-point-nine-primary-target` | lane: `governance` | prereqs: `00-002` | file: `plan_vanilla_parity/steps/00-003-pin-shareware-doom-one-point-nine-primary-target.md`
+- [x] `00-004` `pin-user-supplied-registered-and-ultimate-iwad-scope` | lane: `governance` | prereqs: `00-003` | file: `plan_vanilla_parity/steps/00-004-pin-user-supplied-registered-and-ultimate-iwad-scope.md`
 - [ ] `00-005` `pin-proprietary-asset-non-redistribution-boundary` | lane: `governance` | prereqs: `00-004` | file: `plan_vanilla_parity/steps/00-005-pin-proprietary-asset-non-redistribution-boundary.md`
 - [ ] `00-006` `pin-local-git-direct-commit-and-push-workflow` | lane: `governance` | prereqs: `00-005` | file: `plan_vanilla_parity/steps/00-006-pin-local-git-direct-commit-and-push-workflow.md`
 - [ ] `00-007` `ban-non-bun-runtime-and-package-commands` | lane: `governance` | prereqs: `00-006` | file: `plan_vanilla_parity/steps/00-007-ban-non-bun-runtime-and-package-commands.md`
@@ -132,7 +132,7 @@
 
 ## Phase 04: Core Timing / Fixed / RNG / Demo Sync
 
-- [ ] `04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `none` | file: `plan_vanilla_parity/steps/04-001-audit-fixed-point-constants.md`
+- [x] `04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `none` | file: `plan_vanilla_parity/steps/04-001-audit-fixed-point-constants.md`
 - [ ] `04-002` `audit-fixed-multiply-overflow-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-002-audit-fixed-multiply-overflow-semantics.md`
 - [ ] `04-003` `audit-fixed-divide-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-003-audit-fixed-divide-semantics.md`
 - [ ] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
