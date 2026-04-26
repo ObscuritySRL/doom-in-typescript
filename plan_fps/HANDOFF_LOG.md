@@ -3444,3 +3444,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-006 persist-screen-settings
 - open_risks: none
+
+## 2026-04-26 - 12-006 persist-screen-settings
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-006
+- step_title: persist-screen-settings
+- summary: Added the playable screen-settings persistence surface at `src/playable/config-persistence/persistScreenSettings.ts`. The module exports the exact `bun run doom.ts` command contract plus `persistScreenSettings`, validates the product runtime command before applying settings, persists vanilla `default.cfg` screenblocks/detail/gamma fields and Chocolate Doom `chocolate-doom.cfg` host video/window fields, preserves unrelated config values, rejects invalid ranges and config-line strings, and returns frozen deterministic replay evidence with locked signatures, SHA-256 hashes, and replay checksums. Added focused test `test/playable/config-persistence/persist-screen-settings.test.ts` to lock the command contract, 01-014 missing config persistence audit linkage, formatted source SHA-256 `3f7e8f9fca9e0e372f98697949d3d07a869ec22ca013421d8173b375ecdd3579`, exact default/custom screen transition evidence, wrong-command prevalidation, invalid screen-setting rejection, and non-screen config preservation.
+- files_changed: src/playable/config-persistence/persistScreenSettings.ts; test/playable/config-persistence/persist-screen-settings.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Restored an accidental formatter change to `plan_fps/AUDIT_LOG.md` because it was clean before `bun run format` and outside this step's allowed changes. Tightened screen-evidence helper generics before test creation so typed config interfaces do not require index signatures.
+- tests_run: bun run format (initial pass fixed 1 file, helper cleanup pass fixed 1 file, focused-verification pass fixed 1 file); bun test test/playable/config-persistence/persist-screen-settings.test.ts (5 pass, 0 fail, 42 expect() calls); bun test (7702 pass, 0 fail, 694168 expect() calls across 362 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-007 define-save-and-window-path-policies
+- open_risks: none
