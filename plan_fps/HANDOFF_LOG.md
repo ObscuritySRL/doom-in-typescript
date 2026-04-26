@@ -3390,3 +3390,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-003 persist-key-bindings
 - open_risks: none
+
+## 2026-04-26 - 12-003 persist-key-bindings
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-003
+- step_title: persist-key-bindings
+- summary: Added the playable key-binding persistence surface at `src/playable/config-persistence/persistKeyBindings.ts`. The module exports the exact `bun run doom.ts` command contract plus `persistKeyBindings`, validates the product runtime command before applying key-binding changes, persists DOS scan-code key bindings across the typed vanilla `default.cfg` and Chocolate Doom `chocolate-doom.cfg` config snapshots, rejects invalid scan codes, and returns deterministic replay evidence with locked binding counts, serialized state, and checksum. Added focused test `test/playable/config-persistence/persist-key-bindings.test.ts` to lock the command contract, 01-014 missing config persistence audit linkage, formatted source SHA-256 `82b63bdc50fa1d03169e50184f9976cdaa51c4786d55855f2e3b12387a1bca3f`, exact key-binding order, replay checksum `45207071`, wrong-command prevalidation, and invalid scan-code rejection.
+- files_changed: src/playable/config-persistence/persistKeyBindings.ts; test/playable/config-persistence/persist-key-bindings.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders to capture the formatted source hash, serialized key-binding state, and deterministic replay checksum. Replaced the placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 1 file; exact-value rerun fixed 1 file); bun test test/playable/config-persistence/persist-key-bindings.test.ts (placeholder run failed as expected while locking exact values; final run 5 pass, 0 fail, 17 expect() calls); bun test (7660 pass, 0 fail, 693945 expect() calls across 359 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-004 persist-mouse-settings
+- open_risks: none
