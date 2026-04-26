@@ -3822,3 +3822,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-007 smoke-test-clean-local-working-tree
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-007 smoke-test-clean-local-working-tree
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-007
+- step_title: smoke-test-clean-local-working-tree
+- summary: Added the Bun local distribution clean-working-tree smoke-test surface at `src/playable/bun-launch-local-distribution-boundary/smokeTestCleanLocalWorkingTree.ts`. The module exports the exact `bun run doom.ts` command contract, rejects the legacy `bun run src/main.ts` launcher before checking a working-tree snapshot, requires an empty `git status --porcelain` result, and returns frozen deterministic replay-compatible evidence without mutating input stream, random seed, or simulation tic state. Added focused test `test/playable/bun-launch-local-distribution-boundary/smoke-test-clean-local-working-tree.test.ts` to lock the command contract, smoke command, transition, evidence hash `81040b06003f395290f773e8860aa04f4afb41c1b65552f51cd2f2088e514381`, formatted source SHA-256 `3df9debe6c6033027164b9a2570e5f6b356a223616ae6c88d23be9cd59c6af93`, frozen evidence graph, wrong-command prevalidation, and dirty working tree rejection.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/smokeTestCleanLocalWorkingTree.ts; test/playable/bun-launch-local-distribution-boundary/smoke-test-clean-local-working-tree.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 1 file; verification rerun no fixes); bun test test/playable/bun-launch-local-distribution-boundary/smoke-test-clean-local-working-tree.test.ts (4 pass, 0 fail, 11 expect() calls); bun test (7877 pass, 0 fail, 695040 expect() calls across 383 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 15-001 gate-plan-structure
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
