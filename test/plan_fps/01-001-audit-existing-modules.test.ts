@@ -100,6 +100,17 @@ function sha256(text: string): string {
   return hasher.digest('hex');
 }
 
+function isAsciiSortedAscending(values: readonly string[]): boolean {
+  for (let index = 1; index < values.length; index += 1) {
+    const previous = values[index - 1];
+    const current = values[index];
+    if (previous === undefined || current === undefined || previous >= current) {
+      return false;
+    }
+  }
+  return true;
+}
+
 describe('01-001 audit-existing-modules manifest', () => {
   test('locks the exact machine-readable audit manifest', async () => {
     const manifest: unknown = await Bun.file(new URL('plan_fps/manifests/01-001-audit-existing-modules.json', repositoryRootUrl)).json();
@@ -110,6 +121,7 @@ describe('01-001 audit-existing-modules manifest', () => {
   test('cross-checks the current launcher entrypoint against src/main.ts', async () => {
     const sourceText = await Bun.file(new URL('src/main.ts', repositoryRootUrl)).text();
 
+    expect(expectedManifest.currentEntrypoint.sourceTextSha256).toMatch(/^[0-9a-f]{64}$/);
     expect(sha256(sourceText)).toBe(expectedManifest.currentEntrypoint.sourceTextSha256);
     expect(sourceText).toContain("import { CommandLine } from './bootstrap/cmdline.ts';");
     expect(sourceText).toContain("import { createLauncherSession, loadLauncherResources } from './launcher/session.ts';");
@@ -120,6 +132,10 @@ describe('01-001 audit-existing-modules manifest', () => {
     expect(sourceText).toContain('const DEFAULT_SCALE = 2;');
     expect(sourceText).toContain('const DEFAULT_SKILL = 2;');
     expect(sourceText).toContain('The launcher now starts in the gameplay view and can switch to automap on demand.');
+
+    for (const helpUsageLine of expectedManifest.currentEntrypoint.helpUsage) {
+      expect(sourceText).toContain(helpUsageLine);
+    }
   });
 
   test('cross-checks package and TypeScript workspace facts', async () => {
@@ -156,5 +172,22 @@ describe('01-001 audit-existing-modules manifest', () => {
     expect(expectedManifest.moduleEntries.map((entry) => entry.path)).toEqual(['src/bootstrap/cmdline.ts', 'src/launcher/session.ts', 'src/launcher/win32.ts', 'src/main.ts', 'src/reference/policy.ts', 'src/reference/target.ts']);
     expect(expectedManifest.missingSurfaces.map((entry) => entry.surface)).toEqual(['root-doom-ts-command-contract', 'title-menu-startup-flow']);
     expect(expectedManifest.missingSurfaces.map((entry) => entry.actualPath)).toEqual([null, null]);
+
+    expect(isAsciiSortedAscending(expectedManifest.moduleEntries.map((entry) => entry.path))).toBe(true);
+    expect(isAsciiSortedAscending(expectedManifest.missingSurfaces.map((entry) => entry.surface))).toBe(true);
+    expect(isAsciiSortedAscending(expectedManifest.auditScope.evidencePaths)).toBe(true);
+    expect(isAsciiSortedAscending(expectedManifest.auditScope.sourceCatalogIds)).toBe(true);
+    for (const moduleEntry of expectedManifest.moduleEntries) {
+      expect(isAsciiSortedAscending(moduleEntry.symbols)).toBe(true);
+    }
+  });
+
+  test('verifies every recorded evidence path and module path resolves to an existing file', async () => {
+    for (const evidencePath of expectedManifest.auditScope.evidencePaths) {
+      expect(await Bun.file(new URL(evidencePath, repositoryRootUrl)).exists()).toBe(true);
+    }
+    for (const moduleEntry of expectedManifest.moduleEntries) {
+      expect(await Bun.file(new URL(moduleEntry.path, repositoryRootUrl)).exists()).toBe(true);
+    }
   });
 });
