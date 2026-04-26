@@ -70,3 +70,4 @@ Do not write oracle artifacts inside `doom/`, `iwad/`, or `reference/`.
 | OR-FPS-043 | `plan_fps/manifests/15-007-gate-audio.json` | gate audio acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-audio.test.ts` |
 | OR-FPS-044 | `plan_fps/manifests/15-008-gate-save-load.json` | gate save load acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-save-load.test.ts` |
 | OR-FPS-045 | `plan_fps/manifests/15-009-gate-attract-loop-and-long-run.json` | gate attract loop and long run acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-attract-loop-and-long-run.test.ts` |
+| OR-FPS-046 | `plan_fps/manifests/15-010-gate-final-side-by-side.json` | gate final side by side acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-final-side-by-side.test.ts` |

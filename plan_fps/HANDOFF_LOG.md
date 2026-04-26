@@ -4002,3 +4002,21 @@
 - oracle_changes: added OR-FPS-045 for `plan_fps/manifests/15-009-gate-attract-loop-and-long-run.json`
 - next_eligible_steps: 15-010 gate-final-side-by-side
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-010 gate-final-side-by-side
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 15-010
+- step_title: gate-final-side-by-side
+- summary: Added the final side-by-side acceptance gate manifest at `plan_fps/manifests/15-010-gate-final-side-by-side.json`. The manifest locks the `bun run doom.ts` command contract, final side-by-side oracle scope from OR-FPS-036 (final side-by-side replay capture pairing reference and implementation runs on the shared input trace and sample tics), OR-FPS-032 (sampled sfx hash windows), OR-FPS-033 (sampled music event hash windows), OR-FPS-034 (sampled framebuffer hash windows), and OR-FPS-035 (sampled state hash windows), transition from `15-009` to `15-010` with `nextStepId`/`nextStepTitle` set to `null` to terminate the gate chain at the final acceptance gate, deterministic replay compatibility flags (compatible=true; inputStreamMutated/randomSeedMutated/saveFileBytesRedistributed/simulationTicMutated all false), OR-FPS-046 oracle registration, and evidence hash `67807d585153dbac7acf4b9c8b6dedcd690dc4d7322016910c73b3ceb4182c38`. Added focused test `test/playable/acceptance/gate-final-side-by-side.test.ts` (6 pass, 12 expects) that locks the manifest payload by exact value, recomputes the SHA-256 evidence hash from the payload minus evidenceHash, asserts the OR-FPS-046 row exists verbatim in `plan_fps/REFERENCE_ORACLES.md`, asserts the gate transition terminates with null next-step references, locks the Bun runtime command contract and final-gate oracle scope, and locks the deterministic replay compatibility flags.
+- files_changed: plan_fps/manifests/15-010-gate-final-side-by-side.json; test/playable/acceptance/gate-final-side-by-side.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 7 files in 7ms. No fixes applied); bun test test/playable/acceptance/gate-final-side-by-side.test.ts (6 pass, 0 fail, 12 expect() calls); bun test (7944 pass, 0 fail, 695226 expect() calls across 393 files); bun x tsc --noEmit --project tsconfig.json (clean); bun test plan_fps/validate-plan.test.ts (5 pass, 0 fail, 12 expect() calls); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps. First step: 00-001.)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-046 for `plan_fps/manifests/15-010-gate-final-side-by-side.json`
+- next_eligible_steps: none (final acceptance gate)
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

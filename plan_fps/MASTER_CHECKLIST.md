@@ -274,4 +274,4 @@
 - [x] `15-007` `gate-audio` | prereqs: `15-006` | file: `plan_fps/steps/15-007-gate-audio.md`
 - [x] `15-008` `gate-save-load` | prereqs: `15-007` | file: `plan_fps/steps/15-008-gate-save-load.md`
 - [x] `15-009` `gate-attract-loop-and-long-run` | prereqs: `15-008` | file: `plan_fps/steps/15-009-gate-attract-loop-and-long-run.md`
-- [ ] `15-010` `gate-final-side-by-side` | prereqs: `15-009` | file: `plan_fps/steps/15-010-gate-final-side-by-side.md`
+- [x] `15-010` `gate-final-side-by-side` | prereqs: `15-009` | file: `plan_fps/steps/15-010-gate-final-side-by-side.md`
