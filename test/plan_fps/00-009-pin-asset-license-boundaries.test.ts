@@ -159,8 +159,9 @@ describe('00-009 pin-asset-license-boundaries manifest', () => {
     expect(manifest).toEqual(expectedManifest);
   });
 
-  test('keeps the runtime target Bun-only and deterministic-replay-compatible', () => {
-    expect(expectedManifest.runtimeTarget).toEqual({
+  test('keeps the on-disk runtime target Bun-only and deterministic-replay-compatible', () => {
+    const onDiskManifest = parseJsonRecord(manifestPath);
+    expect(onDiskManifest.runtimeTarget).toEqual({
       bunOnly: true,
       command: 'bun run doom.ts',
       deterministicReplayCompatible: true,
@@ -177,13 +178,21 @@ describe('00-009 pin-asset-license-boundaries manifest', () => {
     }
   });
 
-  test('keeps oracle examples inside the workspace and outside the read-only roots', () => {
+  test('keeps oracle examples inside the workspace, outside the read-only roots, and present on disk', () => {
     const { readOnlyReferenceRoots, workspaceRoot } = expectedManifest.workspaceBoundaries;
 
     for (const writableExamplePath of expectedManifest.licenseBoundary.allowedWritableOracleExamples) {
+      expect(existsSync(writableExamplePath)).toBeTrue();
       expect(isWithinPath(writableExamplePath, workspaceRoot)).toBeTrue();
       expect(readOnlyReferenceRoots.some(({ path }) => isWithinPath(writableExamplePath, path))).toBeFalse();
     }
+  });
+
+  test('matches every false allow flag with a forbidden action', () => {
+    const allowBooleanFlagEntries = Object.entries(expectedManifest.licenseBoundary).filter(([key, value]) => key.startsWith('allow') && key !== 'allowedWritableOracleExamples' && typeof value === 'boolean');
+    expect(allowBooleanFlagEntries.length).toBeGreaterThan(0);
+    const falseAllowBooleanFlagCount = allowBooleanFlagEntries.filter(([, value]) => value === false).length;
+    expect(falseAllowBooleanFlagCount).toBe(expectedManifest.licenseBoundary.forbiddenActions.length);
   });
 
   test('preserves the README redistribution line verbatim', () => {
