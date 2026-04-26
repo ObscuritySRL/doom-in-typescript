@@ -3318,3 +3318,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-010 restore-post-load-render-audio-input-state
 - open_risks: Full restore success depends on `readLoadGame` completing a canonical archive; this step locks command/path validation and no-restore handling for unsupported, corrupted, and incomplete archives within the selected read scope.
+
+## 2026-04-26 - 11-010 restore-post-load-render-audio-input-state
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-010
+- step_title: restore-post-load-render-audio-input-state
+- summary: Added the playable post-load render/audio/input state restoration surface at `src/playable/save-load-playability/restorePostLoadRenderAudioInputState.ts`. The module exports the exact `bun run doom.ts` command contract plus `restorePostLoadRenderAudioInputState`, validates the product runtime command before changing post-load state, derives deterministic full-frame render refresh, music resume, sound-effect clearing, and input flushing evidence from a compatible loaded save header, preserves host state when no compatible header exists, and returns replay-safe signatures/checksums without host handles. Added focused test `test/playable/save-load-playability/restore-post-load-render-audio-input-state.test.ts` to lock the command contract, 01-013 live-load audit linkage, formatted source SHA-256 `68d6447cf1a31a54bc8e575438941265ed1202c7528325f70ac06f029e8fc9af`, exact restored/skipped transition signatures, replay checksums `166819490` and `142851233`, wrong-command prevalidation, and canonical save version text.
+- files_changed: src/playable/save-load-playability/restorePostLoadRenderAudioInputState.ts; test/playable/save-load-playability/restore-post-load-render-audio-input-state.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders to capture the formatted source hash and replay checksums. Replaced the placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun no fixes); bun test test/playable/save-load-playability/restore-post-load-render-audio-input-state.test.ts (final run 5 pass, 0 fail, 11 expect() calls); bun test (7612 pass, 0 fail, 693785 expect() calls across 354 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-011 add-live-save-load-roundtrip-hash-tests
+- open_risks: none
