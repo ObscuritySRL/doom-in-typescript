@@ -3372,3 +3372,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-002 write-config-back
 - open_risks: none
+
+## 2026-04-26 - 12-002 write-config-back
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-002
+- step_title: write-config-back
+- summary: Added the playable config writeback surface at `src/playable/config-persistence/writeConfigBack.ts`. The module exports the exact `bun run doom.ts` command contract plus `writeConfigBack`, validates the product runtime command before any config path handling, serializes the existing typed vanilla `default.cfg` and Chocolate Doom `chocolate-doom.cfg` config namespaces in their canonical definition order, writes both files through `Bun.write`, rejects write targets inside read-only reference roots, and returns deterministic replay evidence with locked SHA-256 hashes and checksum. Added focused test `test/playable/config-persistence/write-config-back.test.ts` to lock the command contract, 01-014 config write audit linkage, formatted source SHA-256 `cf1cccca005bb6dd124cd0014aefbe393385889b97d7d252cca9434c3e28a708`, exact writeback byte counts, hashes, checksum, Bun-written file contents, wrong-command prevalidation, read-only-root rejection, and ambiguous string rejection.
+- files_changed: src/playable/config-persistence/writeConfigBack.ts; test/playable/config-persistence/write-config-back.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test runs intentionally used placeholders to capture the formatted source hash and deterministic writeback byte/hash/checksum values. Replaced the placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value reruns no fixes); bun test test/playable/config-persistence/write-config-back.test.ts (final run 5 pass, 0 fail, 19 expect() calls); bun test (7646 pass, 0 fail, 693900 expect() calls across 358 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-003 persist-key-bindings
+- open_risks: none
