@@ -22,7 +22,7 @@
 - decision_changes: none (D-FPS-002 already accepts the mixed classification; no update needed)
 - oracle_changes: none
 - next_eligible_steps: 00-002 declare-plan-fps-control-center
-- open_risks: none
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
 
 ## 2026-04-24 - 00-002 declare-plan-fps-control-center
 
@@ -3677,4 +3677,22 @@
 - decision_changes: none
 - oracle_changes: none
 - next_eligible_steps: 13-010 accept-clean-launch-to-gameplay-replay
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-010 accept-clean-launch-to-gameplay-replay
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-010
+- step_title: accept-clean-launch-to-gameplay-replay
+- summary: Added the playable clean-launch-to-gameplay replay acceptance surface at `src/playable/demo-replay/acceptCleanLaunchToGameplayReplay.ts`. The module exports the exact `bun run doom.ts` command contract, validates that command before parsing demo bytes, validates title-loop clean-launch input scripts, consumes `DemoPlayback` through the marker boundary, rejects marker-only demo streams, and returns frozen deterministic acceptance evidence with locked script, tic-command, and replay SHA-256 hashes. Added focused test `test/playable/demo-replay/accept-clean-launch-to-gameplay-replay.test.ts` to lock the command contract, 01-015 side-by-side replay audit linkage, formatted source SHA-256 `8c88cf9ac9a4ef3a51c44aabf231ae1a7cc581a40b258c22d24ad4b0d5705a0b`, clean-launch transition, exact replay hash `cd2aad40b67afec10c25fa67a5b59826b3dbc5c965e9ea208d29a620a9658612`, invalid input-script rejection, wrong-command prevalidation, and marker-only rejection.
+- files_changed: src/playable/demo-replay/acceptCleanLaunchToGameplayReplay.ts; test/playable/demo-replay/accept-clean-launch-to-gameplay-replay.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript verification caught that the evidence object widened `stepIdentifier` from literal `13-010` to `string`. Tightened the object with `satisfies Omit<AcceptCleanLaunchToGameplayReplayEvidence, 'replayHash'>`, refreshed the focused test source hash, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (final rerun no fixes); bun test test/playable/demo-replay/accept-clean-launch-to-gameplay-replay.test.ts (final run 6 pass, 0 fail, 28 expect() calls); bun test (final run 7835 pass, 0 fail, 694887 expect() calls across 375 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-011 accept-attract-loop-and-long-run-replays
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
