@@ -266,7 +266,7 @@
 ## Phase 15: Acceptance Gates
 
 - [x] `15-001` `gate-plan-structure` | prereqs: `14-007` | file: `plan_fps/steps/15-001-gate-plan-structure.md`
-- [ ] `15-002` `gate-bun-launch-smoke` | prereqs: `15-001` | file: `plan_fps/steps/15-002-gate-bun-launch-smoke.md`
+- [x] `15-002` `gate-bun-launch-smoke` | prereqs: `15-001` | file: `plan_fps/steps/15-002-gate-bun-launch-smoke.md`
 - [ ] `15-003` `gate-title-frame` | prereqs: `15-002` | file: `plan_fps/steps/15-003-gate-title-frame.md`
 - [ ] `15-004` `gate-menu-navigation` | prereqs: `15-003` | file: `plan_fps/steps/15-004-gate-menu-navigation.md`
 - [ ] `15-005` `gate-e1m1-start` | prereqs: `15-004` | file: `plan_fps/steps/15-005-gate-e1m1-start.md`

@@ -3858,3 +3858,21 @@
 - oracle_changes: added OR-FPS-037 for `plan_fps/manifests/15-001-gate-plan-structure.json`
 - next_eligible_steps: 15-002 gate-bun-launch-smoke
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-002 gate-bun-launch-smoke
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-002
+- step_title: gate-bun-launch-smoke
+- summary: Added the Bun launch-smoke acceptance gate manifest at `plan_fps/manifests/15-002-gate-bun-launch-smoke.json`. The manifest locks the `bun run doom.ts` command contract, smoke scope for Bun runtime invocation, default IWAD discovery, root `doom.ts` command usage, and title-loop entry, the transition from `15-001` to `15-002`, deterministic replay compatibility flags, OR-FPS-038 oracle registration, and evidence hash `2ab211f64f41a3f34eb2a277924f26ce6650a622b4c2effcd0aab67a62df372f`. Added focused test `test/playable/acceptance/gate-bun-launch-smoke.test.ts` to lock the manifest schema, command contract, transition, replay compatibility, oracle registration, and hash.
+- files_changed: plan_fps/manifests/15-002-gate-bun-launch-smoke.json; test/playable/acceptance/gate-bun-launch-smoke.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files, stability rerun no fixes); bun test test/playable/acceptance/gate-bun-launch-smoke.test.ts (2 pass, 0 fail, 3 expect() calls); bun test (7883 pass, 0 fail, 695051 expect() calls across 385 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-038 for `plan_fps/manifests/15-002-gate-bun-launch-smoke.json`
+- next_eligible_steps: 15-003 gate-title-frame
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

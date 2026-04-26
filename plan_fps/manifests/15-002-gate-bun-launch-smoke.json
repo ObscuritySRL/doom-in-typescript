@@ -1,0 +1,35 @@
+{
+  "evidencePaths": ["plan_fps/MASTER_CHECKLIST.md", "plan_fps/REFERENCE_ORACLES.md", "plan_fps/manifests/15-002-gate-bun-launch-smoke.json", "test/playable/acceptance/gate-bun-launch-smoke.test.ts"],
+  "gate": {
+    "commandContract": {
+      "entryFile": "doom.ts",
+      "program": "bun",
+      "runtimeCommand": "bun run doom.ts",
+      "subcommand": "run"
+    },
+    "deterministicReplayCompatibility": {
+      "inputStreamMutation": false,
+      "randomSeedMutation": false,
+      "simulationTickAdvanced": false
+    },
+    "evidenceHash": "2ab211f64f41a3f34eb2a277924f26ce6650a622b4c2effcd0aab67a62df372f",
+    "gateIdentifier": "15-002",
+    "gateTitle": "gate-bun-launch-smoke",
+    "launchSmoke": {
+      "defaultIwadPath": "doom/DOOM1.WAD",
+      "expectedStartupPhase": "title-loop",
+      "firstSimulationTic": 0,
+      "smokeCommand": "bun run doom.ts",
+      "smokeScope": ["Bun runtime invocation", "default IWAD discovery", "root doom.ts command", "title-loop entry"],
+      "validatedRuntimePath": "Bun"
+    },
+    "oracleIdentifier": "OR-FPS-038",
+    "transition": {
+      "fromStep": "15-001",
+      "fromStepTitle": "gate-plan-structure",
+      "toStep": "15-002",
+      "toStepTitle": "gate-bun-launch-smoke"
+    }
+  },
+  "schemaVersion": 1
+}
