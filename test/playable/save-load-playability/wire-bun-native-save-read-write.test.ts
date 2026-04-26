@@ -56,7 +56,7 @@ describe('wireBunNativeSaveReadWrite', () => {
     });
     expect(WIRE_BUN_NATIVE_SAVE_READ_WRITE_AUDIT_MANIFEST_PATH).toBe('plan_fps/manifests/01-013-audit-missing-save-load-ui.json');
     expect(WIRE_BUN_NATIVE_SAVE_READ_WRITE_AUDIT_SURFACE).toBe('live-save-game-roundtrip');
-    expect(await hashFileSha256(SOURCE_PATH)).toBe('b3b8708c715af26ae709e54c5117a8b4d33cbf935f412c5ea92c95fdd0b4b82e');
+    expect(await hashFileSha256(SOURCE_PATH)).toBe('234520c64c1562996be327248e46ea9805dbfabc6c9c9127e6687596067e529f');
   });
 
   test('writes save bytes through Bun.write and returns deterministic evidence', async () => {
@@ -180,5 +180,62 @@ describe('wireBunNativeSaveReadWrite', () => {
         operation: 'read',
       }),
     ).rejects.toThrow('Save file path must not contain NUL bytes.');
+  });
+
+  test('writes byte buffers shorter than the save header without forging a header', async () => {
+    await deleteSaveFile();
+
+    try {
+      const shortBytes = new Uint8Array([0x00, 0x11, 0x22]);
+      const result = await wireBunNativeSaveReadWrite({
+        bytes: shortBytes,
+        command: COMMAND,
+        filePath: SAVE_FILE_PATH,
+        operation: 'write',
+      });
+
+      expect(result.bytesWritten).toBe(3);
+      expect(result.header).toBeNull();
+      expect(result.evidence.byteLength).toBe(3);
+      expect(result.evidence.versionMatches).toBe(false);
+      expect(result.evidence.gameepisode).toBeNull();
+      expect(result.evidence.gamemap).toBeNull();
+      expect(result.evidence.gameskill).toBeNull();
+      expect(result.evidence.headerDescription).toBeNull();
+      expect(result.evidence.leveltime).toBeNull();
+      expect(result.evidence.playeringame).toBeNull();
+      expect(result.evidence.replaySignature).toBe('operation=write;byteLength=3;hashSha256=26320e0ae7028efb6bf710654a0ed53cfcae1e5ca1e7f69d8a9dce02cfac2960;header=null');
+      expect(Array.from(new Uint8Array(await Bun.file(SAVE_FILE_PATH).arrayBuffer()))).toEqual(Array.from(shortBytes));
+    } finally {
+      await deleteSaveFile();
+    }
+  });
+
+  test('returns frozen results and frozen evidence for both operations', async () => {
+    await deleteSaveFile();
+
+    try {
+      const bytes = createSaveBytes();
+      const writeResult = await wireBunNativeSaveReadWrite({
+        bytes,
+        command: COMMAND,
+        filePath: SAVE_FILE_PATH,
+        operation: 'write',
+      });
+
+      expect(Object.isFrozen(writeResult)).toBe(true);
+      expect(Object.isFrozen(writeResult.evidence)).toBe(true);
+
+      const readResult = await wireBunNativeSaveReadWrite({
+        command: COMMAND,
+        filePath: SAVE_FILE_PATH,
+        operation: 'read',
+      });
+
+      expect(Object.isFrozen(readResult)).toBe(true);
+      expect(Object.isFrozen(readResult.evidence)).toBe(true);
+    } finally {
+      await deleteSaveFile();
+    }
   });
 });

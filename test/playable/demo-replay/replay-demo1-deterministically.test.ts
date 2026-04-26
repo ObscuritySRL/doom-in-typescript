@@ -136,6 +136,36 @@ describe('replayDemo1Deterministically', () => {
   test('rejects demo1 playback without tic commands', () => {
     expect(() => replayDemo1Deterministically(EMPTY_DEMO1_FIXTURE)).toThrow('DEMO1 deterministic replay produced no tic commands');
   });
+
+  test('rejects an empty demo buffer at the parser boundary', () => {
+    expect(() => replayDemo1Deterministically(Buffer.alloc(0))).toThrow('Demo buffer must contain at least 1 byte');
+  });
+
+  test('produces an idempotent replay hash on repeated invocations', () => {
+    const first = replayDemo1Deterministically(DEMO1_FIXTURE);
+    const second = replayDemo1Deterministically(DEMO1_FIXTURE);
+
+    expect(first.replayHash).toBe(second.replayHash);
+    expect(first.ticCommandHash).toBe(second.ticCommandHash);
+    expect(first).toEqual(second);
+  });
+
+  test('deep-freezes every nested evidence object', () => {
+    const evidence = replayDemo1Deterministically(DEMO1_FIXTURE);
+
+    expect(Object.isFrozen(evidence)).toBe(true);
+    expect(Object.isFrozen(evidence.commandContract)).toBe(true);
+    expect(Object.isFrozen(evidence.demoPlaybackScript)).toBe(true);
+    expect(Object.isFrozen(evidence.finalSnapshot)).toBe(true);
+    expect(Object.isFrozen(evidence.finalSnapshot.playersInGame)).toBe(true);
+    expect(Object.isFrozen(evidence.parsedDemo)).toBe(true);
+    expect(Object.isFrozen(evidence.parsedDemo.playersInGame)).toBe(true);
+    expect(Object.isFrozen(evidence.transition)).toBe(true);
+    expect(Object.isFrozen(evidence.transition.initialSnapshot)).toBe(true);
+    expect(Object.isFrozen(evidence.transition.initialSnapshot.playersInGame)).toBe(true);
+    expect(Object.isFrozen(evidence.transition.postCompletionSnapshot)).toBe(true);
+    expect(Object.isFrozen(evidence.transition.postCompletionSnapshot.playersInGame)).toBe(true);
+  });
 });
 
 function isRecord(value: unknown): value is Record<string, unknown> {

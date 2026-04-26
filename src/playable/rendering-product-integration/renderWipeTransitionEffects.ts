@@ -33,33 +33,49 @@ export function renderWipeTransitionEffects(context: RenderWipeTransitionEffects
   validateFramebufferLength('startFramebuffer', context.startFramebuffer);
   validateColumnRevealedRows(context.columnRevealedRows);
 
+  const columnRevealedRows = context.columnRevealedRows;
+  const destinationFramebuffer = context.destinationFramebuffer;
+  const endFramebuffer = context.endFramebuffer;
+  const startFramebuffer = context.startFramebuffer;
+
   let changedPixelCount = 0;
   let complete = true;
   let framebufferChecksum = CHECKSUM_OFFSET_BASIS;
   let revealedPixelCount = 0;
 
   for (let columnIndex = 0; columnIndex < SCREENWIDTH; columnIndex += 1) {
-    const revealedRows = context.columnRevealedRows[columnIndex]!;
+    const revealedRows = columnRevealedRows[columnIndex]!;
 
     if (revealedRows < SCREENHEIGHT) {
       complete = false;
     }
 
-    for (let rowIndex = 0; rowIndex < SCREENHEIGHT; rowIndex += 1) {
-      const framebufferOffset = rowIndex * SCREENWIDTH + columnIndex;
-      const sourceByte = rowIndex < revealedRows ? context.endFramebuffer[framebufferOffset]! : context.startFramebuffer[framebufferOffset]!;
+    revealedPixelCount += revealedRows;
 
-      if (context.destinationFramebuffer[framebufferOffset] !== sourceByte) {
+    let framebufferOffset = columnIndex;
+
+    for (let rowIndex = 0; rowIndex < revealedRows; rowIndex += 1) {
+      const sourceByte = endFramebuffer[framebufferOffset]!;
+
+      if (destinationFramebuffer[framebufferOffset] !== sourceByte) {
         changedPixelCount += 1;
       }
 
-      context.destinationFramebuffer[framebufferOffset] = sourceByte;
+      destinationFramebuffer[framebufferOffset] = sourceByte;
+      framebufferChecksum = updateChecksum(framebufferChecksum, sourceByte);
+      framebufferOffset += SCREENWIDTH;
+    }
 
-      if (rowIndex < revealedRows) {
-        revealedPixelCount += 1;
+    for (let rowIndex = revealedRows; rowIndex < SCREENHEIGHT; rowIndex += 1) {
+      const sourceByte = startFramebuffer[framebufferOffset]!;
+
+      if (destinationFramebuffer[framebufferOffset] !== sourceByte) {
+        changedPixelCount += 1;
       }
 
+      destinationFramebuffer[framebufferOffset] = sourceByte;
       framebufferChecksum = updateChecksum(framebufferChecksum, sourceByte);
+      framebufferOffset += SCREENWIDTH;
     }
   }
 

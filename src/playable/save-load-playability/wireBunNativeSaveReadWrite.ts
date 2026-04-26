@@ -78,9 +78,8 @@ function copyBytes(bytes: Uint8Array): Uint8Array {
   return output;
 }
 
-function createEvidence(operation: BunNativeSaveReadWriteOperation, bytes: Uint8Array): BunNativeSaveReadWriteEvidence {
+function createEvidence(operation: BunNativeSaveReadWriteOperation, bytes: Uint8Array, header: SaveGameHeader | null): BunNativeSaveReadWriteEvidence {
   const hashSha256 = hashBytesSha256(bytes);
-  const header = readHeaderOrNull(bytes);
   const replaySignature = createReplaySignature(operation, bytes.length, hashSha256, header);
 
   return Object.freeze({
@@ -156,7 +155,7 @@ export async function wireBunNativeSaveReadWrite(request: BunNativeSaveReadWrite
 
     return Object.freeze({
       bytes,
-      evidence: createEvidence(request.operation, bytes),
+      evidence: createEvidence(request.operation, bytes, header),
       header,
       operation: request.operation,
     });
@@ -168,7 +167,7 @@ export async function wireBunNativeSaveReadWrite(request: BunNativeSaveReadWrite
 
   return Object.freeze({
     bytesWritten,
-    evidence: createEvidence(request.operation, bytes),
+    evidence: createEvidence(request.operation, bytes, header),
     header,
     operation: request.operation,
   });

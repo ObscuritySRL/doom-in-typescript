@@ -25,7 +25,7 @@ describe('renderWipeTransitionEffects', () => {
   test('locks the implementation source hash', async () => {
     const sourceText = await Bun.file('src/playable/rendering-product-integration/renderWipeTransitionEffects.ts').text();
 
-    expect(hashBytes(new TextEncoder().encode(sourceText))).toBe('4f09303ba2e996c41045243162636874d80116ff36744c2e56e667751de21473');
+    expect(hashBytes(new TextEncoder().encode(sourceText))).toBe('9cf4979c4e94594078f7cf8502bcc2b90bfe7f79efb079afa78c12d94cb5c544');
   });
 
   test('renders a deterministic partial melt transition', () => {
