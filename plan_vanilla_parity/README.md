@@ -39,6 +39,8 @@ Build a full playable TypeScript/Bun DOOM that is indistinguishable from the rel
 
 - `RALPH_LOOP_CODEX.ps1`: lane-locked Codex Ralph loop for `plan_vanilla_parity`.
 - `RALPH_LOOP_CODEX_NO_AUDIT.ps1`: same lane-locked forward loop without any audit pre-pass.
+- `RALPH_LOOP_CLAUDE_CODE.ps1`: lane-locked Claude Code Ralph loop for `plan_vanilla_parity`.
+- `RALPH_LOOP_CLAUDE_CODE_NO_AUDIT.ps1`: same lane-locked forward loop without any audit pre-pass.
 - `lane-lock.ts`: Bun helper used by the PowerShell launchers for lane selection, atomic lock acquisition, heartbeat, stale-lock recovery, and release.
 - `loop_logs/`: ignored local response and recovery logs.
 - `lane_locks/`: ignored durable lane leases shared by parallel loop processes.
