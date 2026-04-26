@@ -3984,3 +3984,21 @@
 - oracle_changes: added OR-FPS-044 for `plan_fps/manifests/15-008-gate-save-load.json`
 - next_eligible_steps: 15-009 gate-attract-loop-and-long-run
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-009 gate-attract-loop-and-long-run
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 15-009
+- step_title: gate-attract-loop-and-long-run
+- summary: Added the attract-loop and long-run acceptance gate manifest at `plan_fps/manifests/15-009-gate-attract-loop-and-long-run.json`. The manifest locks the `bun run doom.ts` command contract, attract-loop and long-run oracle scope from OR-FPS-011 (full attract loop cycle), OR-FPS-012/OR-FPS-013/OR-FPS-014 (demo1/demo2/demo3 playback checkpoints), OR-FPS-034 (long-run framebuffer hash windows), and OR-FPS-035 (long-run state hash windows), transition from `15-008` to `15-009`, next gate `15-010`, deterministic replay compatibility flags (compatible=true; inputStreamMutated/randomSeedMutated/saveFileBytesRedistributed/simulationTicMutated all false), OR-FPS-045 oracle registration, and evidence hash `a491a15f2f0ce991b3558e24345919cb8a11f8f7ffa612a45788efea7974304c`. Added focused test `test/playable/acceptance/gate-attract-loop-and-long-run.test.ts` (3 pass, 3 expects) that locks the manifest payload by exact value, recomputes the SHA-256 evidence hash from the payload minus evidenceHash, and asserts the OR-FPS-045 row exists verbatim in `plan_fps/REFERENCE_ORACLES.md`.
+- files_changed: plan_fps/manifests/15-009-gate-attract-loop-and-long-run.json; test/playable/acceptance/gate-attract-loop-and-long-run.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 9 files in 10ms. No fixes applied); bun test test/playable/acceptance/gate-attract-loop-and-long-run.test.ts (3 pass, 0 fail, 3 expect() calls); bun test (7938 pass, 0 fail, 695214 expect() calls across 392 files); bun x tsc --noEmit --project tsconfig.json (clean); bun test plan_fps/validate-plan.test.ts (5 pass, 0 fail, 12 expect() calls); bun run plan_fps/validate-plan.ts (Validated 223 playable parity steps. First step: 00-001.)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-045 for `plan_fps/manifests/15-009-gate-attract-loop-and-long-run.json`
+- next_eligible_steps: 15-010 gate-final-side-by-side
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
