@@ -3534,3 +3534,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-002 replay-demo1-deterministically
 - open_risks: none
+
+## 2026-04-26 - 13-002 replay-demo1-deterministically
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-002
+- step_title: replay-demo1-deterministically
+- summary: Added the playable DEMO1 deterministic replay surface at `src/playable/demo-replay/replayDemo1Deterministically.ts`. The module exports the exact `bun run doom.ts` command contract, consumes a DEMO1-compatible vanilla demo stream through the existing `DemoPlayback` marker-timing wrapper, rejects legacy launcher commands before parsing demo bytes, rejects zero-tic demo replays, and returns frozen deterministic replay evidence with locked tic signatures, tic command hash `a1f52b04a4af249d34b2af49916ace78420ebac586b15ea73555e73aa69b3dcc`, and replay hash `e7b3d30358ef6e526067767ab7620c3239d44a38bdd5dfea7d8cf9774515d9e3`. Added focused test `test/playable/demo-replay/replay-demo1-deterministically.test.ts` to lock the command contract, 01-015 side-by-side replay audit linkage, formatted source SHA-256 `8bc1c0dd4186314dd3f1b7807636e67187bb568ffb56ed9a590b8aff772d32d0`, deterministic marker transition, replay hashes, wrong-command prevalidation, and empty-demo rejection.
+- files_changed: src/playable/demo-replay/replayDemo1Deterministically.ts; test/playable/demo-replay/replay-demo1-deterministically.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript verification caught `demoName` widening from literal `DEMO1` to `string` in the replay payload. Tightened the payload with `Omit<ReplayDemo1DeterministicallyEvidence, 'replayHash'>`, refreshed the focused test's source hash, and reran verification successfully. The first full-suite run also had a transient unrelated audio source-hash failure; the focused audio test and full-suite rerun both passed.
+- tests_run: bun run format (final rerun no fixes); bun test test/playable/demo-replay/replay-demo1-deterministically.test.ts (5 pass, 0 fail, 11 expect() calls); bun test (final run 7756 pass, 0 fail, 694366 expect() calls); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-003 replay-demo2-deterministically
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
