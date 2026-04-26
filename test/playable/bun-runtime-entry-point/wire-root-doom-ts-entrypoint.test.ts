@@ -54,7 +54,7 @@ describe('wire root doom.ts entrypoint', () => {
   });
 
   test('cross-checks the transition against the 01-007 audit manifest', async () => {
-    const manifest = JSON.parse(await Bun.file(WIRE_ROOT_DOOM_TS_ENTRYPOINT.sourceAuditManifest.path).text());
+    const manifest = await Bun.file(WIRE_ROOT_DOOM_TS_ENTRYPOINT.sourceAuditManifest.path).json();
 
     expect(manifest).toMatchObject({
       currentEntrypoint: WIRE_ROOT_DOOM_TS_ENTRYPOINT.currentEntrypoint,
@@ -69,7 +69,7 @@ describe('wire root doom.ts entrypoint', () => {
   });
 
   test('cross-checks the wire path against the package script and current launcher', async () => {
-    const packageJson = JSON.parse(await Bun.file('package.json').text());
+    const packageJson = await Bun.file('package.json').json();
     const sourceText = await Bun.file(WIRE_ROOT_DOOM_TS_ENTRYPOINT.currentEntrypoint.path).text();
 
     expect(packageJson).toMatchObject({
@@ -93,5 +93,21 @@ describe('wire root doom.ts entrypoint', () => {
       simulationStateMutations: [],
       status: 'compatible',
     });
+  });
+
+  test('locks the wire contract as runtime-immutable and the function as a stable getter', () => {
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.bunRuntime)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.commandContract)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.currentEntrypoint)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.currentEntrypoint.helpUsageLines)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.deterministicReplayCompatibility)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.deterministicReplayCompatibility.importSideEffects)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.deterministicReplayCompatibility.replayInputSources)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.deterministicReplayCompatibility.simulationStateMutations)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.sourceAuditManifest)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.step)).toBe(true);
+    expect(Object.isFrozen(WIRE_ROOT_DOOM_TS_ENTRYPOINT.transition)).toBe(true);
+    expect(wireRootDoomTsEntrypoint()).toBe(wireRootDoomTsEntrypoint());
   });
 });

@@ -42,49 +42,49 @@ export type WireRootDoomTsEntrypoint = {
   };
 };
 
-export const WIRE_ROOT_DOOM_TS_ENTRYPOINT: WireRootDoomTsEntrypoint = {
-  bunRuntime: {
+export const WIRE_ROOT_DOOM_TS_ENTRYPOINT: WireRootDoomTsEntrypoint = Object.freeze({
+  bunRuntime: Object.freeze({
     argumentVectorSource: 'Bun.argv',
     fileProbeApi: 'Bun.file',
     runtime: 'bun',
     scriptRunner: 'bun run',
-  },
-  commandContract: {
+  }),
+  commandContract: Object.freeze({
     command: 'bun run doom.ts',
     entryFile: 'doom.ts',
     program: 'bun',
     subcommand: 'run',
     workspacePath: 'doom.ts',
-  },
-  currentEntrypoint: {
+  }),
+  currentEntrypoint: Object.freeze({
     command: 'bun run src/main.ts',
-    helpUsageLines: ['bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]', 'bun run start -- [--iwad <path-to-iwad>] --list-maps'],
+    helpUsageLines: Object.freeze(['bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]', 'bun run start -- [--iwad <path-to-iwad>] --list-maps'] as const),
     path: 'src/main.ts',
     scriptName: 'start',
     sourceCatalogId: 'S-FPS-011',
-  },
-  deterministicReplayCompatibility: {
-    importSideEffects: [],
-    replayInputSources: [],
-    simulationStateMutations: [],
+  }),
+  deterministicReplayCompatibility: Object.freeze({
+    importSideEffects: Object.freeze([] as const),
+    replayInputSources: Object.freeze([] as const),
+    simulationStateMutations: Object.freeze([] as const),
     status: 'compatible',
-  },
-  sourceAuditManifest: {
+  }),
+  sourceAuditManifest: Object.freeze({
     path: 'plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json',
     schemaVersion: 1,
     stepId: '01-007',
-  },
-  step: {
+  }),
+  step: Object.freeze({
     id: '03-002',
     titleSlug: 'wire-root-doom-ts-entrypoint',
-  },
-  transition: {
+  }),
+  transition: Object.freeze({
     fromEntryFile: 'doom.ts',
     status: 'wired-to-current-launcher-surface',
     toEntrypointPath: 'src/main.ts',
     transitionKind: 'bun-root-entrypoint-delegation',
-  },
-};
+  }),
+});
 
 export function wireRootDoomTsEntrypoint(): WireRootDoomTsEntrypoint {
   return WIRE_ROOT_DOOM_TS_ENTRYPOINT;

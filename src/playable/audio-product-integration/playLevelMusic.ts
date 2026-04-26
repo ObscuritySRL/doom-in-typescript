@@ -14,6 +14,11 @@ export interface LevelMusicCommandContract {
   readonly runtimeCommand: string;
 }
 
+export const LEVEL_MUSIC_COMMAND_CONTRACT: LevelMusicCommandContract = Object.freeze({
+  entryFile: LEVEL_MUSIC_ENTRY_FILE,
+  runtimeCommand: LEVEL_MUSIC_RUNTIME_COMMAND,
+});
+
 export type LevelMusicDispatcher = (action: MusicDeviceAction) => void;
 
 export interface LevelMusicSelection {
@@ -86,10 +91,7 @@ export function playLevelMusic(request: PlayLevelMusicRequest): PlayLevelMusicRe
 
   return Object.freeze({
     auditManifestPath: LEVEL_MUSIC_AUDIT_MANIFEST_PATH,
-    commandContract: Object.freeze({
-      entryFile: LEVEL_MUSIC_ENTRY_FILE,
-      runtimeCommand: LEVEL_MUSIC_RUNTIME_COMMAND,
-    }),
+    commandContract: LEVEL_MUSIC_COMMAND_CONTRACT,
     currentMusicNumber: request.system.currentMusicNum,
     looping: request.system.looping,
     mapName: selection.mapName,
