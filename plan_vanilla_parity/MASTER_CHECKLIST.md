@@ -18,7 +18,7 @@
 - [x] `00-009` `define-lane-write-lock-contract` | lane: `governance` | prereqs: `00-008` | file: `plan_vanilla_parity/steps/00-009-define-lane-write-lock-contract.md`
 - [x] `00-010` `define-read-only-reference-roots` | lane: `governance` | prereqs: `00-009` | file: `plan_vanilla_parity/steps/00-010-define-read-only-reference-roots.md`
 - [x] `00-011` `define-current-state-inventory-schema` | lane: `governance` | prereqs: `00-010` | file: `plan_vanilla_parity/steps/00-011-define-current-state-inventory-schema.md`
-- [ ] `00-012` `define-source-authority-order` | lane: `governance` | prereqs: `00-011` | file: `plan_vanilla_parity/steps/00-012-define-source-authority-order.md`
+- [x] `00-012` `define-source-authority-order` | lane: `governance` | prereqs: `00-011` | file: `plan_vanilla_parity/steps/00-012-define-source-authority-order.md`
 - [ ] `00-013` `define-oracle-capture-policy` | lane: `governance` | prereqs: `00-012` | file: `plan_vanilla_parity/steps/00-013-define-oracle-capture-policy.md`
 - [ ] `00-014` `define-final-acceptance-standard` | lane: `governance` | prereqs: `00-013` | file: `plan_vanilla_parity/steps/00-014-define-final-acceptance-standard.md`
 - [ ] `00-015` `create-plan-validation-script-contract` | lane: `governance` | prereqs: `00-014` | file: `plan_vanilla_parity/steps/00-015-create-plan-validation-script-contract.md`
