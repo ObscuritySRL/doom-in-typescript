@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { KEY_F11 } from '../../../src/input/keyboard.ts';
 import { IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT, implementScreenSizeDetailGammaControls } from '../../../src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts';
 import { createFrontEndSequence } from '../../../src/ui/frontEndSequence.ts';
-import { KEY_ENTER, KEY_RIGHTARROW, MenuKind, createMenuState, openMenu } from '../../../src/ui/menus.ts';
+import { KEY_ENTER, KEY_LEFTARROW, KEY_RIGHTARROW, MenuKind, createMenuState, openMenu } from '../../../src/ui/menus.ts';
 
 const AUDIT_MANIFEST_PATH = new URL('../../../plan_fps/manifests/01-008-audit-missing-launch-to-menu.json', import.meta.url);
 const SOURCE_PATH = new URL('../../../src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts', import.meta.url);
@@ -178,5 +178,232 @@ describe('implementScreenSizeDetailGammaControls', () => {
         screenSize: 5,
       }),
     ).toThrow('Messages toggle is not implemented by implementScreenSizeDetailGammaControls.');
+  });
+
+  test('clamps screen-size at the upper bound when right arrow fires at the maximum', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeItemIndex;
+
+    const result = implementScreenSizeDetailGammaControls({
+      detailMode: 'high',
+      frontEndSequence,
+      gammaLevel: 0,
+      key: KEY_RIGHTARROW,
+      menu,
+      runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+      screenSize: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeRange.maximum,
+    });
+
+    expect(result).toEqual({
+      action: { direction: 1, kind: 'adjustScreenSize' },
+      detailMode: 'high',
+      gammaLevel: 0,
+      screenSize: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeRange.maximum,
+    });
+  });
+
+  test('clamps screen-size at the lower bound when left arrow fires at the minimum', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeItemIndex;
+
+    const result = implementScreenSizeDetailGammaControls({
+      detailMode: 'high',
+      frontEndSequence,
+      gammaLevel: 0,
+      key: KEY_LEFTARROW,
+      menu,
+      runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+      screenSize: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeRange.minimum,
+    });
+
+    expect(result).toEqual({
+      action: { direction: -1, kind: 'adjustScreenSize' },
+      detailMode: 'high',
+      gammaLevel: 0,
+      screenSize: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeRange.minimum,
+    });
+  });
+
+  test('increments gamma without wrapping below the maximum', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.detailItemIndex;
+
+    const result = implementScreenSizeDetailGammaControls({
+      detailMode: 'high',
+      frontEndSequence,
+      gammaLevel: 0,
+      key: KEY_F11,
+      menu,
+      runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+      screenSize: 5,
+    });
+
+    expect(result).toEqual({
+      action: { kind: 'adjustGamma', nextGammaLevel: 1, previousGammaLevel: 0 },
+      detailMode: 'high',
+      gammaLevel: 1,
+      screenSize: 5,
+    });
+  });
+
+  test('toggles detail with the vanilla-style Options-menu left-arrow path', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.detailItemIndex;
+
+    const result = implementScreenSizeDetailGammaControls({
+      detailMode: 'low',
+      frontEndSequence,
+      gammaLevel: 2,
+      key: KEY_LEFTARROW,
+      menu,
+      runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+      screenSize: 5,
+    });
+
+    expect(result).toEqual({
+      action: { kind: 'toggleDetail' },
+      detailMode: 'high',
+      gammaLevel: 2,
+      screenSize: 5,
+    });
+    expect(menu.itemOn).toBe(IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.detailItemIndex);
+  });
+
+  test('toggles detail when the Options-menu enter action emits toggleDetail directly', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.detailItemIndex;
+
+    const result = implementScreenSizeDetailGammaControls({
+      detailMode: 'high',
+      frontEndSequence,
+      gammaLevel: 0,
+      key: KEY_ENTER,
+      menu,
+      runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+      screenSize: 5,
+    });
+
+    expect(result).toEqual({
+      action: { kind: 'toggleDetail' },
+      detailMode: 'low',
+      gammaLevel: 0,
+      screenSize: 5,
+    });
+    expect(menu.itemOn).toBe(IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.detailItemIndex);
+  });
+
+  test('rejects gamma levels outside the contracted range', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeItemIndex;
+
+    const outOfRange = [IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.gammaRange.minimum - 1, IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.gammaRange.maximum + 1];
+
+    for (const gammaLevel of outOfRange) {
+      expect(() =>
+        implementScreenSizeDetailGammaControls({
+          detailMode: 'high',
+          frontEndSequence,
+          gammaLevel,
+          key: KEY_RIGHTARROW,
+          menu,
+          runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+          screenSize: 5,
+        }),
+      ).toThrow('Gamma level must stay within 0..4.');
+    }
+  });
+
+  test('rejects screen size values outside the contracted range', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeItemIndex;
+
+    const outOfRange = [IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeRange.minimum - 1, IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.screenSizeRange.maximum + 1];
+
+    for (const screenSize of outOfRange) {
+      expect(() =>
+        implementScreenSizeDetailGammaControls({
+          detailMode: 'high',
+          frontEndSequence,
+          gammaLevel: 0,
+          key: KEY_RIGHTARROW,
+          menu,
+          runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+          screenSize,
+        }),
+      ).toThrow('Screen size must stay within 0..8.');
+    }
+  });
+
+  test('rejects an inactive menu and a non-Options menu with the same error', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const inactiveMenu = createMenuState();
+
+    expect(() =>
+      implementScreenSizeDetailGammaControls({
+        detailMode: 'high',
+        frontEndSequence,
+        gammaLevel: 0,
+        key: KEY_RIGHTARROW,
+        menu: inactiveMenu,
+        runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+        screenSize: 5,
+      }),
+    ).toThrow('implementScreenSizeDetailGammaControls requires the active Options menu.');
+
+    const wrongMenu = createMenuState();
+    openMenu(wrongMenu, MenuKind.Main);
+
+    expect(() =>
+      implementScreenSizeDetailGammaControls({
+        detailMode: 'high',
+        frontEndSequence,
+        gammaLevel: 0,
+        key: KEY_RIGHTARROW,
+        menu: wrongMenu,
+        runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+        screenSize: 5,
+      }),
+    ).toThrow('implementScreenSizeDetailGammaControls requires the active Options menu.');
+  });
+
+  test('rejects unsupported Options-menu actions outside the screen-size and detail surfaces', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = 5; // M_MSENS — onLeft = adjustSensitivity -1
+
+    expect(() =>
+      implementScreenSizeDetailGammaControls({
+        detailMode: 'high',
+        frontEndSequence,
+        gammaLevel: 0,
+        key: KEY_LEFTARROW,
+        menu,
+        runtimeCommand: IMPLEMENT_SCREEN_SIZE_DETAIL_GAMMA_CONTROLS_CONTRACT.runtimeCommand,
+        screenSize: 5,
+      }),
+    ).toThrow('Unsupported options action: adjustSensitivity.');
   });
 });

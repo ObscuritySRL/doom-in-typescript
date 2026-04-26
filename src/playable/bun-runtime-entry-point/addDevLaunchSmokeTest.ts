@@ -48,7 +48,7 @@ export type AddDevLaunchSmokeTest = {
   };
 };
 
-export const addDevLaunchSmokeTest: AddDevLaunchSmokeTest = {
+export const addDevLaunchSmokeTest = {
   currentEntrypoint: {
     command: 'bun run src/main.ts',
     helpUsageLines: ['bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]', 'bun run start -- [--iwad <path-to-iwad>] --list-maps'],
@@ -96,4 +96,4 @@ export const addDevLaunchSmokeTest: AddDevLaunchSmokeTest = {
     runner: 'run',
     workspacePath: 'doom.ts',
   },
-};
+} as const satisfies AddDevLaunchSmokeTest;

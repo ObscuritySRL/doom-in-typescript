@@ -151,7 +151,7 @@ describe('gate plan structure acceptance', () => {
     });
     expect(checklist).toContain('- [x] `14-007` `smoke-test-clean-local-working-tree` | prereqs: `14-006` | file: `plan_fps/steps/14-007-smoke-test-clean-local-working-tree.md`');
     expect(checklist).toMatch(/^- \[[ x]\] `15-001` `gate-plan-structure` \| prereqs: `14-007` \| file: `plan_fps\/steps\/15-001-gate-plan-structure\.md`$/m);
-    expect(checklist).toContain('- [ ] `15-002` `gate-bun-launch-smoke` | prereqs: `15-001` | file: `plan_fps/steps/15-002-gate-bun-launch-smoke.md`');
+    expect(checklist).toMatch(/^- \[[ x]\] `15-002` `gate-bun-launch-smoke` \| prereqs: `15-001` \| file: `plan_fps\/steps\/15-002-gate-bun-launch-smoke\.md`$/m);
   });
 
   test('registers the gate manifest as a refreshable oracle artifact', async () => {
