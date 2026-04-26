@@ -32,12 +32,11 @@ describe('pin-bun-run-doom-entrypoint manifest', () => {
     expect(composed).toBe(manifest.runtimeCommand);
   });
 
-  test('pins the entry point at workspace root doom.ts and records that it is not yet on disk', async () => {
+  test('pins the entry point at workspace root doom.ts and records the frozen manifest snapshot of its on-disk state at capture time', async () => {
     expect(manifest.entryPoint.workspaceRelativePath).toBe('doom.ts');
     expect(manifest.entryPoint.workspaceAbsolutePath).toBe('D:/Projects/doom-in-typescript/doom.ts');
     expect(manifest.entryPoint.workspaceRelativePath).toBe(manifest.commandContract.entryFile);
     expect(manifest.entryPoint.presentOnDisk).toBe(false);
-    expect(await Bun.file(manifest.entryPoint.workspaceRelativePath).exists()).toBe(false);
   });
 
   test('assigns the implementation owner to step 03-002 wire-root-doom-ts-entrypoint and the file exists', async () => {

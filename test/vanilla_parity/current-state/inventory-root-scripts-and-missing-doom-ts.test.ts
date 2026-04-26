@@ -4,7 +4,6 @@ import { existsSync, statSync } from 'node:fs';
 
 const INVENTORY_JSON_PATH = 'plan_vanilla_parity/current-state/inventory-root-scripts-and-missing-doom-ts.json';
 const PACKAGE_JSON_PATH = 'package.json';
-const ROOT_DOOM_TS_PATH = 'doom.ts';
 const SIMPLIFIED_LAUNCHER_PATH = 'src/main.ts';
 const CONTROL_CENTER_DOCUMENT_PATH = 'plan_vanilla_parity/establish-vanilla-parity-control-center.md';
 const STEP_FILE_PATH = 'plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md';
@@ -90,11 +89,10 @@ describe('inventory: root scripts and missing doom.ts', () => {
     expect(controlCenterText).toContain('\n## runtime target\n\nbun run doom.ts\n');
   });
 
-  test('inventory records that doom.ts is missing and matches on-disk reality', async () => {
+  test('inventory records that doom.ts was missing at capture time (snapshot frozen at captured_at_utc; the launch lane creates doom.ts in step 03-001)', async () => {
     const inventory = await loadInventoryDocument();
     expect(inventory.doom_ts_status.expected_relative_path).toBe('doom.ts');
     expect(inventory.doom_ts_status.exists).toBe(false);
-    expect(existsSync(ROOT_DOOM_TS_PATH)).toBe(false);
   });
 
   test('inventory records the verbatim Bun launch failure for both bun run doom.ts and bun run doom.ts --help', async () => {
@@ -155,14 +153,11 @@ describe('inventory: root scripts and missing doom.ts', () => {
     expect(statSync(SIMPLIFIED_LAUNCHER_PATH).isFile()).toBe(true);
   });
 
-  test('inventory root_typescript_entrypoints lists no found root .ts files and flags doom.ts as missing', async () => {
+  test('inventory root_typescript_entrypoints lists no found root .ts files at capture time and flags doom.ts as missing (snapshot frozen at captured_at_utc)', async () => {
     const inventory = await loadInventoryDocument();
     expect(inventory.root_typescript_entrypoints.found).toEqual([]);
     expect(inventory.root_typescript_entrypoints.expected_for_vanilla_parity).toEqual(['doom.ts']);
     expect(inventory.root_typescript_entrypoints.missing_for_vanilla_parity).toEqual(['doom.ts']);
-
-    const rootTypescriptFileNames = await Array.fromAsync(new Bun.Glob('*.ts').scan({ cwd: '.' }));
-    expect(rootTypescriptFileNames).toEqual([]);
   });
 
   test('inventory follow-up steps point at real plan_vanilla_parity step files', async () => {
@@ -193,7 +188,7 @@ describe('inventory: root scripts and missing doom.ts', () => {
     expect(stepText).toContain('\n## lane\n\ninventory\n');
   });
 
-  test('failure mode: parsing rejects an inventory that falsely claims doom.ts exists at the repository root', async () => {
+  test('failure mode: a tampered inventory that flips doom_ts_status.exists diverges from the original captured snapshot', async () => {
     const inventory = await loadInventoryDocument();
     const tamperedInventory: InventoryDocument = {
       ...inventory,
@@ -202,8 +197,7 @@ describe('inventory: root scripts and missing doom.ts', () => {
         exists: true,
       },
     };
-    const onDiskExists = existsSync(ROOT_DOOM_TS_PATH);
-    expect(tamperedInventory.doom_ts_status.exists).not.toBe(onDiskExists);
+    expect(tamperedInventory.doom_ts_status.exists).not.toBe(inventory.doom_ts_status.exists);
   });
 
   test('failure mode: an empty scripts map would not satisfy the recorded package.json snapshot', async () => {

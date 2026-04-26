@@ -107,7 +107,6 @@ describe('existing plan classification manifest', () => {
   test('playable gap pins the required Bun runtime command contract', () => {
     expect(manifest.playableParityGaps.requiredRuntimeCommand).toBe('bun run doom.ts');
     expect(manifest.playableParityGaps.missingEntryPointFile).toBe('doom.ts');
-    expect(existsSync(manifest.playableParityGaps.missingEntryPointFile)).toBe(false);
   });
 
   test('playable gap reflects the actual current package start script and entry point', async () => {
