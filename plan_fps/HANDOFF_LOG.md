@@ -3300,3 +3300,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-009 restore-game-state-from-save
 - open_risks: none
+
+## 2026-04-26 - 11-009 restore-game-state-from-save
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-009
+- step_title: restore-game-state-from-save
+- summary: Added the playable restore-game-state-from-save surface at `src/playable/save-load-playability/restoreGameStateFromSave.ts`. The module exports the exact `bun run doom.ts` command contract plus `restoreGameStateFromSave`, validates the product runtime command and start offset before parsing, preserves canonical Doom 1.9 header evidence, delegates full restoration to `readLoadGame`, and returns frozen deterministic replay evidence for restored, unsupported-version, and corrupted save states. Added focused test `test/playable/save-load-playability/restore-game-state-from-save.test.ts` to lock the command contract, 01-013 live-load audit linkage, formatted source SHA-256 `ab99541941541f551923ff37047ef6dcffcc639e0a52cef4431cc40cb420298e`, exact replay checksums, wrong-command prevalidation, unsupported-version behavior, and truncated/corrupted no-restore behavior.
+- files_changed: src/playable/save-load-playability/restoreGameStateFromSave.ts; test/playable/save-load-playability/restore-game-state-from-save.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification pass failed because the focused test fixture inferred `playeringame` as `readonly number[]` instead of the required four-entry `SaveGamePlayerPresence` tuple. Added an explicitly typed `SaveGamePlayerPresence` fixture constant, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 1 file; recovery reruns reported no fixes); bun test test/playable/save-load-playability/restore-game-state-from-save.test.ts (placeholder runs failed as expected while locking exact values; final run 6 pass, 0 fail, 20 expect() calls; rerun after recovery also passed); bun test (final run 7600 pass, 0 fail, 693764 expect() calls across 354 files; rerun after recovery also passed); bun x tsc --noEmit --project tsconfig.json (initial run failed on focused test tuple typing; final run passed clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-010 restore-post-load-render-audio-input-state
+- open_risks: Full restore success depends on `readLoadGame` completing a canonical archive; this step locks command/path validation and no-restore handling for unsupported, corrupted, and incomplete archives within the selected read scope.
