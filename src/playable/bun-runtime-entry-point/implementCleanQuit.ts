@@ -43,18 +43,6 @@ export type CleanQuitResult = {
   readonly resultState: typeof IMPLEMENT_CLEAN_QUIT_CONTRACT.cleanQuitBehavior.resultState;
 };
 
-/**
- * Creates the clean quit result for the Bun playable entrypoint.
- *
- * @param command - Launch command requesting the clean quit lifecycle path.
- * @param reason - Clean quit trigger reported by the playable host.
- * @returns A deterministic clean quit result with exit code 0.
- * @example
- * ```ts
- * const result = implementCleanQuit('bun run doom.ts', 'escape-key');
- * console.log(result.exitCode);
- * ```
- */
 export function implementCleanQuit(command: string, reason: CleanQuitReason): CleanQuitResult {
   if (command !== IMPLEMENT_CLEAN_QUIT_CONTRACT.targetCommand.command) {
     throw new Error(`Clean quit is only wired for bun run doom.ts, got "${command}".`);

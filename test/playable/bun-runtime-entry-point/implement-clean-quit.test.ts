@@ -2,27 +2,31 @@ import { describe, expect, test } from 'bun:test';
 
 import { IMPLEMENT_CLEAN_QUIT_CONTRACT, implementCleanQuit } from '../../../src/playable/bun-runtime-entry-point/implementCleanQuit.ts';
 
-type AuditManifest = {
-  readonly currentEntrypoint: {
-    readonly command: string;
-    readonly path: string;
-    readonly scriptName: string;
-  };
-  readonly schemaVersion: number;
-  readonly stepId: string;
-  readonly targetCommand: {
-    readonly command: string;
-    readonly entryFile: string;
-    readonly status: string;
-    readonly workspacePath: string;
-  };
-};
+const AUDIT_MANIFEST_PATH = 'plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json';
+const PACKAGE_JSON_PATH = 'package.json';
+const SRC_MAIN_PATH = 'src/main.ts';
 
-type PackageJson = {
-  readonly scripts: {
-    readonly start: string;
-  };
-};
+type AuditManifest = Readonly<{
+  currentEntrypoint: Readonly<{
+    command: string;
+    path: string;
+    scriptName: string;
+  }>;
+  schemaVersion: number;
+  stepId: string;
+  targetCommand: Readonly<{
+    command: string;
+    entryFile: string;
+    status: string;
+    workspacePath: string;
+  }>;
+}>;
+
+type PackageJson = Readonly<{
+  scripts: Readonly<{
+    start: string;
+  }>;
+}>;
 
 const EXPECTED_CONTRACT = {
   cleanQuitBehavior: {
@@ -61,10 +65,60 @@ const EXPECTED_CONTRACT = {
 
 const EXPECTED_CONTRACT_HASH = '2f2cf3bb903ea7c98665b96d70406b0a5be2721a11703787351224729e6d9f7f';
 
+function calculateSha256Hex(value: string): string {
+  return new Bun.CryptoHasher('sha256').update(value).digest('hex');
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isAuditManifest(value: unknown): value is AuditManifest {
+  if (!isRecord(value) || !isRecord(value.currentEntrypoint) || !isRecord(value.targetCommand)) {
+    return false;
+  }
+
+  return (
+    typeof value.schemaVersion === 'number' &&
+    typeof value.stepId === 'string' &&
+    typeof value.currentEntrypoint.command === 'string' &&
+    typeof value.currentEntrypoint.path === 'string' &&
+    typeof value.currentEntrypoint.scriptName === 'string' &&
+    typeof value.targetCommand.command === 'string' &&
+    typeof value.targetCommand.entryFile === 'string' &&
+    typeof value.targetCommand.status === 'string' &&
+    typeof value.targetCommand.workspacePath === 'string'
+  );
+}
+
+function isPackageJson(value: unknown): value is PackageJson {
+  return isRecord(value) && isRecord(value.scripts) && typeof value.scripts.start === 'string';
+}
+
+async function loadAuditManifest(): Promise<AuditManifest> {
+  const manifest = await Bun.file(AUDIT_MANIFEST_PATH).json();
+
+  if (!isAuditManifest(manifest)) {
+    throw new Error(`Expected ${AUDIT_MANIFEST_PATH} to match the 01-007 audit manifest shape.`);
+  }
+
+  return manifest;
+}
+
+async function loadPackageJson(): Promise<PackageJson> {
+  const packageJson = await Bun.file(PACKAGE_JSON_PATH).json();
+
+  if (!isPackageJson(packageJson)) {
+    throw new Error(`Expected ${PACKAGE_JSON_PATH} to expose scripts.start.`);
+  }
+
+  return packageJson;
+}
+
 describe('implement clean quit contract', () => {
   test('locks the exact clean quit contract value and hash', () => {
     expect(IMPLEMENT_CLEAN_QUIT_CONTRACT).toEqual(EXPECTED_CONTRACT);
-    expect(hashJson(IMPLEMENT_CLEAN_QUIT_CONTRACT)).toBe(EXPECTED_CONTRACT_HASH);
+    expect(calculateSha256Hex(JSON.stringify(IMPLEMENT_CLEAN_QUIT_CONTRACT))).toBe(EXPECTED_CONTRACT_HASH);
   });
 
   test('reconstructs the target Bun command contract', () => {
@@ -75,9 +129,9 @@ describe('implement clean quit contract', () => {
   });
 
   test('cross-checks the audited current launcher transition', async () => {
-    const auditManifest = await readAuditManifest();
-    const packageJson = await readPackageJson();
-    const sourceText = await Bun.file('src/main.ts').text();
+    const auditManifest = await loadAuditManifest();
+    const packageJson = await loadPackageJson();
+    const sourceText = await Bun.file(SRC_MAIN_PATH).text();
 
     expect(auditManifest.schemaVersion).toBe(IMPLEMENT_CLEAN_QUIT_CONTRACT.currentLauncherTransition.auditSchemaVersion);
     expect(auditManifest.stepId).toBe('01-007');
@@ -94,16 +148,24 @@ describe('implement clean quit contract', () => {
     expect(sourceText).toContain('process.exit(1)');
   });
 
-  test('returns a clean zero-exit result only for the Bun playable command', () => {
-    expect(implementCleanQuit('bun run doom.ts', 'escape-key')).toEqual({
-      command: 'bun run doom.ts',
-      exitCode: 0,
-      processExitCall: 'not-used-for-clean-quit',
-      reason: 'escape-key',
-      resultState: 'cleanly-quit',
-    });
+  test('returns a clean zero-exit result for every accepted reason', () => {
+    for (const acceptedReason of IMPLEMENT_CLEAN_QUIT_CONTRACT.cleanQuitBehavior.acceptedReasons) {
+      expect(implementCleanQuit(IMPLEMENT_CLEAN_QUIT_CONTRACT.targetCommand.command, acceptedReason)).toEqual({
+        command: 'bun run doom.ts',
+        exitCode: 0,
+        processExitCall: 'not-used-for-clean-quit',
+        reason: acceptedReason,
+        resultState: 'cleanly-quit',
+      });
+    }
+  });
 
-    expect(() => implementCleanQuit('bun run src/main.ts', 'escape-key')).toThrow('Clean quit is only wired for bun run doom.ts, got "bun run src/main.ts".');
+  test('rejects empty, whitespace, and altered runtime commands', () => {
+    const unsupportedRuntimeCommands = ['', ' ', 'bun run src/main.ts', 'bun run doom.ts --demo DEMO1', 'BUN run doom.ts'];
+
+    for (const unsupportedRuntimeCommand of unsupportedRuntimeCommands) {
+      expect(() => implementCleanQuit(unsupportedRuntimeCommand, 'escape-key')).toThrow(`Clean quit is only wired for bun run doom.ts, got "${unsupportedRuntimeCommand}".`);
+    }
   });
 
   test('keeps clean quit deterministic replay neutral', () => {
@@ -117,60 +179,3 @@ describe('implement clean quit contract', () => {
     });
   });
 });
-
-function getRecord(value: unknown): Record<string, unknown> | null {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-    return null;
-  }
-
-  return value as Record<string, unknown>;
-}
-
-function hashJson(value: unknown): string {
-  return new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
-}
-
-function isAuditManifest(value: unknown): value is AuditManifest {
-  const manifestRecord = getRecord(value);
-  const currentEntrypoint = getRecord(manifestRecord?.currentEntrypoint);
-  const targetCommand = getRecord(manifestRecord?.targetCommand);
-
-  return (
-    typeof manifestRecord?.schemaVersion === 'number' &&
-    typeof manifestRecord.stepId === 'string' &&
-    typeof currentEntrypoint?.command === 'string' &&
-    typeof currentEntrypoint.path === 'string' &&
-    typeof currentEntrypoint.scriptName === 'string' &&
-    typeof targetCommand?.command === 'string' &&
-    typeof targetCommand.entryFile === 'string' &&
-    typeof targetCommand.status === 'string' &&
-    typeof targetCommand.workspacePath === 'string'
-  );
-}
-
-function isPackageJson(value: unknown): value is PackageJson {
-  const packageRecord = getRecord(value);
-  const scripts = getRecord(packageRecord?.scripts);
-
-  return typeof scripts?.start === 'string';
-}
-
-async function readAuditManifest(): Promise<AuditManifest> {
-  const parsedManifest: unknown = JSON.parse(await Bun.file('plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json').text());
-
-  if (!isAuditManifest(parsedManifest)) {
-    throw new Error('Invalid 01-007 audit manifest shape.');
-  }
-
-  return parsedManifest;
-}
-
-async function readPackageJson(): Promise<PackageJson> {
-  const parsedPackageJson: unknown = JSON.parse(await Bun.file('package.json').text());
-
-  if (!isPackageJson(parsedPackageJson)) {
-    throw new Error('Invalid package.json shape.');
-  }
-
-  return parsedPackageJson;
-}
