@@ -1,0 +1,446 @@
+# Master Checklist
+
+- Total steps: 398
+- First eligible step: `00-001 establish-vanilla-parity-control-center`
+- Runtime target: `bun run doom.ts`
+- Rule: choose the first unchecked step whose prerequisites are complete.
+
+## Phase 00: Governance / Plan Foundation
+
+- [ ] `00-001` `establish-vanilla-parity-control-center` | lane: `governance` | prereqs: `none` | file: `plan_vanilla_parity/steps/00-001-establish-vanilla-parity-control-center.md`
+- [ ] `00-002` `declare-plan-fps-and-plan-engine-prior-art-only` | lane: `governance` | prereqs: `00-001` | file: `plan_vanilla_parity/steps/00-002-declare-plan-fps-and-plan-engine-prior-art-only.md`
+- [ ] `00-003` `pin-shareware-doom-one-point-nine-primary-target` | lane: `governance` | prereqs: `00-002` | file: `plan_vanilla_parity/steps/00-003-pin-shareware-doom-one-point-nine-primary-target.md`
+- [ ] `00-004` `pin-user-supplied-registered-and-ultimate-iwad-scope` | lane: `governance` | prereqs: `00-003` | file: `plan_vanilla_parity/steps/00-004-pin-user-supplied-registered-and-ultimate-iwad-scope.md`
+- [ ] `00-005` `pin-proprietary-asset-non-redistribution-boundary` | lane: `governance` | prereqs: `00-004` | file: `plan_vanilla_parity/steps/00-005-pin-proprietary-asset-non-redistribution-boundary.md`
+- [ ] `00-006` `pin-local-git-direct-commit-and-push-workflow` | lane: `governance` | prereqs: `00-005` | file: `plan_vanilla_parity/steps/00-006-pin-local-git-direct-commit-and-push-workflow.md`
+- [ ] `00-007` `ban-non-bun-runtime-and-package-commands` | lane: `governance` | prereqs: `00-006` | file: `plan_vanilla_parity/steps/00-007-ban-non-bun-runtime-and-package-commands.md`
+- [ ] `00-008` `define-step-file-required-fields` | lane: `governance` | prereqs: `00-007` | file: `plan_vanilla_parity/steps/00-008-define-step-file-required-fields.md`
+- [ ] `00-009` `define-lane-write-lock-contract` | lane: `governance` | prereqs: `00-008` | file: `plan_vanilla_parity/steps/00-009-define-lane-write-lock-contract.md`
+- [ ] `00-010` `define-read-only-reference-roots` | lane: `governance` | prereqs: `00-009` | file: `plan_vanilla_parity/steps/00-010-define-read-only-reference-roots.md`
+- [ ] `00-011` `define-current-state-inventory-schema` | lane: `governance` | prereqs: `00-010` | file: `plan_vanilla_parity/steps/00-011-define-current-state-inventory-schema.md`
+- [ ] `00-012` `define-source-authority-order` | lane: `governance` | prereqs: `00-011` | file: `plan_vanilla_parity/steps/00-012-define-source-authority-order.md`
+- [ ] `00-013` `define-oracle-capture-policy` | lane: `governance` | prereqs: `00-012` | file: `plan_vanilla_parity/steps/00-013-define-oracle-capture-policy.md`
+- [ ] `00-014` `define-final-acceptance-standard` | lane: `governance` | prereqs: `00-013` | file: `plan_vanilla_parity/steps/00-014-define-final-acceptance-standard.md`
+- [ ] `00-015` `create-plan-validation-script-contract` | lane: `governance` | prereqs: `00-014` | file: `plan_vanilla_parity/steps/00-015-create-plan-validation-script-contract.md`
+- [ ] `00-016` `create-plan-validation-test-contract` | lane: `governance` | prereqs: `00-015` | file: `plan_vanilla_parity/steps/00-016-create-plan-validation-test-contract.md`
+- [ ] `00-017` `record-first-eligible-step-and-total-count` | lane: `governance` | prereqs: `00-016` | file: `plan_vanilla_parity/steps/00-017-record-first-eligible-step-and-total-count.md`
+- [ ] `00-018` `gate-plan-structure-validation` | lane: `governance` | prereqs: `00-017` | file: `plan_vanilla_parity/steps/00-018-gate-plan-structure-validation.md`
+
+## Phase 01: Current State Inventory
+
+- [ ] `01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md`
+- [ ] `01-002` `inventory-simplified-launcher-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md`
+- [ ] `01-003` `inventory-src-bootstrap-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-003-inventory-src-bootstrap-surface.md`
+- [ ] `01-004` `inventory-src-playable-contract-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md`
+- [ ] `01-005` `inventory-core-math-and-timing-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-005-inventory-core-math-and-timing-modules.md`
+- [ ] `01-006` `inventory-wad-and-asset-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-006-inventory-wad-and-asset-modules.md`
+- [ ] `01-007` `inventory-map-and-world-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-007-inventory-map-and-world-modules.md`
+- [ ] `01-008` `inventory-player-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-008-inventory-player-modules.md`
+- [ ] `01-009` `inventory-ai-and-specials-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-009-inventory-ai-and-specials-modules.md`
+- [ ] `01-010` `inventory-renderer-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`
+- [ ] `01-011` `inventory-ui-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-011-inventory-ui-modules.md`
+- [ ] `01-012` `inventory-audio-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-012-inventory-audio-modules.md`
+- [ ] `01-013` `inventory-save-and-config-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-013-inventory-save-and-config-modules.md`
+- [ ] `01-014` `inventory-demo-and-replay-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-014-inventory-demo-and-replay-modules.md`
+- [ ] `01-015` `inventory-oracle-fixtures-with-pending-status` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-015-inventory-oracle-fixtures-with-pending-status.md`
+- [ ] `01-016` `inventory-parity-tests-that-lock-fixtures` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-016-inventory-parity-tests-that-lock-fixtures.md`
+- [ ] `01-017` `inventory-plan-fps-manifest-only-gates` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-017-inventory-plan-fps-manifest-only-gates.md`
+- [ ] `01-018` `inventory-tools-reference-capture-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-018-inventory-tools-reference-capture-surface.md`
+- [ ] `01-019` `inventory-local-doom-reference-files` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-019-inventory-local-doom-reference-files.md`
+- [ ] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
+- [ ] `01-021` `classify-real-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-021-classify-real-implementations.md`
+- [ ] `01-022` `classify-simplified-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md`
+- [ ] `01-023` `classify-stubbed-or-manifest-only-surfaces` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md`
+- [ ] `01-024` `gate-current-state-inventory` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-024-gate-current-state-inventory.md`
+
+## Phase 02: Reference / Oracle Capture Foundation
+
+- [ ] `02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-001-catalog-local-reference-binaries-and-configs.md`
+- [ ] `02-002` `verify-local-reference-file-hashes` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-002-verify-local-reference-file-hashes.md`
+- [ ] `02-003` `define-read-only-reference-sandbox-copy-policy` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-003-define-read-only-reference-sandbox-copy-policy.md`
+- [ ] `02-004` `define-reference-process-launch-manifest` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md`
+- [ ] `02-005` `capture-doomd-clean-launch-feasibility` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-005-capture-doomd-clean-launch-feasibility.md`
+- [ ] `02-006` `capture-doom-exe-clean-launch-feasibility` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-006-capture-doom-exe-clean-launch-feasibility.md`
+- [ ] `02-007` `capture-default-cfg-baseline` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-007-capture-default-cfg-baseline.md`
+- [ ] `02-008` `capture-chocolate-doom-cfg-baseline` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-008-capture-chocolate-doom-cfg-baseline.md`
+- [ ] `02-009` `define-deterministic-input-stream-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-009-define-deterministic-input-stream-format.md`
+- [ ] `02-010` `define-keyboard-and-mouse-injection-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-010-define-keyboard-and-mouse-injection-oracle.md`
+- [ ] `02-011` `define-framebuffer-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-011-define-framebuffer-capture-format.md`
+- [ ] `02-012` `define-state-snapshot-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-012-define-state-snapshot-format.md`
+- [ ] `02-013` `define-audio-window-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-013-define-audio-window-capture-format.md`
+- [ ] `02-014` `define-music-event-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-014-define-music-event-capture-format.md`
+- [ ] `02-015` `define-save-byte-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-015-define-save-byte-capture-format.md`
+- [ ] `02-016` `capture-startup-sequence-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-016-capture-startup-sequence-oracle.md`
+- [ ] `02-017` `capture-initial-title-frame-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-017-capture-initial-title-frame-oracle.md`
+- [ ] `02-018` `capture-main-menu-open-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-018-capture-main-menu-open-oracle.md`
+- [ ] `02-019` `capture-new-game-episode-skill-path-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-019-capture-new-game-episode-skill-path-oracle.md`
+- [ ] `02-020` `capture-e1m1-spawn-state-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-020-capture-e1m1-spawn-state-oracle.md`
+- [ ] `02-021` `capture-scripted-movement-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-021-capture-scripted-movement-oracle.md`
+- [ ] `02-022` `capture-scripted-use-line-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-022-capture-scripted-use-line-oracle.md`
+- [ ] `02-023` `capture-scripted-pickup-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-023-capture-scripted-pickup-oracle.md`
+- [ ] `02-024` `capture-scripted-combat-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-024-capture-scripted-combat-oracle.md`
+- [ ] `02-025` `capture-damage-death-reborn-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-025-capture-damage-death-reborn-oracle.md`
+- [ ] `02-026` `capture-intermission-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-026-capture-intermission-transition-oracle.md`
+- [ ] `02-027` `capture-finale-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-027-capture-finale-transition-oracle.md`
+- [ ] `02-028` `capture-demo-one-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-028-capture-demo-one-playback-oracle.md`
+- [ ] `02-029` `capture-demo-two-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-029-capture-demo-two-playback-oracle.md`
+- [ ] `02-030` `capture-demo-three-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-030-capture-demo-three-playback-oracle.md`
+- [ ] `02-031` `capture-save-load-roundtrip-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-031-capture-save-load-roundtrip-oracle.md`
+- [ ] `02-032` `capture-sfx-and-music-oracle-windows` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-032-capture-sfx-and-music-oracle-windows.md`
+- [ ] `02-033` `capture-full-e1-route-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-033-capture-full-e1-route-oracle.md`
+- [ ] `02-034` `replace-pending-oracle-fixtures-with-live-evidence` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-034-replace-pending-oracle-fixtures-with-live-evidence.md`
+- [ ] `02-035` `gate-oracle-foundation-without-deferred-status` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-035-gate-oracle-foundation-without-deferred-status.md`
+
+## Phase 03: Launch / Host / Window / Input
+
+- [ ] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
+- [ ] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
+- [ ] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
+- [ ] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
+- [ ] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
+- [ ] `03-006` `implement-user-supplied-iwad-selection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-006-implement-user-supplied-iwad-selection.md`
+- [ ] `03-007` `implement-doom-game-mode-detection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-007-implement-doom-game-mode-detection.md`
+- [ ] `03-008` `implement-d-doommain-init-order-skeleton` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`
+- [ ] `03-009` `implement-d-doomloop-entry-timing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`
+- [ ] `03-010` `implement-clean-quit-and-endoom-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-010-implement-clean-quit-and-endoom-policy.md`
+- [ ] `03-011` `implement-fatal-error-shutdown-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-011-implement-fatal-error-shutdown-ordering.md`
+- [ ] `03-012` `create-win32-window-with-vanilla-framebuffer-contract` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-012-create-win32-window-with-vanilla-framebuffer-contract.md`
+- [ ] `03-013` `apply-window-title-and-icon-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-013-apply-window-title-and-icon-policy.md`
+- [ ] `03-014` `lock-internal-320-by-200-indexed-framebuffer` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-014-lock-internal-320-by-200-indexed-framebuffer.md`
+- [ ] `03-015` `implement-palette-blit-without-filtering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-015-implement-palette-blit-without-filtering.md`
+- [ ] `03-016` `implement-aspect-and-integer-scale-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md`
+- [ ] `03-017` `implement-resize-and-focus-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-017-implement-resize-and-focus-policy.md`
+- [ ] `03-018` `implement-message-pump-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-018-implement-message-pump-ordering.md`
+- [ ] `03-019` `implement-close-button-and-alt-f4-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-019-implement-close-button-and-alt-f4-behavior.md`
+- [ ] `03-020` `implement-keyboard-scan-code-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-020-implement-keyboard-scan-code-mapping.md`
+- [ ] `03-021` `implement-menu-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-021-implement-menu-key-mapping-from-config.md`
+- [ ] `03-022` `implement-gameplay-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-022-implement-gameplay-key-mapping-from-config.md`
+- [ ] `03-023` `implement-mouse-button-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-023-implement-mouse-button-mapping.md`
+- [ ] `03-024` `implement-mouse-motion-accumulation` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-024-implement-mouse-motion-accumulation.md`
+- [ ] `03-025` `implement-mouse-grab-and-release-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-025-implement-mouse-grab-and-release-policy.md`
+- [ ] `03-026` `preserve-key-repeat-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-026-preserve-key-repeat-behavior.md`
+- [ ] `03-027` `preserve-key-down-up-event-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-027-preserve-key-down-up-event-ordering.md`
+- [ ] `03-028` `route-input-through-responder-chain` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-028-route-input-through-responder-chain.md`
+- [ ] `03-029` `implement-deterministic-input-trace-injection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-029-implement-deterministic-input-trace-injection.md`
+- [ ] `03-030` `implement-deterministic-input-trace-recording` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-030-implement-deterministic-input-trace-recording.md`
+- [ ] `03-031` `implement-clean-launch-to-title-loop` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-031-implement-clean-launch-to-title-loop.md`
+- [ ] `03-032` `implement-escape-to-main-menu-from-title` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-032-implement-escape-to-main-menu-from-title.md`
+- [ ] `03-033` `implement-menu-route-to-e1m1` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-033-implement-menu-route-to-e1m1.md`
+- [ ] `03-034` `implement-screenshot-capture-hook` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-034-implement-screenshot-capture-hook.md`
+- [ ] `03-035` `implement-launch-smoke-test-against-doom-ts` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-035-implement-launch-smoke-test-against-doom-ts.md`
+- [ ] `03-036` `gate-clean-launch-host-and-input` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-036-gate-clean-launch-host-and-input.md`
+
+## Phase 04: Core Timing / Fixed / RNG / Demo Sync
+
+- [ ] `04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-001-audit-fixed-point-constants.md`
+- [ ] `04-002` `audit-fixed-multiply-overflow-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-002-audit-fixed-multiply-overflow-semantics.md`
+- [ ] `04-003` `audit-fixed-divide-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-003-audit-fixed-divide-semantics.md`
+- [ ] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
+- [ ] `04-005` `audit-trig-lookup-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-005-audit-trig-lookup-tables.md`
+- [ ] `04-006` `audit-fine-tangent-and-slope-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-006-audit-fine-tangent-and-slope-tables.md`
+- [ ] `04-007` `audit-doom-random-table-and-indices` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-007-audit-doom-random-table-and-indices.md`
+- [ ] `04-008` `implement-deterministic-reset-seed` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-008-implement-deterministic-reset-seed.md`
+- [ ] `04-009` `implement-game-tic-counter-ownership` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-009-implement-game-tic-counter-ownership.md`
+- [ ] `04-010` `implement-tic-accumulator-at-thirty-five-hertz` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-010-implement-tic-accumulator-at-thirty-five-hertz.md`
+- [ ] `04-011` `implement-try-run-tics-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-011-implement-try-run-tics-ordering.md`
+- [ ] `04-012` `implement-i-start-tic-event-pump-contract` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-012-implement-i-start-tic-event-pump-contract.md`
+- [ ] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
+- [ ] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
+- [ ] `04-015` `implement-main-loop-per-frame-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-015-implement-main-loop-per-frame-ordering.md`
+- [ ] `04-016` `reject-frame-rate-dependent-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-016-reject-frame-rate-dependent-simulation.md`
+- [ ] `04-017` `reject-visible-interpolation-in-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-017-reject-visible-interpolation-in-simulation.md`
+- [ ] `04-018` `implement-pause-timing-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-018-implement-pause-timing-semantics.md`
+- [ ] `04-019` `implement-demo-lump-header-parser` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-019-implement-demo-lump-header-parser.md`
+- [ ] `04-020` `implement-demo-ticcmd-parser` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-020-implement-demo-ticcmd-parser.md`
+- [ ] `04-021` `implement-demo-playback-state-machine` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-021-implement-demo-playback-state-machine.md`
+- [ ] `04-022` `implement-demo-recording-state-machine` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-022-implement-demo-recording-state-machine.md`
+- [ ] `04-023` `enforce-vanilla-demo-size-limit` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-023-enforce-vanilla-demo-size-limit.md`
+- [ ] `04-024` `compare-demo-one-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-024-compare-demo-one-ticcmd-stream.md`
+- [ ] `04-025` `compare-demo-two-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-025-compare-demo-two-ticcmd-stream.md`
+- [ ] `04-026` `compare-demo-three-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-026-compare-demo-three-ticcmd-stream.md`
+- [ ] `04-027` `detect-long-run-drift` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-027-detect-long-run-drift.md`
+- [ ] `04-028` `add-determinism-state-hash-hook` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-028-add-determinism-state-hash-hook.md`
+- [ ] `04-029` `gate-core-determinism` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-029-gate-core-determinism.md`
+- [ ] `04-030` `gate-demo-sync-primitives` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-030-gate-demo-sync-primitives.md`
+
+## Phase 05: WAD / Assets / Data
+
+- [ ] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
+- [ ] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
+- [ ] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
+- [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
+- [ ] `05-005` `parse-playpal-and-colormap-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-005-parse-playpal-and-colormap-lumps.md`
+- [ ] `05-006` `parse-patch-picture-format` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-006-parse-patch-picture-format.md`
+- [ ] `05-007` `parse-flat-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`
+- [ ] `05-008` `parse-pnames-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-008-parse-pnames-lump.md`
+- [ ] `05-009` `parse-texture-one-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-009-parse-texture-one-lump.md`
+- [ ] `05-010` `parse-texture-two-when-present` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-010-parse-texture-two-when-present.md`
+- [ ] `05-011` `parse-sprite-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-011-parse-sprite-namespace.md`
+- [ ] `05-012` `parse-sound-effect-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-012-parse-sound-effect-lumps.md`
+- [ ] `05-013` `parse-music-mus-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-013-parse-music-mus-lumps.md`
+- [ ] `05-014` `parse-demo-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-014-parse-demo-lumps.md`
+- [ ] `05-015` `parse-map-lump-bundle-boundaries` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-015-parse-map-lump-bundle-boundaries.md`
+- [ ] `05-016` `detect-shareware-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-016-detect-shareware-iwad-capabilities.md`
+- [ ] `05-017` `detect-registered-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-017-detect-registered-iwad-capabilities.md`
+- [ ] `05-018` `detect-ultimate-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-018-detect-ultimate-iwad-capabilities.md`
+- [ ] `05-019` `reject-missing-proprietary-assets-with-clear-error` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-019-reject-missing-proprietary-assets-with-clear-error.md`
+- [ ] `05-020` `enforce-no-asset-redistribution-in-tests` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-020-enforce-no-asset-redistribution-in-tests.md`
+- [ ] `05-021` `build-asset-cache-lifetime-policy` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-021-build-asset-cache-lifetime-policy.md`
+- [ ] `05-022` `build-texture-composition-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md`
+- [ ] `05-023` `build-flat-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-023-build-flat-cache.md`
+- [ ] `05-024` `build-sprite-frame-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-024-build-sprite-frame-cache.md`
+- [ ] `05-025` `build-patch-font-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-025-build-patch-font-cache.md`
+- [ ] `05-026` `compare-local-doom1-wad-manifest` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-026-compare-local-doom1-wad-manifest.md`
+- [ ] `05-027` `gate-wad-and-asset-loading` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-027-gate-wad-and-asset-loading.md`
+- [ ] `05-028` `gate-user-supplied-doom-wad-detection` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-028-gate-user-supplied-doom-wad-detection.md`
+
+## Phase 06: Map / BSP / Blockmap / Collision
+
+- [ ] `06-001` `parse-vertex-linedef-sidedef-sector-lumps` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-001-parse-vertex-linedef-sidedef-sector-lumps.md`
+- [ ] `06-002` `parse-seg-ssector-node-reject-blockmap-lumps` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-002-parse-seg-ssector-node-reject-blockmap-lumps.md`
+- [ ] `06-003` `parse-things-with-skill-and-game-mode-filters` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-003-parse-things-with-skill-and-game-mode-filters.md`
+- [ ] `06-004` `implement-map-setup-init-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-004-implement-map-setup-init-ordering.md`
+- [ ] `06-005` `implement-subsector-point-query` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-005-implement-subsector-point-query.md`
+- [ ] `06-006` `implement-bsp-node-traversal-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-006-implement-bsp-node-traversal-semantics.md`
+- [ ] `06-007` `implement-blockmap-coordinate-conversion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-007-implement-blockmap-coordinate-conversion.md`
+- [ ] `06-008` `implement-block-things-linking` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-008-implement-block-things-linking.md`
+- [ ] `06-009` `implement-line-opening-calculations` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-009-implement-line-opening-calculations.md`
+- [ ] `06-010` `implement-check-position-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-010-implement-check-position-semantics.md`
+- [ ] `06-011` `implement-try-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-011-implement-try-move-semantics.md`
+- [ ] `06-012` `implement-slide-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-012-implement-slide-move-semantics.md`
+- [ ] `06-013` `implement-teleport-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-013-implement-teleport-move-semantics.md`
+- [ ] `06-014` `implement-radius-attack-block-traversal` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-014-implement-radius-attack-block-traversal.md`
+- [ ] `06-015` `implement-use-line-traversal` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-015-implement-use-line-traversal.md`
+- [ ] `06-016` `implement-intercept-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-016-implement-intercept-ordering.md`
+- [ ] `06-017` `implement-path-traverse-limits` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-017-implement-path-traverse-limits.md`
+- [ ] `06-018` `implement-reject-sight-fast-path` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-018-implement-reject-sight-fast-path.md`
+- [ ] `06-019` `implement-line-of-sight-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-019-implement-line-of-sight-semantics.md`
+- [ ] `06-020` `implement-sector-floor-ceiling-change-checks` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-020-implement-sector-floor-ceiling-change-checks.md`
+- [ ] `06-021` `implement-thing-touch-special-resolution` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-021-implement-thing-touch-special-resolution.md`
+- [ ] `06-022` `implement-map-spawn-thing-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-022-implement-map-spawn-thing-ordering.md`
+- [ ] `06-023` `implement-deathmatch-and-multiplayer-spawn-exclusion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-023-implement-deathmatch-and-multiplayer-spawn-exclusion.md`
+- [ ] `06-024` `implement-nightmare-respawn-map-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-024-implement-nightmare-respawn-map-state.md`
+- [ ] `06-025` `compare-e1m1-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-025-compare-e1m1-map-setup-state.md`
+- [ ] `06-026` `compare-e1m2-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-026-compare-e1m2-map-setup-state.md`
+- [ ] `06-027` `compare-e1m8-boss-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-027-compare-e1m8-boss-map-setup-state.md`
+- [ ] `06-028` `compare-e1m9-secret-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-028-compare-e1m9-secret-map-setup-state.md`
+- [ ] `06-029` `gate-blockmap-collision` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-029-gate-blockmap-collision.md`
+- [ ] `06-030` `gate-line-use-and-trigger-collision` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-030-gate-line-use-and-trigger-collision.md`
+- [ ] `06-031` `gate-map-setup-across-shareware-episode` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-031-gate-map-setup-across-shareware-episode.md`
+- [ ] `06-032` `gate-world-movement-against-oracle` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-032-gate-world-movement-against-oracle.md`
+
+## Phase 07: Gameplay / Player / Weapons / Items
+
+- [ ] `07-001` `implement-player-reborn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-001-implement-player-reborn-state.md`
+- [ ] `07-002` `implement-player-spawn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-002-implement-player-spawn-state.md`
+- [ ] `07-003` `implement-ticcmd-application` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-003-implement-ticcmd-application.md`
+- [ ] `07-004` `implement-forward-side-and-turn-movement` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-004-implement-forward-side-and-turn-movement.md`
+- [ ] `07-005` `implement-bob-and-viewheight-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-005-implement-bob-and-viewheight-semantics.md`
+- [ ] `07-006` `implement-player-thrust-and-friction` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-006-implement-player-thrust-and-friction.md`
+- [ ] `07-007` `implement-player-damage-and-armor` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-007-implement-player-damage-and-armor.md`
+- [ ] `07-008` `implement-death-and-reborn-flow` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-008-implement-death-and-reborn-flow.md`
+- [ ] `07-009` `implement-god-mode-and-powerup-flags` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-009-implement-god-mode-and-powerup-flags.md`
+- [ ] `07-010` `implement-health-and-armor-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-010-implement-health-and-armor-pickups.md`
+- [ ] `07-011` `implement-ammo-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-011-implement-ammo-pickups.md`
+- [ ] `07-012` `implement-weapon-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-012-implement-weapon-pickups.md`
+- [ ] `07-013` `implement-keycard-and-skull-key-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-013-implement-keycard-and-skull-key-pickups.md`
+- [ ] `07-014` `implement-backpack-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-014-implement-backpack-semantics.md`
+- [ ] `07-015` `implement-berserk-partial-invisibility-radiation-suit` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-015-implement-berserk-partial-invisibility-radiation-suit.md`
+- [ ] `07-016` `implement-invulnerability-and-infrared` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-016-implement-invulnerability-and-infrared.md`
+- [ ] `07-017` `implement-weapon-ownership-and-selection` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-017-implement-weapon-ownership-and-selection.md`
+- [ ] `07-018` `implement-fist-and-chainsaw-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-018-implement-fist-and-chainsaw-actions.md`
+- [ ] `07-019` `implement-pistol-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-019-implement-pistol-actions.md`
+- [ ] `07-020` `implement-shotgun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-020-implement-shotgun-actions.md`
+- [ ] `07-021` `implement-chaingun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-021-implement-chaingun-actions.md`
+- [ ] `07-022` `implement-rocket-launcher-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-022-implement-rocket-launcher-actions.md`
+- [ ] `07-023` `implement-plasma-rifle-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-023-implement-plasma-rifle-actions.md`
+- [ ] `07-024` `implement-bfg-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-024-implement-bfg-actions.md`
+- [ ] `07-025` `implement-projectile-spawn-and-explosion` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-025-implement-projectile-spawn-and-explosion.md`
+- [ ] `07-026` `implement-hitscan-aim-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-026-implement-hitscan-aim-and-damage.md`
+- [ ] `07-027` `implement-autoaim-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-027-implement-autoaim-semantics.md`
+- [ ] `07-028` `implement-weapon-sprite-state-machine` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-028-implement-weapon-sprite-state-machine.md`
+- [ ] `07-029` `implement-player-use-action` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-029-implement-player-use-action.md`
+- [ ] `07-030` `compare-scripted-pickup-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-030-compare-scripted-pickup-oracle.md`
+- [ ] `07-031` `compare-scripted-combat-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-031-compare-scripted-combat-oracle.md`
+- [ ] `07-032` `gate-player-movement-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-032-gate-player-movement-and-damage.md`
+- [ ] `07-033` `gate-weapon-and-item-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-033-gate-weapon-and-item-semantics.md`
+- [ ] `07-034` `gate-player-oracle-replay` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-034-gate-player-oracle-replay.md`
+
+## Phase 08: AI / Monster / Boss / Specials
+
+- [ ] `08-001` `implement-thinker-list-ordering` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-001-implement-thinker-list-ordering.md`
+- [ ] `08-002` `implement-mobj-state-transitions` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-002-implement-mobj-state-transitions.md`
+- [ ] `08-003` `implement-monster-spawn-flags` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-003-implement-monster-spawn-flags.md`
+- [ ] `08-004` `implement-look-for-players` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-004-implement-look-for-players.md`
+- [ ] `08-005` `implement-sound-target-propagation` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-005-implement-sound-target-propagation.md`
+- [ ] `08-006` `implement-chase-direction-selection` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-006-implement-chase-direction-selection.md`
+- [ ] `08-007` `implement-monster-melee-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-007-implement-monster-melee-range.md`
+- [ ] `08-008` `implement-monster-missile-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-008-implement-monster-missile-range.md`
+- [ ] `08-009` `implement-zombie-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-009-implement-zombie-attacks.md`
+- [ ] `08-010` `implement-imp-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-010-implement-imp-attacks.md`
+- [ ] `08-011` `implement-demon-and-spectre-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-011-implement-demon-and-spectre-attacks.md`
+- [ ] `08-012` `implement-lost-soul-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-012-implement-lost-soul-attack.md`
+- [ ] `08-013` `implement-cacodemon-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-013-implement-cacodemon-attack.md`
+- [ ] `08-014` `implement-baron-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-014-implement-baron-attack.md`
+- [ ] `08-015` `implement-cyberdemon-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-015-implement-cyberdemon-attack-for-registered-iwad.md`
+- [ ] `08-016` `implement-spider-mastermind-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-016-implement-spider-mastermind-attack-for-registered-iwad.md`
+- [ ] `08-017` `implement-pain-elemental-and-doom-two-guarded-path` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-017-implement-pain-elemental-and-doom-two-guarded-path.md`
+- [ ] `08-018` `implement-boss-death-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-018-implement-boss-death-specials.md`
+- [ ] `08-019` `implement-keen-and-icon-paths-behind-doom-two-scope` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-019-implement-keen-and-icon-paths-behind-doom-two-scope.md`
+- [ ] `08-020` `implement-door-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-020-implement-door-specials.md`
+- [ ] `08-021` `implement-floor-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-021-implement-floor-specials.md`
+- [ ] `08-022` `implement-ceiling-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-022-implement-ceiling-specials.md`
+- [ ] `08-023` `implement-platform-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-023-implement-platform-specials.md`
+- [ ] `08-024` `implement-stairs-donut-and-crusher-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-024-implement-stairs-donut-and-crusher-specials.md`
+- [ ] `08-025` `implement-switch-texture-and-sound-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-025-implement-switch-texture-and-sound-semantics.md`
+- [ ] `08-026` `implement-animated-flats-and-textures` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-026-implement-animated-flats-and-textures.md`
+- [ ] `08-027` `implement-sector-special-effects` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-027-implement-sector-special-effects.md`
+- [ ] `08-028` `implement-line-trigger-repeat-rules` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-028-implement-line-trigger-repeat-rules.md`
+- [ ] `08-029` `compare-e1m8-boss-death-oracle` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-029-compare-e1m8-boss-death-oracle.md`
+- [ ] `08-030` `gate-monster-ai-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-030-gate-monster-ai-semantics.md`
+- [ ] `08-031` `gate-sector-and-line-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-031-gate-sector-and-line-specials.md`
+- [ ] `08-032` `gate-boss-and-episode-exit-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-032-gate-boss-and-episode-exit-semantics.md`
+
+## Phase 09: Renderer / World / Sprites / Status Bar / Automap
+
+- [ ] `09-001` `implement-view-setup-constants` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-001-implement-view-setup-constants.md`
+- [ ] `09-002` `implement-projection-and-clip-angle-tables` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-002-implement-projection-and-clip-angle-tables.md`
+- [ ] `09-003` `implement-bsp-front-to-back-render-walk` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-003-implement-bsp-front-to-back-render-walk.md`
+- [ ] `09-004` `implement-solid-segment-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-004-implement-solid-segment-clipping.md`
+- [ ] `09-005` `implement-two-sided-wall-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-005-implement-two-sided-wall-clipping.md`
+- [ ] `09-006` `implement-wall-column-scale-math` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-006-implement-wall-column-scale-math.md`
+- [ ] `09-007` `implement-wall-texture-column-fetch` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-007-implement-wall-texture-column-fetch.md`
+- [ ] `09-008` `implement-draw-column-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-008-implement-draw-column-low-and-high-detail.md`
+- [ ] `09-009` `implement-draw-span-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-009-implement-draw-span-low-and-high-detail.md`
+- [ ] `09-010` `implement-visplane-allocation-and-merge` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-010-implement-visplane-allocation-and-merge.md`
+- [ ] `09-011` `implement-visplane-overflow-limit-behavior` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-011-implement-visplane-overflow-limit-behavior.md`
+- [ ] `09-012` `implement-floor-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-012-implement-floor-span-rendering.md`
+- [ ] `09-013` `implement-ceiling-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-013-implement-ceiling-span-rendering.md`
+- [ ] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
+- [ ] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
+- [ ] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
+- [ ] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
+- [ ] `09-018` `implement-sprite-projection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-018-implement-sprite-projection.md`
+- [ ] `09-019` `implement-sprite-sorting` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-019-implement-sprite-sorting.md`
+- [ ] `09-020` `implement-sprite-clipping-against-drawsegs` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-020-implement-sprite-clipping-against-drawsegs.md`
+- [ ] `09-021` `implement-fuzz-invisibility-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-021-implement-fuzz-invisibility-rendering.md`
+- [ ] `09-022` `implement-player-weapon-sprite-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-022-implement-player-weapon-sprite-rendering.md`
+- [ ] `09-023` `implement-screen-size-blocks` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-023-implement-screen-size-blocks.md`
+- [ ] `09-024` `implement-detail-level-toggle` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-024-implement-detail-level-toggle.md`
+- [ ] `09-025` `implement-view-border-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-025-implement-view-border-rendering.md`
+- [ ] `09-026` `implement-status-bar-background` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-026-implement-status-bar-background.md`
+- [ ] `09-027` `implement-status-bar-numbers-and-percent-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-027-implement-status-bar-numbers-and-percent-widgets.md`
+- [ ] `09-028` `implement-status-bar-face-widget` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-028-implement-status-bar-face-widget.md`
+- [ ] `09-029` `implement-status-bar-key-and-ammo-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-029-implement-status-bar-key-and-ammo-widgets.md`
+- [ ] `09-030` `implement-automap-start-stop-state` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-030-implement-automap-start-stop-state.md`
+- [ ] `09-031` `implement-automap-pan-zoom-follow-grid` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-031-implement-automap-pan-zoom-follow-grid.md`
+- [ ] `09-032` `implement-automap-line-and-thing-colors` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-032-implement-automap-line-and-thing-colors.md`
+- [ ] `09-033` `implement-automap-markers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-033-implement-automap-markers.md`
+- [ ] `09-034` `add-framebuffer-hash-hook` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-034-add-framebuffer-hash-hook.md`
+- [ ] `09-035` `compare-title-and-e1m1-framebuffers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-035-compare-title-and-e1m1-framebuffers.md`
+- [ ] `09-036` `compare-scripted-renderer-path` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-036-compare-scripted-renderer-path.md`
+- [ ] `09-037` `gate-renderer-framebuffer-parity` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-037-gate-renderer-framebuffer-parity.md`
+- [ ] `09-038` `gate-status-bar-and-automap-parity` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-038-gate-status-bar-and-automap-parity.md`
+
+## Phase 10: UI / Menus / Intermission / Finale / HUD
+
+- [ ] `10-001` `implement-title-loop-sequence` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-001-implement-title-loop-sequence.md`
+- [ ] `10-002` `implement-page-ticker-and-advance-demo` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-002-implement-page-ticker-and-advance-demo.md`
+- [ ] `10-003` `implement-main-menu-tree` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-003-implement-main-menu-tree.md`
+- [ ] `10-004` `implement-new-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-004-implement-new-game-menu.md`
+- [ ] `10-005` `implement-episode-menu-shareware-restrictions` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-005-implement-episode-menu-shareware-restrictions.md`
+- [ ] `10-006` `implement-skill-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-006-implement-skill-menu.md`
+- [ ] `10-007` `implement-options-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-007-implement-options-menu.md`
+- [ ] `10-008` `implement-sound-volume-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-008-implement-sound-volume-menu.md`
+- [ ] `10-009` `implement-screen-size-detail-gamma-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-009-implement-screen-size-detail-gamma-menu.md`
+- [ ] `10-010` `implement-save-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-010-implement-save-game-menu.md`
+- [ ] `10-011` `implement-load-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-011-implement-load-game-menu.md`
+- [ ] `10-012` `implement-read-this-help-pages` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-012-implement-read-this-help-pages.md`
+- [ ] `10-013` `implement-quit-confirmation` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-013-implement-quit-confirmation.md`
+- [ ] `10-014` `implement-end-game-confirmation` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-014-implement-end-game-confirmation.md`
+- [ ] `10-015` `implement-quick-save-and-quick-load-prompts` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-015-implement-quick-save-and-quick-load-prompts.md`
+- [ ] `10-016` `implement-menu-skull-cursor-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-016-implement-menu-skull-cursor-timing.md`
+- [ ] `10-017` `implement-menu-sound-events` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-017-implement-menu-sound-events.md`
+- [ ] `10-018` `implement-menu-repeat-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-018-implement-menu-repeat-timing.md`
+- [ ] `10-019` `implement-pause-overlay` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-019-implement-pause-overlay.md`
+- [ ] `10-020` `implement-hud-message-queue` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-020-implement-hud-message-queue.md`
+- [ ] `10-021` `implement-chat-macro-storage-for-config-compatibility` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-021-implement-chat-macro-storage-for-config-compatibility.md`
+- [ ] `10-022` `implement-intermission-stats-counting` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-022-implement-intermission-stats-counting.md`
+- [ ] `10-023` `implement-intermission-map-graphics` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-023-implement-intermission-map-graphics.md`
+- [ ] `10-024` `implement-finale-text-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-024-implement-finale-text-timing.md`
+- [ ] `10-025` `implement-finale-cast-and-bunny-scroll-scope` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-025-implement-finale-cast-and-bunny-scroll-scope.md`
+- [ ] `10-026` `compare-menu-navigation-oracles` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-026-compare-menu-navigation-oracles.md`
+- [ ] `10-027` `gate-menu-and-hud-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-027-gate-menu-and-hud-parity.md`
+- [ ] `10-028` `gate-intermission-and-finale-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-028-gate-intermission-and-finale-parity.md`
+
+## Phase 11: Audio / SFX / MUS / OPL / Mixer
+
+- [ ] `11-001` `implement-sound-effect-lump-loader` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-001-implement-sound-effect-lump-loader.md`
+- [ ] `11-002` `implement-sound-priority-table` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-002-implement-sound-priority-table.md`
+- [ ] `11-003` `implement-eight-channel-allocation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-003-implement-eight-channel-allocation.md`
+- [ ] `11-004` `implement-sound-origin-tracking` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-004-implement-sound-origin-tracking.md`
+- [ ] `11-005` `implement-sound-start-stop-update-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-005-implement-sound-start-stop-update-ordering.md`
+- [ ] `11-006` `implement-attenuation-and-stereo-separation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-006-implement-attenuation-and-stereo-separation.md`
+- [ ] `11-007` `implement-pitch-and-volume-semantics` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-007-implement-pitch-and-volume-semantics.md`
+- [ ] `11-008` `implement-mixer-sample-stepping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-008-implement-mixer-sample-stepping.md`
+- [ ] `11-009` `implement-mixer-clipping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-009-implement-mixer-clipping.md`
+- [ ] `11-010` `implement-sound-channel-eviction` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-010-implement-sound-channel-eviction.md`
+- [ ] `11-011` `implement-menu-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-011-implement-menu-sound-routing.md`
+- [ ] `11-012` `implement-weapon-and-monster-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-012-implement-weapon-and-monster-sound-routing.md`
+- [ ] `11-013` `implement-sector-and-switch-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-013-implement-sector-and-switch-sound-routing.md`
+- [ ] `11-014` `parse-mus-event-stream` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-014-parse-mus-event-stream.md`
+- [ ] `11-015` `implement-mus-scheduler` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-015-implement-mus-scheduler.md`
+- [ ] `11-016` `implement-mus-looping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-016-implement-mus-looping.md`
+- [ ] `11-017` `implement-music-selection-by-map-and-game-mode` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-017-implement-music-selection-by-map-and-game-mode.md`
+- [ ] `11-018` `implement-music-pause-resume` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-018-implement-music-pause-resume.md`
+- [ ] `11-019` `implement-opl-register-model` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-019-implement-opl-register-model.md`
+- [ ] `11-020` `implement-opl-instrument-mapping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-020-implement-opl-instrument-mapping.md`
+- [ ] `11-021` `implement-opl-synthesis-core` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-021-implement-opl-synthesis-core.md`
+- [ ] `11-022` `implement-win32-audio-device-open-close` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-022-implement-win32-audio-device-open-close.md`
+- [ ] `11-023` `implement-audio-buffer-timing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-023-implement-audio-buffer-timing.md`
+- [ ] `11-024` `implement-volume-controls` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-024-implement-volume-controls.md`
+- [ ] `11-025` `implement-sound-shutdown-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-025-implement-sound-shutdown-ordering.md`
+- [ ] `11-026` `add-audio-hash-hook` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-026-add-audio-hash-hook.md`
+- [ ] `11-027` `add-music-event-log-hook` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-027-add-music-event-log-hook.md`
+- [ ] `11-028` `compare-sfx-oracle-windows` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-028-compare-sfx-oracle-windows.md`
+- [ ] `11-029` `compare-music-event-oracle-windows` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-029-compare-music-event-oracle-windows.md`
+- [ ] `11-030` `gate-sfx-audio-parity` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-030-gate-sfx-audio-parity.md`
+- [ ] `11-031` `gate-music-opl-parity` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-031-gate-music-opl-parity.md`
+
+## Phase 12: Save / Load / Config
+
+- [ ] `12-001` `parse-default-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-001-parse-default-cfg.md`
+- [ ] `12-002` `parse-chocolate-doom-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-002-parse-chocolate-doom-cfg.md`
+- [ ] `12-003` `persist-vanilla-key-bindings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-003-persist-vanilla-key-bindings.md`
+- [ ] `12-004` `persist-mouse-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-004-persist-mouse-settings.md`
+- [ ] `12-005` `persist-sound-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-005-persist-sound-settings.md`
+- [ ] `12-006` `persist-screen-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-006-persist-screen-settings.md`
+- [ ] `12-007` `persist-chat-macros` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-007-persist-chat-macros.md`
+- [ ] `12-008` `write-config-back-in-vanilla-format` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-008-write-config-back-in-vanilla-format.md`
+- [ ] `12-009` `isolate-tests-from-user-local-config` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-009-isolate-tests-from-user-local-config.md`
+- [ ] `12-010` `define-save-directory-policy` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-010-define-save-directory-policy.md`
+- [ ] `12-011` `implement-save-slot-descriptions` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-011-implement-save-slot-descriptions.md`
+- [ ] `12-012` `implement-save-header-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-012-implement-save-header-version.md`
+- [ ] `12-013` `serialize-player-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-013-serialize-player-state.md`
+- [ ] `12-014` `serialize-mobj-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-014-serialize-mobj-state.md`
+- [ ] `12-015` `serialize-thinker-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-015-serialize-thinker-state.md`
+- [ ] `12-016` `serialize-sector-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-016-serialize-sector-specials.md`
+- [ ] `12-017` `serialize-line-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-017-serialize-line-specials.md`
+- [ ] `12-018` `serialize-world-archive-terminators` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-018-serialize-world-archive-terminators.md`
+- [ ] `12-019` `enforce-vanilla-savegame-limit` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-019-enforce-vanilla-savegame-limit.md`
+- [ ] `12-020` `load-compatible-save-header` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-020-load-compatible-save-header.md`
+- [ ] `12-021` `reject-incompatible-save-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-021-reject-incompatible-save-version.md`
+- [ ] `12-022` `reject-corrupted-save-bytes` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-022-reject-corrupted-save-bytes.md`
+- [ ] `12-023` `restore-player-mobj-and-world-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-023-restore-player-mobj-and-world-state.md`
+- [ ] `12-024` `restore-post-load-render-audio-input-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-024-restore-post-load-render-audio-input-state.md`
+- [ ] `12-025` `compare-reference-save-byte-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-025-compare-reference-save-byte-oracle.md`
+- [ ] `12-026` `compare-save-load-roundtrip-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-026-compare-save-load-roundtrip-oracle.md`
+- [ ] `12-027` `gate-config-compatibility` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-027-gate-config-compatibility.md`
+- [ ] `12-028` `gate-save-load-byte-parity` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-028-gate-save-load-byte-parity.md`
+
+## Phase 13: Final Proof / Handoff
+
+- [ ] `13-001` `gate-shareware-doom-one-full-playthrough` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-001-gate-shareware-doom-one-full-playthrough.md`
+- [ ] `13-002` `gate-registered-doom-user-supplied-iwad-scope` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-002-gate-registered-doom-user-supplied-iwad-scope.md`
+- [ ] `13-003` `gate-ultimate-doom-user-supplied-iwad-scope` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-003-gate-ultimate-doom-user-supplied-iwad-scope.md`
+- [ ] `13-004` `gate-full-final-side-by-side-proof` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-004-gate-full-final-side-by-side-proof.md`
