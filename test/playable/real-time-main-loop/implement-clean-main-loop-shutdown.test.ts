@@ -72,5 +72,12 @@ describe('implementCleanMainLoopShutdown', () => {
 
   test('rejects non-Bun runtime commands', () => {
     expect(() => implementCleanMainLoopShutdown('bun run src/main.ts')).toThrow('implementCleanMainLoopShutdown requires bun run doom.ts');
+    expect(() => implementCleanMainLoopShutdown('')).toThrow('implementCleanMainLoopShutdown requires bun run doom.ts');
+    expect(() => implementCleanMainLoopShutdown('bun run doom.ts ')).toThrow('implementCleanMainLoopShutdown requires bun run doom.ts');
+  });
+
+  test('deep-freezes the contract so consumers cannot mutate phase order', () => {
+    expect(Object.isFrozen(IMPLEMENT_CLEAN_MAIN_LOOP_SHUTDOWN_CONTRACT)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_CLEAN_MAIN_LOOP_SHUTDOWN_CONTRACT.phaseOrder)).toBe(true);
   });
 });

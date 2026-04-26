@@ -68,4 +68,12 @@ describe('add root doom.ts command contract', () => {
       transition: 'contract-definition-only',
     });
   });
+
+  test('deep-freezes the contract so consumers cannot mutate it at runtime', () => {
+    expect(Object.isFrozen(ADD_ROOT_DOOM_TS_COMMAND_CONTRACT)).toBe(true);
+    expect(Object.isFrozen(ADD_ROOT_DOOM_TS_COMMAND_CONTRACT.commandParts)).toBe(true);
+    expect(Object.isFrozen(ADD_ROOT_DOOM_TS_COMMAND_CONTRACT.currentEntrypoint)).toBe(true);
+    expect(Object.isFrozen(ADD_ROOT_DOOM_TS_COMMAND_CONTRACT.currentEntrypoint.helpUsageLines)).toBe(true);
+    expect(Object.isFrozen(ADD_ROOT_DOOM_TS_COMMAND_CONTRACT.deterministicReplayCompatibility)).toBe(true);
+  });
 });

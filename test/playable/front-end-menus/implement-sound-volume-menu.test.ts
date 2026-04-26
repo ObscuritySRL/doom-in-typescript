@@ -97,4 +97,48 @@ describe('implementSoundVolumeMenu', () => {
       }),
     ).toThrow('implementSoundVolumeMenu requires the Sound Volume option to be selected.');
   });
+
+  test('rejects when the menu state is inactive', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    expect(menu.active).toBe(false);
+    expect(() =>
+      implementSoundVolumeMenu({
+        command: IMPLEMENT_SOUND_VOLUME_MENU_RUNTIME_CONTRACT.expectedCommand,
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow('implementSoundVolumeMenu requires the active Options menu.');
+    expect(frontEndSequence.menuActive).toBe(false);
+  });
+
+  test('rejects when the active menu is not Options', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    openMenu(menu, MenuKind.Main);
+
+    expect(() =>
+      implementSoundVolumeMenu({
+        command: IMPLEMENT_SOUND_VOLUME_MENU_RUNTIME_CONTRACT.expectedCommand,
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow('implementSoundVolumeMenu requires the active Options menu.');
+  });
+
+  test('rejects when itemOn points past the last Options item', () => {
+    const frontEndSequence = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+    openMenu(menu, MenuKind.Options);
+    menu.itemOn = 999;
+
+    expect(() =>
+      implementSoundVolumeMenu({
+        command: IMPLEMENT_SOUND_VOLUME_MENU_RUNTIME_CONTRACT.expectedCommand,
+        frontEndSequence,
+        menu,
+      }),
+    ).toThrow('implementSoundVolumeMenu requires the Sound Volume option to be selected.');
+  });
 });

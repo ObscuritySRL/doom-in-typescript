@@ -1,5 +1,5 @@
 const CLEAN_MAIN_LOOP_SHUTDOWN_RUNTIME_COMMAND = 'bun run doom.ts';
-const CLEAN_MAIN_LOOP_PHASE_ORDER = ['startFrame', 'tryRunTics', 'updateSounds', 'display'] as const;
+const CLEAN_MAIN_LOOP_PHASE_ORDER = Object.freeze(['startFrame', 'tryRunTics', 'updateSounds', 'display'] as const);
 const CLEAN_MAIN_LOOP_SHUTDOWN_PHASE = CLEAN_MAIN_LOOP_PHASE_ORDER[3];
 const CLEAN_MAIN_LOOP_SHUTDOWN_TRANSITION = 'runLauncherWindow(session, { scale, title: `DOOM Codex - ${session.mapName}` })';
 
