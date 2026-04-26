@@ -3948,3 +3948,21 @@
 - oracle_changes: added OR-FPS-042 for `plan_fps/manifests/15-006-gate-input-replay.json`
 - next_eligible_steps: 15-007 gate-audio
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-007 gate-audio
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-007
+- step_title: gate-audio
+- summary: Added the audio acceptance gate manifest at `plan_fps/manifests/15-007-gate-audio.json`. The manifest locks the `bun run doom.ts` command contract, audio oracle scope from OR-FPS-020, OR-FPS-032, and OR-FPS-033, transition from `15-006` to `15-007`, next gate `15-008`, deterministic replay compatibility flags, OR-FPS-043 oracle registration, and evidence hash `b0d8fab49682671fcbb03ec765516cfb913ac6efa3ac365162b56122db308e0b`. Added focused test `test/playable/acceptance/gate-audio.test.ts` to lock the manifest schema, command contract, audio oracle scope, replay compatibility, transition, oracle registration, and hash.
+- files_changed: plan_fps/manifests/15-007-gate-audio.json; test/playable/acceptance/gate-audio.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 8 files, No fixes applied); bun test test/playable/acceptance/gate-audio.test.ts (4 pass, 0 fail, 13 expect() calls); bun test (7922 pass, 0 fail, 695165 expect() calls across 390 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-043 for `plan_fps/manifests/15-007-gate-audio.json`
+- next_eligible_steps: 15-008 gate-save-load
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

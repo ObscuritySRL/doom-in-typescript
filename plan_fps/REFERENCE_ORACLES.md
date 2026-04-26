@@ -67,3 +67,4 @@ Do not write oracle artifacts inside `doom/`, `iwad/`, or `reference/`.
 | OR-FPS-040 | `plan_fps/manifests/15-004-gate-menu-navigation.json` | gate menu navigation acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-menu-navigation.test.ts` |
 | OR-FPS-041 | `plan_fps/manifests/15-005-gate-e1m1-start.json` | gate e1m1 start acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-e1m1-start.test.ts` |
 | OR-FPS-042 | `plan_fps/manifests/15-006-gate-input-replay.json` | gate input replay acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-input-replay.test.ts` |
+| OR-FPS-043 | `plan_fps/manifests/15-007-gate-audio.json` | gate audio acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-audio.test.ts` |

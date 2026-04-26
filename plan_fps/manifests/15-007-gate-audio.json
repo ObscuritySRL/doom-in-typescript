@@ -1,0 +1,59 @@
+{
+  "acceptanceGate": {
+    "audioOracleScope": [
+      {
+        "artifact": "test/oracles/fixtures/capture-sound-volume-menu-path.json",
+        "authority": "captured local DOS binary derived oracle",
+        "id": "OR-FPS-020",
+        "requirement": "sound-volume menu route remains tied to the playable audio path"
+      },
+      {
+        "artifact": "test/oracles/fixtures/capture-sfx-hash-windows.json",
+        "authority": "captured local DOS binary derived oracle",
+        "id": "OR-FPS-032",
+        "requirement": "sound effect hash windows remain accepted for the Bun-run playable path"
+      },
+      {
+        "artifact": "test/oracles/fixtures/capture-music-event-hash-windows.json",
+        "authority": "captured local DOS binary derived oracle",
+        "id": "OR-FPS-033",
+        "requirement": "music event hash windows remain accepted for the Bun-run playable path"
+      }
+    ],
+    "commandContract": {
+      "entryFile": "doom.ts",
+      "program": "bun",
+      "runtimeCommand": "bun run doom.ts",
+      "subcommand": "run"
+    },
+    "deterministicReplayCompatibility": {
+      "audioHostTimingExcludedFromSimulation": true,
+      "audioMixerStateHashLocked": true,
+      "inputStreamMutation": false,
+      "randomSeedMutation": false,
+      "simulationTicMutation": false
+    },
+    "evidenceHash": "b0d8fab49682671fcbb03ec765516cfb913ac6efa3ac365162b56122db308e0b",
+    "nextGate": {
+      "id": "15-008",
+      "title": "gate-save-load"
+    },
+    "oracleId": "OR-FPS-043",
+    "previousGate": {
+      "id": "15-006",
+      "title": "gate-input-replay"
+    },
+    "requiredRuntimePath": "Bun-run playable parity path",
+    "status": "accepted",
+    "transition": {
+      "fromChecklistStatus": "completed",
+      "fromStepId": "15-006",
+      "toChecklistStatus": "checked-after-verification",
+      "toStepId": "15-007"
+    }
+  },
+  "artifact": "plan_fps/manifests/15-007-gate-audio.json",
+  "schemaVersion": 1,
+  "stepId": "15-007",
+  "stepTitle": "gate-audio"
+}
