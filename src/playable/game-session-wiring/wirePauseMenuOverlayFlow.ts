@@ -54,6 +54,7 @@ export function wirePauseMenuOverlayFlow(session: LauncherSession, options: Wire
   let displayedFramebuffer: Uint8Array | null = null;
   let gameplayAdvanced = false;
   let pauseMenuOverlayOpen = pauseMenuOverlayOpenBefore;
+  let pauseMenuOverlayRenderedDuringDisplay = false;
   let renderPhase: MainLoopPhase | null = null;
   let tickPhase: MainLoopPhase | null = null;
 
@@ -78,6 +79,7 @@ export function wirePauseMenuOverlayFlow(session: LauncherSession, options: Wire
     display(): void {
       phaseTrace.push('display');
       renderPhase = 'display';
+      pauseMenuOverlayRenderedDuringDisplay = pauseMenuOverlayOpen;
       displayedFramebuffer = renderLauncherFrame(session);
     },
     startFrame(): void {
@@ -118,7 +120,7 @@ export function wirePauseMenuOverlayFlow(session: LauncherSession, options: Wire
     loopStartedBefore,
     pauseMenuOverlayOpenAfter: pauseMenuOverlayOpen,
     pauseMenuOverlayOpenBefore,
-    pauseMenuOverlayRenderedDuringDisplay: pauseMenuOverlayOpen,
+    pauseMenuOverlayRenderedDuringDisplay,
     phaseTrace: Object.freeze([...phaseTrace]),
     preLoopTrace: Object.freeze([...preLoopTrace]),
     renderPhase,
