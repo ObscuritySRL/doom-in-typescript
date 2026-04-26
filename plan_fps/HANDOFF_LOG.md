@@ -3840,3 +3840,21 @@
 - oracle_changes: none
 - next_eligible_steps: 15-001 gate-plan-structure
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-001 gate-plan-structure
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-001
+- step_title: gate-plan-structure
+- summary: Added the plan-structure acceptance gate manifest at `plan_fps/manifests/15-001-gate-plan-structure.json`. The manifest locks the `bun run doom.ts` command contract, active `plan_fps/` control-center evidence, the 223-step structure, transition from `14-007` to `15-001`, next gate `15-002`, deterministic replay compatibility flags, OR-FPS-037 oracle registration, and evidence hash `4b0fa6dbf32a15fa82e3c434e9c2abce85f6f4ca29b356a87ade6797715c7b9f`. Added focused test `test/playable/acceptance/gate-plan-structure.test.ts` to lock the manifest schema, hash, checklist transition, command contract, replay compatibility, and reference-oracle row.
+- files_changed: plan_fps/manifests/15-001-gate-plan-structure.json; test/playable/acceptance/gate-plan-structure.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (fixed 2 files, then stability rerun no fixes); bun test test/playable/acceptance/gate-plan-structure.test.ts (4 pass, 0 fail, 8 expect() calls); bun test (7881 pass, 0 fail, 695048 expect() calls across 384 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-037 for `plan_fps/manifests/15-001-gate-plan-structure.json`
+- next_eligible_steps: 15-002 gate-bun-launch-smoke
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

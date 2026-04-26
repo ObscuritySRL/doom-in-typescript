@@ -1,0 +1,44 @@
+{
+  "commandContract": {
+    "entryFile": "doom.ts",
+    "program": "bun",
+    "runtimeCommand": "bun run doom.ts",
+    "subcommand": "run"
+  },
+  "deterministicReplayCompatibility": {
+    "advancesSimulationTics": false,
+    "mutatesInputStream": false,
+    "mutatesRandomSeed": false,
+    "requiresLiveClock": false
+  },
+  "evidenceHash": "4b0fa6dbf32a15fa82e3c434e9c2abce85f6f4ca29b356a87ade6797715c7b9f",
+  "evidenceInputs": ["plan_fps/FACT_LOG.md", "plan_fps/MASTER_CHECKLIST.md", "plan_fps/REFERENCE_ORACLES.md", "plan_fps/manifests/15-001-gate-plan-structure.json", "test/playable/acceptance/gate-plan-structure.test.ts"],
+  "expectedTransition": {
+    "fromPrerequisite": "14-007 smoke-test-clean-local-working-tree",
+    "nextStep": "15-002 gate-bun-launch-smoke",
+    "toStep": "15-001 gate-plan-structure"
+  },
+  "gate": {
+    "category": "acceptance",
+    "completionSignal": "plan structure accepted for playable parity gates",
+    "identifier": "15-001",
+    "title": "gate-plan-structure"
+  },
+  "oracle": {
+    "artifact": "plan_fps/manifests/15-001-gate-plan-structure.json",
+    "authority": "gate plan structure acceptance evidence for the Bun-run playable parity path",
+    "identifier": "OR-FPS-037",
+    "refreshCommand": "bun test test/playable/acceptance/gate-plan-structure.test.ts"
+  },
+  "planStructure": {
+    "activeControlCenter": "plan_fps/",
+    "finalGate": "15-010 gate-final-side-by-side",
+    "firstEligibleBeforeCompletion": "15-001 gate-plan-structure",
+    "firstStep": "00-001 classify-existing-plan",
+    "phase": "15 Acceptance Gates",
+    "priorArtControlCenter": "plan_engine/",
+    "runtimeTarget": "bun run doom.ts",
+    "totalSteps": 223
+  },
+  "schemaVersion": 1
+}
