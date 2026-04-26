@@ -3732,3 +3732,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-002 document-required-local-files
 - open_risks: unrelated dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-002 document-required-local-files
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-002
+- step_title: document-required-local-files
+- summary: Added the Bun local distribution required-file documentation surface at `src/playable/bun-launch-local-distribution-boundary/documentRequiredLocalFiles.ts`. The module exports the exact `bun run doom.ts` command contract, records the local files required by the product command and default IWAD path, preserves the transition from the legacy `bun run src/main.ts` package start script, rejects non-product commands, and returns frozen replay-compatible evidence without reading file contents or mutating input-stream, random-seed, or simulation-tick state. Added focused test `test/playable/bun-launch-local-distribution-boundary/document-required-local-files.test.ts` to lock the command contract, required file list, documentation hash `7614bf08d72c2d276a3c17c85c665dd108090d05679aab8bb0e6708708d5f141`, transition evidence, rejection behavior, and frozen evidence graph.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/documentRequiredLocalFiles.ts; test/playable/bun-launch-local-distribution-boundary/document-required-local-files.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript verification caught that the runtime command parameter inferred only the valid `bun run doom.ts` literal, blocking compile-time rejection-path tests with invalid command strings. Widened the parameter to `string` while keeping the exact default command, reran formatting to stability, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files, stability rerun no fixes; recovery pass fixed 1 file, recovery stability rerun no fixes; final pass no fixes); bun test test/playable/bun-launch-local-distribution-boundary/document-required-local-files.test.ts (4 pass, 0 fail, 24 expect() calls); bun test (7857 pass, 0 fail, 694984 expect() calls across 378 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-003 verify-iwad-discovery-at-launch
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
