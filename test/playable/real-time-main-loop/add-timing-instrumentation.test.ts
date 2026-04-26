@@ -4,6 +4,7 @@ import { MAIN_LOOP_PHASE_COUNT, MAIN_LOOP_PHASES } from '../../../src/mainLoop.t
 import { TicAccumulator } from '../../../src/host/ticAccumulator.ts';
 import { ADD_TIMING_INSTRUMENTATION_CONTRACT, addTimingInstrumentation } from '../../../src/playable/real-time-main-loop/addTimingInstrumentation.ts';
 
+import type { MainLoopPhase } from '../../../src/mainLoop.ts';
 import type { TicClock } from '../../../src/host/ticAccumulator.ts';
 import type { TimingInstrumentationSample } from '../../../src/playable/real-time-main-loop/addTimingInstrumentation.ts';
 
@@ -112,5 +113,61 @@ describe('addTimingInstrumentation', () => {
         ticSource: { totalTics: 0 },
       }),
     ).toThrow('phaseEndNanoseconds must be greater than or equal to phaseStartNanoseconds');
+  });
+
+  test('produces a frozen sample for every D_DoomLoop phase', () => {
+    const ticSource = { totalTics: 9 };
+
+    for (const phase of MAIN_LOOP_PHASES) {
+      const sample = addTimingInstrumentation({
+        frameIndex: 41,
+        phase,
+        phaseEndNanoseconds: 200n,
+        phaseStartNanoseconds: 100n,
+        runtimeCommand: 'bun run doom.ts',
+        ticSource,
+      });
+
+      expect(Object.isFrozen(sample)).toBe(true);
+      expect(sample).toEqual({
+        frameIndex: 41,
+        phase,
+        phaseDurationNanoseconds: 100n,
+        phaseEndNanoseconds: 200n,
+        phaseStartNanoseconds: 100n,
+        totalTics: 9,
+      });
+    }
+  });
+
+  test('accepts zero-duration samples when start equals end', () => {
+    const sample = addTimingInstrumentation({
+      frameIndex: 5,
+      phase: 'startFrame',
+      phaseEndNanoseconds: 1_000n,
+      phaseStartNanoseconds: 1_000n,
+      runtimeCommand: 'bun run doom.ts',
+      ticSource: { totalTics: 3 },
+    });
+
+    expect(sample.phaseDurationNanoseconds).toBe(0n);
+    expect(sample.phaseEndNanoseconds).toBe(1_000n);
+    expect(sample.phaseStartNanoseconds).toBe(1_000n);
+    expect(sample.totalTics).toBe(3);
+  });
+
+  test('rejects unknown phase values bypassed via type cast', () => {
+    const invalidPhase: string = 'unknownPhase';
+
+    expect(() =>
+      addTimingInstrumentation({
+        frameIndex: 0,
+        phase: invalidPhase as MainLoopPhase,
+        phaseEndNanoseconds: 200n,
+        phaseStartNanoseconds: 100n,
+        runtimeCommand: 'bun run doom.ts',
+        ticSource: { totalTics: 0 },
+      }),
+    ).toThrow('Unknown main loop phase: unknownPhase');
   });
 });

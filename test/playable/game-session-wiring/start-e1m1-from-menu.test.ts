@@ -113,6 +113,70 @@ describe('startE1m1FromMenu', () => {
       }),
     ).toThrow('startE1m1FromMenu requires transition route main:new-game -> episode:e1 -> skill-select');
   });
+
+  test('rejects skill values outside the integer range 1 to 5', () => {
+    for (const invalidSkill of [0, 6, -1, 100, 2.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(() =>
+        startE1m1FromMenu(resources, {
+          command: START_E1M1_FROM_MENU_RUNTIME.command,
+          selectedEpisode: START_E1M1_FROM_MENU_RUNTIME.expectedEpisode,
+          selectedSkill: invalidSkill,
+          transitionRoute: [...START_E1M1_FROM_MENU_RUNTIME.transitionRoute],
+        }),
+      ).toThrow(`selectedSkill must be an integer from 1 to 5, got ${invalidSkill}`);
+    }
+  });
+
+  test('rejects transition routes whose length differs from the canonical menu route', () => {
+    const expectedMessage = 'startE1m1FromMenu requires transition route main:new-game -> episode:e1 -> skill-select';
+
+    expect(() =>
+      startE1m1FromMenu(resources, {
+        command: START_E1M1_FROM_MENU_RUNTIME.command,
+        selectedEpisode: START_E1M1_FROM_MENU_RUNTIME.expectedEpisode,
+        selectedSkill: 3,
+        transitionRoute: [],
+      }),
+    ).toThrow(expectedMessage);
+
+    expect(() =>
+      startE1m1FromMenu(resources, {
+        command: START_E1M1_FROM_MENU_RUNTIME.command,
+        selectedEpisode: START_E1M1_FROM_MENU_RUNTIME.expectedEpisode,
+        selectedSkill: 3,
+        transitionRoute: [...START_E1M1_FROM_MENU_RUNTIME.transitionRoute, 'extra:step'],
+      }),
+    ).toThrow(expectedMessage);
+  });
+
+  test('enforces command then episode then skill then route validation order', () => {
+    expect(() =>
+      startE1m1FromMenu(resources, {
+        command: 'bun run src/main.ts',
+        selectedEpisode: 99,
+        selectedSkill: 0,
+        transitionRoute: [],
+      }),
+    ).toThrow('startE1m1FromMenu requires bun run doom.ts, got bun run src/main.ts');
+
+    expect(() =>
+      startE1m1FromMenu(resources, {
+        command: START_E1M1_FROM_MENU_RUNTIME.command,
+        selectedEpisode: 99,
+        selectedSkill: 0,
+        transitionRoute: [],
+      }),
+    ).toThrow('startE1m1FromMenu requires episode 1, got 99');
+
+    expect(() =>
+      startE1m1FromMenu(resources, {
+        command: START_E1M1_FROM_MENU_RUNTIME.command,
+        selectedEpisode: START_E1M1_FROM_MENU_RUNTIME.expectedEpisode,
+        selectedSkill: 0,
+        transitionRoute: [],
+      }),
+    ).toThrow('selectedSkill must be an integer from 1 to 5, got 0');
+  });
 });
 
 function hashText(sourceText: string): string {
