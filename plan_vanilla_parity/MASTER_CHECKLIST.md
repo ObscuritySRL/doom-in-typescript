@@ -12,7 +12,7 @@
 - [x] `00-003` `pin-shareware-doom-one-point-nine-primary-target` | lane: `governance` | prereqs: `00-002` | file: `plan_vanilla_parity/steps/00-003-pin-shareware-doom-one-point-nine-primary-target.md`
 - [x] `00-004` `pin-user-supplied-registered-and-ultimate-iwad-scope` | lane: `governance` | prereqs: `00-003` | file: `plan_vanilla_parity/steps/00-004-pin-user-supplied-registered-and-ultimate-iwad-scope.md`
 - [x] `00-005` `pin-proprietary-asset-non-redistribution-boundary` | lane: `governance` | prereqs: `00-004` | file: `plan_vanilla_parity/steps/00-005-pin-proprietary-asset-non-redistribution-boundary.md`
-- [ ] `00-006` `pin-local-git-direct-commit-and-push-workflow` | lane: `governance` | prereqs: `00-005` | file: `plan_vanilla_parity/steps/00-006-pin-local-git-direct-commit-and-push-workflow.md`
+- [x] `00-006` `pin-local-git-direct-commit-and-push-workflow` | lane: `governance` | prereqs: `00-005` | file: `plan_vanilla_parity/steps/00-006-pin-local-git-direct-commit-and-push-workflow.md`
 - [ ] `00-007` `ban-non-bun-runtime-and-package-commands` | lane: `governance` | prereqs: `00-006` | file: `plan_vanilla_parity/steps/00-007-ban-non-bun-runtime-and-package-commands.md`
 - [ ] `00-008` `define-step-file-required-fields` | lane: `governance` | prereqs: `00-007` | file: `plan_vanilla_parity/steps/00-008-define-step-file-required-fields.md`
 - [ ] `00-009` `define-lane-write-lock-contract` | lane: `governance` | prereqs: `00-008` | file: `plan_vanilla_parity/steps/00-009-define-lane-write-lock-contract.md`
