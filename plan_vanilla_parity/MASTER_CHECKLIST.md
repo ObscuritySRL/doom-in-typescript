@@ -15,7 +15,7 @@
 - [x] `00-006` `pin-local-git-direct-commit-and-push-workflow` | lane: `governance` | prereqs: `00-005` | file: `plan_vanilla_parity/steps/00-006-pin-local-git-direct-commit-and-push-workflow.md`
 - [x] `00-007` `ban-non-bun-runtime-and-package-commands` | lane: `governance` | prereqs: `00-006` | file: `plan_vanilla_parity/steps/00-007-ban-non-bun-runtime-and-package-commands.md`
 - [x] `00-008` `define-step-file-required-fields` | lane: `governance` | prereqs: `00-007` | file: `plan_vanilla_parity/steps/00-008-define-step-file-required-fields.md`
-- [ ] `00-009` `define-lane-write-lock-contract` | lane: `governance` | prereqs: `00-008` | file: `plan_vanilla_parity/steps/00-009-define-lane-write-lock-contract.md`
+- [x] `00-009` `define-lane-write-lock-contract` | lane: `governance` | prereqs: `00-008` | file: `plan_vanilla_parity/steps/00-009-define-lane-write-lock-contract.md`
 - [ ] `00-010` `define-read-only-reference-roots` | lane: `governance` | prereqs: `00-009` | file: `plan_vanilla_parity/steps/00-010-define-read-only-reference-roots.md`
 - [ ] `00-011` `define-current-state-inventory-schema` | lane: `governance` | prereqs: `00-010` | file: `plan_vanilla_parity/steps/00-011-define-current-state-inventory-schema.md`
 - [ ] `00-012` `define-source-authority-order` | lane: `governance` | prereqs: `00-011` | file: `plan_vanilla_parity/steps/00-012-define-source-authority-order.md`
