@@ -157,4 +157,33 @@ describe('capture implementation clean launch expectations oracle', () => {
       '| OR-FPS-006 | `test/oracles/fixtures/capture-implementation-clean-launch-expectations.json` | derived implementation clean-launch expectation from `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json` | `bun test test/oracles/capture-implementation-clean-launch-expectations.test.ts` |',
     );
   });
+
+  test('recomputes recorded source hashes from on-disk file contents', async () => {
+    for (const expected of expectedFixture.expectedSourceHashes) {
+      const buffer = await Bun.file(expected.path).arrayBuffer();
+      const actualSha256 = new Bun.CryptoHasher('sha256').update(new Uint8Array(buffer)).digest('hex');
+
+      expect({ path: expected.path, sha256: actualSha256, sizeBytes: buffer.byteLength }).toEqual({
+        path: expected.path,
+        sha256: expected.sha256,
+        sizeBytes: expected.sizeBytes,
+      });
+    }
+  });
+
+  test('confirms recorded transition-trace evidence appears verbatim in the source files', async () => {
+    const fileTextByPath = new Map<string, string>();
+    for (const traceEntry of expectedFixture.expectedTransitionTrace) {
+      let fileText = fileTextByPath.get(traceEntry.path);
+      if (fileText === undefined) {
+        fileText = await Bun.file(traceEntry.path).text();
+        fileTextByPath.set(traceEntry.path, fileText);
+      }
+
+      expect({ surface: traceEntry.surface, evidencePresent: fileText.includes(traceEntry.evidence) }).toEqual({
+        surface: traceEntry.surface,
+        evidencePresent: true,
+      });
+    }
+  });
 });
