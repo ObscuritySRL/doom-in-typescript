@@ -3498,3 +3498,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-009 isolate-tests-from-user-local-config
 - open_risks: none
+
+## 2026-04-26 - 12-009 isolate-tests-from-user-local-config
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-009
+- step_title: isolate-tests-from-user-local-config
+- summary: Added the playable test config isolation surface at `src/playable/config-persistence/isolateTestsFromUserLocalConfig.ts`. The module exports the exact `bun run doom.ts` command contract plus `isolateTestsFromUserLocalConfig`, validates the product command before deriving config paths, rejects escaping isolation keys and read-only reference roots, generates deterministic workspace-local `chocolate-doom.cfg` and `default.cfg` evidence from the typed config definitions, records ignored user-local config tokens, and returns frozen replay evidence with locked SHA-256 hashes and checksums. Added focused test `test/playable/config-persistence/isolate-tests-from-user-local-config.test.ts` to lock the command contract, 01-014 config-persistence audit linkage, formatted source SHA-256 `5f1e472c2179ade2a04f121c54ea9ef6c3dc7f7245f6e4b2233bf923ca2f768a`, exact default/custom isolation evidence, wrong-command prevalidation, invalid isolation-key rejection, and read-only root rejection.
+- files_changed: src/playable/config-persistence/isolateTestsFromUserLocalConfig.ts; test/playable/config-persistence/isolate-tests-from-user-local-config.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first TypeScript verification run failed because `Bun.cwd()` is not exposed by the current Bun type surface. Replaced that fallback with `node:process` `cwd()`, refreshed the focused test's locked source hash, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (final rerun no fixes); bun test test/playable/config-persistence/isolate-tests-from-user-local-config.test.ts (final run 5 pass, 0 fail, 9 expect() calls); bun test (7733 pass, 0 fail, 694291 expect() calls across 365 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-001 play-bundled-demos-through-title-loop
+- open_risks: none
