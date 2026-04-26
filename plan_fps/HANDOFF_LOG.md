@@ -3930,3 +3930,21 @@
 - oracle_changes: added OR-FPS-041 for `plan_fps/manifests/15-005-gate-e1m1-start.json`
 - next_eligible_steps: 15-006 gate-input-replay
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-006 gate-input-replay
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-006
+- step_title: gate-input-replay
+- summary: Added the input-replay acceptance gate manifest at `plan_fps/manifests/15-006-gate-input-replay.json`. The manifest locks the `bun run doom.ts` command contract, scripted input replay oracle scope from OR-FPS-025 through OR-FPS-030, windowed-only presentation policy, transition from `15-005` to `15-006`, next gate `15-007`, deterministic replay compatibility flags, OR-FPS-042 oracle registration, and evidence hash `567c6fb22a3dc29b9d6c49dd327f08a03467525c975bfb60eab03f17667f0b36`. Added focused test `test/playable/acceptance/gate-input-replay.test.ts` to lock the manifest schema, command contract, scripted replay oracle scope, replay compatibility, oracle registration, and hash.
+- files_changed: plan_fps/manifests/15-006-gate-input-replay.json; test/playable/acceptance/gate-input-replay.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed the newly added focused test once; reran formatting to stability before focused and full verification.
+- tests_run: bun run format (initial pass fixed 1 file, stability rerun no fixes); bun test test/playable/acceptance/gate-input-replay.test.ts (4 pass, 0 fail, 10 expect() calls); bun test (7913 pass, 0 fail, 695123 expect() calls across 389 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-042 for `plan_fps/manifests/15-006-gate-input-replay.json`
+- next_eligible_steps: 15-007 gate-audio
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
