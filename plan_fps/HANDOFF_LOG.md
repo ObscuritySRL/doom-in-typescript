@@ -3804,3 +3804,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-006 write-readme-usage-instructions
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-006 write-readme-usage-instructions
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-006
+- step_title: write-readme-usage-instructions
+- summary: Added the Bun local distribution README usage-instruction surface at `src/playable/bun-launch-local-distribution-boundary/writeReadmeUsageInstructions.ts`. The module exports the exact `bun run doom.ts` command contract, rejects non-product launch commands, returns frozen usage instructions for the root `doom.ts` launch path, records the default local IWAD requirement, preserves the transition away from the legacy `bun run src/main.ts` package script, and reports deterministic replay compatibility without mutating input stream, random seed, or simulation tic state. Added focused test `test/playable/bun-launch-local-distribution-boundary/write-readme-usage-instructions.test.ts` to lock the command contract, exact usage payload, documentation hash `6f23060f9284717468135efa7ef4be31d98e7cb14e006b7e40f074885bca5056`, transition evidence, frozen evidence graph, replay-compatibility flags, and wrong-command rejection.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/writeReadmeUsageInstructions.ts; test/playable/bun-launch-local-distribution-boundary/write-readme-usage-instructions.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (after product module addition fixed 1 file; required verification initial pass fixed 1 file; stability rerun no fixes); bun -e import smoke for writeReadmeUsageInstructions (documentationHash=6f23060f9284717468135efa7ef4be31d98e7cb14e006b7e40f074885bca5056); bun test test/playable/bun-launch-local-distribution-boundary/write-readme-usage-instructions.test.ts (3 pass, 0 fail, 11 expect() calls); bun test (7873 pass, 0 fail, 695029 expect() calls across 382 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-007 smoke-test-clean-local-working-tree
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
