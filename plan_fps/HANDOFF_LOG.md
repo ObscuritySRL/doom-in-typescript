@@ -3786,3 +3786,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-005 prevent-forbidden-asset-redistribution
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-005 prevent-forbidden-asset-redistribution
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-005
+- step_title: prevent-forbidden-asset-redistribution
+- summary: Added the Bun local distribution forbidden-asset redistribution guard at `src/playable/bun-launch-local-distribution-boundary/preventForbiddenAssetRedistribution.ts`. The module exports the exact `bun run doom.ts` command contract, rejects non-product launch commands, classifies local reference IWAD and executable paths as non-redistributed local references, rejects bundled proprietary IWAD/reference executable bytes, and returns frozen deterministic replay-compatible evidence without mutating input stream, random seed, or simulation tic state. Added focused test `test/playable/bun-launch-local-distribution-boundary/prevent-forbidden-asset-redistribution.test.ts` to lock the command contract, local-reference asset policy, policy hash `3968c4aa1bcafaa645aa80bd2114714331fea632c6e13e18851c846283c721e7`, transition, failure paths, and formatted source SHA-256 `61cd9f71bab413c2b9472e0addf8ce5e450528835edfc95c6ca708c12fa04cbf`.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/preventForbiddenAssetRedistribution.ts; test/playable/bun-launch-local-distribution-boundary/prevent-forbidden-asset-redistribution.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files; final rerun no fixes); bun test test/playable/bun-launch-local-distribution-boundary/prevent-forbidden-asset-redistribution.test.ts (4 pass, 0 fail, 12 expect() calls); bun test (7870 pass, 0 fail, 695018 expect() calls across 381 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-006 write-readme-usage-instructions
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

@@ -259,7 +259,7 @@
 - [x] `14-002` `document-required-local-files` | prereqs: `14-001` | file: `plan_fps/steps/14-002-document-required-local-files.md`
 - [x] `14-003` `verify-iwad-discovery-at-launch` | prereqs: `14-002` | file: `plan_fps/steps/14-003-verify-iwad-discovery-at-launch.md`
 - [x] `14-004` `verify-missing-data-error-path` | prereqs: `14-003` | file: `plan_fps/steps/14-004-verify-missing-data-error-path.md`
-- [ ] `14-005` `prevent-forbidden-asset-redistribution` | prereqs: `14-004` | file: `plan_fps/steps/14-005-prevent-forbidden-asset-redistribution.md`
+- [x] `14-005` `prevent-forbidden-asset-redistribution` | prereqs: `14-004` | file: `plan_fps/steps/14-005-prevent-forbidden-asset-redistribution.md`
 - [ ] `14-006` `write-readme-usage-instructions` | prereqs: `14-005` | file: `plan_fps/steps/14-006-write-readme-usage-instructions.md`
 - [ ] `14-007` `smoke-test-clean-local-working-tree` | prereqs: `14-006` | file: `plan_fps/steps/14-007-smoke-test-clean-local-working-tree.md`
 
