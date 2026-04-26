@@ -3768,3 +3768,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-004 verify-missing-data-error-path
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-004 verify-missing-data-error-path
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-004
+- step_title: verify-missing-data-error-path
+- summary: Added the Bun local distribution missing-data error-path verifier at `src/playable/bun-launch-local-distribution-boundary/verifyMissingDataErrorPath.ts`. The module exports the exact `bun run doom.ts` command contract, validates that command before probing data, verifies missing required local data through `Bun.file.exists` without reading file contents, records the fatal missing-data transition before the first simulation tic, and returns frozen deterministic replay-compatible evidence. Added focused test `test/playable/bun-launch-local-distribution-boundary/verify-missing-data-error-path.test.ts` to lock the command contract, default required data path, missing-data error code and message, transition evidence, replay mutation invariants, evidence hash `cf528c9ff3e307579e78adebdcdaa1a11234b033f333bab151f7ccf94f3c29c5`, formatted source SHA-256 `95177e96467e1e69ab55c6c18e042dabc8694132c4260532ea05bbe003ebbcb9`, wrong-command prevalidation, and existing-data rejection.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/verifyMissingDataErrorPath.ts; test/playable/bun-launch-local-distribution-boundary/verify-missing-data-error-path.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files, stability rerun no fixes); bun test test/playable/bun-launch-local-distribution-boundary/verify-missing-data-error-path.test.ts (5 pass, 0 fail, 12 expect() calls); bun test (7866 pass, 0 fail, 695006 expect() calls across 380 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-005 prevent-forbidden-asset-redistribution
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
