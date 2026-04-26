@@ -3246,3 +3246,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-006 validate-savegame-version
 - open_risks: none
+
+## 2026-04-25 - 11-006 validate-savegame-version
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-006
+- step_title: validate-savegame-version
+- summary: Added the playable savegame version validation surface at `src/playable/save-load-playability/validateSavegameVersion.ts`. The module exports the exact `bun run doom.ts` command contract plus `validateSavegameVersion`, validates the product runtime command before inspecting save bytes, reads the canonical Doom 1.9 version field through the save header contract, returns `compatible=false` for mismatched versions without restoring world state, and emits frozen deterministic replay evidence with compatible checksum `2592249099` and incompatible checksum `2176490417`. Added focused test `test/playable/save-load-playability/validate-savegame-version.test.ts` to lock the command contract, 01-013 live-load audit linkage, formatted source SHA-256 `9873fd0bc2374732b36554655454b66f5ef2178e6fc3ea8e063eefcb27422324`, compatible transition evidence, incompatible-version behavior, and wrong-command prevalidation.
+- files_changed: src/playable/save-load-playability/validateSavegameVersion.ts; test/playable/save-load-playability/validate-savegame-version.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: A Bun inline exact-value probe failed because Windows shell quoting stripped JavaScript string literals, so the first focused test run intentionally used placeholders to capture the formatted source hash and replay checksums. Replaced those placeholders, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun no fixes); bun test test/playable/save-load-playability/validate-savegame-version.test.ts (placeholder run failed as expected while locking exact values; final run 5 pass, 0 fail, 6 expect() calls); bun test (7578 pass, 0 fail, 693691 expect() calls across 351 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-007 handle-corrupted-save
+- open_risks: none

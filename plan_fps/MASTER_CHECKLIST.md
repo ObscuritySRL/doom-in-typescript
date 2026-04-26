@@ -220,7 +220,7 @@
 - [x] `11-003` `define-save-file-path-policy` | prereqs: `11-002` | file: `plan_fps/steps/11-003-define-save-file-path-policy.md`
 - [x] `11-004` `wire-bun-native-save-read-write` | prereqs: `11-003` | file: `plan_fps/steps/11-004-wire-bun-native-save-read-write.md`
 - [x] `11-005` `implement-live-game-save-load` | prereqs: `11-004` | file: `plan_fps/steps/11-005-implement-live-game-save-load.md`
-- [ ] `11-006` `validate-savegame-version` | prereqs: `11-005` | file: `plan_fps/steps/11-006-validate-savegame-version.md`
+- [x] `11-006` `validate-savegame-version` | prereqs: `11-005` | file: `plan_fps/steps/11-006-validate-savegame-version.md`
 - [ ] `11-007` `handle-corrupted-save` | prereqs: `11-006` | file: `plan_fps/steps/11-007-handle-corrupted-save.md`
 - [ ] `11-008` `display-save-load-menu-messages` | prereqs: `11-007` | file: `plan_fps/steps/11-008-display-save-load-menu-messages.md`
 - [ ] `11-009` `restore-game-state-from-save` | prereqs: `11-008` | file: `plan_fps/steps/11-009-restore-game-state-from-save.md`
