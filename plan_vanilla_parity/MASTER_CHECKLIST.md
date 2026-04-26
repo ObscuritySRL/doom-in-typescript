@@ -55,7 +55,7 @@
 
 ## Phase 02: Reference / Oracle Capture Foundation
 
-- [ ] `02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `none` | file: `plan_vanilla_parity/steps/02-001-catalog-local-reference-binaries-and-configs.md`
+- [x] `02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `none` | file: `plan_vanilla_parity/steps/02-001-catalog-local-reference-binaries-and-configs.md`
 - [ ] `02-002` `verify-local-reference-file-hashes` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-002-verify-local-reference-file-hashes.md`
 - [ ] `02-003` `define-read-only-reference-sandbox-copy-policy` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-003-define-read-only-reference-sandbox-copy-policy.md`
 - [ ] `02-004` `define-reference-process-launch-manifest` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md`

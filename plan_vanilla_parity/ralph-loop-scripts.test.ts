@@ -79,6 +79,16 @@ async function createFakeClaudeCommand(temporaryDirectory: string): Promise<stri
   return fakeClaudeCommandPath;
 }
 
+async function readFirstEligibleGovernanceStepLine(): Promise<string> {
+  const checklistText = await Bun.file('plan_vanilla_parity/MASTER_CHECKLIST.md').text();
+  const firstUncheckedGovernancePattern = /^- \[ \] `(?<id>\d{2}-\d{3})` `(?<slug>[^`]+)` \| lane: `governance` \|/m;
+  const match = firstUncheckedGovernancePattern.exec(checklistText);
+  if (match?.groups === undefined) {
+    throw new Error('No unchecked governance-lane step found in plan_vanilla_parity/MASTER_CHECKLIST.md.');
+  }
+  return `Initial eligible step: ${match.groups.id} ${match.groups.slug}`;
+}
+
 async function runPowerShellScript(scriptPath: string, additionalArguments: readonly string[]) {
   const subprocess = Bun.spawn({
     cmd: ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', scriptPath, ...additionalArguments],
@@ -189,13 +199,14 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const logDirectory = join(temporaryDirectory, 'logs');
     const lockDirectory = join(temporaryDirectory, 'locks');
     const fakeCodexCommandPath = await createFakeCodexCommand(temporaryDirectory);
+    const expectedInitialStepLine = await readFirstEligibleGovernanceStepLine();
 
     try {
       const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
 
       expect(result.exitCode).toBe(0);
       expect(result.combinedOutput).toContain('Lane: governance');
-      expect(result.combinedOutput).toContain('Initial eligible step: 00-001 establish-vanilla-parity-control-center');
+      expect(result.combinedOutput).toContain(expectedInitialStepLine);
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
       expect(result.combinedOutput).toContain('LOOP_LANE: governance');
 
@@ -211,13 +222,14 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const logDirectory = join(temporaryDirectory, 'logs');
     const lockDirectory = join(temporaryDirectory, 'locks');
     const fakeClaudeCommandPath = await createFakeClaudeCommand(temporaryDirectory);
+    const expectedInitialStepLine = await readFirstEligibleGovernanceStepLine();
 
     try {
       const result = await runPowerShellScript(CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-ClaudeCommand', fakeClaudeCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
 
       expect(result.exitCode).toBe(0);
       expect(result.combinedOutput).toContain('Lane: governance');
-      expect(result.combinedOutput).toContain('Initial eligible step: 00-001 establish-vanilla-parity-control-center');
+      expect(result.combinedOutput).toContain(expectedInitialStepLine);
       expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
       expect(result.combinedOutput).toContain('LOOP_LANE: governance');
 
