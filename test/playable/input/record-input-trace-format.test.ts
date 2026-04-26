@@ -157,4 +157,58 @@ describe('recordInputTraceFormat', () => {
       recordInputTraceFormat('bun run doom.ts', [{ lparam: 0, phase: 'keydown', source: 'keyboard', tic: 0 }]);
     }).toThrow('Input trace recording requires mappable keyboard scan codes.');
   });
+
+  it('returns a neutral trace with null lastTic for an empty event list', () => {
+    const trace = recordInputTraceFormat('bun run doom.ts', []);
+
+    expect(trace.entries).toEqual([]);
+    expect(trace.summary).toEqual({
+      keyboardEventCount: 0,
+      lastTic: null,
+      mouseButtonEventCount: 0,
+      mouseMotionEventCount: 0,
+      recordedEventCount: 0,
+      scriptedEventCount: 0,
+    });
+    expect(trace.header).toEqual({
+      neutralTicCommand: EMPTY_TICCMD,
+      runtimeCommand: 'bun run doom.ts',
+      schemaVersion: 1,
+      ticCommandSize: TICCMD_SIZE,
+    });
+  });
+
+  it('rejects non-integer, negative, NaN, and Infinity tics', () => {
+    const cases: { lparam: number; phase: 'keydown' | 'keyup'; source: 'keyboard'; tic: number }[] = [
+      { lparam: EXTENDED_RIGHT_CONTROL_LPARAM, phase: 'keydown', source: 'keyboard', tic: -1 },
+      { lparam: EXTENDED_RIGHT_CONTROL_LPARAM, phase: 'keydown', source: 'keyboard', tic: 1.5 },
+      { lparam: EXTENDED_RIGHT_CONTROL_LPARAM, phase: 'keydown', source: 'keyboard', tic: Number.NaN },
+      { lparam: EXTENDED_RIGHT_CONTROL_LPARAM, phase: 'keydown', source: 'keyboard', tic: Number.POSITIVE_INFINITY },
+    ];
+    for (const event of cases) {
+      expect(() => recordInputTraceFormat('bun run doom.ts', [event])).toThrow('Input trace events must use non-negative integer tics.');
+    }
+  });
+
+  it('rejects keyboard events with a non-integer lparam or invalid phase', () => {
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ lparam: 1.25, phase: 'keydown', source: 'keyboard', tic: 0 }])).toThrow('Keyboard input trace events must use an integer lparam.');
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ lparam: EXTENDED_RIGHT_CONTROL_LPARAM, phase: 'tap' as 'keydown', source: 'keyboard', tic: 0 }])).toThrow('Keyboard input trace events must use keydown or keyup.');
+  });
+
+  it('rejects mouse-motion events with non-integer deltas', () => {
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ mouseX: 0.5, mouseY: 0, source: 'mouse-motion', tic: 0 }])).toThrow('Mouse motion input trace events must use integer deltas.');
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ mouseX: 0, mouseY: Number.NaN, source: 'mouse-motion', tic: 0 }])).toThrow('Mouse motion input trace events must use integer deltas.');
+  });
+
+  it('rejects mouse-button events with invalid button labels or phases', () => {
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ button: 'extra' as 'left', phase: 'down', source: 'mouse-button', tic: 0 }])).toThrow('Mouse button input trace events must use left, middle, or right.');
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ button: 'left', phase: 'press' as 'down', source: 'mouse-button', tic: 0 }])).toThrow('Mouse button input trace events must use down or up.');
+  });
+
+  it('rejects scripted Doom key events outside the one-byte range or with an invalid phase', () => {
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ doomKey: 0, phase: 'keydown', source: 'scripted-doom-key', tic: 0 }])).toThrow('Scripted Doom key input trace events must use a one-byte Doom key.');
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ doomKey: 256, phase: 'keydown', source: 'scripted-doom-key', tic: 0 }])).toThrow('Scripted Doom key input trace events must use a one-byte Doom key.');
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ doomKey: 1.5, phase: 'keydown', source: 'scripted-doom-key', tic: 0 }])).toThrow('Scripted Doom key input trace events must use a one-byte Doom key.');
+    expect(() => recordInputTraceFormat('bun run doom.ts', [{ doomKey: KEY_ESCAPE, phase: 'tap' as 'keydown', source: 'scripted-doom-key', tic: 0 }])).toThrow('Scripted Doom key input trace events must use keydown or keyup.');
+  });
 });

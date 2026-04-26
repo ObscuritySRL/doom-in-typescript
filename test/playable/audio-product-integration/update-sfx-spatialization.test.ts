@@ -138,3 +138,125 @@ test('rejects invalid remote channel snapshots without mutating the request', ()
   expect(() => updateSfxSpatialization(brokenRequest)).toThrow('channel 2 remote origin 3 requires sourcePosition');
   expect(JSON.stringify(brokenRequest)).toBe(before);
 });
+
+function createSingleChannelRequest(channel: UpdateSfxSpatializationRequest['channels'][number], overrides: Partial<UpdateSfxSpatializationRequest> = {}): UpdateSfxSpatializationRequest {
+  const padded = [
+    channel,
+    { channelIndex: 1, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+    { channelIndex: 2, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+    { channelIndex: 3, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+    { channelIndex: 4, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+    { channelIndex: 5, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+    { channelIndex: 6, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+    { channelIndex: 7, origin: null, pitch: 0, priority: 0, soundEffectId: null, sourcePosition: null },
+  ];
+  return {
+    channels: padded,
+    isBossMap: false,
+    listener: { x: 0, y: 0, angle: 0 },
+    listenerOrigin: null,
+    runtimeCommand: UPDATE_SFX_SPATIALIZATION_COMMAND,
+    soundEffectVolume: 12,
+    ...overrides,
+  };
+}
+
+test('normalizes origin 0 to null and skips the spatial calculation', () => {
+  const result = updateSfxSpatialization(createSingleChannelRequest({ channelIndex: 0, origin: 0, pitch: 60, priority: 10, soundEffectId: 7, sourcePosition: { x: 65_536, y: 0 } }, { listenerOrigin: 9 }));
+
+  expect(result.mixerActions[0]).toEqual({
+    channelIndex: 0,
+    kind: 'update',
+    origin: null,
+    pitch: 60,
+    priority: 10,
+    separation: 128,
+    soundEffectId: 7,
+    volume: 12,
+  });
+  expect(result.audibleChannelCount).toBe(1);
+  expect(result.stoppedChannelCount).toBe(0);
+});
+
+test('forces separation to NORM_SEP when source position matches listener exactly', () => {
+  const result = updateSfxSpatialization(
+    createSingleChannelRequest({ channelIndex: 0, origin: 5, pitch: 70, priority: 20, soundEffectId: 3, sourcePosition: { x: 1024, y: 2048 } }, { listener: { x: 1024, y: 2048, angle: 0 }, listenerOrigin: 99 }),
+  );
+
+  expect(result.mixerActions[0]).toEqual({
+    channelIndex: 0,
+    kind: 'update',
+    origin: 5,
+    pitch: 70,
+    priority: 20,
+    separation: 128,
+    soundEffectId: 3,
+    volume: 12,
+  });
+});
+
+test('keeps a remote source audible at long distance under boss-map floor', () => {
+  const result = updateSfxSpatialization(
+    createSingleChannelRequest({ channelIndex: 0, origin: 5, pitch: 80, priority: 30, soundEffectId: 4, sourcePosition: { x: 200_000_000, y: 0 } }, { isBossMap: true, listenerOrigin: 99, soundEffectVolume: 15 }),
+  );
+
+  const action = result.mixerActions[0];
+  expect(action.kind).toBe('update');
+  if (action.kind !== 'update') {
+    throw new Error('Expected boss-map far source to remain audible.');
+  }
+  expect(action.volume).toBe(15);
+  expect(action.origin).toBe(5);
+  expect(action.soundEffectId).toBe(4);
+  expect(result.audibleChannelCount).toBe(1);
+  expect(result.stoppedChannelCount).toBe(0);
+});
+
+test('treats listenerOrigin null as a distinct origin and runs the spatial calculation for any non-null channel origin', () => {
+  const farResult = updateSfxSpatialization(createSingleChannelRequest({ channelIndex: 0, origin: 5, pitch: 90, priority: 40, soundEffectId: 6, sourcePosition: { x: 200_000_000, y: 0 } }, { listenerOrigin: null }));
+
+  expect(farResult.mixerActions[0]).toEqual({
+    channelIndex: 0,
+    kind: 'stop',
+    origin: 5,
+    priority: 40,
+    reason: 'inaudible',
+    soundEffectId: 6,
+  });
+  expect(farResult.stoppedChannelCount).toBe(1);
+  expect(farResult.audibleChannelCount).toBe(0);
+});
+
+test('rejects out-of-range soundEffectVolume and pitch and a negative priority', () => {
+  for (const badVolume of [-1, 16, 1.5, Number.NaN]) {
+    expect(() => updateSfxSpatialization({ ...createSpatializationRequest(), soundEffectVolume: badVolume })).toThrow('soundEffectVolume must be an integer in [0, 15]');
+  }
+
+  const badPitchRequest = createSpatializationRequest();
+  expect(() =>
+    updateSfxSpatialization({
+      ...badPitchRequest,
+      channels: badPitchRequest.channels.map((channel) => (channel.channelIndex === 0 ? { ...channel, pitch: 256 } : channel)),
+    }),
+  ).toThrow('channel 0 pitch must be an integer in [0, 255]');
+
+  const badPriorityRequest = createSpatializationRequest();
+  expect(() =>
+    updateSfxSpatialization({
+      ...badPriorityRequest,
+      channels: badPriorityRequest.channels.map((channel) => (channel.channelIndex === 0 ? { ...channel, priority: -1 } : channel)),
+    }),
+  ).toThrow('channel 0 priority must be a non-negative integer');
+});
+
+test('rejects a wrong channel count and an out-of-order channel index', () => {
+  expect(() => updateSfxSpatialization({ ...createSpatializationRequest(), channels: [] })).toThrow('updateSfxSpatialization requires exactly 8 channels, got 0');
+
+  const renumberedRequest = createSpatializationRequest();
+  expect(() =>
+    updateSfxSpatialization({
+      ...renumberedRequest,
+      channels: renumberedRequest.channels.map((channel, channelIndex) => (channelIndex === 0 ? { ...channel, channelIndex: 1 } : channel)),
+    }),
+  ).toThrow('channelIndex must be 0, got 1');
+});
