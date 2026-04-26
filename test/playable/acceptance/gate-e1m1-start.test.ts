@@ -4,6 +4,13 @@ const evidenceHash = '478e72b0fbfb99478803672ced99cf349c94296bdc7227a2a83b34d687
 const evidenceHashInput = '15-005|bun run doom.ts|OR-FPS-024|15-004>15-005|deterministic-replay-compatible|windowed-only';
 const manifestFilePath = 'plan_fps/manifests/15-005-gate-e1m1-start.json';
 const referenceOraclesFilePath = 'plan_fps/REFERENCE_ORACLES.md';
+const sourceOracleArtifactPath = 'test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json';
+
+interface ParsedManifest {
+  readonly evidenceHash: string;
+  readonly evidenceHashInput: string;
+  readonly oracleScope: readonly { readonly sourceArtifact: string }[];
+}
 
 const expectedManifest = {
   acceptanceGate: {
@@ -95,11 +102,32 @@ describe('gate e1m1 start acceptance manifest', () => {
     expect(hashedEvidence).toBe(evidenceHash);
   });
 
-  test('registers the acceptance gate as the next oracle artifact', async () => {
+  test('registers both the gate oracle and its upstream source oracle in REFERENCE_ORACLES.md', async () => {
     const referenceOraclesText = await Bun.file(referenceOraclesFilePath).text();
 
     expect(referenceOraclesText).toContain(
       '| OR-FPS-041 | `plan_fps/manifests/15-005-gate-e1m1-start.json` | gate e1m1 start acceptance evidence for the Bun-run playable parity path | `bun test test/playable/acceptance/gate-e1m1-start.test.ts` |',
     );
+    expect(referenceOraclesText).toContain(
+      '| OR-FPS-024 | `test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json` | e1m1 start from clean launch capture contract derived from local DOS binary authority and `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json` | `bun test test/oracles/capture-e1m1-start-from-clean-launch.test.ts` |',
+    );
+  });
+
+  test('locks the parsed manifest evidenceHash against drift from its evidenceHashInput', async () => {
+    const parsedManifest = (await Bun.file(manifestFilePath).json()) as ParsedManifest;
+
+    const recomputedHash = new Bun.CryptoHasher('sha256').update(parsedManifest.evidenceHashInput).digest('hex');
+
+    expect(parsedManifest.evidenceHash).toBe(recomputedHash);
+    expect(parsedManifest.evidenceHashInput).toBe(evidenceHashInput);
+    expect(parsedManifest.evidenceHash).toBe(evidenceHash);
+  });
+
+  test('locks the upstream OR-FPS-024 source oracle artifact against drift from disk', async () => {
+    const sourceArtifactExists = await Bun.file(sourceOracleArtifactPath).exists();
+    const parsedManifest = (await Bun.file(manifestFilePath).json()) as ParsedManifest;
+
+    expect(sourceArtifactExists).toBe(true);
+    expect(parsedManifest.oracleScope.map((entry) => entry.sourceArtifact)).toEqual([sourceOracleArtifactPath]);
   });
 });
