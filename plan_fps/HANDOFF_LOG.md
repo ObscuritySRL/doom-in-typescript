@@ -3876,3 +3876,21 @@
 - oracle_changes: added OR-FPS-038 for `plan_fps/manifests/15-002-gate-bun-launch-smoke.json`
 - next_eligible_steps: 15-003 gate-title-frame
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-003 gate-title-frame
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-003
+- step_title: gate-title-frame
+- summary: Added the title-frame acceptance gate manifest at `plan_fps/manifests/15-003-gate-title-frame.json`. The manifest locks the `bun run doom.ts` command contract, title-frame evidence against captured oracle OR-FPS-009, windowed-only presentation difference, transition from `15-002` to `15-003`, next gate `15-004`, deterministic replay compatibility flags, OR-FPS-039 oracle registration, and evidence hash `a1addd77ec2defd07f7542f6c4e93bc6dd1aaba8a6176578a62bc26759949ea6`. Added focused test `test/playable/acceptance/gate-title-frame.test.ts` to lock the manifest schema, command contract, hash, checklist transition, and oracle registration.
+- files_changed: plan_fps/manifests/15-003-gate-title-frame.json; test/playable/acceptance/gate-title-frame.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Resumed existing partial 15-003 artifacts from the active progress log; prior full-suite failure in an older acceptance test no longer reproduced in this run.
+- tests_run: bun run format (formatted 9 files, no fixes applied); bun test test/playable/acceptance/gate-title-frame.test.ts (3 pass, 0 fail, 6 expect() calls); bun test (7896 pass, 0 fail, 695077 expect() calls across 386 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-039 for `plan_fps/manifests/15-003-gate-title-frame.json`
+- next_eligible_steps: 15-004 gate-menu-navigation
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

@@ -1,0 +1,44 @@
+{
+  "acceptanceGate": {
+    "commandContract": {
+      "entryFile": "doom.ts",
+      "program": "bun",
+      "runtimeCommand": "bun run doom.ts",
+      "subcommand": "run"
+    },
+    "deterministicReplayCompatibility": {
+      "advancesSimulationTics": false,
+      "mutatesInputStream": false,
+      "mutatesRandomSeed": false,
+      "requiresLiveAudio": false,
+      "requiresWallClockTiming": false
+    },
+    "evidenceHash": "a1addd77ec2defd07f7542f6c4e93bc6dd1aaba8a6176578a62bc26759949ea6",
+    "gateId": "15-003",
+    "gateTitle": "gate-title-frame",
+    "oracleId": "OR-FPS-039",
+    "scope": [
+      "verify the first visible title-loop frame in the Bun runtime path",
+      "tie the acceptance gate to the captured initial title-frame oracle",
+      "preserve deterministic replay by recording evidence without consuming input or advancing simulation"
+    ],
+    "titleFrameEvidence": {
+      "capturedOracleArtifact": "test/oracles/fixtures/capture-initial-title-frame.json",
+      "capturedOracleId": "OR-FPS-009",
+      "expectedFrameRole": "initial-title-frame",
+      "expectedPresentationMode": "windowed",
+      "expectedRenderSurface": "320x200-indexed-framebuffer",
+      "sideBySideAcceptance": "implementation title frame matches the captured reference title frame except for fullscreen-vs-windowed presentation",
+      "windowedOnlyDifference": true
+    },
+    "transition": {
+      "fromStepId": "15-002",
+      "fromStepTitle": "gate-bun-launch-smoke",
+      "nextStepId": "15-004",
+      "nextStepTitle": "gate-menu-navigation",
+      "toStepId": "15-003",
+      "toStepTitle": "gate-title-frame"
+    }
+  },
+  "schemaVersion": 1
+}
