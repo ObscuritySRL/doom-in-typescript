@@ -106,6 +106,33 @@ describe('renderStatusBarProductFrame', () => {
     expect(framebuffer.every((value) => value === 9)).toBe(true);
   });
 
+  test('rejects mismatched framebuffer length before mutating replay-visible pixels', () => {
+    const undersizedFramebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH - 1);
+    const oversizedFramebuffer = new Uint8Array(FRAMEBUFFER_BYTE_LENGTH + 1);
+    const statusBarFrame = new Uint8Array(STATUS_BAR_FRAME_BYTE_LENGTH);
+    undersizedFramebuffer.fill(13);
+    oversizedFramebuffer.fill(17);
+    statusBarFrame.fill(29);
+
+    expect(() =>
+      renderStatusBarProductFrame({
+        command: RENDER_STATUS_BAR_PRODUCT_FRAME_COMMAND.value,
+        framebuffer: undersizedFramebuffer,
+        statusBarFrame,
+      }),
+    ).toThrow(`framebuffer must be exactly ${FRAMEBUFFER_BYTE_LENGTH} bytes`);
+    expect(undersizedFramebuffer.every((value) => value === 13)).toBe(true);
+
+    expect(() =>
+      renderStatusBarProductFrame({
+        command: RENDER_STATUS_BAR_PRODUCT_FRAME_COMMAND.value,
+        framebuffer: oversizedFramebuffer,
+        statusBarFrame,
+      }),
+    ).toThrow(`framebuffer must be exactly ${FRAMEBUFFER_BYTE_LENGTH} bytes`);
+    expect(oversizedFramebuffer.every((value) => value === 17)).toBe(true);
+  });
+
   test('rejects the wrong command before mutating replay-visible pixels', () => {
     const options = createRenderOptions();
 

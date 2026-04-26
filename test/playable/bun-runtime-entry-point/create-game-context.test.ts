@@ -117,6 +117,80 @@ describe('create game context', () => {
         mapName: '',
       }),
     ).toThrow('mapName must not be empty.');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        mapName: '   ',
+      }),
+    ).toThrow('mapName must not be empty.');
+  });
+
+  test('rejects non-positive integer scale before launcher/session creation', () => {
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        scale: 0,
+      }),
+    ).toThrow('scale must be a positive integer, got "0".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        scale: -1,
+      }),
+    ).toThrow('scale must be a positive integer, got "-1".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        scale: 1.5,
+      }),
+    ).toThrow('scale must be a positive integer, got "1.5".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        scale: Number.NaN,
+      }),
+    ).toThrow('scale must be a positive integer, got "NaN".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        scale: Number.POSITIVE_INFINITY,
+      }),
+    ).toThrow('scale must be a positive integer, got "Infinity".');
+  });
+
+  test('rejects non-positive integer skill before launcher/session creation', () => {
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        skill: 0,
+      }),
+    ).toThrow('skill must be a positive integer, got "0".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        skill: -2,
+      }),
+    ).toThrow('skill must be a positive integer, got "-2".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        skill: 2.5,
+      }),
+    ).toThrow('skill must be a positive integer, got "2.5".');
+
+    expect(() =>
+      createGameContext({
+        iwadPath: 'doom\\DOOM1.WAD',
+        skill: Number.NaN,
+      }),
+    ).toThrow('skill must be a positive integer, got "NaN".');
   });
 
   test('keeps package start evidence aligned with the audited current entrypoint', async () => {

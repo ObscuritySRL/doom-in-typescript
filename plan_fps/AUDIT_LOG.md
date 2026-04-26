@@ -1266,3 +1266,54 @@ Required entry shape:
 - files_changed: D:/Projects/doom-in-typescript/test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
 - tests_run: bun run format (Formatted 9 files in 9ms. No fixes applied.); bun test test/plan_fps/00-003-pin-bun-run-doom-entrypoint.test.ts (19 pass, 0 fail, 98 expects); bun test (7801 pass, 0 fail, 694724 expects across 372 files); bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json (clean, exit 0)
 - follow_up: none
+
+## 2026-04-26T03:58:30Z - 09-003 render-status-bar-product-frame - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 09-003
+- step_title: render-status-bar-product-frame
+- prior_audits: none
+- correctness_findings: Implementation in src/playable/rendering-product-integration/renderStatusBarProductFrame.ts satisfies Expected Changes: derives FRAMEBUFFER_BYTE_LENGTH (320*200=64000) and STATUS_BAR_FRAME_BYTE_LENGTH (320*32=10240) from src/render/projection.ts constants, validates command/framebuffer-length/status-bar-length before any framebuffer mutation, and copies the status-bar bytes to startOffset=53760 (top=168, top*SCREENWIDTH) via Uint8Array.set. Source SHA-256 lock 2bd14f84b968f583c220e5804fe6d618ab3796635b1fea30de1248413328040b reverified live via Bun.CryptoHasher; statusBarArea contract { height: 32, startOffset: 53760, top: 168, width: 320 } verified; manifest cross-check at plan_fps/manifests/01-012-audit-missing-live-rendering.json with status-bar-renderer-invocation null surface verified.
+- performance_findings: getStatusBarProductFrameArea() allocates a fresh 4-property object on every renderStatusBarProductFrame call. The function has no production callers yet and at the eventual ~35 fps the allocation is well below GC noise; no fix applied to preserve the locked source SHA-256 contract while there is no real hot path.
+- improvement_findings: Test gap — `rejects invalid input before mutating replay-visible pixels` covered only statusBarFrame length mismatch; the framebuffer-length validation branch (validateFramebuffer) was untested and a regression that swapped or removed the framebuffer length guard would not surface, leaving the no-mutation invariant unverified for that error path.
+- corrective_action: Added test `rejects mismatched framebuffer length before mutating replay-visible pixels` covering both undersized (FRAMEBUFFER_BYTE_LENGTH-1) and oversized (FRAMEBUFFER_BYTE_LENGTH+1) framebuffers, asserting the exact error message `framebuffer must be exactly ${FRAMEBUFFER_BYTE_LENGTH} bytes` and verifying both buffers retain their original sentinel fill values, locking the no-mutation invariant on the previously-untested error path. Source file unchanged so EXPECTED_SOURCE_SHA256 lock remains valid.
+- files_changed: D:/Projects/doom-in-typescript/test/playable/rendering-product-integration/render-status-bar-product-frame.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 8 files in 6ms. No fixes applied.); bun test test/playable/rendering-product-integration/render-status-bar-product-frame.test.ts (8 pass, 0 fail, 23 expects); bun test (7804 pass, 0 fail, 694738 expects across 372 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T03:58:30Z - 03-010 create-game-context - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 03-010
+- step_title: create-game-context
+- prior_audits: none
+- correctness_findings: Implementation in src/playable/bun-runtime-entry-point/createGameContext.ts satisfies Expected Changes — exports CREATE_GAME_CONTEXT_CONTRACT under `as const satisfies CreateGameContextContract`, decomposes the Bun command into program/subcommand/entryFile, pins deterministic-replay flags (no session, no window, no IWAD bytes, no global-state mutation, no replay input) at phase 'launcher-startup-before-title-loop', and createGameContext rejects empty/whitespace iwadPath, empty/whitespace mapName, and non-positive integer scale/skill before producing a metadata-only result. Locked contract SHA-256 d4854eea3dec1cce18c50210da4390fa69ad20b2278f0a02d8a0597ed9ba0673 reverified live via Bun.CryptoHasher; cross-checks with plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json and package.json scripts.start verified; mapName toUpperCase normalization correctly converts lowercase 'e1m1' to 'E1M1'. iwadPath note: validation uses .trim().length===0 but the stored iwadPath preserves whitespace verbatim — intentional to keep file paths byte-identical with user input; not a defect.
+- performance_findings: none — createGameContext is called once per session pre-title-loop, not on a per-frame, per-tick, or per-sample path; the contract object is module-level and not cloned on each call; no allocation churn on the hot path.
+- improvement_findings: Test gap — only the empty-string/whitespace-only iwadPath and empty-string mapName error branches were exercised, leaving the scale and skill positive-integer guards (scale=0, scale<0, non-integer scale, NaN scale, Infinity scale, and the equivalents for skill) and the whitespace-only mapName branch untested. A regression that loosened the guard to `scale >= 0` or removed Number.isInteger would not surface.
+- corrective_action: Added three test blocks: extended the missing-context-input test with a whitespace-only mapName case, and introduced two new tests covering (a) scale rejection at 0, -1, 1.5, NaN, and Infinity with the exact thrown error messages, and (b) skill rejection at 0, -2, 2.5, and NaN with the exact thrown error messages. Implementation file unchanged so the contract SHA-256 lock and all sibling cross-checks remain valid.
+- files_changed: D:/Projects/doom-in-typescript/test/playable/bun-runtime-entry-point/create-game-context.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 8 files in 6ms. No fixes applied.); bun test test/playable/bun-runtime-entry-point/create-game-context.test.ts (7 pass, 0 fail, 27 expects); bun test (7804 pass, 0 fail, 694738 expects across 372 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T03:58:30Z - 02-029 capture-framebuffer-hash-windows - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 02-029
+- step_title: capture-framebuffer-hash-windows
+- prior_audits: none
+- correctness_findings: Oracle fixture test/oracles/fixtures/capture-framebuffer-hash-windows.json and test/oracles/capture-framebuffer-hash-windows.test.ts satisfy Expected Changes: fixture records the local DOS binary + IWAD source authority chain (S-FPS-005..S-FPS-011), exact captureCommand (bun run doom.ts --oracle capture-framebuffer-hash-windows --iwad doom/DOOM1.WAD --reference-binary doom/DOOMD.EXE --script clean-launch-framebuffer-windows --frames 0,35,70,105,140,175,210), the 7-entry framebufferHashTrace covering tics 0/35/70/105/140/175/210 across startup/title/menu/gameplay windows, and the pending-reference-capture status with explicit null hashes. Trace SHA-256 26256123a36f2efb13333281e8b304214233084e04559aff9a3cd114d1e5da9c reverified live; inheritedLaunchSurfaceSourceHashes for package.json (9075b8e3..., 569 bytes), src/main.ts (019ea4be..., 3239 bytes), and tsconfig.json (49105a2f..., 645 bytes) all reverified live against current disk via Bun.CryptoHasher; OR-FPS-034 oracle entry, fixture path, authority phrase, and refresh command all present in plan_fps/REFERENCE_ORACLES.md; cross-checks against plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json verified for sourceHashes, targetPlayable command contract, framebuffer-hash-comparison/reference-oracle-replay-capture/side-by-side-replay-command null surfaces.
+- performance_findings: none — fixture is static JSON read at test time only; tests issue ~5 small Bun.file reads totaling under a few KB; no hot path involved.
+- improvement_findings: none — fixture locks source authority, capture command, tic/frame window, exact pending-hash trace, and trace SHA-256; tests use full toEqual on the parsed fixture, exact hash recomputation, and live cross-references against the side-by-side replay manifest, source catalog, and reference oracles registry. No additional edge cases meaningful for an oracle contract that intentionally records null expected hashes pending later capture.
+- corrective_action: none — no fixes required.
+- files_changed: D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 8 files in 6ms. No fixes applied.); bun test test/oracles/capture-framebuffer-hash-windows.test.ts (5 pass, 0 fail, 31 expects); bun test (7804 pass, 0 fail, 694738 expects across 372 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none
