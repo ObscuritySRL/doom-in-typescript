@@ -3588,3 +3588,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-005 convert-demo-input-stream
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-005 convert-demo-input-stream
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-005
+- step_title: convert-demo-input-stream
+- summary: Added the playable demo input stream conversion surface at `src/playable/demo-replay/convertDemoInputStream.ts`. The module exports the exact `bun run doom.ts` command contract plus `convertDemoInputStream`, validates the product runtime command before parsing demo bytes, consumes `DemoPlayback` tic streams, emits deterministic `demo-playback` input script duration evidence, records active-player counts and stable tic command signatures, preserves single-demo quit completion, rejects marker-only streams, and returns frozen replay evidence with locked SHA-256 hashes. Added focused test `test/playable/demo-replay/convert-demo-input-stream.test.ts` to lock the command contract, 01-015 side-by-side audit linkage, formatted source SHA-256 `71c99ef8824fb34c47366b6691206ad93a240ac65d653bf48d11f722ada15831`, exact two-tic DEMO1 conversion signatures, default replay hash `8f7dc41b370d6aa399353560b281a003a886d3ab1cb4a3e731e6a4b951825dc8`, single-demo replay hash `0ea7ed40464617078776d928c49a27fa44cb27a059281e5737f15ac056114926`, wrong-command prevalidation, and marker-only rejection.
+- files_changed: src/playable/demo-replay/convertDemoInputStream.ts; test/playable/demo-replay/convert-demo-input-stream.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript verification caught two bun:test literal matcher issues in the audit-manifest cross-check. Split the manifest cross-check from the exact literal auditEvidence object, then flipped the two comparison operands so the wider manifest JSON fields are matched against literal evidence values. Reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial product pass no fixes; focused-test pass fixed 1 file; stability and recovery reruns no fixes); bun test test/playable/demo-replay/convert-demo-input-stream.test.ts (final run 6 pass, 0 fail, 22 expect() calls); bun test (final run 7779 pass, 0 fail, 694443 expect() calls across 370 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-006 preserve-demo-termination-behavior
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
