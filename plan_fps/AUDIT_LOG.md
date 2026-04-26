@@ -1385,3 +1385,71 @@ Required entry shape:
 - files_changed: D:/Projects/doom-in-typescript/test/playable/audio-product-integration/lock-sfx-channel-count.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
 - tests_run: bun run format; bun test test/playable/audio-product-integration/lock-sfx-channel-count.test.ts; bun test; bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json
 - follow_up: none
+
+## 2026-04-26T04:17:39Z - 04-010 run-message-pump - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 04-010
+- step_title: run-message-pump
+- prior_audits: Claude Code/completed: found implementation correct, identified missing literal hash, empty-queue, WM_DESTROY, WM_CLOSE priority, empty runtime command, and freeze-invariant coverage, added seven focused regression tests, and changed no production source.
+- correctness_findings: The message-pump behavior still satisfies the Expected Changes: it is gated to `bun run doom.ts`, mirrors the audited Win32 message pump source fragments, processes terminal WM_CLOSE/WM_DESTROY/WM_QUIT messages before translate/dispatch, returns frozen deterministic snapshots, and handles the empty-queue boundary. The focused test exists, is meaningful, and has no skipped or `.only` tests. Correctness issue found: the production hash export used `node:crypto` despite the repository's Bun-only runtime rule.
+- performance_findings: No product hot-path issue found in the message-drain loop; it walks queued messages once, allocates only the deterministic result snapshot, and has no per-frame I/O. Minor module-load/test-only improvement: replacing `node:crypto` with `Bun.CryptoHasher` removes a Node standard-library dependency from the selected scope.
+- improvement_findings: The focused test recomputed the contract hash with `node:crypto`; this duplicated the Bun-native API violation and weakened the step's runtime-rule guard.
+- corrective_action: Replaced `createHash('sha256')` in `src/playable/window-host/runMessagePump.ts` and the focused test with `new Bun.CryptoHasher('sha256')`; no message-pump behavior or pinned contract value changed.
+- files_changed: D:/Projects/doom-in-typescript/src/playable/window-host/runMessagePump.ts; D:/Projects/doom-in-typescript/test/playable/window-host/run-message-pump.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format; bun test test/playable/window-host/run-message-pump.test.ts; bun test test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts; bun test; bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json
+- follow_up: none
+
+## 2026-04-26T04:17:39Z - 05-007 handle-pause-focus-timing - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 05-007
+- step_title: handle-pause-focus-timing
+- prior_audits: Claude Code/completed: found implementation correct, identified missing coverage for continue, repeated pause, and non-tryRunTics paused skip paths, added three focused regression tests, and changed no production source.
+- correctness_findings: The production implementation still satisfies the Expected Changes: it is gated to `bun run doom.ts`, only acts during `tryRunTics`, pauses unfocused timing without runnable tics, resets the accumulator exactly on focus regain, and leaves non-tryRunTics phases untouched. The focused test exists, is meaningful, and has no skipped or `.only` tests. Test-gap findings: runtime-command rejection covered only the old launcher command, non-tryRunTics coverage did not exercise all alternate main-loop phases in one guard, and the contract freeze invariant was not locked.
+- performance_findings: No product hot-path issue found; the function is a small per-phase decision with no I/O and only a small returned object. Test-only improvement: replacing `node:crypto` hashing and manual text-plus-JSON.parse fixture loading with Bun-native APIs reduces unnecessary test-time work and matches repository conventions.
+- improvement_findings: The focused test used `node:crypto` and manual `JSON.parse(await Bun.file(...).text())` where `Bun.CryptoHasher` and `Bun.file(...).json()` are available; boundary coverage was missing empty, whitespace, case-drift, and extra-argument runtime command variants.
+- corrective_action: Replaced the test hash helper with `Bun.CryptoHasher`, converted the audit manifest read to `Bun.file(...).json()`, added a contract-freeze test, expanded non-tryRunTics assertions to display/startFrame/updateSounds, and expanded runtime-command rejection coverage to empty, whitespace, case-drift, extra-argument, and old-launcher commands while verifying reset is not called.
+- files_changed: D:/Projects/doom-in-typescript/test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format; bun test test/playable/window-host/run-message-pump.test.ts; bun test test/playable/real-time-main-loop/handle-pause-focus-timing.test.ts; bun test; bun x tsc --noEmit --project D:\Projects\doom-in-typescript\tsconfig.json
+- follow_up: none
+
+## 2026-04-26T04:17:01Z - 10-010 play-level-music - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 10-010
+- step_title: play-level-music
+- prior_audits: none
+- correctness_findings: playLevelMusic in src/playable/audio-product-integration/playLevelMusic.ts satisfies Expected Changes — runtime command guard rejects non-`bun run doom.ts` callers before mutation or live dispatch, resolveLevelMusic enforces the E[1-3]M[1-9] vanilla shareware DOOM range and computes vanilla `(episode-1)*9 + map` indices (E1M1=1, E1M9=9, E2M1=10, E2M5=14, E2M9=18, E3M1=19, E3M9=27 all match `mus_e1m1` … `mus_e3m9` from sounds.h), changeMusic mutation order is preserved (resume-song before stop-song when paused, stop-song then play-song on transition, no-op when same track is already loaded), live dispatcher is invoked exactly once per emitted MusicDeviceAction, replayActions strip the score and shape into the LevelMusicReplayAction discriminated union, and replayChecksum is FNV-1a-32 over `JSON.stringify` of the system snapshot + replayActions. Manifest path 01-011-audit-missing-live-audio.json verifies live, includes `commandContracts.target.runtimeCommand === 'bun run doom.ts'`, and lists `live-music-playback` in explicitNullSurfaces. No nullable / undefined / negative / zero / empty-buffer boundary leaks: `dispatchMusicAction` is optional and the for-of loop short-circuits with `?.()` when absent, EMPTY_LEVEL_SCORE-style empty buffer is supported, and the runtime/map-name guards run before any system mutation per the existing reject-before-mutation tests.
+- performance_findings: Per-call `Object.freeze({ entryFile, runtimeCommand })` rebuilt the same static command-contract child object on every level transition. The contract is fully static and can be hoisted to a module-level frozen constant.
+- improvement_findings: Test coverage gaps — no transition test (E1M1 → E1M2 emitting stop-song(1) + play-song(2) actions), no paused-during-transition test (resume-song before stop-song before play-song with system.paused reset to false), no episode-2 / E1M9 / E2M5 boundary case for resolveLevelMusic, no test for the optional `dispatchMusicAction` callback being absent, no negative coverage for additional out-of-range map names beyond MAP01 (E0M1, E4M1, E1M0, E1M10, E10M1, '', 'E1M1X', 'XE1M1'), and no identity check that the new module-level command contract is reused across calls.
+- corrective_action: Hoisted `LEVEL_MUSIC_COMMAND_CONTRACT` to a module-level Object.freeze'd constant and updated playLevelMusic to return the shared instance instead of reallocating per call. Updated the focused source SHA-256 hash from `b4e3f730d22bd885a475f16b1354d63260a0563a5bfd0c3db5a2067b50441d13` to `d9a1a21ef408757590b733110af07ce7e05ea18d083e5e22862f7f8b798016cf` (recomputed via `Bun.CryptoHasher` on the formatted source). Added 6 regression tests: full episode boundary resolution (E1M1/E1M9/E2M1/E2M5/E2M9/E3M1), parameterized 8-case out-of-range map name rejection, E1M1 → E1M2 transition that emits the canonical stop-song(1) + play-song(2) sequence with replayActions snapshot, paused-track transition that emits resume-song before stop-song before play-song with paused reset to false, optional-dispatcher path on E2M5 that still produces handle-free replay evidence, and a module-level command contract identity check (`firstResult.commandContract === LEVEL_MUSIC_COMMAND_CONTRACT === secondResult.commandContract`, frozen, structural equality). Test count grew from 6 (16 expects) to 12 (61 expects).
+- files_changed: D:/Projects/doom-in-typescript/src/playable/audio-product-integration/playLevelMusic.ts; D:/Projects/doom-in-typescript/test/playable/audio-product-integration/play-level-music.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 13 files in 10ms. No fixes applied.); bun test test/playable/audio-product-integration/play-level-music.test.ts (12 pass, 0 fail, 61 expects); bun test (7819 pass, 0 fail, 694831 expects across 373 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T04:17:01Z - 03-002 wire-root-doom-ts-entrypoint - Claude Code
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- step_id: 03-002
+- step_title: wire-root-doom-ts-entrypoint
+- prior_audits: none
+- correctness_findings: WIRE_ROOT_DOOM_TS_ENTRYPOINT in src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts satisfies Expected Changes — bunRuntime pins argumentVectorSource 'Bun.argv' / fileProbeApi 'Bun.file' / runtime 'bun' / scriptRunner 'bun run', commandContract pins command 'bun run doom.ts' / entryFile 'doom.ts' / program 'bun' / subcommand 'run' / workspacePath 'doom.ts', currentEntrypoint pins command 'bun run src/main.ts' with the two stripped helpUsageLines plus path 'src/main.ts' / scriptName 'start' / sourceCatalogId 'S-FPS-011', deterministicReplayCompatibility pins importSideEffects/replayInputSources/simulationStateMutations as empty tuples with status 'compatible', sourceAuditManifest pins path 'plan_fps/manifests/01-007-audit-missing-bun-run-doom-entrypoint.json' / schemaVersion 1 / stepId '01-007', step pins id '03-002' / titleSlug 'wire-root-doom-ts-entrypoint', and transition pins fromEntryFile 'doom.ts' / status 'wired-to-current-launcher-surface' / toEntrypointPath 'src/main.ts' / transitionKind 'bun-root-entrypoint-delegation'. wireRootDoomTsEntrypoint() returns the same singleton reference on every call (`toBe` identity holds across calls). Test cross-checks against the 01-007 audit manifest, package.json `start` script, and src/main.ts launcher (CommandLine(Bun.argv) marker present, process.argv absent) all hold against the live filesystem.
+- performance_findings: Production constant was a plain object literal — without runtime Object.freeze, escape-hatch mutations like `(WIRE_ROOT_DOOM_TS_ENTRYPOINT as any).bunRuntime.runtime = 'node'` would silently corrupt the wire contract for downstream callers. Sibling 03-001 (`addRootDoomTsCommandContract.ts`) already uses Object.freeze on every nested object plus `as const` on tuple literals; this file diverged from that convention. Test additionally used `JSON.parse(await Bun.file(...).text())` for both the manifest and package.json, while the prior-audit (01-007 / 02-031) convention is `Bun.file().json()` — Bun's native parser avoids one round-trip through a UTF-8 string.
+- improvement_findings: Test coverage gap — no Object.isFrozen invariant on the wire contract or its nested objects, leaving frozen-state drift unprotected if a future change replaces the Object.freeze pattern.
+- corrective_action: Wrapped WIRE_ROOT_DOOM_TS_ENTRYPOINT and every nested object in Object.freeze, and added `as const` to the helpUsageLines tuple plus the three empty deterministicReplayCompatibility arrays so the inferred shape preserves readonly tuple types matching the WireRootDoomTsEntrypoint type's `readonly [...]` fields. Replaced `JSON.parse(await Bun.file(...).text())` with `Bun.file(...).json()` in both the manifest and package.json cross-check tests. Added one regression test asserting Object.isFrozen on the top-level constant plus all 11 nested objects (bunRuntime, commandContract, currentEntrypoint, currentEntrypoint.helpUsageLines, deterministicReplayCompatibility, deterministicReplayCompatibility.importSideEffects/replayInputSources/simulationStateMutations, sourceAuditManifest, step, transition) and the function-as-stable-getter identity. Test count grew from 4 (8 expects) to 5 (22 expects).
+- files_changed: D:/Projects/doom-in-typescript/src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts; D:/Projects/doom-in-typescript/test/playable/bun-runtime-entry-point/wire-root-doom-ts-entrypoint.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 13 files in 10ms. No fixes applied.); bun test test/playable/bun-runtime-entry-point/wire-root-doom-ts-entrypoint.test.ts (5 pass, 0 fail, 22 expects); bun test (7819 pass, 0 fail, 694831 expects across 373 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none

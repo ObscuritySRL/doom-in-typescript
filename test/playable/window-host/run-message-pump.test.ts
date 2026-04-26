@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 import { describe, expect, test } from 'bun:test';
 
 import { computeClientDimensions } from '../../../src/host/windowPolicy.ts';
@@ -46,7 +44,7 @@ describe('runMessagePump', () => {
     expect(auditPlayableHostSurfaceManifest.currentLauncherHostTransition.call).toBe(RUN_MESSAGE_PUMP_CONTRACT.auditedLauncherTransition);
     expect(auditPlayableHostSurfaceManifest.currentLauncherHostTransition.defaultScale).toBe(RUN_MESSAGE_PUMP_CONTRACT.defaultScale);
     expect(auditPlayableHostSurfaceManifest.commandContracts.targetRuntimeCommand).toBe(RUN_MESSAGE_PUMP_CONTRACT.runtimeCommand);
-    expect(RUN_MESSAGE_PUMP_CONTRACT_SHA256).toBe(createHash('sha256').update(JSON.stringify(RUN_MESSAGE_PUMP_CONTRACT)).digest('hex'));
+    expect(RUN_MESSAGE_PUMP_CONTRACT_SHA256).toBe(sha256Json(RUN_MESSAGE_PUMP_CONTRACT));
   });
 
   test('locks the contract SHA-256 to a hex literal so silent contract drift is caught', () => {
@@ -227,3 +225,7 @@ describe('runMessagePump', () => {
     expect(Object.isFrozen(continueResult.translatedAndDispatchedMessages)).toBe(true);
   });
 });
+
+function sha256Json(value: unknown): string {
+  return new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
+}

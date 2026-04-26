@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 import { HANDLE_PAUSE_FOCUS_TIMING_CONTRACT, handlePauseFocusTiming } from '../../../src/playable/real-time-main-loop/handlePauseFocusTiming.ts';
 
 const CONTRACT_HASH = 'acf813aa6e4ae4273010419957ad8065ae115ae6f3fdd580fd71550c7a668c1d';
@@ -20,13 +18,17 @@ describe('handlePauseFocusTiming', () => {
   });
 
   test('locks the serialized contract hash', () => {
-    const contractHash = createHash('sha256').update(JSON.stringify(HANDLE_PAUSE_FOCUS_TIMING_CONTRACT)).digest('hex');
+    const contractHash = sha256Json(HANDLE_PAUSE_FOCUS_TIMING_CONTRACT);
 
     expect(contractHash).toBe(CONTRACT_HASH);
   });
 
+  test('locks the contract freeze invariant', () => {
+    expect(Object.isFrozen(HANDLE_PAUSE_FOCUS_TIMING_CONTRACT)).toBe(true);
+  });
+
   test('locks the audited host transition and live timing evidence', async () => {
-    const auditManifest = JSON.parse(await Bun.file('plan_fps/manifests/01-006-audit-playable-host-surface.json').text()) as {
+    const auditManifest = (await Bun.file('plan_fps/manifests/01-006-audit-playable-host-surface.json').json()) as {
       currentLauncherHostTransition: { call: string };
     };
     const mainLoopSource = await Bun.file('src/mainLoop.ts').text();
@@ -77,27 +79,33 @@ describe('handlePauseFocusTiming', () => {
       },
     };
 
-    const decision = handlePauseFocusTiming('bun run doom.ts', 'display', false, true, ticAccumulator);
+    for (const phase of ['display', 'startFrame', 'updateSounds'] as const) {
+      expect(handlePauseFocusTiming('bun run doom.ts', phase, false, true, ticAccumulator)).toEqual({
+        action: 'skip',
+        paused: false,
+        resetApplied: false,
+        runnableTics: 0,
+        totalTics: 7,
+      });
+    }
 
-    expect(decision).toEqual({
-      action: 'skip',
-      paused: false,
-      resetApplied: false,
-      runnableTics: 0,
-      totalTics: 7,
-    });
     expect(ticAccumulator.resetCallCount).toBe(0);
   });
 
-  test('rejects non-doom runtime commands', () => {
+  test('rejects non-doom runtime commands before touching timing state', () => {
     const ticAccumulator = {
+      resetCallCount: 0,
       totalTics: 0,
       reset() {
-        throw new Error('reset should not be called');
+        this.resetCallCount++;
       },
     };
 
-    expect(() => handlePauseFocusTiming('bun run src/main.ts', 'tryRunTics', true, false, ticAccumulator)).toThrow('handlePauseFocusTiming requires bun run doom.ts');
+    for (const runtimeCommand of ['', ' ', 'BUN run doom.ts', 'bun run doom.ts --extra', 'bun run src/main.ts']) {
+      expect(() => handlePauseFocusTiming(runtimeCommand, 'tryRunTics', true, false, ticAccumulator)).toThrow('handlePauseFocusTiming requires bun run doom.ts');
+    }
+
+    expect(ticAccumulator.resetCallCount).toBe(0);
   });
 
   test('continues without resetting when focus is held across consecutive tryRunTics calls', () => {
@@ -167,3 +175,7 @@ describe('handlePauseFocusTiming', () => {
     expect(ticAccumulator.resetCallCount).toBe(0);
   });
 });
+
+function sha256Json(value: unknown): string {
+  return new Bun.CryptoHasher('sha256').update(JSON.stringify(value)).digest('hex');
+}

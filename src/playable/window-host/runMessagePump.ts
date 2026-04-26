@@ -1,5 +1,3 @@
-import { createHash } from 'node:crypto';
-
 import { computeClientDimensions } from '../../host/windowPolicy.ts';
 
 export interface RunMessagePumpOptions {
@@ -45,7 +43,7 @@ export const RUN_MESSAGE_PUMP_CONTRACT = Object.freeze({
   stepSlug: 'run-message-pump',
 });
 
-export const RUN_MESSAGE_PUMP_CONTRACT_SHA256 = createHash('sha256').update(JSON.stringify(RUN_MESSAGE_PUMP_CONTRACT)).digest('hex');
+export const RUN_MESSAGE_PUMP_CONTRACT_SHA256 = new Bun.CryptoHasher('sha256').update(JSON.stringify(RUN_MESSAGE_PUMP_CONTRACT)).digest('hex');
 
 export function runMessagePump(options: RunMessagePumpOptions): RunMessagePumpResult {
   if (options.runtimeCommand !== RUN_MESSAGE_PUMP_CONTRACT.runtimeCommand) {
