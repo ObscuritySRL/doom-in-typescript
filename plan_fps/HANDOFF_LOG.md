@@ -3642,3 +3642,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-008 capture-replay-framebuffer-state-audio-music
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-008 capture-replay-framebuffer-state-audio-music
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-008
+- step_title: capture-replay-framebuffer-state-audio-music
+- summary: Added the playable replay capture surface at `src/playable/demo-replay/captureReplayFramebufferStateAudioMusic.ts`. The module exports the exact `bun run doom.ts` command contract plus `captureReplayFramebufferStateAudioMusic`, validates the product command before parsing demo bytes, consumes `DemoPlayback` through the demo marker boundary, records frozen framebuffer/state/audio/music hash windows from deterministic tic command signatures, preserves single-demo quit completion, and links the missing side-by-side replay audit surface. Added focused test `test/playable/demo-replay/capture-replay-framebuffer-state-audio-music.test.ts` to lock the command contract, 01-015 audit linkage, formatted source SHA-256 `5277e196d4ad95a322d4f8a5c8b199e2c8e3f6fb72a47af6d9cc69fbca783167`, exact two-tic frame and stream hashes, replay hash `15770a113f86acf06972840d41f00ffc19bdd52ac0522d536b2c317f88ccdebd`, single-demo replay hash `4b6305ef57927bf4ea2a2b70b695cf8903ee47230bb3a4b3570110c522e73da8`, wrong-command prevalidation, and marker-only rejection.
+- files_changed: src/playable/demo-replay/captureReplayFramebufferStateAudioMusic.ts; test/playable/demo-replay/capture-replay-framebuffer-state-audio-music.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Resumed from a stale progress log whose expected product/test files were not present in the working tree. Recreated the 13-008 product and focused test files from the selected step's read scope, then replaced intentional placeholder locks with exact deterministic values after formatting and focused-test capture.
+- tests_run: bun run format (initial pass fixed 1 file; exact-value rerun no fixes); bun test test/playable/demo-replay/capture-replay-framebuffer-state-audio-music.test.ts (6 pass, 0 fail, 25 expect() calls); bun test (7819 pass, 0 fail, 694831 expect() calls across 373 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-009 detect-long-run-drift
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
