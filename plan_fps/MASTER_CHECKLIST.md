@@ -232,7 +232,7 @@
 - [x] `12-001` `load-default-config` | prereqs: `11-011` | file: `plan_fps/steps/12-001-load-default-config.md`
 - [x] `12-002` `write-config-back` | prereqs: `12-001` | file: `plan_fps/steps/12-002-write-config-back.md`
 - [x] `12-003` `persist-key-bindings` | prereqs: `12-002` | file: `plan_fps/steps/12-003-persist-key-bindings.md`
-- [ ] `12-004` `persist-mouse-settings` | prereqs: `12-003` | file: `plan_fps/steps/12-004-persist-mouse-settings.md`
+- [x] `12-004` `persist-mouse-settings` | prereqs: `12-003` | file: `plan_fps/steps/12-004-persist-mouse-settings.md`
 - [ ] `12-005` `persist-sound-settings` | prereqs: `12-004` | file: `plan_fps/steps/12-005-persist-sound-settings.md`
 - [ ] `12-006` `persist-screen-settings` | prereqs: `12-005` | file: `plan_fps/steps/12-006-persist-screen-settings.md`
 - [ ] `12-007` `define-save-and-window-path-policies` | prereqs: `12-006` | file: `plan_fps/steps/12-007-define-save-and-window-path-policies.md`

@@ -3408,3 +3408,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-004 persist-mouse-settings
 - open_risks: none
+
+## 2026-04-26 - 12-004 persist-mouse-settings
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-004
+- step_title: persist-mouse-settings
+- summary: Added the playable mouse-settings persistence surface at `src/playable/config-persistence/persistMouseSettings.ts`. The module exports the exact `bun run doom.ts` command contract plus `persistMouseSettings`, validates the product runtime command before applying any mouse settings, persists mouse sensitivity/buttons in the typed vanilla `default.cfg` snapshot, persists host mouse capture/acceleration/threshold/extended button settings in the typed `chocolate-doom.cfg` snapshot, and returns deterministic replay evidence with locked field order, serialized state, SHA-256 hashes, and replay checksums. Added focused test `test/playable/config-persistence/persist-mouse-settings.test.ts` to lock the command contract, 01-014 missing config persistence audit linkage, formatted source SHA-256 `e659532c56a9d3d7de58ee31435a8d66348a623c0398834397df9ff4d558f83d`, exact default/custom mouse transition evidence, wrong-command prevalidation, invalid setting rejection, and preservation of non-mouse config values.
+- files_changed: src/playable/config-persistence/persistMouseSettings.ts; test/playable/config-persistence/persist-mouse-settings.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders to capture the formatted source hash, default replay hash/checksum, and custom replay hash/checksum. Replaced placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun no fixes); bun test test/playable/config-persistence/persist-mouse-settings.test.ts (placeholder run failed as expected while locking exact values; final run 6 pass, 0 fail, 45 expect() calls); bun test (7672 pass, 0 fail, 694015 expect() calls across 360 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-005 persist-sound-settings
+- open_risks: none
