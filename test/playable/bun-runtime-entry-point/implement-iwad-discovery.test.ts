@@ -113,6 +113,91 @@ describe('implement IWAD discovery', () => {
       status: 'missing',
     });
   });
+
+  test('probes the default IWAD path exactly once when the candidate is absent', async () => {
+    const probedPaths: string[] = [];
+
+    const result = await discoverIwadPath({
+      fileExists: async (iwadPath: string) => {
+        probedPaths.push(iwadPath);
+        return false;
+      },
+    });
+
+    expect(probedPaths).toEqual([DEFAULT_LOCAL_IWAD_PATH]);
+    expect(result).toEqual({
+      iwadPath: null,
+      source: 'default-local-reference-bundle',
+      status: 'missing',
+    });
+  });
+
+  test('treats explicit null requestedIwadPath as no command-line override', async () => {
+    const probedPaths: string[] = [];
+
+    const result = await discoverIwadPath({
+      fileExists: async (iwadPath: string) => {
+        probedPaths.push(iwadPath);
+        return true;
+      },
+      requestedIwadPath: null,
+    });
+
+    expect(probedPaths).toEqual([DEFAULT_LOCAL_IWAD_PATH]);
+    expect(result).toEqual({
+      iwadPath: DEFAULT_LOCAL_IWAD_PATH,
+      source: 'default-local-reference-bundle',
+      status: 'discovered',
+    });
+  });
+
+  test('honours a custom defaultIwadPath override different from the locked constant', async () => {
+    const probedPaths: string[] = [];
+    const customDefaultIwadPath = 'iwad\\custom.wad';
+
+    const result = await discoverIwadPath({
+      defaultIwadPath: customDefaultIwadPath,
+      fileExists: async (iwadPath: string) => {
+        probedPaths.push(iwadPath);
+        return iwadPath === customDefaultIwadPath;
+      },
+    });
+
+    expect(customDefaultIwadPath).not.toBe(DEFAULT_LOCAL_IWAD_PATH);
+    expect(probedPaths).toEqual([customDefaultIwadPath]);
+    expect(result).toEqual({
+      iwadPath: customDefaultIwadPath,
+      source: 'default-local-reference-bundle',
+      status: 'discovered',
+    });
+  });
+
+  test('preserves an empty-string requestedIwadPath as a command-line override without probing', async () => {
+    const blockedProbe: IwadPathExistenceProbe = async () => {
+      throw new Error('empty-string command-line override must not probe the default candidate');
+    };
+
+    await expect(
+      discoverIwadPath({
+        fileExists: blockedProbe,
+        requestedIwadPath: '',
+      }),
+    ).resolves.toEqual({
+      iwadPath: '',
+      source: 'command-line',
+      status: 'discovered',
+    });
+  });
+
+  test('locks the runtime-frozen invariant on the contract and every nested object', () => {
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT.commandContract)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT.currentEntrypoint)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT.currentEntrypoint.helpUsageLines)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT.deterministicReplayCompatibility)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT.discovery)).toBe(true);
+    expect(Object.isFrozen(IMPLEMENT_IWAD_DISCOVERY_CONTRACT.discovery.defaultCandidate)).toBe(true);
+  });
 });
 
 function assertObject(value: unknown, label: string): asserts value is object {

@@ -59,39 +59,39 @@ export type ImplementIwadDiscoveryContract = {
 
 export type IwadPathExistenceProbe = (iwadPath: string) => Promise<boolean>;
 
-export const IMPLEMENT_IWAD_DISCOVERY_CONTRACT = {
-  commandContract: {
+export const IMPLEMENT_IWAD_DISCOVERY_CONTRACT = Object.freeze({
+  commandContract: Object.freeze({
     command: 'bun run doom.ts',
     entryFile: 'doom.ts',
     program: 'bun',
     subcommand: 'run',
-  },
-  currentEntrypoint: {
+  }),
+  currentEntrypoint: Object.freeze({
     command: 'bun run src/main.ts',
-    helpUsageLines: ['bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]', 'bun run start -- [--iwad <path-to-iwad>] --list-maps'],
+    helpUsageLines: Object.freeze(['bun run start -- [--iwad <path-to-iwad>] [--map E1M1] [--skill 2] [--scale 2]', 'bun run start -- [--iwad <path-to-iwad>] --list-maps'] as const),
     path: 'src/main.ts',
     scriptName: 'start',
     sourceCatalogId: 'S-FPS-011',
-  },
-  deterministicReplayCompatibility: {
+  }),
+  deterministicReplayCompatibility: Object.freeze({
     discoveryStage: 'startup-before-game-session',
     frameDependent: false,
     gameStateMutation: false,
     replayInputDependency: false,
-  },
-  discovery: {
+  }),
+  discovery: Object.freeze({
     commandLineParameter: '--iwad',
-    defaultCandidate: {
+    defaultCandidate: Object.freeze({
       path: DEFAULT_LOCAL_IWAD_PATH,
       source: 'local-reference-bundle',
-    },
+    }),
     missingDefaultResult: 'null-deferred-to-03-008',
     provider: 'Bun.file().exists()',
     source: 'Bun-runtime-entrypoint',
-  },
+  }),
   stepId: '03-007',
   stepTitleSlug: 'implement-iwad-discovery',
-} as const satisfies ImplementIwadDiscoveryContract;
+} as const) satisfies ImplementIwadDiscoveryContract;
 
 export async function discoverIwadPath(options: DiscoverIwadPathOptions = {}): Promise<DiscoverIwadPathResult> {
   if (options.requestedIwadPath !== null && options.requestedIwadPath !== undefined) {
