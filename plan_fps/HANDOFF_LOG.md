@@ -3570,3 +3570,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-004 replay-demo3-deterministically
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-004 replay-demo3-deterministically
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-004
+- step_title: replay-demo3-deterministically
+- summary: Added the playable DEMO3 deterministic replay surface at `src/playable/demo-replay/replayDemo3Deterministically.ts`. The module exports the exact `bun run doom.ts` command contract, consumes a DEMO3-compatible vanilla demo stream through the existing `DemoPlayback` marker-timing wrapper, rejects legacy launcher commands before parsing demo bytes, rejects zero-tic demo replays, and returns frozen deterministic replay evidence with locked tic signatures, tic command hash `0cdd06a58039b091360f7188b0d44c7d7467fc37b25962339cb59255326e000e`, and replay hash `832e5496197c972e825a74efaabc6a1eb2b9cc4538fb3609e4a81d65929a9038`. Added focused test `test/playable/demo-replay/replay-demo3-deterministically.test.ts` to lock the command contract, 01-015 side-by-side replay audit linkage, formatted source SHA-256 `cbabebfaaa374f69188282264df6364b9aa1c65bf895fe0670dd1361d003ef34`, deterministic marker transition, replay hashes, wrong-command prevalidation, and empty-demo rejection.
+- files_changed: src/playable/demo-replay/replayDemo3Deterministically.ts; test/playable/demo-replay/replay-demo3-deterministically.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders to capture the formatted source hash and deterministic DEMO3 replay values. Replaced the placeholders with exact values, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial and exact-value reruns no fixes); bun test test/playable/demo-replay/replay-demo3-deterministically.test.ts (5 pass, 0 fail, 20 expect() calls); bun test (7770 pass, 0 fail, 694409 expect() calls across 369 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-005 convert-demo-input-stream
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
