@@ -1,8 +1,7 @@
 import type { LauncherInputState, LauncherSession } from '../../launcher/session.ts';
-import type { MainLoopPhase, PreLoopStep } from '../../mainLoop.ts';
+import type { MainLoop, MainLoopPhase, PreLoopStep } from '../../mainLoop.ts';
 
 import { advanceLauncherSession } from '../../launcher/session.ts';
-import { MainLoop } from '../../mainLoop.ts';
 
 export const WIRE_PLAYER_COMMAND_APPLICATION_RUNTIME_CONTRACT = Object.freeze({
   auditManifest: Object.freeze({
@@ -50,27 +49,19 @@ export function wirePlayerCommandApplication(options: WirePlayerCommandApplicati
     throw new Error(`wire-player-command-application requires bun run doom.ts, got ${options.runtimeCommand}`);
   }
 
-  const playerMapObject = options.session.player.mo;
+  const { inputState, loop, session } = options;
+  const playerMapObjectBefore = session.player.mo;
 
-  if (playerMapObject === null) {
+  if (playerMapObjectBefore === null) {
     throw new Error('wire-player-command-application requires a spawned player');
   }
 
-  const before = Object.freeze({
-    angle: playerMapObject.angle,
-    frameCount: options.loop.frameCount,
-    levelTime: options.session.levelTime,
-    playerCommand: options.session.player.cmd,
-    playerX: playerMapObject.x,
-    playerY: playerMapObject.y,
-    playerZ: playerMapObject.z,
-    viewZ: options.session.player.viewz,
-  });
+  const before = snapshotPlayerState(session, loop, playerMapObjectBefore);
   const phaseTrace: MainLoopPhase[] = [];
   const preLoopTrace: PreLoopStep[] = [];
 
-  if (!options.loop.started) {
-    options.loop.setup({
+  if (!loop.started) {
+    loop.setup({
       executeSetViewSize() {
         preLoopTrace.push('executeSetViewSize');
       },
@@ -86,7 +77,7 @@ export function wirePlayerCommandApplication(options: WirePlayerCommandApplicati
     });
   }
 
-  options.loop.runOneFrame({
+  loop.runOneFrame({
     display() {
       phaseTrace.push('display');
     },
@@ -95,36 +86,40 @@ export function wirePlayerCommandApplication(options: WirePlayerCommandApplicati
     },
     tryRunTics() {
       phaseTrace.push('tryRunTics');
-      advanceLauncherSession(options.session, options.inputState);
+      advanceLauncherSession(session, inputState);
     },
     updateSounds() {
       phaseTrace.push('updateSounds');
     },
   });
 
-  const updatedPlayerMapObject = options.session.player.mo;
+  const playerMapObjectAfter = session.player.mo;
 
-  if (updatedPlayerMapObject === null) {
+  if (playerMapObjectAfter === null) {
     throw new Error('wire-player-command-application lost the spawned player');
   }
 
   return Object.freeze({
-    after: Object.freeze({
-      angle: updatedPlayerMapObject.angle,
-      frameCount: options.loop.frameCount,
-      levelTime: options.session.levelTime,
-      playerCommand: options.session.player.cmd,
-      playerX: updatedPlayerMapObject.x,
-      playerY: updatedPlayerMapObject.y,
-      playerZ: updatedPlayerMapObject.z,
-      viewZ: options.session.player.viewz,
-    }),
+    after: snapshotPlayerState(session, loop, playerMapObjectAfter),
     appliedDuringPhase: 'tryRunTics',
     before,
-    frameCount: options.loop.frameCount,
-    phaseTrace: Object.freeze([...phaseTrace]),
-    preLoopTrace: Object.freeze([...preLoopTrace]),
+    frameCount: loop.frameCount,
+    phaseTrace: Object.freeze(phaseTrace),
+    preLoopTrace: Object.freeze(preLoopTrace),
     runtimeCommand: WIRE_PLAYER_COMMAND_APPLICATION_RUNTIME_CONTRACT.runtimeCommand,
     stepId: WIRE_PLAYER_COMMAND_APPLICATION_RUNTIME_CONTRACT.stepId,
+  });
+}
+
+function snapshotPlayerState(session: LauncherSession, loop: MainLoop, playerMapObject: NonNullable<LauncherSession['player']['mo']>): WirePlayerCommandApplicationSnapshot {
+  return Object.freeze({
+    angle: playerMapObject.angle,
+    frameCount: loop.frameCount,
+    levelTime: session.levelTime,
+    playerCommand: session.player.cmd,
+    playerX: playerMapObject.x,
+    playerY: playerMapObject.y,
+    playerZ: playerMapObject.z,
+    viewZ: session.player.viewz,
   });
 }

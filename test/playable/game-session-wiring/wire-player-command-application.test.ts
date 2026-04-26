@@ -33,7 +33,7 @@ describe('wirePlayerCommandApplication', () => {
     const sourceText = await Bun.file('src/playable/game-session-wiring/wirePlayerCommandApplication.ts').text();
     const sourceHash = new Bun.CryptoHasher('sha256').update(sourceText).digest('hex');
 
-    expect(sourceHash).toBe('bfb10f7179518eb0efc30fd4cd1a76976cc0301fae8e89f9e4fe9082aec146b4');
+    expect(sourceHash).toBe('122eab0af5846a8c24171c8004cf51b11c6792143d6bda439737f3c55c2162fc');
   });
 
   test('applies the player command only during tryRunTics', async () => {
@@ -108,5 +108,49 @@ describe('wirePlayerCommandApplication', () => {
     ).toThrow('wire-player-command-application requires bun run doom.ts, got bun run src/main.ts');
     expect(loop.started).toBe(false);
     expect(session.levelTime).toBe(0);
+  });
+
+  test('throws when the player map object is missing before the frame', async () => {
+    const resources = await loadLauncherResources('doom/DOOM1.WAD');
+    const session = createLauncherSession(resources, { mapName: 'E1M1', skill: 2 });
+    const loop = new MainLoop();
+
+    session.player.mo = null;
+
+    expect(() =>
+      wirePlayerCommandApplication({
+        inputState: EMPTY_LAUNCHER_INPUT,
+        loop,
+        runtimeCommand: 'bun run doom.ts',
+        session,
+      }),
+    ).toThrow('wire-player-command-application requires a spawned player');
+    expect(loop.started).toBe(false);
+    expect(session.levelTime).toBe(0);
+  });
+
+  test('skips pre-loop setup when the main loop is already started', async () => {
+    const resources = await loadLauncherResources('doom/DOOM1.WAD');
+    const session = createLauncherSession(resources, { mapName: 'E1M1', skill: 2 });
+    const loop = new MainLoop();
+
+    loop.setup({
+      executeSetViewSize() {},
+      initialTryRunTics() {},
+      restoreBuffer() {},
+      startGameLoop() {},
+    });
+
+    const result = wirePlayerCommandApplication({
+      inputState: EMPTY_LAUNCHER_INPUT,
+      loop,
+      runtimeCommand: 'bun run doom.ts',
+      session,
+    });
+
+    expect(result.preLoopTrace).toEqual([]);
+    expect(result.phaseTrace).toEqual(['startFrame', 'tryRunTics', 'updateSounds', 'display']);
+    expect(loop.frameCount).toBe(1);
+    expect(session.levelTime).toBe(1);
   });
 });
