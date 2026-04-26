@@ -89,6 +89,17 @@ async function readFirstEligibleGovernanceStepLine(): Promise<string> {
   return `Initial eligible step: ${match.groups.id} ${match.groups.slug}`;
 }
 
+async function readFirstEligibleNonGovernanceStep(): Promise<{ readonly lane: string; readonly stepId: string }> {
+  const checklistText = await Bun.file('plan_vanilla_parity/MASTER_CHECKLIST.md').text();
+  const uncheckedNoPrereqPattern = /^- \[ \] `(?<id>\d{2}-\d{3})` `(?<slug>[^`]+)` \| lane: `(?<lane>[^`]+)` \| prereqs: `none` \|/gm;
+  for (const match of checklistText.matchAll(uncheckedNoPrereqPattern)) {
+    if (match.groups?.lane !== 'governance') {
+      return { lane: match.groups!.lane!, stepId: match.groups!.id! };
+    }
+  }
+  throw new Error('No unchecked non-governance no-prereq step found in plan_vanilla_parity/MASTER_CHECKLIST.md.');
+}
+
 async function runPowerShellScript(scriptPath: string, additionalArguments: readonly string[]) {
   const subprocess = Bun.spawn({
     cmd: ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', scriptPath, ...additionalArguments],
@@ -143,6 +154,7 @@ describe('vanilla parity Ralph-loop scripts', () => {
     let secondLockId = '';
 
     try {
+      const expectedSecondStep = await readFirstEligibleNonGovernanceStep();
       const firstResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'other-agent', '--lease-minutes', '60', '--lane', 'governance']));
       const secondResult = await acquireLaneLock(parseLaneLockArguments(['acquire', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--owner', 'auto-agent', '--lease-minutes', '60']));
 
@@ -153,8 +165,8 @@ describe('vanilla parity Ralph-loop scripts', () => {
       expect(firstResult.acquired).toBe(true);
       expect(firstResult.lane).toBe('governance');
       expect(secondResult.acquired).toBe(true);
-      expect(secondResult.lane).toBe('inventory');
-      expect(secondResult.stepId).toBe('01-001');
+      expect(secondResult.lane).toBe(expectedSecondStep.lane);
+      expect(secondResult.stepId).toBe(expectedSecondStep.stepId);
     } finally {
       if (firstLockId) {
         await releaseLaneLock(parseLaneLockArguments(['release', '--plan-directory', 'plan_vanilla_parity', '--lock-directory', lockDirectory, '--lane', 'governance', '--lock-id', firstLockId]));

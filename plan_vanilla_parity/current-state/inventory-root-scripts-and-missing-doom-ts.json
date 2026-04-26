@@ -1,0 +1,60 @@
+{
+  "id": "01-001",
+  "title": "Inventory Root Scripts And Missing Doom Ts",
+  "lane": "inventory",
+  "summary": "Root-level Bun entrypoint inventory for the vanilla parity rebuild. Confirms that the canonical runtime target bun run doom.ts cannot launch because doom.ts does not exist at the repository root, and records the package.json scripts that exist in its place.",
+  "captured_at_utc": "2026-04-26T14:30:00Z",
+  "evidence_method": "direct local repository audit performed by the inventory lane: ls of repository root, Bun.file existence checks, package.json read, and bun run doom.ts launch attempt.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "expected_runtime_target": {
+    "command": "bun run doom.ts",
+    "entrypoint_relative_path": "doom.ts",
+    "source": "plan_vanilla_parity/establish-vanilla-parity-control-center.md runtime target field"
+  },
+  "doom_ts_status": {
+    "expected_relative_path": "doom.ts",
+    "exists": false,
+    "launch_attempt": {
+      "command": "bun run doom.ts",
+      "exit_code": 1,
+      "stderr_first_line": "error: Module not found \"doom.ts\"",
+      "captured_with_help_flag": false
+    },
+    "launch_attempt_with_help_flag": {
+      "command": "bun run doom.ts --help",
+      "exit_code": 1,
+      "stderr_first_line": "error: Module not found \"doom.ts\""
+    }
+  },
+  "package_json": {
+    "relative_path": "package.json",
+    "exists": true,
+    "name": "doom-codex",
+    "type": "module",
+    "version": "0.0.0",
+    "scripts": {
+      "format": "bun run tools/format-changed.ts",
+      "start": "bun run src/main.ts"
+    },
+    "exposes_doom_ts_script": false,
+    "start_script_targets_vanilla_doom_ts": false,
+    "start_script_target_relative_path": "src/main.ts"
+  },
+  "current_simplified_launcher": {
+    "relative_path": "src/main.ts",
+    "exists": true,
+    "is_vanilla_d_doom_main_path": false,
+    "notes": "src/main.ts implements a simplified launcher that parses --iwad, --map, --skill, --scale, --list-maps, and --help and drives runLauncherWindow via createLauncherSession. It is not the vanilla D_DoomMain startup path that the final bun run doom.ts target must reproduce."
+  },
+  "root_typescript_entrypoints": {
+    "found": [],
+    "expected_for_vanilla_parity": ["doom.ts"],
+    "missing_for_vanilla_parity": ["doom.ts"]
+  },
+  "implications": [
+    "The runtime target bun run doom.ts declared by plan_vanilla_parity/establish-vanilla-parity-control-center.md cannot execute today.",
+    "package.json exposes only a simplified-launcher start script (bun run src/main.ts) and a format script (bun run tools/format-changed.ts).",
+    "Adding the root doom.ts entrypoint is reserved for the launch lane (step 03-001 add-root-doom-ts-bun-entrypoint) and must not happen in the inventory lane."
+  ],
+  "follow_up_steps": ["03-001 add-root-doom-ts-bun-entrypoint", "01-002 inventory-simplified-launcher-surface", "01-024 gate-current-state-inventory"]
+}
