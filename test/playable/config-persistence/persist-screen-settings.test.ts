@@ -185,4 +185,88 @@ describe('persistScreenSettings', () => {
       }),
     ).toThrow('unknown screen setting unknown_screen_setting');
   });
+
+  test('rejects every binary-integer field that falls outside its 0-to-1 range', () => {
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { aspect_ratio_correct: 2 } })).toThrow('aspect_ratio_correct must be an integer from 0 to 1');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { autoadjust_video_settings: -1 } })).toThrow('autoadjust_video_settings must be an integer from 0 to 1');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { detaillevel: 2 } })).toThrow('detaillevel must be an integer from 0 to 1');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { fullscreen: 3 } })).toThrow('fullscreen must be an integer from 0 to 1');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { png_screenshots: 2 } })).toThrow('png_screenshots must be an integer from 0 to 1');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { show_endoom: -1 } })).toThrow('show_endoom must be an integer from 0 to 1');
+  });
+
+  test('rejects integer-range fields that fall outside their permitted bounds', () => {
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { usegamma: 5 } })).toThrow('usegamma must be an integer from 0 to 4');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { usegamma: -1 } })).toThrow('usegamma must be an integer from 0 to 4');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { screen_width: -1 } })).toThrow('screen_width must be an integer from 0 to 16384');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { screen_width: 16385 } })).toThrow('screen_width must be an integer from 0 to 16384');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { screen_height: -1 } })).toThrow('screen_height must be an integer from 0 to 16384');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { screen_height: 16385 } })).toThrow('screen_height must be an integer from 0 to 16384');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { screenblocks: 2 } })).toThrow('screenblocks must be an integer from 3 to 11');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { screenblocks: 9.5 } })).toThrow('screenblocks must be an integer from 3 to 11');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { startup_delay: -1 } })).toThrow('startup_delay must be an integer from 0 to 10000');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { startup_delay: 10001 } })).toThrow('startup_delay must be an integer from 0 to 10000');
+  });
+
+  test('rejects video_driver and window_position values that violate the config line and length contract', () => {
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { video_driver: 'first\nsecond' } })).toThrow('video_driver must not contain a config line break');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { video_driver: 'carriage\rreturn' } })).toThrow('video_driver must not contain a config line break');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { video_driver: 'a'.repeat(261) } })).toThrow('video_driver must be 260 characters or shorter');
+    expect(() => persistScreenSettings({ command: TARGET_COMMAND, settings: { window_position: 'b'.repeat(261) } })).toThrow('window_position must be 260 characters or shorter');
+  });
+
+  test('locks the deterministic replay evidence and field-order arrays as frozen surfaces', () => {
+    const result = persistScreenSettings({ command: TARGET_COMMAND });
+
+    expect(Object.isFrozen(result.replayEvidence.hostFieldOrder)).toBe(true);
+    expect(Object.isFrozen(result.replayEvidence.vanillaFieldOrder)).toBe(true);
+    expect(Object.isFrozen(result.transition.changedHostFields)).toBe(true);
+    expect(Object.isFrozen(result.transition.changedVanillaFields)).toBe(true);
+    expect(result.replayEvidence.hostFieldOrder.length).toBe(11);
+    expect(result.replayEvidence.vanillaFieldOrder.length).toBe(3);
+    expect(result.replayEvidence.hostScreenHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(result.replayEvidence.vanillaScreenHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(result.replayEvidence.stateHash).toMatch(/^[0-9a-f]{64}$/);
+    expect(result.replayEvidence.replayChecksum >>> 0).toBe(result.replayEvidence.replayChecksum);
+    expect(result.replayEvidence.transitionSignature).toBe(`screen-settings:${result.replayEvidence.vanillaScreenHash}:${result.replayEvidence.hostScreenHash}`);
+  });
+
+  test('persists a single screenblocks override while keeping every other host field at the playable default', () => {
+    const result = persistScreenSettings({
+      command: TARGET_COMMAND,
+      settings: { screenblocks: 11 },
+    });
+
+    expect(result.vanillaConfig.screenblocks).toBe(11);
+    expect(result.vanillaConfig.detaillevel).toBe(0);
+    expect(result.vanillaConfig.usegamma).toBe(0);
+    expect(result.hostConfig.aspect_ratio_correct).toBe(1);
+    expect(result.hostConfig.autoadjust_video_settings).toBe(0);
+    expect(result.hostConfig.fullscreen).toBe(0);
+    expect(result.hostConfig.screen_bpp).toBe(32);
+    expect(result.hostConfig.screen_height).toBe(480);
+    expect(result.hostConfig.screen_width).toBe(640);
+    expect(result.hostConfig.startup_delay).toBe(1000);
+    expect(result.transition.changedVanillaFields).toEqual(['screenblocks']);
+    expect(result.transition.changedHostFields).toEqual(['autoadjust_video_settings', 'fullscreen', 'screen_width', 'screen_height', 'screen_bpp']);
+  });
+
+  test('rejects the wrong runtime command before allocating the result snapshots', () => {
+    const baselineHost = createDefaultHostExtraCfg();
+    const baselineVanilla = createDefaultVanillaCfg();
+
+    expect(() =>
+      persistScreenSettings({
+        command: 'bun run other.ts',
+        hostConfig: baselineHost,
+        settings: { screen_bpp: 32 },
+        vanillaConfig: baselineVanilla,
+      }),
+    ).toThrow('persist screen settings requires bun run doom.ts');
+
+    expect(Object.isFrozen(baselineHost)).toBe(true);
+    expect(Object.isFrozen(baselineVanilla)).toBe(true);
+    expect(baselineHost.screen_bpp).toBe(0);
+    expect(baselineVanilla.screenblocks).toBe(9);
+  });
 });
