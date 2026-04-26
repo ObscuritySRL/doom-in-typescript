@@ -5,6 +5,7 @@ import type { LoadGameLayout } from '../../../src/save/loadgame.ts';
 import type { SaveGamePlayerArchive, SaveGamePlayerSlots, SaveGameWorld } from '../../../src/save/coreSerialization.ts';
 import type { SaveGameHeader, SaveGamePlayerPresence } from '../../../src/save/saveHeader.ts';
 import type { SaveGameSpecialArchive } from '../../../src/save/specialSerialization.ts';
+import type { RestoreGameStateFromSaveInput } from '../../../src/playable/save-load-playability/restoreGameStateFromSave.ts';
 
 import { MAXBUTTONS } from '../../../src/specials/switches.ts';
 import { MAXCEILINGS } from '../../../src/specials/ceilings.ts';
@@ -104,7 +105,7 @@ describe('restoreGameStateFromSave', () => {
   });
 
   test('locks the formatted source hash', async () => {
-    expect(await readSourceHash()).toBe('ab99541941541f551923ff37047ef6dcffcc639e0a52cef4431cc40cb420298e');
+    expect(await readSourceHash()).toBe('ef264875b56a258b45073c24636f6d43e6cc1f93f03d68b128b418671bd8c83c');
   });
 
   test('classifies compatible headers with incomplete archives without restoring state', () => {
@@ -143,6 +144,28 @@ describe('restoreGameStateFromSave', () => {
         saveBytes: new Uint8Array(),
       }),
     ).toThrow('Restore game state from save must run through bun run doom.ts.');
+  });
+
+  test('rethrows unexpected failures while reading save bytes', () => {
+    const input = {
+      layout: EMPTY_LAYOUT,
+      get saveBytes(): Uint8Array {
+        throw new Error('save bytes unavailable');
+      },
+    } satisfies RestoreGameStateFromSaveInput;
+
+    expect(() => restoreGameStateFromSave(input)).toThrow('save bytes unavailable');
+  });
+
+  test('rethrows unexpected failures while reading the restore layout', () => {
+    const input = {
+      get layout(): LoadGameLayout {
+        throw new Error('layout unavailable');
+      },
+      saveBytes: createValidEmptySaveBytes(),
+    } satisfies RestoreGameStateFromSaveInput;
+
+    expect(() => restoreGameStateFromSave(input)).toThrow('layout unavailable');
   });
 
   test('does not restore unsupported savegame versions', () => {

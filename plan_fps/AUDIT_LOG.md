@@ -1147,3 +1147,37 @@ Required entry shape:
 - files_changed: D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
 - tests_run: bun run format (Formatted 7 files in 5ms. No fixes applied.); bun test test/oracles/capture-menu-open-close-behavior.test.ts (with strengthened fix in place: 7 pass, 0 fail, 107 expects; post-revert baseline: 5 pass, 0 fail, 14 expects); bun test (with strengthened fix in place: 7789 pass, 0 fail, 694661 expects across 371 files; post-revert state: 7790 pass, 0 fail, 694639 expects across 371 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
 - follow_up: reapplying the strengthened OR-FPS-015 test contract to align with the 02-022 sibling's invariants remains a candidate improvement when workspace policy permits the audit-induced edits to persist.
+
+## 2026-04-26T03:44:50Z - 11-009 restore-game-state-from-save - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-009
+- step_title: restore-game-state-from-save
+- prior_audits: Claude Code/completed found the source satisfied the step contract, added success-path, startOffset, empty-buffer, command, and freeze regression coverage, and left no follow-up.
+- correctness_findings: The implementation still satisfies the Expected Changes and the focused test is meaningful with no skipped or `.only` tests. Defect found: both parser catch blocks caught every thrown value, so unexpected non-parse failures from the input boundary could be masked as deterministic corrupted-save evidence.
+- performance_findings: none; restore is a one-shot load action, not a per-frame/per-tic/per-sample/per-pixel hot path. The existing per-call SHA-256 hasher and small frozen evidence objects are appropriate.
+- improvement_findings: The focused test did not lock that unexpected failures while reading `saveBytes` or `layout` propagate instead of being swallowed by the corrupted-save path.
+- corrective_action: Narrowed the two parser catch blocks to `RangeError`, rethrowing non-parse failures. Added regression tests using typed throwing getters for `saveBytes` and `layout`, and updated the formatted source hash lock.
+- files_changed: D:/Projects/doom-in-typescript/src/playable/save-load-playability/restoreGameStateFromSave.ts; D:/Projects/doom-in-typescript/test/playable/save-load-playability/restore-game-state-from-save.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 9 files in 10ms. No fixes applied.); bun test test/playable/save-load-playability/restore-game-state-from-save.test.ts (19 pass, 0 fail, 66 expects); bun test (7790 pass, 0 fail, 694639 expects across 371 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T03:44:50Z - 02-008 capture-demo2-playback-checkpoints - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-008
+- step_title: capture-demo2-playback-checkpoints
+- prior_audits: none
+- correctness_findings: The fixture satisfies the Expected Changes: source authority, capture command, checkpoint frame/tic window, exact expected trace, deterministic trace SHA-256, pending null live hashes, 01-015 manifest linkage, and OR-FPS-013 registry entry. Focused test exists and has no skipped or `.only` tests. Test weakness found: transition/window checks read only the local expected fixture constant, and JSON boundary reads lacked runtime shape guards.
+- performance_findings: none; this is a static oracle fixture and focused test. Hashing uses Bun.CryptoHasher and all file reads are small one-shot reads outside hot paths.
+- improvement_findings: The focused test did not explicitly lock nonnegative monotonic frame/tic checkpoints, frame/tic equality, the final pending-live-hashes checkpoint, live hash null fields, or same-row source-catalog matching.
+- corrective_action: Added typed fixture and manifest shape assertions, changed transition/window assertions to load the live fixture, recomputed the trace hash from fixture data, added checkpoint boundary and pending-live-hash assertions, and tightened source-catalog checks to match id/authority/path on the same row.
+- files_changed: D:/Projects/doom-in-typescript/test/oracles/capture-demo2-playback-checkpoints.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 9 files in 10ms. No fixes applied.); bun test test/oracles/capture-demo2-playback-checkpoints.test.ts (6 pass, 0 fail, 79 expects); bun test (7790 pass, 0 fail, 694639 expects across 371 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none

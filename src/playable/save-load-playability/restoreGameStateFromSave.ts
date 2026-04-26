@@ -155,7 +155,11 @@ export function restoreGameStateFromSave(input: RestoreGameStateFromSaveInput): 
 
   try {
     header = readSaveGameHeader(input.saveBytes);
-  } catch {
+  } catch (error) {
+    if (!(error instanceof RangeError)) {
+      throw error;
+    }
+
     const transition = createFailureTransition('corrupted', input.saveBytes, 0, null);
 
     return createRestoreEvidence(null, transition);
@@ -179,7 +183,11 @@ export function restoreGameStateFromSave(input: RestoreGameStateFromSaveInput): 
     const transition = createRestoredTransition(result.value, input.saveBytes, result.bytesRead, result.nextOffset);
 
     return createRestoreEvidence(result.value, transition);
-  } catch {
+  } catch (error) {
+    if (!(error instanceof RangeError)) {
+      throw error;
+    }
+
     const transition = createFailureTransition('corrupted', input.saveBytes, SAVEGAME_HEADER_SIZE, header);
 
     return createRestoreEvidence(null, transition);
