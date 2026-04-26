@@ -3264,3 +3264,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-007 handle-corrupted-save
 - open_risks: none
+
+## 2026-04-26 - 11-007 handle-corrupted-save
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-007
+- step_title: handle-corrupted-save
+- summary: Added the playable corrupted-save handling surface at `src/playable/save-load-playability/handleCorruptedSave.ts`. The module exports the exact `bun run doom.ts` command contract plus `handleCorruptedSave`, validates the product runtime command before inspecting save bytes, classifies truncated headers, unsupported versions, header-valid saves, and corrupted load archives without restoring state, and returns frozen deterministic replay evidence with locked checksums and signatures. Added focused test `test/playable/save-load-playability/handle-corrupted-save.test.ts` to lock the command contract, 01-013 save/load audit linkage, formatted source SHA-256 `0211856520672d5df977a8acc5de64f545b59ae96dc3bd1c54815ef5de2d3769`, exact header/corruption/version/truncation evidence, wrong-command prevalidation, and deterministic no-restore behavior.
+- files_changed: src/playable/save-load-playability/handleCorruptedSave.ts; test/playable/save-load-playability/handle-corrupted-save.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files; exact-value rerun fixed 1 file); bun test test/playable/save-load-playability/handle-corrupted-save.test.ts (6 pass, 0 fail, 18 expect() calls); bun test (7584 pass, 0 fail, 693709 expect() calls across 352 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-008 display-save-load-menu-messages
+- open_risks: none
