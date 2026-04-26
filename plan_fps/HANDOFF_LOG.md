@@ -3714,3 +3714,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-001 lock-bun-run-doom-command
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-001 lock-bun-run-doom-command
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-001
+- step_title: lock-bun-run-doom-command
+- summary: Added the Bun local distribution boundary command-lock surface at `src/playable/bun-launch-local-distribution-boundary/lockBunRunDoomCommand.ts`. The module exports the exact `bun run doom.ts` command contract, rejects legacy or non-Bun launch commands before replay work, and returns frozen deterministic replay compatibility evidence that records no input-stream, random-seed, or simulation-tick mutation. Added focused test `test/playable/bun-launch-local-distribution-boundary/lock-bun-run-doom-command.test.ts` to lock the exact command contract, transition from the package start script to the root `doom.ts` command, command hash `819863a289609cd4c24173f37348ef42eb0fcc009dac4005d195bf4502743d6b`, formatted source SHA-256 `671794a14e8316033e208299880ad42e56d2ba5c003026fb186db9f0d56a30a9`, frozen evidence, and rejection behavior.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/lockBunRunDoomCommand.ts; test/playable/bun-launch-local-distribution-boundary/lock-bun-run-doom-command.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Formatting fixed the newly added focused test once; reran `bun run format` to stability before verification.
+- tests_run: bun run format (initial product pass no fixes; focused-test pass fixed 1 file; stability rerun no fixes); bun test test/playable/bun-launch-local-distribution-boundary/lock-bun-run-doom-command.test.ts (4 pass, 0 fail, 9 expect() calls); bun test (7853 pass, 0 fail, 694960 expect() calls across 377 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-002 document-required-local-files
+- open_risks: unrelated dirty worktree files remain outside this step scope and were not staged

@@ -255,7 +255,7 @@
 
 ## Phase 14: Bun Launch / Local Distribution Boundary
 
-- [ ] `14-001` `lock-bun-run-doom-command` | prereqs: `13-011` | file: `plan_fps/steps/14-001-lock-bun-run-doom-command.md`
+- [x] `14-001` `lock-bun-run-doom-command` | prereqs: `13-011` | file: `plan_fps/steps/14-001-lock-bun-run-doom-command.md`
 - [ ] `14-002` `document-required-local-files` | prereqs: `14-001` | file: `plan_fps/steps/14-002-document-required-local-files.md`
 - [ ] `14-003` `verify-iwad-discovery-at-launch` | prereqs: `14-002` | file: `plan_fps/steps/14-003-verify-iwad-discovery-at-launch.md`
 - [ ] `14-004` `verify-missing-data-error-path` | prereqs: `14-003` | file: `plan_fps/steps/14-004-verify-missing-data-error-path.md`
