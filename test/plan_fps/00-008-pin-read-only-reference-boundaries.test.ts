@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 type PackageJson = {
@@ -150,6 +150,13 @@ function toPosixPath(pathValue: string): string {
   return pathValue.replaceAll('\\', '/');
 }
 
+function isSamePathOrInsideRoot(candidatePath: string, rootPath: string): boolean {
+  const normalizedCandidatePath = toPosixPath(candidatePath);
+  const normalizedRootPath = toPosixPath(rootPath);
+
+  return normalizedCandidatePath === normalizedRootPath || normalizedCandidatePath.startsWith(`${normalizedRootPath}/`);
+}
+
 describe('00-008 pin-read-only-reference-boundaries manifest', () => {
   test('locks the exact manifest contract', () => {
     expect(manifest).toEqual(expectedManifest);
@@ -166,19 +173,30 @@ describe('00-008 pin-read-only-reference-boundaries manifest', () => {
   test('pins all three roots as existing directories inside the workspace', () => {
     for (const readOnlyReferenceRoot of manifest.readOnlyReferenceRoots) {
       expect(existsSync(readOnlyReferenceRoot.absolutePath)).toBe(true);
+      expect(statSync(readOnlyReferenceRoot.absolutePath).isDirectory()).toBe(true);
       expect(toPosixPath(resolve(readOnlyReferenceRoot.relativePath))).toBe(readOnlyReferenceRoot.absolutePath);
-      expect(readOnlyReferenceRoot.absolutePath.startsWith(manifest.workspaceRoot)).toBe(true);
+      expect(isSamePathOrInsideRoot(readOnlyReferenceRoot.absolutePath, manifest.workspaceRoot)).toBe(true);
       expect(readOnlyReferenceRoot.writeAllowed).toBe(false);
+    }
+  });
+
+  test('keeps read-only roots as direct workspace child paths', () => {
+    for (const readOnlyReferenceRoot of manifest.readOnlyReferenceRoots) {
+      expect(readOnlyReferenceRoot.relativePath).not.toBe('');
+      expect(readOnlyReferenceRoot.relativePath).not.toContain('..');
+      expect(readOnlyReferenceRoot.relativePath).not.toContain('/');
+      expect(readOnlyReferenceRoot.relativePath).not.toContain('\\');
+      expect(readOnlyReferenceRoot.absolutePath).toBe(`${manifest.workspaceRoot}/${readOnlyReferenceRoot.relativePath}`);
     }
   });
 
   test('keeps oracle outputs outside the read-only roots', () => {
     for (const writableArtifactExample of manifest.writePolicy.writableArtifactExamples) {
       const writableArtifactPath = toPosixPath(resolve(writableArtifactExample));
-      expect(writableArtifactPath.startsWith(manifest.workspaceRoot)).toBe(true);
+      expect(isSamePathOrInsideRoot(writableArtifactPath, manifest.workspaceRoot)).toBe(true);
 
       for (const readOnlyReferenceRoot of manifest.readOnlyReferenceRoots) {
-        expect(writableArtifactPath.startsWith(readOnlyReferenceRoot.absolutePath)).toBe(false);
+        expect(isSamePathOrInsideRoot(writableArtifactPath, readOnlyReferenceRoot.absolutePath)).toBe(false);
       }
     }
   });

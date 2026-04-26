@@ -1079,3 +1079,37 @@ Required entry shape:
 - files_changed: D:/Projects/doom-in-typescript/src/playable/game-session-wiring/wireLevelExitFlow.ts; D:/Projects/doom-in-typescript/test/playable/game-session-wiring/wire-level-exit-flow.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
 - tests_run: bun run format (Formatted 7 files in 5ms. Fixed 1 file.); bun test test/playable/game-session-wiring/wire-level-exit-flow.test.ts (8 pass, 0 fail, 23 expects); bun test (7773 pass, 0 fail, 694421 expects across 369 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
 - follow_up: none
+
+## 2026-04-26T03:26:22Z - 00-008 pin-read-only-reference-boundaries - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 00-008
+- step_title: pin-read-only-reference-boundaries
+- prior_audits: none
+- correctness_findings: Manifest and DECISION_LOG entry satisfy the Expected Changes and Read Only evidence: D-FPS-009 pins only `doom`, `iwad`, and `reference` as read-only reference roots, all under `D:/Projects/doom-in-typescript`, with `writeAllowed: false`, forbidden create/delete/modify policy, README boundary lines, Bun runtime target `bun run doom.ts`, deterministic replay compatibility, package scripts, and tsconfig include scope locked. Focused test exists and has no skipped or `.only` tests. Boundary issue found in the test: path containment used raw `startsWith`, which does not distinguish true child paths from sibling paths with the same prefix, and root existence was checked without confirming directory type.
+- performance_findings: none; this step is static governance data and focused tests perform small file/path checks outside any hot path.
+- improvement_findings: The focused test did not explicitly lock that the three read-only roots are direct workspace child paths with no empty, slash-containing, or `..` relative segments.
+- corrective_action: Replaced raw prefix assertions with a segment-aware `isSamePathOrInsideRoot` helper, asserted each read-only root is an existing directory, and added a direct-workspace-child boundary test covering empty, traversal, and nested relative-path drift.
+- files_changed: D:/Projects/doom-in-typescript/test/plan_fps/00-008-pin-read-only-reference-boundaries.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 6 files in 5ms. No fixes applied.); bun test test/plan_fps/00-008-pin-read-only-reference-boundaries.test.ts (11 pass, 0 fail, 62 expects); bun test (7782 pass, 0 fail, 694541 expects across 370 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none
+
+## 2026-04-26T03:26:22Z - 02-014 capture-options-menu-path - Codex
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 02-014
+- step_title: capture-options-menu-path
+- prior_audits: none
+- correctness_findings: Oracle fixture satisfies the Expected Changes: it records source authority, capture command, `0..3` tic/frame window at 35Hz, Escape/ArrowDown/Enter input sequence, exact expected trace, deterministic trace SHA-256, inherited 01-015 launch-surface hashes, pending null live framebuffer/audio/state hashes, and OR-FPS-019 registration. Focused test exists and has no skipped or `.only` tests. Boundary issue found in the test: JSON fixture and manifest reads were typed directly at the file boundary without runtime shape guards, and zero/nonnegative/contiguous tic-frame behavior was only implied by whole-fixture equality rather than explicitly locked.
+- performance_findings: none; fixture parsing and hashing are test-only, use Bun.file and Bun.CryptoHasher, and are not in a per-frame, per-tick, per-pixel, or per-lump hot path.
+- improvement_findings: The focused test lacked explicit edge coverage for the intentionally empty capture arguments array, zero start tic/frame, nonnegative contiguous expected trace frames/tics, and input-to-trace alignment.
+- corrective_action: Added unknown-to-fixture and unknown-to-manifest shape assertions at the JSON boundaries, retained the exact fixture/hash/oracle checks, and added a focused boundary test for empty arguments, zero start, nonnegative contiguous frame/tic progression, end-frame/end-tic alignment, and input event alignment with trace events.
+- files_changed: D:/Projects/doom-in-typescript/test/oracles/capture-options-menu-path.test.ts; D:/Projects/doom-in-typescript/plan_fps/AUDIT_LOG.md
+- tests_run: bun run format (Formatted 6 files in 5ms. No fixes applied.); bun test test/oracles/capture-options-menu-path.test.ts (6 pass, 0 fail, 48 expects); bun test (7782 pass, 0 fail, 694541 expects across 370 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- follow_up: none

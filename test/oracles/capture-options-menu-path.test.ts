@@ -66,14 +66,16 @@ type SideBySideReplayManifest = {
       runtimeCommand: string;
     };
   };
-  explicitNullSurfaces: {
-    path: string | null;
-    reason: string;
-    surface: string;
-  }[];
+  explicitNullSurfaces: ExplicitNullSurface[];
   schemaVersion: number;
   sourceHashes: SourceHash[];
   stepId: string;
+};
+
+type ExplicitNullSurface = {
+  path: string | null;
+  reason: string;
+  surface: string;
 };
 
 type SourceAuthority = {
@@ -219,15 +221,53 @@ const expectedFixture = {
 } satisfies OptionsMenuPathFixture;
 
 async function loadFixture(): Promise<OptionsMenuPathFixture> {
-  const fixture: OptionsMenuPathFixture = await Bun.file(fixturePath).json();
+  const fixture: unknown = await Bun.file(fixturePath).json();
+
+  assertOptionsMenuPathFixture(fixture);
 
   return fixture;
 }
 
 async function loadSideBySideReplayManifest(): Promise<SideBySideReplayManifest> {
-  const manifest: SideBySideReplayManifest = await Bun.file(manifestPath).json();
+  const manifest: unknown = await Bun.file(manifestPath).json();
+
+  assertSideBySideReplayManifest(manifest);
 
   return manifest;
+}
+
+function assertOptionsMenuPathFixture(value: unknown): asserts value is OptionsMenuPathFixture {
+  if (!isRecord(value)) {
+    throw new Error('Expected options menu oracle fixture object.');
+  }
+
+  if (
+    !isRecord(value.captureCommand) ||
+    !isRecord(value.captureWindow) ||
+    !Array.isArray(value.expectedTrace) ||
+    !Array.isArray(value.inheritedLaunchSurfaceSourceHashes) ||
+    !Array.isArray(value.inputSequence) ||
+    !isRecord(value.liveReferenceCapture) ||
+    !Array.isArray(value.sourceAuthority)
+  ) {
+    throw new Error('Expected options menu oracle fixture shape.');
+  }
+}
+
+function assertSideBySideReplayManifest(value: unknown): asserts value is SideBySideReplayManifest {
+  if (!isRecord(value)) {
+    throw new Error('Expected side-by-side replay manifest object.');
+  }
+
+  const commandContracts = value.commandContracts;
+
+  if (!isRecord(commandContracts) || !isRecord(commandContracts.targetPlayable) || !Array.isArray(value.explicitNullSurfaces) || !Array.isArray(value.sourceHashes)) {
+    throw new Error('Expected side-by-side replay manifest shape.');
+  }
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
 }
 
 function sha256Json(value: unknown): string {
@@ -246,6 +286,36 @@ describe('capture options menu path oracle', () => {
 
     expect(sha256Json(fixture.expectedTrace)).toBe(fixture.expectedTraceSha256);
     expect(sha256Json(expectedFixture.expectedTrace)).toBe('b74543c5b452f4ca3636ce60857e80b7bfe60d27c4bbea113d97c7c5459ecc0d');
+  });
+
+  test('locks nonnegative contiguous capture boundaries', async () => {
+    const fixture = await loadFixture();
+    const expectedTraceEventsByFrame = new Map<number, ExpectedTraceEvent>();
+
+    expect(fixture.captureCommand.arguments).toEqual([]);
+    expect(fixture.captureWindow.startFrame).toBe(0);
+    expect(fixture.captureWindow.startTic).toBe(0);
+    expect(fixture.captureWindow.endFrame).toBeGreaterThanOrEqual(fixture.captureWindow.startFrame);
+    expect(fixture.captureWindow.endTic).toBeGreaterThanOrEqual(fixture.captureWindow.startTic);
+    expect(fixture.captureWindow.endFrame).toBe(fixture.captureWindow.endTic);
+    expect(fixture.expectedTrace).toHaveLength(fixture.captureWindow.endFrame - fixture.captureWindow.startFrame + 1);
+
+    for (const [expectedTraceEventIndex, expectedTraceEvent] of fixture.expectedTrace.entries()) {
+      const expectedFrame = fixture.captureWindow.startFrame + expectedTraceEventIndex;
+
+      expect(expectedTraceEvent.frame).toBe(expectedFrame);
+      expect(expectedTraceEvent.tic).toBe(expectedFrame);
+      expect(expectedTraceEvent.frame).toBeGreaterThanOrEqual(0);
+      expectedTraceEventsByFrame.set(expectedTraceEvent.frame, expectedTraceEvent);
+    }
+
+    for (const inputSequenceEvent of fixture.inputSequence) {
+      const expectedTraceEvent = expectedTraceEventsByFrame.get(inputSequenceEvent.frame);
+
+      expect(expectedTraceEvent).toBeDefined();
+      expect(expectedTraceEvent?.input).toBe(inputSequenceEvent.key);
+      expect(expectedTraceEvent?.tic).toBe(inputSequenceEvent.tic);
+    }
   });
 
   test('records the options menu transition path', async () => {
