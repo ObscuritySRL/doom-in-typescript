@@ -269,7 +269,7 @@
 - [x] `15-002` `gate-bun-launch-smoke` | prereqs: `15-001` | file: `plan_fps/steps/15-002-gate-bun-launch-smoke.md`
 - [x] `15-003` `gate-title-frame` | prereqs: `15-002` | file: `plan_fps/steps/15-003-gate-title-frame.md`
 - [x] `15-004` `gate-menu-navigation` | prereqs: `15-003` | file: `plan_fps/steps/15-004-gate-menu-navigation.md`
-- [ ] `15-005` `gate-e1m1-start` | prereqs: `15-004` | file: `plan_fps/steps/15-005-gate-e1m1-start.md`
+- [x] `15-005` `gate-e1m1-start` | prereqs: `15-004` | file: `plan_fps/steps/15-005-gate-e1m1-start.md`
 - [ ] `15-006` `gate-input-replay` | prereqs: `15-005` | file: `plan_fps/steps/15-006-gate-input-replay.md`
 - [ ] `15-007` `gate-audio` | prereqs: `15-006` | file: `plan_fps/steps/15-007-gate-audio.md`
 - [ ] `15-008` `gate-save-load` | prereqs: `15-007` | file: `plan_fps/steps/15-008-gate-save-load.md`

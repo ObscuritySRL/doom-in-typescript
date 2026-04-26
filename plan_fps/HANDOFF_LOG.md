@@ -3912,3 +3912,21 @@
 - oracle_changes: added OR-FPS-040 for `plan_fps/manifests/15-004-gate-menu-navigation.json`
 - next_eligible_steps: 15-005 gate-e1m1-start
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-005 gate-e1m1-start
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-005
+- step_title: gate-e1m1-start
+- summary: Added the E1M1-start acceptance gate manifest at `plan_fps/manifests/15-005-gate-e1m1-start.json`. The manifest locks the `bun run doom.ts` command contract, E1M1 start evidence against captured oracle OR-FPS-024, windowed-only presentation policy, transition from `15-004` to `15-005`, next gate `15-006`, deterministic replay compatibility flags, OR-FPS-041 oracle registration, and evidence hash `478e72b0fbfb99478803672ced99cf349c94296bdc7227a2a83b34d687ddeef8`. Added focused test `test/playable/acceptance/gate-e1m1-start.test.ts` to lock the manifest schema, command contract, E1M1 oracle scope, replay compatibility, transition, oracle registration, and hash.
+- files_changed: plan_fps/manifests/15-005-gate-e1m1-start.json; test/playable/acceptance/gate-e1m1-start.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 1 file, stability rerun no fixes); bun test test/playable/acceptance/gate-e1m1-start.test.ts (4 pass, 0 fail, 8 expect() calls); bun test (7909 pass, 0 fail, 695113 expect() calls across 388 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-041 for `plan_fps/manifests/15-005-gate-e1m1-start.json`
+- next_eligible_steps: 15-006 gate-input-replay
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
