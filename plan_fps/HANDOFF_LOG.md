@@ -3462,3 +3462,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-007 define-save-and-window-path-policies
 - open_risks: none
+
+## 2026-04-26 - 12-007 define-save-and-window-path-policies
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-007
+- step_title: define-save-and-window-path-policies
+- summary: Added the playable save/window path policy surface at `src/playable/config-persistence/defineSaveAndWindowPathPolicies.ts`. The module exports the exact `bun run doom.ts` command contract plus `defineSaveAndWindowPathPolicies`, validates the product runtime command before any path normalization, keeps save slots as deterministic workspace-relative `doomsav0.dsg` through `doomsav5.dsg` paths, rejects absolute, escaping, and read-only-root paths, normalizes the Chocolate Doom window config path and window position, preserves the C1 windowed-only presentation policy, and returns frozen replay evidence with locked SHA-256 hashes and checksums. Added focused test `test/playable/config-persistence/define-save-and-window-path-policies.test.ts` to lock the command contract, 01-014 config-persistence audit linkage, formatted source SHA-256 `3b005b4bb2d30d562fd303faf9accc7dc306db1677424624336c9daedf399963`, exact default/custom policy hashes and replay checksums, command prevalidation, invalid path rejection, and invalid window dimension rejection.
+- files_changed: src/playable/config-persistence/defineSaveAndWindowPathPolicies.ts; test/playable/config-persistence/define-save-and-window-path-policies.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run intentionally used placeholders to capture the formatted source hash and deterministic default/custom policy hashes. Replaced placeholders with exact values and captured replay checksums through a Bun import smoke command, then reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 1 file; exact-value rerun no fixes); bun test test/playable/config-persistence/define-save-and-window-path-policies.test.ts (final run 6 pass, 0 fail, 28 expect() calls); bun test (7715 pass, 0 fail, 694217 expect() calls across 363 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-008 persist-vanilla-compatibility-flags
+- open_risks: none
