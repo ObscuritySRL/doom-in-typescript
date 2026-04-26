@@ -3516,3 +3516,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-001 play-bundled-demos-through-title-loop
 - open_risks: none
+
+## 2026-04-26 - 13-001 play-bundled-demos-through-title-loop
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-001
+- step_title: play-bundled-demos-through-title-loop
+- summary: Added the playable bundled-demo title-loop replay surface at `src/playable/demo-replay/playBundledDemosThroughTitleLoop.ts`. The module exports the exact `bun run doom.ts` command contract, consumes DemoPlayback-compatible streams in the bundled DEMO1/DEMO2/DEMO3 order, preserves the empty title-loop and demo-playback input script evidence, rejects wrong commands and non-title-loop demo completion, and returns frozen deterministic replay evidence with SHA-256 hash `ff621ab36df8129f3d7d97aa0603c111dcdae0da6afaaf165ba1aceac43071bc`. Added focused test `test/playable/demo-replay/play-bundled-demos-through-title-loop.test.ts` to lock the command contract, 01-015 side-by-side replay audit linkage, formatted source SHA-256 `37d3604431c91c13a055c22b1937b706e82f62cb64e46d5ffde471620c9780f3`, DEMO1/DEMO2/DEMO3 title-loop transitions, replay hash, wrong-command prevalidation, bundled-demo ordering, and single-demo completion rejection.
+- files_changed: src/playable/demo-replay/playBundledDemosThroughTitleLoop.ts; test/playable/demo-replay/play-bundled-demos-through-title-loop.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: Initial TypeScript verification failed because `snapshot.completionAction` remained typed as the full `DemoPlaybackCompletionAction` union after validation. Replaced the stored transition and completion action with the validated literal `advance-demo`, refreshed the locked source hash, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (pass; no fixes applied); bun test test/playable/demo-replay/play-bundled-demos-through-title-loop.test.ts (final run 5 pass, 0 fail, 11 expect() calls); bun test (final run 7738 pass, 0 fail, 694304 expect() calls across 366 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-002 replay-demo1-deterministically
+- open_risks: none

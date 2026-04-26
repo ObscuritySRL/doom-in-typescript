@@ -241,7 +241,7 @@
 
 ## Phase 13: Demo / Replay
 
-- [ ] `13-001` `play-bundled-demos-through-title-loop` | prereqs: `12-009` | file: `plan_fps/steps/13-001-play-bundled-demos-through-title-loop.md`
+- [x] `13-001` `play-bundled-demos-through-title-loop` | prereqs: `12-009` | file: `plan_fps/steps/13-001-play-bundled-demos-through-title-loop.md`
 - [ ] `13-002` `replay-demo1-deterministically` | prereqs: `13-001` | file: `plan_fps/steps/13-002-replay-demo1-deterministically.md`
 - [ ] `13-003` `replay-demo2-deterministically` | prereqs: `13-002` | file: `plan_fps/steps/13-003-replay-demo2-deterministically.md`
 - [ ] `13-004` `replay-demo3-deterministically` | prereqs: `13-003` | file: `plan_fps/steps/13-004-replay-demo3-deterministically.md`
