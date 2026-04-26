@@ -236,7 +236,7 @@
 - [x] `12-005` `persist-sound-settings` | prereqs: `12-004` | file: `plan_fps/steps/12-005-persist-sound-settings.md`
 - [x] `12-006` `persist-screen-settings` | prereqs: `12-005` | file: `plan_fps/steps/12-006-persist-screen-settings.md`
 - [x] `12-007` `define-save-and-window-path-policies` | prereqs: `12-006` | file: `plan_fps/steps/12-007-define-save-and-window-path-policies.md`
-- [ ] `12-008` `persist-vanilla-compatibility-flags` | prereqs: `12-007` | file: `plan_fps/steps/12-008-persist-vanilla-compatibility-flags.md`
+- [x] `12-008` `persist-vanilla-compatibility-flags` | prereqs: `12-007` | file: `plan_fps/steps/12-008-persist-vanilla-compatibility-flags.md`
 - [ ] `12-009` `isolate-tests-from-user-local-config` | prereqs: `12-008` | file: `plan_fps/steps/12-009-isolate-tests-from-user-local-config.md`
 
 ## Phase 13: Demo / Replay

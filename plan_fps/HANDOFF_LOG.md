@@ -3480,3 +3480,21 @@
 - oracle_changes: none
 - next_eligible_steps: 12-008 persist-vanilla-compatibility-flags
 - open_risks: none
+
+## 2026-04-26 - 12-008 persist-vanilla-compatibility-flags
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 12-008
+- step_title: persist-vanilla-compatibility-flags
+- summary: Added the playable vanilla compatibility flag persistence surface at `src/playable/config-persistence/persistVanillaCompatibilityFlags.ts`. The module exports the exact `bun run doom.ts` command contract plus `persistVanillaCompatibilityFlags`, validates the product runtime command before applying compatibility changes, persists the three Chocolate Doom `vanilla_*` compatibility flags (`vanilla_savegame_limit`, `vanilla_demo_limit`, `vanilla_keyboard_mapping`) without mutating the vanilla `default.cfg` snapshot, preserves unrelated host config values, rejects invalid flag values, and returns deterministic replay evidence with locked serialized transitions, SHA-256 hashes, and replay checksums. Added focused test `test/playable/config-persistence/persist-vanilla-compatibility-flags.test.ts` to lock the command contract, 01-014 missing config persistence audit linkage, formatted source SHA-256 `9ab1421782529844efd366033dfdbdb55e0622f15a26e1f2dc356cb00390833b`, exact default/custom compatibility transitions, hashes, replay checksums, wrong-command prevalidation, and invalid flag rejection.
+- files_changed: src/playable/config-persistence/persistVanillaCompatibilityFlags.ts; test/playable/config-persistence/persist-vanilla-compatibility-flags.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial product pass fixed 1 file; focused-test pass fixed 1 file); bun test test/playable/config-persistence/persist-vanilla-compatibility-flags.test.ts (6 pass, 0 fail, 36 expect() calls); bun test (7722 pass, 0 fail, 694257 expect() calls across 364 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 12-009 isolate-tests-from-user-local-config
+- open_risks: none
