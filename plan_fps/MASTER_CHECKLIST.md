@@ -257,7 +257,7 @@
 
 - [x] `14-001` `lock-bun-run-doom-command` | prereqs: `13-011` | file: `plan_fps/steps/14-001-lock-bun-run-doom-command.md`
 - [x] `14-002` `document-required-local-files` | prereqs: `14-001` | file: `plan_fps/steps/14-002-document-required-local-files.md`
-- [ ] `14-003` `verify-iwad-discovery-at-launch` | prereqs: `14-002` | file: `plan_fps/steps/14-003-verify-iwad-discovery-at-launch.md`
+- [x] `14-003` `verify-iwad-discovery-at-launch` | prereqs: `14-002` | file: `plan_fps/steps/14-003-verify-iwad-discovery-at-launch.md`
 - [ ] `14-004` `verify-missing-data-error-path` | prereqs: `14-003` | file: `plan_fps/steps/14-004-verify-missing-data-error-path.md`
 - [ ] `14-005` `prevent-forbidden-asset-redistribution` | prereqs: `14-004` | file: `plan_fps/steps/14-005-prevent-forbidden-asset-redistribution.md`
 - [ ] `14-006` `write-readme-usage-instructions` | prereqs: `14-005` | file: `plan_fps/steps/14-006-write-readme-usage-instructions.md`

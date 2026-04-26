@@ -3750,3 +3750,21 @@
 - oracle_changes: none
 - next_eligible_steps: 14-003 verify-iwad-discovery-at-launch
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 14-003 verify-iwad-discovery-at-launch
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 14-003
+- step_title: verify-iwad-discovery-at-launch
+- summary: Added the Bun local distribution IWAD discovery verification surface at `src/playable/bun-launch-local-distribution-boundary/verifyIwadDiscoveryAtLaunch.ts`. The module exports the exact `bun run doom.ts` command contract, validates that command before probing data, verifies the default `doom\DOOM1.WAD` path through `Bun.file.exists`, records that IWAD discovery happens before the first tic without reading file contents, input stream mutation, random seed mutation, or simulation tic advancement, and returns frozen deterministic evidence. Added focused test `test/playable/bun-launch-local-distribution-boundary/verify-iwad-discovery-at-launch.test.ts` to lock the command contract, default IWAD path, discovery and transition hashes (`8065bb46fdb9ab997252e2630ff482e9fc834310b08cbeaad9789283e359c60a`, `baaa408c94d92473ec2af231da3f1079ffcca8efa90033879f12bc0217ee623f`), formatted source SHA-256 `465b03d052d3028cb94928a1966d061c859ecc4088e6353dcb5dd8e631dd0105`, frozen evidence, legacy command rejection, and missing IWAD rejection.
+- files_changed: src/playable/bun-launch-local-distribution-boundary/verifyIwadDiscoveryAtLaunch.ts; test/playable/bun-launch-local-distribution-boundary/verify-iwad-discovery-at-launch.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 2 files; final rerun no fixes); bun test test/playable/bun-launch-local-distribution-boundary/verify-iwad-discovery-at-launch.test.ts (4 pass, 0 fail, 10 expect() calls); bun test (7861 pass, 0 fail, 694994 expect() calls across 379 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-004 verify-missing-data-error-path
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
