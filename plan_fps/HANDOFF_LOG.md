@@ -3894,3 +3894,21 @@
 - oracle_changes: added OR-FPS-039 for `plan_fps/manifests/15-003-gate-title-frame.json`
 - next_eligible_steps: 15-004 gate-menu-navigation
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-004 gate-menu-navigation
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-004
+- step_title: gate-menu-navigation
+- summary: Added the menu-navigation acceptance gate manifest at `plan_fps/manifests/15-004-gate-menu-navigation.json`. The manifest locks the `bun run doom.ts` command contract, menu-navigation oracle scope from OR-FPS-010 and OR-FPS-015 through OR-FPS-023, windowed-only presentation policy, transition from `15-003` to `15-004`, next gate `15-005`, deterministic replay compatibility flags, OR-FPS-040 oracle registration, and evidence hash `32095449043a38a9eb6289e40796056b1310c23fb8ebb635498b899fdd2c123a`. Added focused test `test/playable/acceptance/gate-menu-navigation.test.ts` to lock the manifest schema, command contract, menu oracle scope, replay compatibility, transition, oracle registration, and hash.
+- files_changed: plan_fps/manifests/15-004-gate-menu-navigation.json; test/playable/acceptance/gate-menu-navigation.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed the newly added manifest and focused test once; reran formatting to stability before verification.
+- tests_run: bun run format (initial pass fixed 2 files, stability rerun no fixes); bun test test/playable/acceptance/gate-menu-navigation.test.ts (3 pass, 0 fail, 14 expect() calls); bun test (7899 pass, 0 fail, 695091 expect() calls across 387 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-040 for `plan_fps/manifests/15-004-gate-menu-navigation.json`
+- next_eligible_steps: 15-005 gate-e1m1-start
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

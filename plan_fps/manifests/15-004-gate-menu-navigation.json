@@ -1,0 +1,43 @@
+{
+  "acceptanceScope": {
+    "gateChecks": [
+      "clean launch reaches menu navigation through bun run doom.ts",
+      "menu open and close behavior remains oracle-backed",
+      "new game, episode, skill, options, sound, screen, save-load, and quit menu paths remain oracle-backed",
+      "windowed presentation remains the only accepted reference-visible host difference"
+    ],
+    "menuNavigationOracleIds": ["OR-FPS-010", "OR-FPS-015", "OR-FPS-016", "OR-FPS-017", "OR-FPS-018", "OR-FPS-019", "OR-FPS-020", "OR-FPS-021", "OR-FPS-022", "OR-FPS-023"],
+    "requiredRuntimePath": "bun run doom.ts",
+    "windowPolicy": "windowed-only presentation difference"
+  },
+  "commandContract": {
+    "entryFile": "doom.ts",
+    "program": "bun",
+    "runtimeCommand": "bun run doom.ts",
+    "subcommand": "run"
+  },
+  "deterministicReplayCompatibility": {
+    "inputStreamMutation": false,
+    "randomSeedMutation": false,
+    "simulationTickMutation": false,
+    "stateMutationTiming": "evidence-only acceptance gate; no runtime mutation",
+    "timing": "pre-game menu navigation evidence is deterministic and oracle-backed"
+  },
+  "evidenceHash": "32095449043a38a9eb6289e40796056b1310c23fb8ebb635498b899fdd2c123a",
+  "nextGate": "15-005 gate-e1m1-start",
+  "oracle": {
+    "artifact": "plan_fps/manifests/15-004-gate-menu-navigation.json",
+    "authority": "gate menu navigation acceptance evidence for the Bun-run playable parity path",
+    "id": "OR-FPS-040",
+    "refreshCommand": "bun test test/playable/acceptance/gate-menu-navigation.test.ts"
+  },
+  "schemaVersion": 1,
+  "step": {
+    "id": "15-004",
+    "title": "gate-menu-navigation"
+  },
+  "transition": {
+    "from": "15-003 gate-title-frame",
+    "to": "15-004 gate-menu-navigation"
+  }
+}
