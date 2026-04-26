@@ -131,8 +131,10 @@ describe('capture-full-attract-loop-cycle oracle', () => {
   test('locks the exact attract loop trace hash and transition order', async () => {
     const fixture = await readJsonObject(fixturePath);
     const expectedTrace = getArray(fixture, 'expectedTrace').map(getRecord);
+    const expectedTraceHash = getString(fixture, 'expectedTraceHash');
 
-    expect(hashJson(expectedTrace)).toBe(getString(fixture, 'expectedTraceHash'));
+    expect(hashJson(expectedTrace)).toBe(expectedTraceHash);
+    expect(expectedTraceHash).toMatch(/^[0-9a-f]{64}$/);
     expect(expectedTrace.map((eventRecord) => getString(eventRecord, 'event'))).toEqual([
       'capture-contract-created',
       'reference-authority-selected',
@@ -146,6 +148,20 @@ describe('capture-full-attract-loop-cycle oracle', () => {
       'observe-cycle-return',
     ]);
     expect(getObject(fixture, 'tickFrameWindow')).toEqual(expectedFixture.tickFrameWindow);
+  });
+
+  test('locks the deferred live capture invariants across kinds and status', async () => {
+    const fixture = await readJsonObject(fixturePath);
+    const liveCaptureStatus = getString(fixture, 'liveCaptureStatus');
+    const deferredLiveHashes = getArray(fixture, 'deferredLiveHashes').map(getRecord);
+
+    expect(deferredLiveHashes).toHaveLength(3);
+    expect(deferredLiveHashes.map((deferredEntry) => getString(deferredEntry, 'kind')).sort()).toEqual(['audio', 'framebuffer', 'state']);
+
+    for (const deferredEntry of deferredLiveHashes) {
+      expect(deferredEntry.hash).toBeNull();
+      expect(getString(deferredEntry, 'status')).toBe(liveCaptureStatus);
+    }
   });
 
   test('cross-checks source authority against the catalog and side-by-side audit manifest', async () => {
