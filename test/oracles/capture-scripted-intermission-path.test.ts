@@ -190,25 +190,25 @@ const expectedFixture = {
 const expectedOracleRegistryRow =
   '| OR-FPS-030 | `test/oracles/fixtures/capture-scripted-intermission-path.json` | scripted intermission path capture contract derived from local DOS binary authority and `plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json` | `bun test test/oracles/capture-scripted-intermission-path.test.ts` |';
 
-const hashTrace = async (): Promise<string> => {
-  const encodedTrace = new TextEncoder().encode(JSON.stringify(expectedTrace));
-  const traceDigest = await crypto.subtle.digest('SHA-256', encodedTrace);
+const hashTrace = (): string => {
+  const hasher = new Bun.CryptoHasher('sha256');
 
-  return Array.from(new Uint8Array(traceDigest), (byteValue) => byteValue.toString(16).padStart(2, '0')).join('');
+  hasher.update(JSON.stringify(expectedTrace));
+
+  return hasher.digest('hex');
 };
 
 describe('capture-scripted-intermission-path oracle fixture', () => {
   test('locks the exact fixture value', async () => {
-    const fixtureText = await Bun.file(fixturePath).text();
-    const fixture: unknown = JSON.parse(fixtureText);
+    const fixture: unknown = await Bun.file(fixturePath).json();
 
     expect(fixture).toEqual(expectedFixture);
   });
 
-  test('locks the trace hash and intermission transition', async () => {
+  test('locks the trace hash and intermission transition', () => {
     const transitionPhases = expectedTrace.map((tracePoint) => tracePoint.phase);
 
-    expect(await hashTrace()).toBe(expectedFixture.traceSha256);
+    expect(hashTrace()).toBe(expectedFixture.traceSha256);
     expect(transitionPhases).toEqual([
       'clean-launch',
       'main-menu-open',
@@ -231,8 +231,7 @@ describe('capture-scripted-intermission-path oracle fixture', () => {
   });
 
   test('cross-checks the command contract against the launch-surface manifest', async () => {
-    const manifestText = await Bun.file(launchSurfaceManifestPath).text();
-    const manifest: unknown = JSON.parse(manifestText);
+    const manifest: unknown = await Bun.file(launchSurfaceManifestPath).json();
 
     expect(manifest).toMatchObject({
       commandContracts: {
@@ -256,8 +255,7 @@ describe('capture-scripted-intermission-path oracle fixture', () => {
   });
 
   test('records pending live hash surfaces from the allowed manifest scope', async () => {
-    const manifestText = await Bun.file(launchSurfaceManifestPath).text();
-    const manifest: unknown = JSON.parse(manifestText);
+    const manifest: unknown = await Bun.file(launchSurfaceManifestPath).json();
 
     expect(expectedFixture.liveReferenceCapture).toEqual({
       reason: 'The 02-025 read scope permits only the source catalog, reference oracle registry, and 01-015 launch-surface audit manifest; that manifest records no reference capture runner or framebuffer/audio/state comparison surfaces.',

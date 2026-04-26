@@ -1,7 +1,5 @@
 import { describe, expect, test } from 'bun:test';
 
-import { createHash } from 'node:crypto';
-
 const EXPECTED_MANIFEST = {
   auditedScope: {
     allowedReadOnlyFiles: ['package.json', 'plan_fps/FACT_LOG.md', 'plan_fps/SOURCE_CATALOG.md', 'src/main.ts', 'tsconfig.json'],
@@ -124,7 +122,7 @@ const EXPECTED_MANIFEST = {
 
 describe('01-002 audit-existing-tests manifest', () => {
   test('locks the exact audit manifest payload', async () => {
-    const manifest: unknown = JSON.parse(await Bun.file('plan_fps/manifests/01-002-audit-existing-tests.json').text());
+    const manifest: unknown = await Bun.file('plan_fps/manifests/01-002-audit-existing-tests.json').json();
 
     expect(manifest).toEqual(EXPECTED_MANIFEST);
   });
@@ -221,7 +219,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 async function readJsonObject(path: string): Promise<Record<string, unknown>> {
-  const value: unknown = JSON.parse(await Bun.file(path).text());
+  const value: unknown = await Bun.file(path).json();
 
   if (!isRecord(value)) {
     throw new Error(`${path} must contain a JSON object.`);
@@ -231,7 +229,9 @@ async function readJsonObject(path: string): Promise<Record<string, unknown>> {
 }
 
 async function sha256File(path: string): Promise<string> {
-  const bytes = await Bun.file(path).arrayBuffer();
+  const hasher = new Bun.CryptoHasher('sha256');
 
-  return createHash('sha256').update(new Uint8Array(bytes)).digest('hex');
+  hasher.update(await Bun.file(path).bytes());
+
+  return hasher.digest('hex');
 }
