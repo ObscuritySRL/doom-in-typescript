@@ -3696,3 +3696,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-011 accept-attract-loop-and-long-run-replays
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-011 accept-attract-loop-and-long-run-replays
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-011
+- step_title: accept-attract-loop-and-long-run-replays
+- summary: Added the playable attract-loop and long-run replay acceptance surface at `src/playable/demo-replay/acceptAttractLoopAndLongRunReplays.ts`. The module exports the exact `bun run doom.ts` command contract, validates that command before demo parsing, validates title-loop input script evidence, consumes `DemoPlayback` through the marker boundary, hashes deterministic long-run replay windows, reports expected-window drift without hiding actual hashes, rejects marker-only streams, and returns frozen acceptance evidence. Added focused test `test/playable/demo-replay/accept-attract-loop-and-long-run-replays.test.ts` to lock the command contract, 01-015 side-by-side replay audit linkage, formatted source SHA-256 `4d1eb898f96ca6433fbec43848a3abbd7cce1e6d92e914fa2f2c9615aa9d0645`, exact marker transition, long-run window hashes, tic command hash `8bf4bb43cd9296e2e2c7e35deee438d21eb3743393043b57a018c7b3857f32c1`, long-run replay hash `40771aed5f8549d23f02dcd56c88d3d2df36785de121c796cfe26cdbdf2b3204`, acceptance hash `b1ef76a5c7ec05bf6a43ebc742cacb7005f4fb729f487b036483b833aae7d629`, drift reporting, wrong-command prevalidation, marker-only rejection, and invalid input-script rejection.
+- files_changed: src/playable/demo-replay/acceptAttractLoopAndLongRunReplays.ts; test/playable/demo-replay/accept-attract-loop-and-long-run-replays.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (initial pass fixed 1 file; final rerun no fixes); bun test test/playable/demo-replay/accept-attract-loop-and-long-run-replays.test.ts (6 pass, 0 fail, 16 expect() calls); bun test (7846 pass, 0 fail, 694935 expect() calls across 376 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 14-001 lock-bun-run-doom-command
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

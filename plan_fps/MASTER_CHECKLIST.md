@@ -251,7 +251,7 @@
 - [x] `13-008` `capture-replay-framebuffer-state-audio-music` | prereqs: `13-007` | file: `plan_fps/steps/13-008-capture-replay-framebuffer-state-audio-music.md`
 - [x] `13-009` `detect-long-run-drift` | prereqs: `13-008` | file: `plan_fps/steps/13-009-detect-long-run-drift.md`
 - [x] `13-010` `accept-clean-launch-to-gameplay-replay` | prereqs: `13-009` | file: `plan_fps/steps/13-010-accept-clean-launch-to-gameplay-replay.md`
-- [ ] `13-011` `accept-attract-loop-and-long-run-replays` | prereqs: `13-010` | file: `plan_fps/steps/13-011-accept-attract-loop-and-long-run-replays.md`
+- [x] `13-011` `accept-attract-loop-and-long-run-replays` | prereqs: `13-010` | file: `plan_fps/steps/13-011-accept-attract-loop-and-long-run-replays.md`
 
 ## Phase 14: Bun Launch / Local Distribution Boundary
 
