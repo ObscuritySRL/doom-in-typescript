@@ -3282,3 +3282,21 @@
 - oracle_changes: none
 - next_eligible_steps: 11-008 display-save-load-menu-messages
 - open_risks: none
+
+## 2026-04-26 - 11-008 display-save-load-menu-messages
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 11-008
+- step_title: display-save-load-menu-messages
+- summary: Added the playable save/load menu message surface at `src/playable/save-load-playability/displaySaveLoadMenuMessages.ts`. The module exports the exact `bun run doom.ts` command contract plus `displaySaveLoadMenuMessages`, validates the product runtime command before inspecting save requests, classifies load confirmations, empty slots, unsupported versions, corrupted save bytes, network blocks, save-not-playing blocks, and save-complete messages, and returns frozen deterministic replay evidence with locked transition signatures. Added focused test `test/playable/save-load-playability/display-save-load-menu-messages.test.ts` to lock the command contract, 01-013 missing-save-load-UI audit linkage, formatted source SHA-256 `948795e858be506018f9e2ace29d3ceb9ea6a58dd2fa4215e80274f1234c3e84`, exact happy/failure transition evidence, wrong-command prevalidation, invalid description rejection, and invalid slot rejection.
+- files_changed: src/playable/save-load-playability/displaySaveLoadMenuMessages.ts; test/playable/save-load-playability/display-save-load-menu-messages.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: The first focused test run failed because the audit manifest assertion expected `save-game-menu-ui`, while the actual 01-013 manifest records `save-slot-menu-ui`. Corrected the focused test assertion, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; exact-value and recovery reruns no fixes); bun test test/playable/save-load-playability/display-save-load-menu-messages.test.ts (initial run 4 pass, 1 fail on audit assertion; final run 5 pass, 0 fail, 20 expect() calls); bun test (7589 pass, 0 fail, 693729 expect() calls across 353 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 11-009 restore-game-state-from-save
+- open_risks: none

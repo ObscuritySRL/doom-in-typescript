@@ -222,7 +222,7 @@
 - [x] `11-005` `implement-live-game-save-load` | prereqs: `11-004` | file: `plan_fps/steps/11-005-implement-live-game-save-load.md`
 - [x] `11-006` `validate-savegame-version` | prereqs: `11-005` | file: `plan_fps/steps/11-006-validate-savegame-version.md`
 - [x] `11-007` `handle-corrupted-save` | prereqs: `11-006` | file: `plan_fps/steps/11-007-handle-corrupted-save.md`
-- [ ] `11-008` `display-save-load-menu-messages` | prereqs: `11-007` | file: `plan_fps/steps/11-008-display-save-load-menu-messages.md`
+- [x] `11-008` `display-save-load-menu-messages` | prereqs: `11-007` | file: `plan_fps/steps/11-008-display-save-load-menu-messages.md`
 - [ ] `11-009` `restore-game-state-from-save` | prereqs: `11-008` | file: `plan_fps/steps/11-009-restore-game-state-from-save.md`
 - [ ] `11-010` `restore-post-load-render-audio-input-state` | prereqs: `11-009` | file: `plan_fps/steps/11-010-restore-post-load-render-audio-input-state.md`
 - [ ] `11-011` `add-live-save-load-roundtrip-hash-tests` | prereqs: `11-010` | file: `plan_fps/steps/11-011-add-live-save-load-roundtrip-hash-tests.md`
