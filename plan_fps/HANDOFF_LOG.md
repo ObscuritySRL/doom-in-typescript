@@ -3660,3 +3660,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-009 detect-long-run-drift
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-009 detect-long-run-drift
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-009
+- step_title: detect-long-run-drift
+- summary: Added the playable long-run drift detection surface at `src/playable/demo-replay/detectLongRunDrift.ts`. The module exports the exact `bun run doom.ts` command contract plus `detectLongRunDrift`, validates the product runtime command before parsing demo bytes, consumes `DemoPlayback` streams through the marker boundary, hashes fixed replay tic windows with cumulative evidence, reports mismatched expected window hashes as drift events, and links the missing synchronized tic stepper side-by-side replay audit surface. Added focused test `test/playable/demo-replay/detect-long-run-drift.test.ts` to lock the command contract, 01-015 audit linkage, formatted source SHA-256 `76714371a988f5bef854d5d9f59ad9801df97b187261f578b397520a4b22f19f`, exact two-window drift evidence, replay hash `a925f79c6211f3ab6780c98ead436196baa7a6da01a56174a9def7756e800b52`, wrong-command prevalidation, and marker-only rejection.
+- files_changed: src/playable/demo-replay/detectLongRunDrift.ts; test/playable/demo-replay/detect-long-run-drift.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (final rerun no fixes); bun test test/playable/demo-replay/detect-long-run-drift.test.ts (final run 6 pass, 0 fail, 11 expect() calls); bun test (final run 7827 pass, 0 fail, 694852 expect() calls across 374 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-010 accept-clean-launch-to-gameplay-replay
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
