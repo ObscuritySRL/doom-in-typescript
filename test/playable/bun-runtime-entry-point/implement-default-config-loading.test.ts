@@ -158,6 +158,94 @@ describe('implement default config loading', () => {
     });
     expect(textReadCount).toBe(0);
   });
+
+  test('stops at the first available candidate without probing later candidates', async () => {
+    let existsProbeCount = 0;
+
+    const fileReader: DefaultConfigurationFileReader = {
+      exists: async (configurationPath: string): Promise<boolean> => {
+        existsProbeCount += 1;
+
+        return configurationPath === 'doom\\default.cfg';
+      },
+      text: async (configurationPath: string): Promise<string> => {
+        expect(configurationPath).toBe('doom\\default.cfg');
+
+        return 'use_mouse 1';
+      },
+    };
+
+    await expect(loadDefaultConfiguration(DEFAULT_CONFIGURATION_CANDIDATE_PATHS, fileReader)).resolves.toEqual({
+      checkedPaths: ['doom\\default.cfg'],
+      configurationPath: 'doom\\default.cfg',
+      configurationText: 'use_mouse 1',
+      entries: [
+        {
+          key: 'use_mouse',
+          lineNumber: 1,
+          value: '1',
+        },
+      ],
+      status: 'loaded',
+    });
+    expect(existsProbeCount).toBe(1);
+  });
+
+  test('parses parser edge cases for line endings, separators, and empty input', () => {
+    expect(parseDefaultConfigurationText('')).toEqual([]);
+    expect(parseDefaultConfigurationText('\n\n\r\n\r')).toEqual([]);
+    expect(parseDefaultConfigurationText('   \t  \n   ')).toEqual([]);
+    expect(parseDefaultConfigurationText('only_key_no_value')).toEqual([
+      {
+        key: 'only_key_no_value',
+        lineNumber: 1,
+        value: '',
+      },
+    ]);
+    expect(parseDefaultConfigurationText('use_mouse 1\rmusic_volume 8\r')).toEqual([
+      {
+        key: 'use_mouse',
+        lineNumber: 1,
+        value: '1',
+      },
+      {
+        key: 'music_volume',
+        lineNumber: 2,
+        value: '8',
+      },
+    ]);
+    expect(parseDefaultConfigurationText('key_right\t174\nsfx_volume\t\t8')).toEqual([
+      {
+        key: 'key_right',
+        lineNumber: 1,
+        value: '174',
+      },
+      {
+        key: 'sfx_volume',
+        lineNumber: 2,
+        value: '8',
+      },
+    ]);
+    expect(parseDefaultConfigurationText('  leading_ws_key  trimmed_value  \r\n   # leading-ws comment\r\n')).toEqual([
+      {
+        key: 'leading_ws_key',
+        lineNumber: 1,
+        value: 'trimmed_value',
+      },
+    ]);
+    expect(parseDefaultConfigurationText('chatmacro1 "I\'m ready"\r\nuse_mouse 1\r\n')).toEqual([
+      {
+        key: 'chatmacro1',
+        lineNumber: 1,
+        value: '"I\'m ready"',
+      },
+      {
+        key: 'use_mouse',
+        lineNumber: 2,
+        value: '1',
+      },
+    ]);
+  });
 });
 
 function getRecordField(record: Record<string, unknown>, fieldName: string): Record<string, unknown> {

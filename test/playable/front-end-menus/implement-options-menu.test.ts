@@ -100,4 +100,39 @@ describe('implementOptionsMenu', () => {
       }),
     ).toThrow('Implement options menu requires the Main menu Options selection.');
   });
+
+  test('rejects an inactive menu state without firing handleMenuKey', () => {
+    const frontEndSequenceState = createFrontEndSequence('shareware');
+    const menuState = createMenuState();
+    menuState.itemOn = IMPLEMENT_OPTIONS_MENU_CONTRACT.mainMenuOptionsIndex;
+
+    expect(menuState.active).toBe(false);
+    expect(() =>
+      implementOptionsMenu({
+        frontEndSequenceState,
+        menuState,
+        runtimeCommand: IMPLEMENT_OPTIONS_MENU_CONTRACT.command,
+      }),
+    ).toThrow('Implement options menu requires the active Main menu.');
+    expect(menuState.currentMenu).toBe(MenuKind.Main);
+    expect(menuState.itemOn).toBe(IMPLEMENT_OPTIONS_MENU_CONTRACT.mainMenuOptionsIndex);
+    expect(frontEndSequenceState.menuActive).toBe(false);
+  });
+
+  test('rejects when the active menu is not the Main menu', () => {
+    const frontEndSequenceState = createFrontEndSequence('shareware');
+    const menuState = createMenuState();
+    openMenu(menuState, MenuKind.Options);
+    menuState.itemOn = IMPLEMENT_OPTIONS_MENU_CONTRACT.mainMenuOptionsIndex;
+
+    expect(() =>
+      implementOptionsMenu({
+        frontEndSequenceState,
+        menuState,
+        runtimeCommand: IMPLEMENT_OPTIONS_MENU_CONTRACT.command,
+      }),
+    ).toThrow('Implement options menu requires the active Main menu.');
+    expect(menuState.currentMenu).toBe(MenuKind.Options);
+    expect(frontEndSequenceState.menuActive).toBe(false);
+  });
 });

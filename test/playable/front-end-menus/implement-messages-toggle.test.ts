@@ -162,4 +162,39 @@ describe('implementMessagesToggle', () => {
       }),
     ).toThrow('Implement messages toggle requires the Messages menu item.');
   });
+
+  test('rejects calls when the menu is inactive', () => {
+    const frontEnd = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    expect(menu.active).toBe(false);
+    expect(() =>
+      implementMessagesToggle({
+        frontEnd,
+        menu,
+        messagesEnabled: false,
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toThrow('Implement messages toggle requires an active menu.');
+    expect(frontEnd.menuActive).toBe(false);
+  });
+
+  test('rejects calls when the active menu is not the Options menu', () => {
+    const frontEnd = createFrontEndSequence('shareware');
+    const menu = createMenuState();
+
+    openMenu(menu, MenuKind.Main);
+    menu.itemOn = IMPLEMENT_MESSAGES_TOGGLE_CONTRACT.messagesOption.itemOn;
+
+    expect(() =>
+      implementMessagesToggle({
+        frontEnd,
+        menu,
+        messagesEnabled: false,
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toThrow('Implement messages toggle requires the Options menu.');
+    expect(menu.currentMenu).toBe(MenuKind.Main);
+    expect(frontEnd.menuActive).toBe(false);
+  });
 });
