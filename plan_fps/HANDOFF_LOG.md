@@ -3966,3 +3966,21 @@
 - oracle_changes: added OR-FPS-043 for `plan_fps/manifests/15-007-gate-audio.json`
 - next_eligible_steps: 15-008 gate-save-load
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 15-008 gate-save-load
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 15-008
+- step_title: gate-save-load
+- summary: Added the save/load acceptance gate manifest at `plan_fps/manifests/15-008-gate-save-load.json`. The manifest locks the `bun run doom.ts` command contract, save/load oracle scope from OR-FPS-022 and OR-FPS-031, transition from `15-007` to `15-008`, next gate `15-009`, deterministic replay compatibility flags, OR-FPS-044 oracle registration, and evidence hash `914619b51275e4559bf71423c97d4908a535fadf6bbba847752217f6dd69743e`. Added focused test `test/playable/acceptance/gate-save-load.test.ts` to lock the manifest schema, command contract, save/load oracle scope, replay compatibility, oracle registration, and hash.
+- files_changed: plan_fps/manifests/15-008-gate-save-load.json; test/playable/acceptance/gate-save-load.test.ts; plan_fps/REFERENCE_ORACLES.md; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: `bun run format` fixed the newly added focused test once; a post-control-update full-suite rerun failed once in `wirePauseMenuOverlayFlow > locks the formatted source hash`, then the focused file and full suite both passed on immediate rerun.
+- tests_run: bun run format (initial pass formatted 7 files and fixed 1 file; post-control-update pass formatted 8 files with no fixes); bun test test/playable/acceptance/gate-save-load.test.ts (3 pass, 0 fail, 3 expect() calls; repeated after control updates with same result); bun test test/playable/game-session-wiring/wire-pause-menu-overlay-flow.test.ts (8 pass, 0 fail, 47 expect() calls after transient full-suite failure); bun test (initial pass: 7925 pass, 0 fail, 695168 expect() calls across 391 files; final pass: 7927 pass, 0 fail, 695182 expect() calls across 391 files); bun x tsc --noEmit --project tsconfig.json (clean; repeated after control updates)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: added OR-FPS-044 for `plan_fps/manifests/15-008-gate-save-load.json`
+- next_eligible_steps: 15-009 gate-attract-loop-and-long-run
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
