@@ -3624,3 +3624,21 @@
 - oracle_changes: none
 - next_eligible_steps: 13-007 replay-scripted-input-from-clean-launch
 - open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged
+
+## 2026-04-26 - 13-007 replay-scripted-input-from-clean-launch
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- step_id: 13-007
+- step_title: replay-scripted-input-from-clean-launch
+- summary: Added the playable clean-launch scripted input replay surface at `src/playable/demo-replay/replayScriptedInputFromCleanLaunch.ts`. The module exports the exact `bun run doom.ts` command contract plus `replayScriptedInputFromCleanLaunch`, validates the product runtime command before replay work, normalizes deterministic clean-launch input script evidence, optionally consumes `DemoPlayback` through the marker boundary, rejects invalid input script fields, and returns frozen replay evidence with locked SHA-256 hashes. Added focused test `test/playable/demo-replay/replay-scripted-input-from-clean-launch.test.ts` to lock the command contract, 01-015 side-by-side audit linkage, formatted source SHA-256 `c8a3ccc9827e631bf4cc9a0b18f044e2d95458966a2062af2cd3703bfed72374`, default clean-launch script signatures, demo marker transition evidence, wrong-command prevalidation, and invalid scan-code rejection.
+- files_changed: src/playable/demo-replay/replayScriptedInputFromCleanLaunch.ts; test/playable/demo-replay/replay-scripted-input-from-clean-launch.test.ts; plan_fps/MASTER_CHECKLIST.md; plan_fps/HANDOFF_LOG.md
+- recovery_edit: TypeScript verification caught that the focused test's `requireRecord` helper did not narrow `unknown` to `Record<string, unknown>`. Added an explicit `isRecord` type guard, reran formatting, focused test, full `bun test`, and TypeScript successfully.
+- tests_run: bun run format (initial pass fixed 2 files; final recovery rerun no fixes); bun test test/playable/demo-replay/replay-scripted-input-from-clean-launch.test.ts (final run 5 pass, 0 fail, 15 expect() calls); bun test (final run 7801 pass, 0 fail, 694724 expect() calls across 372 files); bun x tsc --noEmit --project tsconfig.json (clean)
+- new_facts: none
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 13-008 capture-replay-framebuffer-state-audio-music
+- open_risks: unrelated preexisting dirty worktree files remain outside this step scope and were not staged

@@ -247,7 +247,7 @@
 - [x] `13-004` `replay-demo3-deterministically` | prereqs: `13-003` | file: `plan_fps/steps/13-004-replay-demo3-deterministically.md`
 - [x] `13-005` `convert-demo-input-stream` | prereqs: `13-004` | file: `plan_fps/steps/13-005-convert-demo-input-stream.md`
 - [x] `13-006` `preserve-demo-termination-behavior` | prereqs: `13-005` | file: `plan_fps/steps/13-006-preserve-demo-termination-behavior.md`
-- [ ] `13-007` `replay-scripted-input-from-clean-launch` | prereqs: `13-006` | file: `plan_fps/steps/13-007-replay-scripted-input-from-clean-launch.md`
+- [x] `13-007` `replay-scripted-input-from-clean-launch` | prereqs: `13-006` | file: `plan_fps/steps/13-007-replay-scripted-input-from-clean-launch.md`
 - [ ] `13-008` `capture-replay-framebuffer-state-audio-music` | prereqs: `13-007` | file: `plan_fps/steps/13-008-capture-replay-framebuffer-state-audio-music.md`
 - [ ] `13-009` `detect-long-run-drift` | prereqs: `13-008` | file: `plan_fps/steps/13-009-detect-long-run-drift.md`
 - [ ] `13-010` `accept-clean-launch-to-gameplay-replay` | prereqs: `13-009` | file: `plan_fps/steps/13-010-accept-clean-launch-to-gameplay-replay.md`
