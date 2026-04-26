@@ -131,6 +131,52 @@ describe('restorePostLoadRenderAudioInputState', () => {
     ).toThrow('restore post-load render/audio/input state requires bun run doom.ts.');
   });
 
+  test('rejects an empty-string command at the boundary so silent fallback drift cannot bypass the runtime check', () => {
+    expect(() =>
+      restorePostLoadRenderAudioInputState({
+        command: '',
+        header: loadedHeader,
+      }),
+    ).toThrow('restore post-load render/audio/input state requires bun run doom.ts.');
+
+    expect(() =>
+      restorePostLoadRenderAudioInputState({
+        command: '',
+        header: null,
+      }),
+    ).toThrow('restore post-load render/audio/input state requires bun run doom.ts.');
+  });
+
+  test('returns a frozen restored evidence whose nested audio render and input states are also frozen', () => {
+    const result = restorePostLoadRenderAudioInputState({
+      command: 'bun run doom.ts',
+      header: loadedHeader,
+    });
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.audioState)).toBe(true);
+    expect(Object.isFrozen(result.commandContract)).toBe(true);
+    expect(Object.isFrozen(result.inputState)).toBe(true);
+    expect(Object.isFrozen(result.renderState)).toBe(true);
+  });
+
+  test('returns a frozen skipped evidence whose nested audio render and input states are also frozen', () => {
+    const result = restorePostLoadRenderAudioInputState({
+      command: 'bun run doom.ts',
+      header: null,
+    });
+
+    expect(Object.isFrozen(result)).toBe(true);
+    expect(Object.isFrozen(result.audioState)).toBe(true);
+    expect(Object.isFrozen(result.commandContract)).toBe(true);
+    expect(Object.isFrozen(result.inputState)).toBe(true);
+    expect(Object.isFrozen(result.renderState)).toBe(true);
+  });
+
+  test('keeps the shared command contract object frozen so callers cannot mutate it', () => {
+    expect(Object.isFrozen(RESTORE_POST_LOAD_RENDER_AUDIO_INPUT_STATE_COMMAND_CONTRACT)).toBe(true);
+  });
+
   test('locks the missing save load UI audit link for post-load state handling', async () => {
     const auditManifestText = await Bun.file('plan_fps/manifests/01-013-audit-missing-save-load-ui.json').text();
 

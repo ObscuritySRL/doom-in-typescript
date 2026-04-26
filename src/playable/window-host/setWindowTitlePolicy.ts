@@ -13,29 +13,29 @@ const defaultClientSize = Object.freeze(computeClientDimensions(DEFAULT_SCALE, t
 
 export const WINDOW_TITLE_POLICY_CONTRACT = Object.freeze({
   currentLauncherCommand: CURRENT_LAUNCHER_COMMAND,
-  currentLauncherTransition: {
+  currentLauncherTransition: Object.freeze({
     defaultAspectRatioCorrect: true,
     defaultClientSize,
     defaultScale: DEFAULT_SCALE,
     sourceCall: CURRENT_WINDOW_CALL,
     sourcePath: CURRENT_WINDOW_SOURCE_PATH,
     titleTemplate: WINDOW_TITLE_TEMPLATE,
-  },
-  deterministicReplayCompatibility: {
+  }),
+  deterministicReplayCompatibility: Object.freeze({
     consumesReplayInput: false,
     createsNativeWindow: false,
     mutatesGameState: false,
     mutatesRandomSeed: false,
-  },
+  }),
   stepId: '04-002',
   stepTitle: 'set-window-title-policy',
   targetRuntimeCommand: TARGET_RUNTIME_COMMAND,
-  titlePolicy: {
+  titlePolicy: Object.freeze({
     mapNameSource: 'gameContext.mapName',
     prefix: WINDOW_TITLE_PREFIX,
     rejectsBlankMapName: true,
     windowPolicySourcePath: WINDOW_POLICY_SOURCE_PATH,
-  },
+  }),
 } as const);
 
 export interface WindowTitlePolicyOptions {

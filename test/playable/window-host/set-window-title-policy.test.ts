@@ -107,3 +107,36 @@ test('setWindowTitlePolicy rejects non-playable commands and blank map names', (
     }),
   ).toThrow('Window title policy requires a non-empty map name');
 });
+
+test('setWindowTitlePolicy rejects an empty-string map name and an empty-string command', () => {
+  expect(() =>
+    setWindowTitlePolicy({
+      command: 'bun run doom.ts',
+      mapName: '',
+    }),
+  ).toThrow('Window title policy requires a non-empty map name');
+
+  expect(() =>
+    setWindowTitlePolicy({
+      command: '',
+      mapName: 'E1M1',
+    }),
+  ).toThrow('Window title policy requires bun run doom.ts');
+});
+
+test('setWindowTitlePolicy returns a frozen result so callers cannot mutate the title plan', () => {
+  const result = setWindowTitlePolicy({
+    command: 'bun run doom.ts',
+    mapName: 'E1M1',
+  });
+
+  expect(Object.isFrozen(result)).toBe(true);
+});
+
+test('locks runtime-frozen invariants on the contract and every nested object', () => {
+  expect(Object.isFrozen(WINDOW_TITLE_POLICY_CONTRACT)).toBe(true);
+  expect(Object.isFrozen(WINDOW_TITLE_POLICY_CONTRACT.currentLauncherTransition)).toBe(true);
+  expect(Object.isFrozen(WINDOW_TITLE_POLICY_CONTRACT.currentLauncherTransition.defaultClientSize)).toBe(true);
+  expect(Object.isFrozen(WINDOW_TITLE_POLICY_CONTRACT.deterministicReplayCompatibility)).toBe(true);
+  expect(Object.isFrozen(WINDOW_TITLE_POLICY_CONTRACT.titlePolicy)).toBe(true);
+});
