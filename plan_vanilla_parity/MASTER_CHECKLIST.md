@@ -8,7 +8,7 @@
 ## Phase 00: Governance / Plan Foundation
 
 - [x] `00-001` `establish-vanilla-parity-control-center` | lane: `governance` | prereqs: `none` | file: `plan_vanilla_parity/steps/00-001-establish-vanilla-parity-control-center.md`
-- [ ] `00-002` `declare-plan-fps-and-plan-engine-prior-art-only` | lane: `governance` | prereqs: `00-001` | file: `plan_vanilla_parity/steps/00-002-declare-plan-fps-and-plan-engine-prior-art-only.md`
+- [x] `00-002` `declare-plan-fps-and-plan-engine-prior-art-only` | lane: `governance` | prereqs: `00-001` | file: `plan_vanilla_parity/steps/00-002-declare-plan-fps-and-plan-engine-prior-art-only.md`
 - [ ] `00-003` `pin-shareware-doom-one-point-nine-primary-target` | lane: `governance` | prereqs: `00-002` | file: `plan_vanilla_parity/steps/00-003-pin-shareware-doom-one-point-nine-primary-target.md`
 - [ ] `00-004` `pin-user-supplied-registered-and-ultimate-iwad-scope` | lane: `governance` | prereqs: `00-003` | file: `plan_vanilla_parity/steps/00-004-pin-user-supplied-registered-and-ultimate-iwad-scope.md`
 - [ ] `00-005` `pin-proprietary-asset-non-redistribution-boundary` | lane: `governance` | prereqs: `00-004` | file: `plan_vanilla_parity/steps/00-005-pin-proprietary-asset-non-redistribution-boundary.md`
