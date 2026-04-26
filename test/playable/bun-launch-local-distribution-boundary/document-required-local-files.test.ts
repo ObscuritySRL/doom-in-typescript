@@ -96,4 +96,41 @@ describe('documentRequiredLocalFiles', () => {
       expect(Object.isFrozen(requiredLocalFile)).toBe(true);
     }
   });
+
+  test('aligns the documented current package start script with the live package.json', async () => {
+    const packageJsonPath = new URL('../../../package.json', import.meta.url);
+    const packageJson = (await Bun.file(packageJsonPath).json()) as { scripts?: { start?: string } };
+
+    expect(packageJson.scripts?.start).toBe('bun run src/main.ts');
+    expect(packageJson.scripts?.start).toBe(DOCUMENT_REQUIRED_LOCAL_FILES_TRANSITION.currentPackageStartScript);
+  });
+
+  test('keeps every required local file path and category unique', () => {
+    const seenPaths = new Set<string>();
+    const seenCategories = new Set<string>();
+
+    for (const requiredLocalFile of DOCUMENT_REQUIRED_LOCAL_FILES_REQUIRED_FILES) {
+      expect(seenPaths.has(requiredLocalFile.path)).toBe(false);
+      expect(seenCategories.has(requiredLocalFile.category)).toBe(false);
+      seenPaths.add(requiredLocalFile.path);
+      seenCategories.add(requiredLocalFile.category);
+    }
+
+    expect(seenPaths.size).toBe(DOCUMENT_REQUIRED_LOCAL_FILES_REQUIRED_FILES.length);
+    expect(seenCategories.size).toBe(DOCUMENT_REQUIRED_LOCAL_FILES_REQUIRED_FILES.length);
+  });
+
+  test('reproduces the documentation hash from the public contract inputs', () => {
+    const evidence = documentRequiredLocalFiles();
+    const hashInput = {
+      commandContract: evidence.commandContract,
+      deterministicReplayCompatibility: evidence.deterministicReplayCompatibility,
+      requiredLocalFiles: evidence.requiredLocalFiles,
+      transition: evidence.transition,
+    };
+    const recomputedHash = new Bun.CryptoHasher('sha256').update(JSON.stringify(hashInput)).digest('hex');
+
+    expect(recomputedHash).toBe(evidence.documentationHash);
+    expect(recomputedHash).toBe(EXPECTED_DOCUMENTATION_HASH);
+  });
 });

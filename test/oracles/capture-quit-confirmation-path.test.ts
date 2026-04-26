@@ -275,6 +275,30 @@ describe('capture quit confirmation path oracle', () => {
     expect(fixture.inheritedLaunchSurfaceSourceHashes).toEqual(manifest.sourceHashes);
   });
 
+  test('aligns capture frames and trace tics with the 35 Hz reference rate', async () => {
+    const fixture: QuitConfirmationFixture = await Bun.file(fixturePath).json();
+    const traceTics = fixture.expectedTrace.map((traceEvent) => traceEvent.tic);
+
+    expect(fixture.captureWindow.gameTicRateHz).toBe(35);
+    expect(fixture.captureWindow.captureFrames).toEqual(traceTics);
+    expect(traceTics.length).toBe(fixture.captureCommand.inputSequence.length);
+    expect(traceTics[0]).toBe(fixture.captureWindow.startTic);
+    expect(traceTics[traceTics.length - 1]).toBe(fixture.captureWindow.endTic);
+
+    for (let traceIndex = 0; traceIndex < traceTics.length; traceIndex += 1) {
+      const tic = traceTics[traceIndex] ?? -1;
+
+      expect(tic).toBeGreaterThanOrEqual(fixture.captureWindow.startTic);
+      expect(tic).toBeLessThanOrEqual(fixture.captureWindow.endTic);
+
+      if (traceIndex > 0) {
+        const previousTic = traceTics[traceIndex - 1] ?? -1;
+
+        expect(tic).toBeGreaterThan(previousTic);
+      }
+    }
+  });
+
   test('records pending live capture gaps and oracle registration', async () => {
     const fixture: QuitConfirmationFixture = await Bun.file(fixturePath).json();
     const manifest: SideBySideManifest = await Bun.file(manifestPath).json();
