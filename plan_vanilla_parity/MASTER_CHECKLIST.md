@@ -23,7 +23,7 @@
 - [x] `00-014` `define-final-acceptance-standard` | lane: `governance` | prereqs: `00-013` | file: `plan_vanilla_parity/steps/00-014-define-final-acceptance-standard.md`
 - [x] `00-015` `create-plan-validation-script-contract` | lane: `governance` | prereqs: `00-014` | file: `plan_vanilla_parity/steps/00-015-create-plan-validation-script-contract.md`
 - [x] `00-016` `create-plan-validation-test-contract` | lane: `governance` | prereqs: `00-015` | file: `plan_vanilla_parity/steps/00-016-create-plan-validation-test-contract.md`
-- [ ] `00-017` `record-first-eligible-step-and-total-count` | lane: `governance` | prereqs: `00-016` | file: `plan_vanilla_parity/steps/00-017-record-first-eligible-step-and-total-count.md`
+- [x] `00-017` `record-first-eligible-step-and-total-count` | lane: `governance` | prereqs: `00-016` | file: `plan_vanilla_parity/steps/00-017-record-first-eligible-step-and-total-count.md`
 - [ ] `00-018` `gate-plan-structure-validation` | lane: `governance` | prereqs: `00-017` | file: `plan_vanilla_parity/steps/00-018-gate-plan-structure-validation.md`
 
 ## Phase 01: Current State Inventory
