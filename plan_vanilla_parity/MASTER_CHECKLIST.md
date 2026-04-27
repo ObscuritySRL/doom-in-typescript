@@ -34,7 +34,7 @@
 - [x] `01-004` `inventory-src-playable-contract-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md`
 - [x] `01-005` `inventory-core-math-and-timing-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-005-inventory-core-math-and-timing-modules.md`
 - [x] `01-006` `inventory-wad-and-asset-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-006-inventory-wad-and-asset-modules.md`
-- [ ] `01-007` `inventory-map-and-world-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-007-inventory-map-and-world-modules.md`
+- [x] `01-007` `inventory-map-and-world-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-007-inventory-map-and-world-modules.md`
 - [ ] `01-008` `inventory-player-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-008-inventory-player-modules.md`
 - [ ] `01-009` `inventory-ai-and-specials-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-009-inventory-ai-and-specials-modules.md`
 - [ ] `01-010` `inventory-renderer-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`
