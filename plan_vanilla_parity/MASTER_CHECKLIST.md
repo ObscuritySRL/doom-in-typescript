@@ -97,7 +97,7 @@
 - [x] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
 - [x] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
 - [x] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
-- [ ] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
+- [x] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
 - [ ] `03-006` `implement-user-supplied-iwad-selection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-006-implement-user-supplied-iwad-selection.md`
 - [ ] `03-007` `implement-doom-game-mode-detection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-007-implement-doom-game-mode-detection.md`
 - [ ] `03-008` `implement-d-doommain-init-order-skeleton` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`
