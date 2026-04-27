@@ -29,7 +29,7 @@
 ## Phase 01: Current State Inventory
 
 - [x] `01-001` `inventory-root-scripts-and-missing-doom-ts` | lane: `inventory` | prereqs: `none` | file: `plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md`
-- [ ] `01-002` `inventory-simplified-launcher-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md`
+- [x] `01-002` `inventory-simplified-launcher-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md`
 - [ ] `01-003` `inventory-src-bootstrap-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-003-inventory-src-bootstrap-surface.md`
 - [ ] `01-004` `inventory-src-playable-contract-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md`
 - [ ] `01-005` `inventory-core-math-and-timing-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-005-inventory-core-math-and-timing-modules.md`
@@ -94,7 +94,7 @@
 ## Phase 03: Launch / Host / Window / Input
 
 - [x] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
-- [ ] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
+- [x] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
 - [ ] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
 - [ ] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
 - [ ] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
@@ -166,7 +166,7 @@
 ## Phase 05: WAD / Assets / Data
 
 - [x] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
-- [ ] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
+- [x] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
 - [ ] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
 - [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
 - [ ] `05-005` `parse-playpal-and-colormap-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-005-parse-playpal-and-colormap-lumps.md`
