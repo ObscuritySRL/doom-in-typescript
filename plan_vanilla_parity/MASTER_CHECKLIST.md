@@ -99,7 +99,7 @@
 - [x] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
 - [x] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
 - [x] `03-006` `implement-user-supplied-iwad-selection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-006-implement-user-supplied-iwad-selection.md`
-- [ ] `03-007` `implement-doom-game-mode-detection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-007-implement-doom-game-mode-detection.md`
+- [x] `03-007` `implement-doom-game-mode-detection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-007-implement-doom-game-mode-detection.md`
 - [ ] `03-008` `implement-d-doommain-init-order-skeleton` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`
 - [ ] `03-009` `implement-d-doomloop-entry-timing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`
 - [ ] `03-010` `implement-clean-quit-and-endoom-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-010-implement-clean-quit-and-endoom-policy.md`
@@ -137,7 +137,7 @@
 - [x] `04-003` `audit-fixed-divide-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-003-audit-fixed-divide-semantics.md`
 - [x] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
 - [x] `04-005` `audit-trig-lookup-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-005-audit-trig-lookup-tables.md`
-- [ ] `04-006` `audit-fine-tangent-and-slope-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-006-audit-fine-tangent-and-slope-tables.md`
+- [x] `04-006` `audit-fine-tangent-and-slope-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-006-audit-fine-tangent-and-slope-tables.md`
 - [ ] `04-007` `audit-doom-random-table-and-indices` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-007-audit-doom-random-table-and-indices.md`
 - [ ] `04-008` `implement-deterministic-reset-seed` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-008-implement-deterministic-reset-seed.md`
 - [ ] `04-009` `implement-game-tic-counter-ownership` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-009-implement-game-tic-counter-ownership.md`
