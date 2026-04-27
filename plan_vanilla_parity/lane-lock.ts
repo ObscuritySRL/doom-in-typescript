@@ -8,6 +8,7 @@ export interface LaneLockRecord {
   readonly lane: string;
   readonly lockId: string;
   readonly owner: string;
+  readonly ownerProcessIdentifier?: number;
   readonly planDirectory: string;
   readonly processIdentifier: number;
   readonly stepId: string;
@@ -39,6 +40,7 @@ interface ParsedArguments {
   readonly lockDirectory: string;
   readonly lockId: string;
   readonly owner: string;
+  readonly ownerProcessIdentifier: number | null;
   readonly planDirectory: string;
 }
 
@@ -76,6 +78,7 @@ export async function acquireLaneLock(parsedArguments: ParsedArguments): Promise
       leaseMinutes: parsedArguments.leaseMinutes,
       lockDirectory,
       owner: parsedArguments.owner,
+      ownerProcessIdentifier: parsedArguments.ownerProcessIdentifier,
       planDirectory,
       step,
     });
@@ -137,6 +140,7 @@ export function parseLaneLockArguments(argumentValues: readonly string[]): Parse
     lockDirectory: options.get('lock-directory') ?? DEFAULT_LOCK_DIRECTORY,
     lockId: options.get('lock-id') ?? '',
     owner: options.get('owner') ?? 'unknown',
+    ownerProcessIdentifier: parseOptionalPositiveInteger(options.get('owner-process-identifier') ?? ''),
     planDirectory: options.get('plan-directory') ?? 'plan_vanilla_parity',
   };
 }
@@ -251,6 +255,37 @@ function isRecordExpired(record: LaneLockRecord, now: Date): boolean {
   return Date.parse(record.expiresAtUtc) <= now.getTime();
 }
 
+function isRecordOwnerProcessGone(record: LaneLockRecord): boolean {
+  const ownerProcessIdentifier = readRecordOwnerProcessIdentifier(record);
+  if (ownerProcessIdentifier === null) {
+    return false;
+  }
+
+  try {
+    process.kill(ownerProcessIdentifier, 0);
+    return false;
+  } catch (error) {
+    if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'ESRCH') {
+      return true;
+    }
+
+    return false;
+  }
+}
+
+function parseOptionalPositiveInteger(value: string): number | null {
+  if (!value) {
+    return null;
+  }
+
+  const parsedValue = Number(value);
+  if (!Number.isInteger(parsedValue) || parsedValue <= 0) {
+    return null;
+  }
+
+  return parsedValue;
+}
+
 function parsePositiveInteger(value: string, fallback: number): number {
   if (!value) {
     return fallback;
@@ -264,9 +299,20 @@ function parsePositiveInteger(value: string, fallback: number): number {
   return parsedValue;
 }
 
+function readRecordOwnerProcessIdentifier(record: LaneLockRecord): number | null {
+  if (Number.isInteger(record.ownerProcessIdentifier) && (record.ownerProcessIdentifier ?? 0) > 0) {
+    return record.ownerProcessIdentifier ?? null;
+  }
+
+  const ownerProcessIdentifierMatch = /\bpid=(?<ownerProcessIdentifier>\d+)\b/.exec(record.owner);
+  const ownerProcessIdentifier = ownerProcessIdentifierMatch?.groups?.ownerProcessIdentifier ?? '';
+
+  return parseOptionalPositiveInteger(ownerProcessIdentifier);
+}
+
 async function removeExpiredLockDirectory(lockPath: string, now: Date): Promise<boolean> {
   const record = await readLockRecord(join(lockPath, 'lock.json'));
-  if (record && !isRecordExpired(record, now)) {
+  if (record && !isRecordExpired(record, now) && !isRecordOwnerProcessGone(record)) {
     return false;
   }
 
@@ -274,7 +320,14 @@ async function removeExpiredLockDirectory(lockPath: string, now: Date): Promise<
   return true;
 }
 
-async function tryAcquireLockForStep(options: { readonly leaseMinutes: number; readonly lockDirectory: string; readonly owner: string; readonly planDirectory: string; readonly step: ChecklistStep }): Promise<LaneLockResult> {
+async function tryAcquireLockForStep(options: {
+  readonly leaseMinutes: number;
+  readonly lockDirectory: string;
+  readonly owner: string;
+  readonly ownerProcessIdentifier: number | null;
+  readonly planDirectory: string;
+  readonly step: ChecklistStep;
+}): Promise<LaneLockResult> {
   const lockPath = getLaneLockPath(options.lockDirectory, options.step.lane);
   const now = new Date();
 
@@ -290,6 +343,7 @@ async function tryAcquireLockForStep(options: { readonly leaseMinutes: number; r
         lane: options.step.lane,
         lockId,
         owner: options.owner,
+        ...(options.ownerProcessIdentifier === null ? {} : { ownerProcessIdentifier: options.ownerProcessIdentifier }),
         planDirectory: options.planDirectory,
         processIdentifier: process.pid,
         stepId: options.step.id,
@@ -392,7 +446,9 @@ async function runLaneLockCli(): Promise<number> {
       console.log(JSON.stringify(await releaseLaneLock(parsedArguments)));
       return 0;
     default:
-      console.error('Usage: bun run plan_vanilla_parity/lane-lock.ts acquire|heartbeat|release|list [--lane <lane>] [--lock-id <id>] [--plan-directory <path>] [--lock-directory <path>] [--lease-minutes <minutes>] [--owner <owner>]');
+      console.error(
+        'Usage: bun run plan_vanilla_parity/lane-lock.ts acquire|heartbeat|release|list [--lane <lane>] [--lock-id <id>] [--plan-directory <path>] [--lock-directory <path>] [--lease-minutes <minutes>] [--owner <owner>] [--owner-process-identifier <pid>]',
+      );
       return 2;
   }
 }

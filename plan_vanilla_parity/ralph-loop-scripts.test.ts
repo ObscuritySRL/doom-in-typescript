@@ -242,6 +242,9 @@ describe('vanilla parity Ralph-loop scripts', () => {
       expect(scriptText).toContain('[int]$LockLeaseMinutes = 120');
       expect(scriptText).toContain('[int]$ProgressStatusSeconds = 180');
       expect(scriptText).toContain('-ProgressStatusSeconds $ProgressStatusSeconds');
+      if (scriptPath === CODEX_NO_AUDIT_SCRIPT_PATH) {
+        expect(scriptText).toContain('"--owner-process-identifier", "$PID"');
+      }
       expect(scriptText).not.toContain('plan_fps\\PROMPT.md');
     }
   });
@@ -257,6 +260,9 @@ describe('vanilla parity Ralph-loop scripts', () => {
       expect(scriptText).toContain('[int]$LockLeaseMinutes = 120');
       expect(scriptText).toContain('[int]$ProgressStatusSeconds = 180');
       expect(scriptText).toContain('-ProgressStatusSeconds $ProgressStatusSeconds');
+      if (scriptPath === CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH) {
+        expect(scriptText).toContain('"--owner-process-identifier", "$PID"');
+      }
       expect(scriptText).not.toContain('plan_fps\\PROMPT.md');
     }
   });

@@ -418,6 +418,7 @@ $acquireArguments = @(
     "--plan-directory", $PlanDirectory,
     "--lock-directory", $LaneLockDirectory,
     "--owner", $owner,
+    "--owner-process-identifier", "$PID",
     "--lease-minutes", "$LockLeaseMinutes"
 )
 if (-not [string]::IsNullOrWhiteSpace($Lane)) {

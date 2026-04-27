@@ -162,4 +162,18 @@ describe('vanilla parity lane lock helper', () => {
       await rm(fixture.rootDirectory, { force: true, recursive: true });
     }
   });
+
+  test('recovers a lane lock whose recorded owner process is gone', async () => {
+    const fixture = await createFixturePlan();
+    try {
+      const firstResult = await acquireLaneLock(createArguments(fixture.planDirectory, fixture.lockDirectory, ['--lane', 'oracle', '--owner', 'stale-owner pid=99999999']));
+      const secondResult = await acquireLaneLock(createArguments(fixture.planDirectory, fixture.lockDirectory, ['--lane', 'oracle']));
+
+      expect(firstResult.acquired).toBe(true);
+      expect(secondResult.acquired).toBe(true);
+      expect(secondResult.lockId).not.toBe(firstResult.lockId);
+    } finally {
+      await rm(fixture.rootDirectory, { force: true, recursive: true });
+    }
+  });
 });
