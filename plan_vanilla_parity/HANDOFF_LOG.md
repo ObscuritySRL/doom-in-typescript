@@ -2,6 +2,26 @@
 
 Append-only Ralph-loop execution history for completed `plan_vanilla_parity` steps.
 
+## 2026-04-26 - 05-003 verify-duplicate-lump-precedence (mark recovery)
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: max
+- lane: wad
+- lock_id: ef835e99-db26-4239-a914-5ec446213010
+- step_id: 05-003
+- step_title: verify-duplicate-lump-precedence
+- summary: Recovery pass that flipped `plan_vanilla_parity/MASTER_CHECKLIST.md` 05-003 from `[ ]` to `[x]` because the prior wad-lane commit `821beea feat(wad): pin duplicate lump precedence audit (05-003)` landed the implementation files (`src/assets/verify-duplicate-lump-precedence.ts`, `test/vanilla_parity/wad/verify-duplicate-lump-precedence.test.ts`) and a HANDOFF entry that claimed `Marked 05-003 complete in plan_vanilla_parity/MASTER_CHECKLIST.md`, but its actual diff toggled the 05-003 mark from `[x]` (incorrectly set by the prior launch-lane commit `b266eba feat(launch): pin vanilla iwad discovery order audit (03-004)`) to `[ ]` rather than preserving `[x]`. The substantive audit-ledger work is unchanged from `821beea`; this recovery touches only the checklist mark. Re-ran the full canonical verification sequence (format, focused test, full suite, typecheck, plan validator, plan-validation tests) on the working tree to prove the prior-commit work and the new 01-004 inventory-lane commit (`41d8854`) compose cleanly. No code or test source files changed in this recovery pass.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: One mark recovery. The prior wad-lane commit `821beea` left `plan_vanilla_parity/MASTER_CHECKLIST.md` 05-003 as `[ ]` even though the implementation, test, and prior HANDOFF entry all assert completion. This loop re-applied `[x]` and prepended this recovery-pass entry on top of the `41d8854 feat(inventory): capture src playable contract module inventory (01-004)` parallel-lane commit that landed mid-cycle. No edits were made outside the write-locked plan-control paths.
+- tests_run: bun run format (Formatted 2 files in 5ms. No fixes applied.); bun test test/vanilla_parity/wad/verify-duplicate-lump-precedence.test.ts (53 pass, 0 fail, 309 expects); bun test (9146 pass, 0 fail, 705948 expects across 428 files); bun x tsc --noEmit --project tsconfig.json (clean, exit 0); bun test plan_vanilla_parity/validate-plan.test.ts (9 pass, 0 fail, 16 expects); bun run plan_vanilla_parity/validate-plan.ts (Validated 398 vanilla parity steps. First step: 00-001.).
+- reference_sources: plan_vanilla_parity/HANDOFF_LOG.md `2026-04-26 - 05-003 verify-duplicate-lump-precedence` entry (the prior wad-lane completion entry whose `recovery_edit (2)` documents the same parallel-lane working-tree race that motivated this recovery pass); commit `821beea feat(wad): pin duplicate lump precedence audit (05-003)` (the prior commit whose diff inadvertently un-marked 05-003); commit `b266eba feat(launch): pin vanilla iwad discovery order audit (03-004)` (the upstream launch-lane commit that incorrectly checked 05-003 first, motivating `821beea`'s flip-back behavior); commit `41d8854 feat(inventory): capture src playable contract module inventory (01-004)` (the inventory-lane commit that landed during this loop iteration without touching any wad-lane file); src/assets/verify-duplicate-lump-precedence.ts (audit-ledger module, unchanged from `821beea`); test/vanilla_parity/wad/verify-duplicate-lump-precedence.test.ts (focused test, unchanged from `821beea`); plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md (step file unchanged).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-004 verify-marker-range-semantics (wad lane, prereqs `00-018` already satisfied)
+- open_risks: The same recurring parallel-lane working-tree race that motivated this recovery pass remains active for any future Ralph-loop step touching `plan_vanilla_parity/MASTER_CHECKLIST.md` or `plan_vanilla_parity/HANDOFF_LOG.md`. The mitigation pattern is documented in the prior 05-003 entry's `recovery_edit (2)` and re-confirmed here: re-apply lane plan-control edits on top of the merged file and re-run the canonical verification commands before staging. No proprietary assets touched; `doom/`, `iwad/`, and `reference/` were strictly read-only.
+
 ## 2026-04-26 - 01-004 inventory-src-playable-contract-modules
 
 - status: completed
