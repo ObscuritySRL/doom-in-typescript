@@ -133,7 +133,7 @@
 ## Phase 04: Core Timing / Fixed / RNG / Demo Sync
 
 - [x] `04-001` `audit-fixed-point-constants` | lane: `core` | prereqs: `none` | file: `plan_vanilla_parity/steps/04-001-audit-fixed-point-constants.md`
-- [ ] `04-002` `audit-fixed-multiply-overflow-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-002-audit-fixed-multiply-overflow-semantics.md`
+- [x] `04-002` `audit-fixed-multiply-overflow-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-002-audit-fixed-multiply-overflow-semantics.md`
 - [ ] `04-003` `audit-fixed-divide-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-003-audit-fixed-divide-semantics.md`
 - [ ] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
 - [ ] `04-005` `audit-trig-lookup-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-005-audit-trig-lookup-tables.md`
