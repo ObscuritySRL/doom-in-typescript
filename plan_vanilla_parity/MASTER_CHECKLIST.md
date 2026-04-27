@@ -95,7 +95,7 @@
 
 - [x] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
 - [x] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
-- [ ] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
+- [x] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
 - [ ] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
 - [ ] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
 - [ ] `03-006` `implement-user-supplied-iwad-selection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-006-implement-user-supplied-iwad-selection.md`
