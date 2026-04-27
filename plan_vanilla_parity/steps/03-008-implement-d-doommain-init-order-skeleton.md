@@ -1,4 +1,4 @@
-# [ ] STEP 03-008: Implement D DoomMain Init Order Skeleton
+# [x] STEP 03-008: Implement D DoomMain Init Order Skeleton
 
 ## id
 
