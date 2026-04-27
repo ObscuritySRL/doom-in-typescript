@@ -96,7 +96,7 @@
 - [x] `03-001` `add-root-doom-ts-bun-entrypoint` | lane: `launch` | prereqs: `none` | file: `plan_vanilla_parity/steps/03-001-add-root-doom-ts-bun-entrypoint.md`
 - [x] `03-002` `implement-vanilla-command-line-parsing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-002-implement-vanilla-command-line-parsing.md`
 - [x] `03-003` `implement-startup-error-path-and-i-error-semantics` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-003-implement-startup-error-path-and-i-error-semantics.md`
-- [ ] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
+- [x] `03-004` `implement-iwad-discovery-order` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-004-implement-iwad-discovery-order.md`
 - [ ] `03-005` `implement-local-shareware-iwad-default-path` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-005-implement-local-shareware-iwad-default-path.md`
 - [ ] `03-006` `implement-user-supplied-iwad-selection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-006-implement-user-supplied-iwad-selection.md`
 - [ ] `03-007` `implement-doom-game-mode-detection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-007-implement-doom-game-mode-detection.md`
@@ -167,7 +167,7 @@
 
 - [x] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
 - [x] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
-- [x] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
+- [ ] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
 - [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
 - [ ] `05-005` `parse-playpal-and-colormap-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-005-parse-playpal-and-colormap-lumps.md`
 - [ ] `05-006` `parse-patch-picture-format` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-006-parse-patch-picture-format.md`
