@@ -136,7 +136,7 @@
 - [x] `04-002` `audit-fixed-multiply-overflow-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-002-audit-fixed-multiply-overflow-semantics.md`
 - [x] `04-003` `audit-fixed-divide-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-003-audit-fixed-divide-semantics.md`
 - [x] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
-- [ ] `04-005` `audit-trig-lookup-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-005-audit-trig-lookup-tables.md`
+- [x] `04-005` `audit-trig-lookup-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-005-audit-trig-lookup-tables.md`
 - [ ] `04-006` `audit-fine-tangent-and-slope-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-006-audit-fine-tangent-and-slope-tables.md`
 - [ ] `04-007` `audit-doom-random-table-and-indices` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-007-audit-doom-random-table-and-indices.md`
 - [ ] `04-008` `implement-deterministic-reset-seed` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-008-implement-deterministic-reset-seed.md`
