@@ -40,7 +40,7 @@
 - [x] `01-010` `inventory-renderer-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`
 - [x] `01-011` `inventory-ui-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-011-inventory-ui-modules.md`
 - [x] `01-012` `inventory-audio-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-012-inventory-audio-modules.md`
-- [ ] `01-013` `inventory-save-and-config-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-013-inventory-save-and-config-modules.md`
+- [x] `01-013` `inventory-save-and-config-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-013-inventory-save-and-config-modules.md`
 - [ ] `01-014` `inventory-demo-and-replay-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-014-inventory-demo-and-replay-modules.md`
 - [ ] `01-015` `inventory-oracle-fixtures-with-pending-status` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-015-inventory-oracle-fixtures-with-pending-status.md`
 - [ ] `01-016` `inventory-parity-tests-that-lock-fixtures` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-016-inventory-parity-tests-that-lock-fixtures.md`
