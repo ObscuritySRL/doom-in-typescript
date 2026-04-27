@@ -1,0 +1,1352 @@
+{
+  "id": "01-004",
+  "title": "Inventory Src Playable Contract Modules",
+  "lane": "inventory",
+  "summary": "Src playable contract module inventory for the vanilla parity rebuild. Captures the twelve subdirectories committed under src/playable/, the 153 TypeScript contract files they contain, the size_bytes/line_count/sha256/export_count fingerprint of each committed file, the Chocolate Doom 2.2.1 concept each subdirectory models, and the runtime status of the surface. Confirms that no module outside src/playable/ imports from src/playable/ today, that the simplified launcher entrypoint src/main.ts and the canonical D_DoomLoop orchestrator src/mainLoop.ts both bypass this contract surface, and that 152 of the 153 committed files reference the canonical bun run doom.ts runtime target literal while one file (src/playable/window-host/createBunCompatibleWin32Window.ts) constructs the same literal at runtime via a template join of TARGET_RUNTIME_PROGRAM, TARGET_RUNTIME_SUBCOMMAND, and TARGET_RUNTIME_ENTRY_FILE.",
+  "captured_at_utc": "2026-04-26T22:05:00Z",
+  "evidence_method": "direct local repository audit performed by the inventory lane: ls and git ls-files src/playable/ to enumerate the twelve committed subdirectories and 153 committed TypeScript files, sha256sum and wc -l over each committed file via createHash and readFileSync inside a Bun script, ripgrep over src/ for from '../playable/' and from './playable/' to confirm zero non-playable runtime imports of the contract surface, ripgrep over each src/playable/<subdir>/<file>.ts for the export keyword, ripgrep over src/playable/ for the literal bun run doom.ts to count runtime-target references, and direct read of src/playable/window-host/createBunCompatibleWin32Window.ts to record the one file that constructs the runtime command at runtime.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "playable_directory": {
+    "relative_path": "src/playable/",
+    "exists": true,
+    "committed_file_count": 153,
+    "subdirectory_count": 12,
+    "subdirectory_names_sorted": [
+      "audio-product-integration",
+      "bun-launch-local-distribution-boundary",
+      "bun-runtime-entry-point",
+      "config-persistence",
+      "demo-replay",
+      "front-end-menus",
+      "game-session-wiring",
+      "input",
+      "real-time-main-loop",
+      "rendering-product-integration",
+      "save-load-playability",
+      "window-host"
+    ],
+    "owner_lane": null,
+    "owner_lane_source": "no row in plan_vanilla_parity/PARALLEL_WORK.md owns src/playable/; the surface is contract/manifest material inherited from prior plan work and is referenced as such by plan_vanilla_parity/README.md line 21"
+  },
+  "playable_subdirectories": [
+    {
+      "relative_path": "src/playable/audio-product-integration/",
+      "subdirectory_name": "audio-product-integration",
+      "vanilla_concept_modeled": "audio runtime contract derived from Chocolate Doom 2.2.1 src/i_sound.c, src/s_sound.c, src/i_oplmusic.c, and src/i_winmusic.c",
+      "file_count": 14,
+      "total_size_bytes": 99976,
+      "total_line_count": 2750,
+      "total_export_count": 176,
+      "files": [
+        {
+          "relative_path": "src/playable/audio-product-integration/captureAudioHashWindows.ts",
+          "size_bytes": 6731,
+          "line_count": 187,
+          "sha256": "c158497f6bd14eb49c2fb1f0818fdd4242d9205fc641f7366c8af2b6c3611a45",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/connectMusicSystem.ts",
+          "size_bytes": 7355,
+          "line_count": 218,
+          "sha256": "3daacdf2ad4d17e02cfc3ef572acae4bbc649176a3320157f8d3920271544ad1",
+          "export_count": 16
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/connectSfxMixer.ts",
+          "size_bytes": 5600,
+          "line_count": 163,
+          "sha256": "a41b91aa1a85f4a2f499301e4c0f461c6ca5ce71e0058aca73c57573608c12a6",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/implementSfxPriorityEviction.ts",
+          "size_bytes": 10851,
+          "line_count": 287,
+          "sha256": "80ade5e79e77b230d1c6068b9440c1239d9ed96c7c9723483c079e43a4d6747f",
+          "export_count": 12
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/lockSfxChannelCount.ts",
+          "size_bytes": 4808,
+          "line_count": 132,
+          "sha256": "d639d060f1698e9c306a35d5a60afadb0ff52218aa46584a5ff71810c798c50e",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/pauseAndResumeAudio.ts",
+          "size_bytes": 4065,
+          "line_count": 110,
+          "sha256": "70ed65511fd1325a11805d1fe84a4c32db66c9ad50b84d4f685143fd63aeccf8",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/playIntermissionFinaleMusic.ts",
+          "size_bytes": 7132,
+          "line_count": 207,
+          "sha256": "6e0681c8efc44438c062ad32dfee1ca23eebe37dd9860dc674478080912c794d",
+          "export_count": 13
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/playLevelMusic.ts",
+          "size_bytes": 6167,
+          "line_count": 193,
+          "sha256": "d9a1a21ef408757590b733110af07ce7e05ea18d083e5e22862f7f8b798016cf",
+          "export_count": 17
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/playMenuSounds.ts",
+          "size_bytes": 7994,
+          "line_count": 217,
+          "sha256": "1821c010f3d1b94eea7c56572001ac6384c6c1a722eeee82c4f208de7c13fe79",
+          "export_count": 13
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/preserveOplMusTiming.ts",
+          "size_bytes": 4412,
+          "line_count": 126,
+          "sha256": "f90266a05cbb8542119ccef8c734cd4584b771b90a9ae46dccdd626112bddde3",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/selectAndOpenBunWin32AudioHost.ts",
+          "size_bytes": 9924,
+          "line_count": 252,
+          "sha256": "c54b69b523fd7cd2a15ebd1087ae51a0f5474215d111c2760905d288b8e53e4a",
+          "export_count": 19
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/shutdownAudioCleanly.ts",
+          "size_bytes": 10516,
+          "line_count": 288,
+          "sha256": "8089bd9f5000915071a9230a9eed68957ca0ee4f688094c9d839c38f6c9227db",
+          "export_count": 15
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/updateSfxSpatialization.ts",
+          "size_bytes": 8001,
+          "line_count": 193,
+          "sha256": "86e86eabe1ad588309e6f71770f9c34a0fc0639f58e7b597492c6cbaa0817742",
+          "export_count": 12
+        },
+        {
+          "relative_path": "src/playable/audio-product-integration/wireVolumeControls.ts",
+          "size_bytes": 6420,
+          "line_count": 177,
+          "sha256": "37feb646a3cf163d872a7330779132a0475ff341c8b3d32985026d80d4a4471c",
+          "export_count": 16
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/bun-launch-local-distribution-boundary/",
+      "subdirectory_name": "bun-launch-local-distribution-boundary",
+      "vanilla_concept_modeled": "local-distribution and IWAD-discovery launch contract derived from Chocolate Doom 2.2.1 src/d_iwad.c and src/d_main.c",
+      "file_count": 7,
+      "total_size_bytes": 29828,
+      "total_line_count": 790,
+      "total_export_count": 65,
+      "files": [
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/documentRequiredLocalFiles.ts",
+          "size_bytes": 5432,
+          "line_count": 135,
+          "sha256": "2897aecceefb2dcb32aad49c62cb4f4d61a5d5c75cc29b8d13341e1c5900528d",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/lockBunRunDoomCommand.ts",
+          "size_bytes": 2468,
+          "line_count": 69,
+          "sha256": "671794a14e8316033e208299880ad42e56d2ba5c003026fb186db9f0d56a30a9",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/preventForbiddenAssetRedistribution.ts",
+          "size_bytes": 5055,
+          "line_count": 135,
+          "sha256": "3d3f5f6026a6b5bdc5b05ddabd41437ff64ab9520bda77eef5bebed221ef617f",
+          "export_count": 12
+        },
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/smokeTestCleanLocalWorkingTree.ts",
+          "size_bytes": 3567,
+          "line_count": 82,
+          "sha256": "3df9debe6c6033027164b9a2570e5f6b356a223616ae6c88d23be9cd59c6af93",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/verifyIwadDiscoveryAtLaunch.ts",
+          "size_bytes": 4058,
+          "line_count": 111,
+          "sha256": "465b03d052d3028cb94928a1966d061c859ecc4088e6353dcb5dd8e631dd0105",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/verifyMissingDataErrorPath.ts",
+          "size_bytes": 4237,
+          "line_count": 122,
+          "sha256": "95177e96467e1e69ab55c6c18e042dabc8694132c4260532ea05bbe003ebbcb9",
+          "export_count": 12
+        },
+        {
+          "relative_path": "src/playable/bun-launch-local-distribution-boundary/writeReadmeUsageInstructions.ts",
+          "size_bytes": 5011,
+          "line_count": 136,
+          "sha256": "0cedff54ff32d9afafccd0a50ef670ebd7c563baa69b6d89ce3a07bd3caf6148",
+          "export_count": 7
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/bun-runtime-entry-point/",
+      "subdirectory_name": "bun-runtime-entry-point",
+      "vanilla_concept_modeled": "D_DoomMain bun entrypoint contract derived from Chocolate Doom 2.2.1 src/d_main.c, src/i_system.c, and src/m_argv.c",
+      "file_count": 15,
+      "total_size_bytes": 50052,
+      "total_line_count": 1391,
+      "total_export_count": 64,
+      "files": [
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/addDevLaunchSmokeTest.ts",
+          "size_bytes": 3248,
+          "line_count": 99,
+          "sha256": "94389d20ecff4e95959454a73f10dd1920f4db67708f786d68f2e346b32cdd76",
+          "export_count": 2
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/addRootDoomTsCommandContract.ts",
+          "size_bytes": 1885,
+          "line_count": 43,
+          "sha256": "5a71f6ffe0c499a7a8535b70a4fd1344129938142eaf1d91044861315dcde921",
+          "export_count": 2
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/createGameContext.ts",
+          "size_bytes": 4999,
+          "line_count": 140,
+          "sha256": "83f68d14444cd1dc777ee08fe78b762f2a7120e97a2c1ada0fb16408a9958ea4",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/enterDefaultTitleLoop.ts",
+          "size_bytes": 2740,
+          "line_count": 65,
+          "sha256": "8ccb79ff53cf68fc067afd76edd3a85ff8acb8ef4fd7f42606b4083df19bf59e",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementCleanQuit.ts",
+          "size_bytes": 2245,
+          "line_count": 58,
+          "sha256": "d0c933e4c48ac0fad35a220ea54910712a7fbeda7026bc7dd59e1eb3dbbf3840",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementDefaultConfigLoading.ts",
+          "size_bytes": 4201,
+          "line_count": 126,
+          "sha256": "9ead9b209e148d9f0883a03be85dbc23adbb9ef26e5641450a824dce110c674a",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementDeterministicResetSeed.ts",
+          "size_bytes": 3126,
+          "line_count": 89,
+          "sha256": "bd35bdb2816da532cca010924b3b6295177d844e05e9994945773bf5e4cbab98",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementFatalErrorHandling.ts",
+          "size_bytes": 3275,
+          "line_count": 85,
+          "sha256": "3c92ef2702a1f7aaf99e01b929f943782e2a40c6d284b323a6a73cadaea06c78",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementIwadDiscovery.ts",
+          "size_bytes": 4094,
+          "line_count": 125,
+          "sha256": "1171e116b9ca779deb4f56135f36fb003c3f0abab368de2cca28f68316cc57ba",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementMissingIwadError.ts",
+          "size_bytes": 4211,
+          "line_count": 111,
+          "sha256": "8425dc5caf2c05d408c08ff1fb87dafd94d5da9ff99f3603c64265d306e61f1c",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/implementStartupLogging.ts",
+          "size_bytes": 3431,
+          "line_count": 94,
+          "sha256": "0a1c99e5835c765512c4e36a7ed26d91230bb1049ec15fcadc74803dfa3bbffd",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/wireBunNativeFileLoading.ts",
+          "size_bytes": 2762,
+          "line_count": 87,
+          "sha256": "367d13582c723cf05fd669e482aa5d18cd70a54f3950a8beb386ed56870f659a",
+          "export_count": 2
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/wireBunNativeProcessOracleHelpers.ts",
+          "size_bytes": 3468,
+          "line_count": 93,
+          "sha256": "4260065bb3201ab2c71df4c5e46beeba5077f8720cf0c5b19365efca8cc23e97",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/wireBunTestIntegration.ts",
+          "size_bytes": 3202,
+          "line_count": 85,
+          "sha256": "973576a3510c038715ed8b8d095eadb88c04eb31706bb5e9c7a642be64b396ae",
+          "export_count": 2
+        },
+        {
+          "relative_path": "src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts",
+          "size_bytes": 3165,
+          "line_count": 91,
+          "sha256": "5b9889ae95067f9c11300f270223622fa675f6880a3d1f0783caf96e28bd16c8",
+          "export_count": 3
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/config-persistence/",
+      "subdirectory_name": "config-persistence",
+      "vanilla_concept_modeled": "M_LoadDefaults and M_SaveDefaults configuration contract derived from Chocolate Doom 2.2.1 src/m_config.c and src/m_misc.c",
+      "file_count": 9,
+      "total_size_bytes": 77545,
+      "total_line_count": 2003,
+      "total_export_count": 89,
+      "files": [
+        {
+          "relative_path": "src/playable/config-persistence/defineSaveAndWindowPathPolicies.ts",
+          "size_bytes": 8311,
+          "line_count": 244,
+          "sha256": "3b005b4bb2d30d562fd303faf9accc7dc306db1677424624336c9daedf399963",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/config-persistence/isolateTestsFromUserLocalConfig.ts",
+          "size_bytes": 9302,
+          "line_count": 233,
+          "sha256": "5f1e472c2179ade2a04f121c54ea9ef6c3dc7f7245f6e4b2233bf923ca2f768a",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/config-persistence/loadDefaultConfig.ts",
+          "size_bytes": 6579,
+          "line_count": 182,
+          "sha256": "ebe00386faf7ed528feea07b43d4aa33d31193880821b5fc5771f6cb30543f1b",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/config-persistence/persistKeyBindings.ts",
+          "size_bytes": 7111,
+          "line_count": 207,
+          "sha256": "82b63bdc50fa1d03169e50184f9976cdaa51c4786d55855f2e3b12387a1bca3f",
+          "export_count": 16
+        },
+        {
+          "relative_path": "src/playable/config-persistence/persistMouseSettings.ts",
+          "size_bytes": 8631,
+          "line_count": 208,
+          "sha256": "e659532c56a9d3d7de58ee31435a8d66348a623c0398834397df9ff4d558f83d",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/config-persistence/persistScreenSettings.ts",
+          "size_bytes": 11862,
+          "line_count": 311,
+          "sha256": "3f7e8f9fca9e0e372f98697949d3d07a869ec22ca013421d8173b375ecdd3579",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/config-persistence/persistSoundSettings.ts",
+          "size_bytes": 11257,
+          "line_count": 251,
+          "sha256": "fede7f0c98e65e980e2ed2e5253148ce81837bd5d16dc9ef9400c33befaba884",
+          "export_count": 13
+        },
+        {
+          "relative_path": "src/playable/config-persistence/persistVanillaCompatibilityFlags.ts",
+          "size_bytes": 7600,
+          "line_count": 176,
+          "sha256": "9ab1421782529844efd366033dfdbdb55e0622f15a26e1f2dc356cb00390833b",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/config-persistence/writeConfigBack.ts",
+          "size_bytes": 6892,
+          "line_count": 191,
+          "sha256": "cf1cccca005bb6dd124cd0014aefbe393385889b97d7d252cca9434c3e28a708",
+          "export_count": 5
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/demo-replay/",
+      "subdirectory_name": "demo-replay",
+      "vanilla_concept_modeled": "demo playback and recording contract derived from Chocolate Doom 2.2.1 src/g_game.c (G_PlayDemo, G_RecordDemo) and src/d_net.c",
+      "file_count": 11,
+      "total_size_bytes": 82929,
+      "total_line_count": 2244,
+      "total_export_count": 90,
+      "files": [
+        {
+          "relative_path": "src/playable/demo-replay/acceptAttractLoopAndLongRunReplays.ts",
+          "size_bytes": 13097,
+          "line_count": 359,
+          "sha256": "4d1eb898f96ca6433fbec43848a3abbd7cce1e6d92e914fa2f2c9615aa9d0645",
+          "export_count": 12
+        },
+        {
+          "relative_path": "src/playable/demo-replay/acceptCleanLaunchToGameplayReplay.ts",
+          "size_bytes": 10207,
+          "line_count": 279,
+          "sha256": "8c88cf9ac9a4ef3a51c44aabf231ae1a7cc581a40b258c22d24ad4b0d5705a0b",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/demo-replay/captureReplayFramebufferStateAudioMusic.ts",
+          "size_bytes": 7740,
+          "line_count": 192,
+          "sha256": "5277e196d4ad95a322d4f8a5c8b199e2c8e3f6fb72a47af6d9cc69fbca783167",
+          "export_count": 10
+        },
+        {
+          "relative_path": "src/playable/demo-replay/convertDemoInputStream.ts",
+          "size_bytes": 5822,
+          "line_count": 168,
+          "sha256": "71c99ef8824fb34c47366b6691206ad93a240ac65d653bf48d11f722ada15831",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/demo-replay/detectLongRunDrift.ts",
+          "size_bytes": 8368,
+          "line_count": 224,
+          "sha256": "76714371a988f5bef854d5d9f59ad9801df97b187261f578b397520a4b22f19f",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/demo-replay/playBundledDemosThroughTitleLoop.ts",
+          "size_bytes": 8175,
+          "line_count": 215,
+          "sha256": "37d3604431c91c13a055c22b1937b706e82f62cb64e46d5ffde471620c9780f3",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/demo-replay/preserveDemoTerminationBehavior.ts",
+          "size_bytes": 5923,
+          "line_count": 144,
+          "sha256": "1240580357c90dc19cbee774f971410ab780e0f77c144a22c88cbce2017d1c9b",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/demo-replay/replayDemo1Deterministically.ts",
+          "size_bytes": 5304,
+          "line_count": 149,
+          "sha256": "8bc1c0dd4186314dd3f1b7807636e67187bb568ffb56ed9a590b8aff772d32d0",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/demo-replay/replayDemo2Deterministically.ts",
+          "size_bytes": 3776,
+          "line_count": 96,
+          "sha256": "b4f794a598e1131dbffa52d7c9293780676dd4514c903b434e56f36b4f363825",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/demo-replay/replayDemo3Deterministically.ts",
+          "size_bytes": 3907,
+          "line_count": 106,
+          "sha256": "cbabebfaaa374f69188282264df6364b9aa1c65bf895fe0670dd1361d003ef34",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/demo-replay/replayScriptedInputFromCleanLaunch.ts",
+          "size_bytes": 10610,
+          "line_count": 312,
+          "sha256": "c8a3ccc9827e631bf4cc9a0b18f044e2d95458966a2062af2cd3703bfed72374",
+          "export_count": 8
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/front-end-menus/",
+      "subdirectory_name": "front-end-menus",
+      "vanilla_concept_modeled": "front-end menu and title-screen contract derived from Chocolate Doom 2.2.1 src/m_menu.c and src/d_main.c",
+      "file_count": 20,
+      "total_size_bytes": 79585,
+      "total_line_count": 2199,
+      "total_export_count": 104,
+      "files": [
+        {
+          "relative_path": "src/playable/front-end-menus/implementAttractLoopStateMachine.ts",
+          "size_bytes": 5615,
+          "line_count": 166,
+          "sha256": "eb95917bebf0abf7330be4e37a76720e91632d9c0ea93049390bceeabdc0d5d9",
+          "export_count": 15
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementEpisodeSelectMenu.ts",
+          "size_bytes": 2592,
+          "line_count": 71,
+          "sha256": "bc8b39c4acdbbda8e7f6520a1f3564e825d518e1d5a0c20467e3dc4adca3ea88",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementLoadGameMenu.ts",
+          "size_bytes": 2977,
+          "line_count": 82,
+          "sha256": "9351497803fbf43a101cb9f71c654f0af2deb4b03c4c8561f7cc5322991ff560",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementMainMenu.ts",
+          "size_bytes": 2033,
+          "line_count": 62,
+          "sha256": "6d335972daaa982159ba255a9408716673e4b1f880905b3d6006b32c8290c343",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementMenuSoundEvents.ts",
+          "size_bytes": 5349,
+          "line_count": 146,
+          "sha256": "e980868c353f1dbc3cf4e9b89846a75ee266450e429e1847a34472286dff8c6e",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementMessagesToggle.ts",
+          "size_bytes": 3281,
+          "line_count": 94,
+          "sha256": "a5f5192762ea246e5d75a203d283bde2a4cb5793abc9bb32264891926667d8fa",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementNewGameMenu.ts",
+          "size_bytes": 3365,
+          "line_count": 90,
+          "sha256": "8f521e7d734733044b3f710ffd4a8d511941a73ac7f5b56ca5352d6d55f5c650",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementOptionsMenu.ts",
+          "size_bytes": 3405,
+          "line_count": 90,
+          "sha256": "00f366c0d9f7e4453936bbd5a1a91202803fb65a182ecb81643fe18313268639",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementQuitConfirmation.ts",
+          "size_bytes": 5833,
+          "line_count": 156,
+          "sha256": "bfdd949aa97772e9a247e687ca83e26982553e786ac4bc047f1593f0ee0af17a",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementReadThisHelpPages.ts",
+          "size_bytes": 6036,
+          "line_count": 149,
+          "sha256": "51e8a6e0abb2b821a2a991c2d2ee735837d15fb5b10127ae7ea488738edd206c",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementReturnToTitleFlow.ts",
+          "size_bytes": 5251,
+          "line_count": 146,
+          "sha256": "8da2f555cb21488e4a42b42590b3c890a52752b001424bec5423e1c466c2eb67",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementSaveGameMenu.ts",
+          "size_bytes": 3962,
+          "line_count": 109,
+          "sha256": "48d18e93cb7325bbd8f0e6bc4ddbf4c458b804e2803e154dfe612666afbfa745",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts",
+          "size_bytes": 6729,
+          "line_count": 178,
+          "sha256": "91ce0fcbbf0e85cff036b96cde7a8017b25d5456d0e88a350291522295b197e7",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementSkillSelectMenu.ts",
+          "size_bytes": 3181,
+          "line_count": 90,
+          "sha256": "c88915897938af29b14badb859e8f35e89176939fafe797ccbb7f23436979b89",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/implementSoundVolumeMenu.ts",
+          "size_bytes": 4580,
+          "line_count": 114,
+          "sha256": "3f3fb5aefbac7ef714fb60f19972be641dd1fae2ea6c0a7a3d0855f4d6350898",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/preserveDemoPlaybackMenuInteraction.ts",
+          "size_bytes": 2821,
+          "line_count": 84,
+          "sha256": "e2b30e6a69f94000663bd5287accfde3fc8b9a32afb2bfcc71a822c3cdee7847",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/preserveMenuTimingIdleBehavior.ts",
+          "size_bytes": 2609,
+          "line_count": 75,
+          "sha256": "6b8ce8a8dc8b6b69036a3c991a64acf36d8e7303f180528dd6677205278d3978",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/renderMenuText.ts",
+          "size_bytes": 3442,
+          "line_count": 114,
+          "sha256": "d73dbc2be15d86a36a052c74dacbde7ed22715ab38f491bd44adb944ae307d66",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/renderSkullCursor.ts",
+          "size_bytes": 2802,
+          "line_count": 82,
+          "sha256": "8cf3e31799cd33bdca4b3d672582dfe27956fc3e303ce84b732904b1b149ce61",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/front-end-menus/renderTitleScreen.ts",
+          "size_bytes": 3722,
+          "line_count": 101,
+          "sha256": "fadca795a6bd5ba4ce39a0d5985499294bc16618b929a4244807b7bc5ccb86df",
+          "export_count": 4
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/game-session-wiring/",
+      "subdirectory_name": "game-session-wiring",
+      "vanilla_concept_modeled": "game-session orchestration contract derived from Chocolate Doom 2.2.1 src/g_game.c and src/p_setup.c",
+      "file_count": 14,
+      "total_size_bytes": 60737,
+      "total_line_count": 1827,
+      "total_export_count": 79,
+      "files": [
+        {
+          "relative_path": "src/playable/game-session-wiring/enforceGameTickOrder.ts",
+          "size_bytes": 3348,
+          "line_count": 107,
+          "sha256": "0060e275637611eca102b80a91ad68b32a9da39180a6dda5f8456cd32019cf25",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/startE1m1FromMenu.ts",
+          "size_bytes": 3224,
+          "line_count": 79,
+          "sha256": "dd291e823897e9d41191595b68730dbdb3e366af00d40469543e0629dce428d7",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/startSharewareMapsThroughValidRoutes.ts",
+          "size_bytes": 5339,
+          "line_count": 140,
+          "sha256": "f5823c314136d1ceb7d86a7cb62a3691d036cb638999e568e767dab464f035f9",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireAutomapToggleRenderPath.ts",
+          "size_bytes": 3784,
+          "line_count": 110,
+          "sha256": "e09cbd0314e3fa8b318b5d55169e31ca1d926d9452d32b278ccc5321f7c424c1",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireDeathRebornFlow.ts",
+          "size_bytes": 4379,
+          "line_count": 137,
+          "sha256": "fc6e9dfb555d15c8131b8202483db701f2853b53ad0889b32395f010d197d7ef",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireGameplayRendererInvocation.ts",
+          "size_bytes": 4282,
+          "line_count": 122,
+          "sha256": "180c2190d01afcfba425d2728c11de956ceb8149b518416296717741b7ab24cb",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireIntermissionAndFinaleTransitions.ts",
+          "size_bytes": 5956,
+          "line_count": 180,
+          "sha256": "f73e71959526719471d32cdd37aff1eb182f6415cc1bb6b2c5fced2ee7e99930",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireLevelExitFlow.ts",
+          "size_bytes": 5493,
+          "line_count": 171,
+          "sha256": "6b8b6b5ec40c6808832370204a98e6b2ccbf04374afba7bc19cf4bfa380c4725",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireLiveSoundMusicTriggers.ts",
+          "size_bytes": 4484,
+          "line_count": 156,
+          "sha256": "84b343be8c0e08a64a3ddc545044310789cd7f9ce4d8786adf1cfcfd0e0dda8a",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wirePauseMenuOverlayFlow.ts",
+          "size_bytes": 4755,
+          "line_count": 136,
+          "sha256": "1afb9902348625ec8efb790c60966b12112b18ceea6eaf8631404d0f3a4f9967",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wirePlayerCommandApplication.ts",
+          "size_bytes": 4180,
+          "line_count": 125,
+          "sha256": "122eab0af5846a8c24171c8004cf51b11c6792143d6bda439737f3c55c2162fc",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wirePlayerSpawnSession.ts",
+          "size_bytes": 2811,
+          "line_count": 95,
+          "sha256": "d44949cc7b5c4bfa0629feb9c2705fa8d3c91af045fcadc31425c896167bd21e",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireStatusBarInvocation.ts",
+          "size_bytes": 5227,
+          "line_count": 154,
+          "sha256": "97eb9902606dadb5d6341dd0042da33faed18d0d99485f1b3e10f87d0386d2f8",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/game-session-wiring/wireWorldThinkerTicking.ts",
+          "size_bytes": 3475,
+          "line_count": 115,
+          "sha256": "f2906ba1cec10ab832d764b2f207fb97a9c7fc15eb2bffa3405f257deb43b1aa",
+          "export_count": 4
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/input/",
+      "subdirectory_name": "input",
+      "vanilla_concept_modeled": "input event and ticcmd contract derived from Chocolate Doom 2.2.1 src/i_video.c, src/i_input.c, and src/d_event.c",
+      "file_count": 14,
+      "total_size_bytes": 67527,
+      "total_line_count": 1975,
+      "total_export_count": 109,
+      "files": [
+        {
+          "relative_path": "src/playable/input/accumulateMouseMovement.ts",
+          "size_bytes": 2342,
+          "line_count": 60,
+          "sha256": "58aa95244bf9461bf063968f125a9840ee454d1e67c0c66b5ef5ad02e831d715",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/input/defineMouseCapturePolicy.ts",
+          "size_bytes": 3587,
+          "line_count": 107,
+          "sha256": "840546dfb38965b31b52303543a5407f06a28b0112d33995ae3abf1e75988d01",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/input/injectDemoScriptedInput.ts",
+          "size_bytes": 4708,
+          "line_count": 135,
+          "sha256": "04ec9946c26c1d7e2da400b4a2a5029078699f9fef45e201cb9790e72a549f9f",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/input/mapInternalDoomKeys.ts",
+          "size_bytes": 8257,
+          "line_count": 250,
+          "sha256": "3d0d18d57717e429fe8674fbfd00ad8e82d2ae820f2d7c2bbfa126e6905670ed",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/input/mapMouseButtons.ts",
+          "size_bytes": 4010,
+          "line_count": 131,
+          "sha256": "2740bc02f5be16378a518d61fda154e0e56c247f2ebe6da63357d6c5d5d701bf",
+          "export_count": 10
+        },
+        {
+          "relative_path": "src/playable/input/preserveKeyDownUpOrdering.ts",
+          "size_bytes": 3096,
+          "line_count": 98,
+          "sha256": "41173d4eaaf2f744394f1801dc4d0681b959874ae50d3d7d19c191991eefefa6",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/input/preserveKeyRepeatBehavior.ts",
+          "size_bytes": 3913,
+          "line_count": 103,
+          "sha256": "f602a7f04836da0443a40d77aa6339c4f851c673b762e93fda81032c70526ad3",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/input/preserveScanCodeConfigRelationship.ts",
+          "size_bytes": 2406,
+          "line_count": 63,
+          "sha256": "200729626957fb0f77b2beab338bcc5498908725955e4683f7756fb88a0bd22f",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/input/recordInputTraceFormat.ts",
+          "size_bytes": 8340,
+          "line_count": 248,
+          "sha256": "aa625c543774f5633dafdc98f50ea2b37d0050087de173bc9e0018c96172423e",
+          "export_count": 19
+        },
+        {
+          "relative_path": "src/playable/input/releaseInputOnFocusLoss.ts",
+          "size_bytes": 4999,
+          "line_count": 142,
+          "sha256": "b7a5d444857256af753424cc6901d0d2747c1aa803fc6c2e51557f889fbc6d1d",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/input/replayDeterministicInput.ts",
+          "size_bytes": 7852,
+          "line_count": 229,
+          "sha256": "4b74a6c7affff088cdbd85f235ad0624f23b7dac4dba0481a96ee805df8a7ad3",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/input/routeGameplayInput.ts",
+          "size_bytes": 6852,
+          "line_count": 205,
+          "sha256": "7d1822f3d8dca973e81d4781ba4063c4e5a5cc6c11f9a8b708afdb7a06b6f75d",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/input/routeMenuInput.ts",
+          "size_bytes": 5091,
+          "line_count": 141,
+          "sha256": "7ac8b8025715d06c5d4f6b9dc05c4cf10af3b90bf99301e1e84a60189fc4dc59",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/input/translateKeyboardEvents.ts",
+          "size_bytes": 2074,
+          "line_count": 63,
+          "sha256": "d418b85c844ff0a381a92c61d81b1bf761e5579ade06da1213f828c596cb1818",
+          "export_count": 5
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/real-time-main-loop/",
+      "subdirectory_name": "real-time-main-loop",
+      "vanilla_concept_modeled": "D_DoomLoop and TryRunTics timing contract derived from Chocolate Doom 2.2.1 src/d_main.c and src/d_net.c",
+      "file_count": 11,
+      "total_size_bytes": 28561,
+      "total_line_count": 687,
+      "total_export_count": 43,
+      "files": [
+        {
+          "relative_path": "src/playable/real-time-main-loop/addTimingInstrumentation.ts",
+          "size_bytes": 2654,
+          "line_count": 65,
+          "sha256": "fbf0ec6d7ac99fd1c0aabf578e4d4029e150f1f885860f6fcaba8be398791f21",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/handleLongStallPanic.ts",
+          "size_bytes": 2365,
+          "line_count": 64,
+          "sha256": "ae1742c6e4bf0157d6fd3bae1cb8ba669bae0a33d94886224f05cb4609300ae8",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/handlePauseFocusTiming.ts",
+          "size_bytes": 2242,
+          "line_count": 68,
+          "sha256": "eae0236bfb1e00425b695057a65b0c918128e713ce33700804523d9649bc7c59",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/implementBunCompatibleTiming.ts",
+          "size_bytes": 3497,
+          "line_count": 71,
+          "sha256": "4c0349ad3b9419a9e786e872df4cc00cb5eac3636afa4e7c739f12c0fed6e936",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/implementCleanMainLoopShutdown.ts",
+          "size_bytes": 2710,
+          "line_count": 47,
+          "sha256": "68f76df689ba00115b95a25367c33850844cc94b818d916615e7eff882cb5575",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/implementDeterministicReplayMode.ts",
+          "size_bytes": 1737,
+          "line_count": 36,
+          "sha256": "699daa792f69decba66de0344595c44f32bad96aa0fcad757aef61f89e0a367f",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/implementTicAccumulation.ts",
+          "size_bytes": 2789,
+          "line_count": 70,
+          "sha256": "b6388f4600cce738caedcdd10f25c0f8a633e205f1691b670eb280f506b11642",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/preventFrameRateDependentSimulation.ts",
+          "size_bytes": 2694,
+          "line_count": 64,
+          "sha256": "72ff61861825653f6e9818b51b124eef39573cc53366a8610ba09df606e3da2f",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/rejectVisibleInterpolation.ts",
+          "size_bytes": 3848,
+          "line_count": 91,
+          "sha256": "e94a706b341e39647fea20c0f6f52e36decfa6d3181cc7c9ac8617f711b94e0c",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/schedule35hzGameTics.ts",
+          "size_bytes": 1406,
+          "line_count": 40,
+          "sha256": "61c9124ec0301bc4a1a62a81cf52025475e66261ac47767bbb4b295ef632f222",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/real-time-main-loop/schedulePresentation.ts",
+          "size_bytes": 2619,
+          "line_count": 71,
+          "sha256": "a5600cd6e7f5e5cb8c5cc28e3e47f394f6d29b3a2a6506ed4064e796aa30dd41",
+          "export_count": 4
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/rendering-product-integration/",
+      "subdirectory_name": "rendering-product-integration",
+      "vanilla_concept_modeled": "software-renderer product wiring contract derived from Chocolate Doom 2.2.1 src/r_main.c and src/v_video.c",
+      "file_count": 13,
+      "total_size_bytes": 72187,
+      "total_line_count": 2033,
+      "total_export_count": 91,
+      "files": [
+        {
+          "relative_path": "src/playable/rendering-product-integration/addFramebufferHashTestHooks.ts",
+          "size_bytes": 6439,
+          "line_count": 187,
+          "sha256": "6f172401c488d16362704f6838777ce942dbb0e67328481cd1dbc31b7b9499b0",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/applyPaletteEffectsAndGamma.ts",
+          "size_bytes": 6185,
+          "line_count": 145,
+          "sha256": "99241bad3b9e0ba8472d0765a079b576b18aae6021fb316ad8622fa72fcf00f9",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/composeMenuOverlay.ts",
+          "size_bytes": 4199,
+          "line_count": 122,
+          "sha256": "02b8c231b4f5d8e8c2df97a2227a3ed0eb2ae687a3450647162f760923894c5e",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderAutomapOverlayAndFullMode.ts",
+          "size_bytes": 11096,
+          "line_count": 347,
+          "sha256": "00cd8fb0d216ccca9264d9fd73ee57ddfd6c79974008e237dd31e9a57c9dfb8b",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderDetailMode.ts",
+          "size_bytes": 3821,
+          "line_count": 99,
+          "sha256": "f524e5eca211166f560b6292a2a7973cbaef810a44f8665ca645ab20a03dd764",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderFinaleScreens.ts",
+          "size_bytes": 7213,
+          "line_count": 212,
+          "sha256": "eda4fe86e2c73d46fe8ab5d8099c321fff14e8080f3d86a9f0d99bfcb4e0d037",
+          "export_count": 11
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderFullFrameEveryVisibleTic.ts",
+          "size_bytes": 3999,
+          "line_count": 103,
+          "sha256": "bfef19e568e7c9a3b1032cda9966c387e6e7146ec250222f2206c4300ff4a650",
+          "export_count": 8
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderIntermissionScreens.ts",
+          "size_bytes": 7862,
+          "line_count": 226,
+          "sha256": "5257c3f9b96f8e14acfa5ce2632cd454bd2c60bdbcfc16d147051413cb717d96",
+          "export_count": 9
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderScreenblocks.ts",
+          "size_bytes": 4453,
+          "line_count": 133,
+          "sha256": "d3aaa138c0fadf9f2f2a5a70fdb74d2816310056e9fe1e01a31e846ee1a1c1ff",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderStatusBarProductFrame.ts",
+          "size_bytes": 3069,
+          "line_count": 92,
+          "sha256": "2bd14f84b968f583c220e5804fe6d618ab3796635b1fea30de1248413328040b",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderTitleHelpCreditPages.ts",
+          "size_bytes": 4834,
+          "line_count": 124,
+          "sha256": "a0c57e10067c74587716bc5629fa2ebe057e2e5a053e1bf89dc0849ad0775342",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderViewportBorders.ts",
+          "size_bytes": 4572,
+          "line_count": 120,
+          "sha256": "c92bffe92eebb8ba4b38c059044948f34075cb4607ab55a98a307a475673289f",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/rendering-product-integration/renderWipeTransitionEffects.ts",
+          "size_bytes": 4445,
+          "line_count": 123,
+          "sha256": "9cf4979c4e94594078f7cf8502bcc2b90bfe7f79efb079afa78c12d94cb5c544",
+          "export_count": 4
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/save-load-playability/",
+      "subdirectory_name": "save-load-playability",
+      "vanilla_concept_modeled": "P_ArchivePlayers and P_UnArchivePlayers save/load contract derived from Chocolate Doom 2.2.1 src/p_saveg.c and src/m_misc.c",
+      "file_count": 11,
+      "total_size_bytes": 76228,
+      "total_line_count": 2159,
+      "total_export_count": 111,
+      "files": [
+        {
+          "relative_path": "src/playable/save-load-playability/addLiveSaveLoadRoundtripHashTests.ts",
+          "size_bytes": 6180,
+          "line_count": 158,
+          "sha256": "ad30433236dedcc547f4aea3a49006526a62a2135608582741c6123ebf8ff622",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/defineSaveFilePathPolicy.ts",
+          "size_bytes": 4977,
+          "line_count": 145,
+          "sha256": "1114c43d86cb3705d01a948431635ac9e18e9e0fd991ca73009f656cbe30c068",
+          "export_count": 10
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/displaySaveLoadMenuMessages.ts",
+          "size_bytes": 8148,
+          "line_count": 214,
+          "sha256": "948795e858be506018f9e2ace29d3ceb9ea6a58dd2fa4215e80274f1234c3e84",
+          "export_count": 12
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/handleCorruptedSave.ts",
+          "size_bytes": 7144,
+          "line_count": 236,
+          "sha256": "0211856520672d5df977a8acc5de64f545b59ae96dc3bd1c54815ef5de2d3769",
+          "export_count": 7
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/implementLiveGameSaveLoad.ts",
+          "size_bytes": 8543,
+          "line_count": 232,
+          "sha256": "d24da5a20c688a04cebd6df72d6e022792c729633714fdd26ef4326a317d8094",
+          "export_count": 14
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/implementSaveDescriptions.ts",
+          "size_bytes": 7403,
+          "line_count": 214,
+          "sha256": "0c2da30c604a4e1272820c17c90527384800ba756edd980e11ea4f08ae37b8fe",
+          "export_count": 13
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/implementSaveSlotUi.ts",
+          "size_bytes": 10015,
+          "line_count": 265,
+          "sha256": "3041378e85acd2c5039fbb62417886b34e8a35bf4bd256fb56a2dacb7e7eabc8",
+          "export_count": 16
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/restoreGameStateFromSave.ts",
+          "size_bytes": 6689,
+          "line_count": 195,
+          "sha256": "ef264875b56a258b45073c24636f6d43e6cc1f93f03d68b128b418671bd8c83c",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/restorePostLoadRenderAudioInputState.ts",
+          "size_bytes": 6751,
+          "line_count": 203,
+          "sha256": "68d6447cf1a31a54bc8e575438941265ed1202c7528325f70ac06f029e8fc9af",
+          "export_count": 10
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/validateSavegameVersion.ts",
+          "size_bytes": 4278,
+          "line_count": 123,
+          "sha256": "9873fd0bc2374732b36554655454b66f5ef2178e6fc3ea8e063eefcb27422324",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/save-load-playability/wireBunNativeSaveReadWrite.ts",
+          "size_bytes": 6100,
+          "line_count": 174,
+          "sha256": "234520c64c1562996be327248e46ea9805dbfabc6c9c9127e6687596067e529f",
+          "export_count": 14
+        }
+      ]
+    },
+    {
+      "relative_path": "src/playable/window-host/",
+      "subdirectory_name": "window-host",
+      "vanilla_concept_modeled": "Win32 window-host contract derived from Chocolate Doom 2.2.1 src/i_video.c and Choco-Doom Windows host wrappers",
+      "file_count": 14,
+      "total_size_bytes": 52820,
+      "total_line_count": 1254,
+      "total_export_count": 60,
+      "files": [
+        {
+          "relative_path": "src/playable/window-host/addScreenshotCaptureHooks.ts",
+          "size_bytes": 3666,
+          "line_count": 86,
+          "sha256": "8132590aa51626d640945506f88c2e2d0a5a03489d205e1b6d0d61127a7d5b2e",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/window-host/applyPlaypalPalette.ts",
+          "size_bytes": 3878,
+          "line_count": 88,
+          "sha256": "0e490332e53d6acdc9dded3b00cf60f1a6323ebb10e78da29e13f48dd8fa7799",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/window-host/blitFramebufferToWindow.ts",
+          "size_bytes": 5577,
+          "line_count": 126,
+          "sha256": "8c6105a6e9135a5c5c1d5884175aa88580d464eb3a5b6d5fd07da364749ba893",
+          "export_count": 6
+        },
+        {
+          "relative_path": "src/playable/window-host/createBunCompatibleWin32Window.ts",
+          "size_bytes": 8278,
+          "line_count": 187,
+          "sha256": "5415ff063e70754a267d1fc6bf81762fdb82eebdd0e0b0503179a3d00d2cc243",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/window-host/defineAspectCorrectionPolicy.ts",
+          "size_bytes": 2298,
+          "line_count": 55,
+          "sha256": "4eb5be2ce81f2cb053b1d07072bf0f9156127adad165c10cf3e4d51d5d1814e1",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/window-host/defineIntegerNearestScalingPolicy.ts",
+          "size_bytes": 4018,
+          "line_count": 105,
+          "sha256": "e7e8cc3f1143e6741b7e03a54087b8efda7abc202cedae8fdfc9197345b307ec",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/window-host/defineResizePolicy.ts",
+          "size_bytes": 3781,
+          "line_count": 89,
+          "sha256": "5d5afc386ea5f16954123708e0d6e443ec7ee9e2c03f5c3aff2dbbc1e85266dd",
+          "export_count": 3
+        },
+        {
+          "relative_path": "src/playable/window-host/handleCloseButton.ts",
+          "size_bytes": 2768,
+          "line_count": 70,
+          "sha256": "2504ff25f669f5f1c27185c10fa774ec1a3b2e47565821a3d911283a7cc91068",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/window-host/handleWindowFocus.ts",
+          "size_bytes": 2716,
+          "line_count": 67,
+          "sha256": "2398cb6efd0bb1ee4db72478a9313638b5fe51dad8cdb3e1409125e0bfa73876",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/window-host/lockInternal320x200Framebuffer.ts",
+          "size_bytes": 3154,
+          "line_count": 68,
+          "sha256": "8a9698a5de9c8a3f0c994f7a45c8157eee50f332ad40dda25dae0bb85d84eeee",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/window-host/presentWindowedFramebuffer.ts",
+          "size_bytes": 3705,
+          "line_count": 95,
+          "sha256": "735e4c1132ce6bc3d1f4afc4d5fee85bea1b8ece282ed5aaf94465f9421fa6da",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/window-host/preventHostFiltering.ts",
+          "size_bytes": 2654,
+          "line_count": 59,
+          "sha256": "d0c4f3198a964ebaacb1632748f1d4e722a246a698e2ac23fe3fef84b943d7e8",
+          "export_count": 4
+        },
+        {
+          "relative_path": "src/playable/window-host/runMessagePump.ts",
+          "size_bytes": 4093,
+          "line_count": 95,
+          "sha256": "ccd49d9178acc077583e8f1a5bc500a8290d8f863d358188d28c85813842d431",
+          "export_count": 5
+        },
+        {
+          "relative_path": "src/playable/window-host/setWindowTitlePolicy.ts",
+          "size_bytes": 2234,
+          "line_count": 64,
+          "sha256": "5900359bdeb82acc3d804f90df74897bab35626d1ebeb6ed03eded3b903afea7",
+          "export_count": 4
+        }
+      ]
+    }
+  ],
+  "runtime_status": {
+    "is_runtime_path": false,
+    "runtime_target_command": "bun run doom.ts",
+    "files_referencing_runtime_target_command_literal_count": 152,
+    "files_constructing_runtime_target_command_at_runtime": ["src/playable/window-host/createBunCompatibleWin32Window.ts"],
+    "importer_count_of_playable_outside_playable_in_src": 0,
+    "simplified_launcher_entrypoint": "src/main.ts",
+    "simplified_launcher_imports_any_playable_module": false,
+    "vanilla_orchestrator_module": "src/mainLoop.ts",
+    "vanilla_orchestrator_imports_any_playable_module": false,
+    "notes": "src/playable/ is a contract/manifest surface, not a runtime path. No module under src/ outside src/playable/ imports from src/playable/, so the contract files are exercised only by the corresponding tests under test/playable/<subdir>/<kebab-case>.test.ts. The simplified launcher src/main.ts and the canonical D_DoomLoop orchestrator src/mainLoop.ts both bypass this surface. 152 of the 153 committed files contain the literal string 'bun run doom.ts' to anchor the canonical runtime target; src/playable/window-host/createBunCompatibleWin32Window.ts builds the same string at runtime via a template literal joining TARGET_RUNTIME_PROGRAM, TARGET_RUNTIME_SUBCOMMAND, and TARGET_RUNTIME_ENTRY_FILE."
+  },
+  "non_playable_dependency_modules_sorted": [
+    "node:buffer",
+    "node:crypto",
+    "node:path",
+    "node:process",
+    "src/audio/channels.ts",
+    "src/audio/musicSystem.ts",
+    "src/audio/soundSystem.ts",
+    "src/audio/spatial.ts",
+    "src/bootstrap/config.ts",
+    "src/bootstrap/gameMode.ts",
+    "src/config/defaultCfg.ts",
+    "src/config/hostConfig.ts",
+    "src/demo/demoPlayback.ts",
+    "src/host/ticAccumulator.ts",
+    "src/host/windowPolicy.ts",
+    "src/input/keyboard.ts",
+    "src/input/ticcmd.ts",
+    "src/launcher/gameplayRenderer.ts",
+    "src/launcher/session.ts",
+    "src/mainLoop.ts",
+    "src/oracles/inputScript.ts",
+    "src/render/projection.ts",
+    "src/save/loadgame.ts",
+    "src/save/saveHeader.ts",
+    "src/ui/frontEndSequence.ts",
+    "src/ui/menus.ts"
+  ],
+  "test_coverage": {
+    "test_root": "test/playable/",
+    "per_subdirectory_test_counts": [
+      {
+        "subdirectory_name": "audio-product-integration",
+        "src_file_count": 14,
+        "test_file_count": 14
+      },
+      {
+        "subdirectory_name": "bun-launch-local-distribution-boundary",
+        "src_file_count": 7,
+        "test_file_count": 7
+      },
+      {
+        "subdirectory_name": "bun-runtime-entry-point",
+        "src_file_count": 15,
+        "test_file_count": 15
+      },
+      {
+        "subdirectory_name": "config-persistence",
+        "src_file_count": 9,
+        "test_file_count": 9
+      },
+      {
+        "subdirectory_name": "demo-replay",
+        "src_file_count": 11,
+        "test_file_count": 11
+      },
+      {
+        "subdirectory_name": "front-end-menus",
+        "src_file_count": 20,
+        "test_file_count": 20
+      },
+      {
+        "subdirectory_name": "game-session-wiring",
+        "src_file_count": 14,
+        "test_file_count": 14
+      },
+      {
+        "subdirectory_name": "input",
+        "src_file_count": 14,
+        "test_file_count": 14
+      },
+      {
+        "subdirectory_name": "real-time-main-loop",
+        "src_file_count": 11,
+        "test_file_count": 11
+      },
+      {
+        "subdirectory_name": "rendering-product-integration",
+        "src_file_count": 13,
+        "test_file_count": 13
+      },
+      {
+        "subdirectory_name": "save-load-playability",
+        "src_file_count": 11,
+        "test_file_count": 11
+      },
+      {
+        "subdirectory_name": "window-host",
+        "src_file_count": 14,
+        "test_file_count": 14
+      }
+    ],
+    "acceptance_test_directory": "test/playable/acceptance/",
+    "acceptance_test_file_count": 10,
+    "notes": "Each src/playable/<subdir>/<camelCase>.ts contract file has a matching test/playable/<subdir>/<kebab-case>.test.ts focused test. The acceptance test directory test/playable/acceptance/ holds an additional ten parity-gate tests not covered by the per-file mapping. The 1-to-1 src/test pairing for the 153 contract files is exercised by Bun test, not by any runtime path."
+  },
+  "implications": [
+    "src/playable/ holds 153 committed contract/manifest TypeScript files across twelve subdirectories (audio-product-integration, bun-launch-local-distribution-boundary, bun-runtime-entry-point, config-persistence, demo-replay, front-end-menus, game-session-wiring, input, real-time-main-loop, rendering-product-integration, save-load-playability, window-host) and is not assigned to a lane in plan_vanilla_parity/PARALLEL_WORK.md, so the inventory lane must treat it as read-only and any future change to the contract surface belongs to the runtime lane that owns the corresponding subsystem (audio, launch, core, ui, render, save, input).",
+    "No module under src/ outside src/playable/ imports from src/playable/ today, so the contract surface is exercised exclusively by the focused tests under test/playable/<subdir>/<kebab-case>.test.ts plus the ten acceptance tests under test/playable/acceptance/; downstream lanes must keep that test invocation surface stable until the runtime path is wired to the vanilla bun run doom.ts entrypoint.",
+    "The simplified launcher entrypoint src/main.ts and the canonical D_DoomLoop orchestrator src/mainLoop.ts both bypass src/playable/ entirely; the launch lane must not assume the simplified launcher exercises any of the 153 contract files when it replaces the simplified surface with the vanilla bun run doom.ts startup path.",
+    "152 of the 153 committed files contain the literal string bun run doom.ts as the canonical runtime target marker; one file (src/playable/window-host/createBunCompatibleWin32Window.ts) constructs the same string at runtime by joining TARGET_RUNTIME_PROGRAM, TARGET_RUNTIME_SUBCOMMAND, and TARGET_RUNTIME_ENTRY_FILE template parts. Lanes that grep for the literal must understand that this one file reaches the same target through composition, not direct literal.",
+    "The contract surface depends on twenty-two non-playable runtime modules across src/audio/, src/bootstrap/, src/config/, src/demo/, src/host/, src/input/, src/launcher/, src/mainLoop.ts, src/oracles/, src/render/, src/save/, and src/ui/, plus four node:* built-ins (node:buffer, node:crypto, node:path, node:process). Any rename or reshaping of those twenty-two runtime modules is a cross-lane breaking change that must be coordinated through plan_vanilla_parity/DEPENDENCY_GRAPH.md before src/playable/ is refactored."
+  ],
+  "follow_up_steps": ["01-005 inventory-core-math-and-timing-modules", "01-006 inventory-wad-and-asset-modules", "01-024 gate-current-state-inventory"]
+}
