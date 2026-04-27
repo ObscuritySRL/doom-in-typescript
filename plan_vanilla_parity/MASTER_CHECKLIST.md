@@ -32,7 +32,7 @@
 - [x] `01-002` `inventory-simplified-launcher-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md`
 - [x] `01-003` `inventory-src-bootstrap-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-003-inventory-src-bootstrap-surface.md`
 - [x] `01-004` `inventory-src-playable-contract-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md`
-- [ ] `01-005` `inventory-core-math-and-timing-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-005-inventory-core-math-and-timing-modules.md`
+- [x] `01-005` `inventory-core-math-and-timing-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-005-inventory-core-math-and-timing-modules.md`
 - [ ] `01-006` `inventory-wad-and-asset-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-006-inventory-wad-and-asset-modules.md`
 - [ ] `01-007` `inventory-map-and-world-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-007-inventory-map-and-world-modules.md`
 - [ ] `01-008` `inventory-player-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-008-inventory-player-modules.md`
@@ -168,7 +168,7 @@
 - [x] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
 - [x] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
 - [x] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
-- [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
+- [x] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
 - [ ] `05-005` `parse-playpal-and-colormap-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-005-parse-playpal-and-colormap-lumps.md`
 - [ ] `05-006` `parse-patch-picture-format` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-006-parse-patch-picture-format.md`
 - [ ] `05-007` `parse-flat-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`
