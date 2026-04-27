@@ -37,7 +37,7 @@
 - [x] `01-007` `inventory-map-and-world-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-007-inventory-map-and-world-modules.md`
 - [x] `01-008` `inventory-player-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-008-inventory-player-modules.md`
 - [x] `01-009` `inventory-ai-and-specials-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-009-inventory-ai-and-specials-modules.md`
-- [ ] `01-010` `inventory-renderer-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`
+- [x] `01-010` `inventory-renderer-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`
 - [ ] `01-011` `inventory-ui-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-011-inventory-ui-modules.md`
 - [ ] `01-012` `inventory-audio-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-012-inventory-audio-modules.md`
 - [ ] `01-013` `inventory-save-and-config-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-013-inventory-save-and-config-modules.md`
