@@ -1,0 +1,185 @@
+{
+  "id": "01-003",
+  "title": "Inventory Src Bootstrap Surface",
+  "lane": "inventory",
+  "summary": "Src bootstrap surface inventory for the vanilla parity rebuild. Captures the eight committed TypeScript modules under src/bootstrap/, the public TypeScript surface they expose, the Chocolate Doom 2.2.1 function each module models, the imports that wire bootstrap modules together and to non-bootstrap modules, and the only entrypoint outside the launch lane that imports a bootstrap module today (src/main.ts). Confirms that src/mainLoop.ts does not yet import any bootstrap module and that the launch lane owns src/bootstrap/ in plan_vanilla_parity/PARALLEL_WORK.md.",
+  "captured_at_utc": "2026-04-26T21:45:00Z",
+  "evidence_method": "direct local repository audit performed by the inventory lane: ls of src/bootstrap/, git ls-files src/bootstrap/ to enumerate committed modules, sha256sum and wc -l over each committed src/bootstrap/*.ts file, ripgrep over each committed bootstrap module for export declarations, ripgrep over src/ for from '../bootstrap/' and from './bootstrap/' import lines, and ripgrep over src/mainLoop.ts and src/main.ts for bootstrap references.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "bootstrap_directory": {
+    "relative_path": "src/bootstrap/",
+    "exists": true,
+    "committed_file_count": 8,
+    "committed_filenames_sorted": ["cmdline.ts", "config.ts", "gameMode.ts", "implement-vanilla-command-line-parsing.ts", "initOrder.ts", "quitFlow.ts", "titleLoop.ts", "tryRunTics.ts"],
+    "owner_lane": "launch",
+    "owner_lane_source": "plan_vanilla_parity/PARALLEL_WORK.md launch row owns column"
+  },
+  "bootstrap_modules": [
+    {
+      "relative_path": "src/bootstrap/cmdline.ts",
+      "size_bytes": 5263,
+      "line_count": 161,
+      "sha256": "4f730a190e9890fbef36395c55169b0a8acede029a722097263f13aeaadb6c3c",
+      "vanilla_function_modeled": "M_CheckParm and M_CheckParmWithArgs from Chocolate Doom 2.2.1 src/m_argv.c",
+      "role": "command-line argument parser used by simplified launcher entrypoint src/main.ts and by the launch-lane audit ledger src/bootstrap/implement-vanilla-command-line-parsing.ts",
+      "exported_interfaces": [],
+      "exported_functions": ["createEmpty", "createFromProcessArgv"],
+      "exported_constants": [],
+      "exported_classes": ["CommandLine"],
+      "exported_types": [],
+      "external_imports": []
+    },
+    {
+      "relative_path": "src/bootstrap/config.ts",
+      "size_bytes": 8274,
+      "line_count": 220,
+      "sha256": "38fb51b145c49da793da73ca54baa65315a65954c839374a7c8928bb2287bc40",
+      "vanilla_function_modeled": "M_LoadDefaults and M_SaveDefaults from Chocolate Doom 2.2.1 src/m_config.c",
+      "role": "configuration file parser modeling default.cfg and chocolate-doom.cfg load and save semantics",
+      "exported_interfaces": ["ConfigDefinition", "ConfigLoadResult"],
+      "exported_functions": ["buildDefinitionMap", "initializeDefaults", "loadDefaults", "parseConfigFileContent", "parseConfigValue", "resolveExtendedConfigPath", "resolveVanillaConfigPath"],
+      "exported_constants": ["EXTENDED_CONFIG_FILENAME", "VANILLA_CONFIG_FILENAME"],
+      "exported_classes": [],
+      "exported_types": ["ConfigValueType"],
+      "external_imports": ["node:path", "src/bootstrap/cmdline.ts"]
+    },
+    {
+      "relative_path": "src/bootstrap/gameMode.ts",
+      "size_bytes": 7659,
+      "line_count": 225,
+      "sha256": "aa078a236d872574bba26c4d2c733fd0a5e1127fef6f1f2809e197630266da8f",
+      "vanilla_function_modeled": "D_IdentifyVersion and IdentifyIWADByContent from Chocolate Doom 2.2.1 src/d_iwad.c and src/d_main.c",
+      "role": "game mode and mission identification used by AI, gameplay, render, ui, world, specials, and front-end-menus modules",
+      "exported_interfaces": ["GameIdentification", "LumpChecker"],
+      "exported_functions": ["getEpisodeCount", "getGameDescription", "identifyGame", "identifyMission", "identifyMode"],
+      "exported_constants": ["EPISODE_COUNTS", "GAME_MISSIONS", "GAME_MODES", "GAME_VERSIONS"],
+      "exported_classes": [],
+      "exported_types": ["GameMission", "GameMode", "GameVersion"],
+      "external_imports": []
+    },
+    {
+      "relative_path": "src/bootstrap/implement-vanilla-command-line-parsing.ts",
+      "size_bytes": 18981,
+      "line_count": 417,
+      "sha256": "cf3f3722f562b78f537b3b1add296fc5f8241988f3f2d2c25b471dc2b7ca46ad",
+      "vanilla_function_modeled": "audit ledger that pins the M_CheckParm and M_CheckParmWithArgs contract from Chocolate Doom 2.2.1 src/m_argv.c against the runtime CommandLine class declared by src/bootstrap/cmdline.ts",
+      "role": "launch-lane audit ledger committed by step 03-002 implement-vanilla-command-line-parsing; exposes contract audit entries, derived invariants, probes, and a reference parser surface for the focused test under test/vanilla_parity/launch/",
+      "exported_interfaces": [
+        "VanillaCheckParmContractAuditEntry",
+        "VanillaCheckParmWithArgsContractAuditEntry",
+        "VanillaCommandLineDashConventionAuditEntry",
+        "VanillaCommandLineDerivedInvariant",
+        "VanillaCommandLineParser",
+        "VanillaCommandLineProbe"
+      ],
+      "exported_functions": ["crossCheckVanillaCommandLineParser"],
+      "exported_constants": [
+        "REFERENCE_VANILLA_COMMANDLINE_PARSER",
+        "VANILLA_COMMANDLINE_DASH_CONVENTION_AUDIT",
+        "VANILLA_COMMANDLINE_DERIVED_INVARIANTS",
+        "VANILLA_COMMANDLINE_PROBES",
+        "VANILLA_M_CHECKPARM_CONTRACT_AUDIT",
+        "VANILLA_M_CHECKPARM_WITH_ARGS_CONTRACT_AUDIT"
+      ],
+      "exported_classes": [],
+      "exported_types": [],
+      "external_imports": ["src/bootstrap/cmdline.ts"]
+    },
+    {
+      "relative_path": "src/bootstrap/initOrder.ts",
+      "size_bytes": 5869,
+      "line_count": 119,
+      "sha256": "828cf24711d8c5933602c90f8d798a3363e47db4c41b86e3be27ef92b3ad06ec",
+      "vanilla_function_modeled": "D_DoomMain init phase ordering from Chocolate Doom 2.2.1 src/d_main.c",
+      "role": "fifteen-step canonical init sequence split across the early, post-identify, and wad-load phases used to gate vanilla startup parity",
+      "exported_interfaces": ["InitStepDefinition"],
+      "exported_functions": ["matchesManifestSequence"],
+      "exported_constants": ["EARLY_PHASE_COUNT", "INIT_ORDER", "INIT_ORDER_BY_LABEL", "INIT_PHASES", "INIT_STEP_COUNT", "POST_IDENTIFY_PHASE_COUNT", "WAD_LOAD_PHASE_COUNT"],
+      "exported_classes": [],
+      "exported_types": ["InitPhase"],
+      "external_imports": ["src/oracles/referenceRunManifest.ts"]
+    },
+    {
+      "relative_path": "src/bootstrap/quitFlow.ts",
+      "size_bytes": 7475,
+      "line_count": 193,
+      "sha256": "0396e297a166667ead8daf10d849568d52aba9a382e431dd19d050f4a15b820d",
+      "vanilla_function_modeled": "I_AtExit, I_Quit, and I_Error from Chocolate Doom 2.2.1 src/i_system.c",
+      "role": "LIFO cleanup-handler stack and quit/error dispatch used by startup error path and shutdown cleanup tests",
+      "exported_interfaces": ["CleanupRegistration"],
+      "exported_functions": [],
+      "exported_constants": ["CANONICAL_QUIT_ORDER", "CANONICAL_REGISTRATION_ORDER", "CLEANUP_STEP_COUNT"],
+      "exported_classes": ["QuitFlow"],
+      "exported_types": ["CleanupStepName"],
+      "external_imports": []
+    },
+    {
+      "relative_path": "src/bootstrap/titleLoop.ts",
+      "size_bytes": 5974,
+      "line_count": 201,
+      "sha256": "b1116c31ce5cff0f0d10be3e5b09accacb1acf5850ce441a0af1899c835eea60",
+      "vanilla_function_modeled": "D_PageDrawer and D_AdvanceDemo from Chocolate Doom 2.2.1 src/d_main.c",
+      "role": "title-screen page tic counters and demo-cycle advancement used by src/ui/frontEndSequence.ts",
+      "exported_interfaces": ["DemoAction", "PageAction"],
+      "exported_functions": [],
+      "exported_constants": ["COMMERCIAL_TITLEPIC_PAGETIC", "CYCLE_LENGTH", "INTERLUDE_PAGETIC", "TITLEPIC_PAGETIC"],
+      "exported_classes": ["TitleLoop"],
+      "exported_types": ["AdvanceAction"],
+      "external_imports": ["src/bootstrap/gameMode.ts"]
+    },
+    {
+      "relative_path": "src/bootstrap/tryRunTics.ts",
+      "size_bytes": 6052,
+      "line_count": 195,
+      "sha256": "8179d8a0ed10284a2920495808043dfd9fefcfcbd946f0b91fe2c3acb2a394dd",
+      "vanilla_function_modeled": "TryRunTics from Chocolate Doom 2.2.1 src/d_net.c",
+      "role": "ticcmd buffering and per-tic execution gate matching vanilla d_net.c TryRunTics behavior; consumed by mainLoop tryRunTics phase",
+      "exported_interfaces": ["TicCallbacks", "TicTimeSource"],
+      "exported_functions": [],
+      "exported_constants": ["BACKUPTICS"],
+      "exported_classes": ["TicRunner"],
+      "exported_types": [],
+      "external_imports": ["src/input/ticcmd.ts"]
+    }
+  ],
+  "simplified_launcher_imports": {
+    "launcher_entrypoint_relative_path": "src/main.ts",
+    "imported_bootstrap_modules_sorted": ["src/bootstrap/cmdline.ts"],
+    "imported_bootstrap_symbols_sorted": ["CommandLine"],
+    "notes": "src/main.ts is the only entrypoint the package.json start script runs and the only top-level src/ module that imports from src/bootstrap/ today. It depends solely on the CommandLine class from src/bootstrap/cmdline.ts and ignores the seven other bootstrap modules."
+  },
+  "non_launcher_consumers": {
+    "consumer_files_sorted": [
+      "src/ai/bossSpecials.ts",
+      "src/ai/stateTransitions.ts",
+      "src/config/defaultCfg.ts",
+      "src/config/hostConfig.ts",
+      "src/playable/config-persistence/writeConfigBack.ts",
+      "src/playable/front-end-menus/implementReadThisHelpPages.ts",
+      "src/playable/front-end-menus/renderTitleScreen.ts",
+      "src/player/pickups.ts",
+      "src/player/weaponStates.ts",
+      "src/player/weapons.ts",
+      "src/specials/switches.ts",
+      "src/ui/frontEndSequence.ts",
+      "src/world/sectorChange.ts",
+      "src/world/zMovement.ts"
+    ],
+    "imported_bootstrap_modules_sorted": ["src/bootstrap/config.ts", "src/bootstrap/gameMode.ts", "src/bootstrap/titleLoop.ts"],
+    "notes": "Fourteen non-launcher source files import from src/bootstrap/ today. The GameMode/GameMission/GameVersion type aliases from src/bootstrap/gameMode.ts dominate (eleven of fourteen consumers); the ConfigDefinition interface and the config parsing helpers from src/bootstrap/config.ts have three consumers; src/ui/frontEndSequence.ts is the only consumer of the title-loop constants and the TitleLoop class from src/bootstrap/titleLoop.ts. src/bootstrap/cmdline.ts has no non-launcher consumer outside src/main.ts and the launch-lane audit ledger src/bootstrap/implement-vanilla-command-line-parsing.ts. src/bootstrap/initOrder.ts, src/bootstrap/quitFlow.ts, and src/bootstrap/tryRunTics.ts have no non-bootstrap consumers; their parity contracts are exercised exclusively by tests under test/."
+  },
+  "vanilla_d_doom_main_path_status": {
+    "is_vanilla_path": false,
+    "vanilla_orchestrator_module": "src/mainLoop.ts",
+    "vanilla_orchestrator_imports_any_bootstrap_module": false,
+    "notes": "src/mainLoop.ts is the canonical D_DoomLoop orchestrator the launch lane must wire into the bun run doom.ts entrypoint, but it does not yet import any module from src/bootstrap/. The committed init-order, quit-flow, and try-run-tics modules under src/bootstrap/ are reachable today only through tests; the simplified launcher src/main.ts bypasses initOrder, quitFlow, titleLoop, and tryRunTics entirely and only consumes the CommandLine class from src/bootstrap/cmdline.ts."
+  },
+  "implications": [
+    "src/bootstrap/ holds eight committed modules owned by the launch lane in plan_vanilla_parity/PARALLEL_WORK.md, so the inventory lane must treat the directory as read-only and any future bootstrap module growth belongs to launch-lane steps under 03-NNN, not inventory-lane steps.",
+    "src/main.ts imports only the CommandLine class from src/bootstrap/cmdline.ts; the seven other bootstrap modules (config, gameMode, implement-vanilla-command-line-parsing, initOrder, quitFlow, titleLoop, tryRunTics) are not yet wired into the simplified launcher, so the launch lane must extend the entrypoint to consume them when it replaces the simplified launcher with the vanilla bun run doom.ts startup path.",
+    "src/mainLoop.ts does not import any bootstrap module today even though src/bootstrap/initOrder.ts, src/bootstrap/quitFlow.ts, and src/bootstrap/tryRunTics.ts encode the canonical vanilla D_DoomMain init order, the I_AtExit/I_Quit/I_Error cleanup contract, and the TryRunTics tic-buffering contract; the launch lane must wire mainLoop and bootstrap together in lockstep with the doom.ts entrypoint.",
+    "Eleven of fourteen non-launcher consumers depend on the GameMode, GameMission, and GameVersion type aliases from src/bootstrap/gameMode.ts; downstream lanes (ai, gameplay, render, specials, ui, world, save) must keep those type aliases stable, so any rename or reshaping in src/bootstrap/gameMode.ts is a cross-lane breaking change that must be coordinated through DEPENDENCY_GRAPH.md.",
+    "The launch-lane audit ledger at src/bootstrap/implement-vanilla-command-line-parsing.ts is the only committed module whose name does not match a Chocolate Doom 2.2.1 function; downstream readers must understand that audit ledgers under src/bootstrap/<step-slug>.ts are launch-lane parity-evidence files, not runtime modules, and the inventory lane must not infer they are part of the runtime startup surface."
+  ],
+  "follow_up_steps": ["01-004 inventory-src-playable-contract-modules", "01-005 inventory-core-math-and-timing-modules", "03-008 implement-d-doommain-init-order-skeleton"]
+}
