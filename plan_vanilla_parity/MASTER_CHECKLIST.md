@@ -171,7 +171,7 @@
 - [x] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
 - [x] `05-005` `parse-playpal-and-colormap-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-005-parse-playpal-and-colormap-lumps.md`
 - [x] `05-006` `parse-patch-picture-format` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-006-parse-patch-picture-format.md`
-- [ ] `05-007` `parse-flat-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`
+- [x] `05-007` `parse-flat-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`
 - [ ] `05-008` `parse-pnames-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-008-parse-pnames-lump.md`
 - [ ] `05-009` `parse-texture-one-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-009-parse-texture-one-lump.md`
 - [ ] `05-010` `parse-texture-two-when-present` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-010-parse-texture-two-when-present.md`

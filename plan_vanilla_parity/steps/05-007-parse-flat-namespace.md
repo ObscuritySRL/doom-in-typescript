@@ -1,4 +1,4 @@
-# [ ] STEP 05-007: Parse Flat Namespace
+# [x] STEP 05-007: Parse Flat Namespace
 
 ## id
 
