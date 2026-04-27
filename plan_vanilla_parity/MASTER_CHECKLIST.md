@@ -167,7 +167,7 @@
 
 - [x] `05-001` `verify-wad-header-and-directory-parsing` | lane: `wad` | prereqs: `none` | file: `plan_vanilla_parity/steps/05-001-verify-wad-header-and-directory-parsing.md`
 - [x] `05-002` `verify-lump-name-lookup-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-002-verify-lump-name-lookup-semantics.md`
-- [ ] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
+- [x] `05-003` `verify-duplicate-lump-precedence` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-003-verify-duplicate-lump-precedence.md`
 - [ ] `05-004` `verify-marker-range-semantics` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-004-verify-marker-range-semantics.md`
 - [ ] `05-005` `parse-playpal-and-colormap-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-005-parse-playpal-and-colormap-lumps.md`
 - [ ] `05-006` `parse-patch-picture-format` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-006-parse-patch-picture-format.md`
