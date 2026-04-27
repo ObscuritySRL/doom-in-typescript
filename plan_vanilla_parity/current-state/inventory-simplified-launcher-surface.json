@@ -1,0 +1,102 @@
+{
+  "id": "01-002",
+  "title": "Inventory Simplified Launcher Surface",
+  "lane": "inventory",
+  "summary": "Simplified launcher surface inventory for the vanilla parity rebuild. Records the entrypoint at src/main.ts, the four-file launcher module directory under src/launcher/, the public TypeScript surface those modules expose, the CLI flags and defaults the simplified launcher accepts, and the FFI surface src/launcher/win32.ts dlopens. Confirms the simplified launcher is not the vanilla D_DoomMain startup path that the canonical bun run doom.ts target must reproduce.",
+  "captured_at_utc": "2026-04-26T19:15:00Z",
+  "evidence_method": "direct local repository audit performed by the inventory lane: ls of src/launcher/, sha256sum and wc -l over src/main.ts and the four src/launcher/*.ts files, ripgrep over the launcher modules to enumerate exported symbols and CLI parameter names, and ripgrep across src/ for D_DoomMain and D_DoomLoop references.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "launcher_entrypoint": {
+    "relative_path": "src/main.ts",
+    "exists": true,
+    "size_bytes": 3239,
+    "line_count": 103,
+    "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+    "is_vanilla_d_doom_main_path": false,
+    "package_json_start_script": "bun run src/main.ts",
+    "exports_count": 0,
+    "drives_via": "void main().catch in src/main.ts; main() awaits runLauncherWindow(session, options) from src/launcher/win32.ts after createLauncherSession from src/launcher/session.ts."
+  },
+  "launcher_module_directory": {
+    "relative_path": "src/launcher/",
+    "exists": true,
+    "file_count": 4,
+    "filenames_sorted": ["gameplayAssets.ts", "gameplayRenderer.ts", "session.ts", "win32.ts"]
+  },
+  "launcher_modules": [
+    {
+      "relative_path": "src/launcher/gameplayAssets.ts",
+      "size_bytes": 5741,
+      "line_count": 172,
+      "sha256": "a6e946f543f13bc6453df405b0fd289c6ac5856880480afcb9c4ca0b5205e772",
+      "exported_interfaces": ["GameplayRenderResources", "GameplayTexture"],
+      "exported_functions": ["loadGameplayRenderResources"],
+      "exported_constants": [],
+      "exported_classes": []
+    },
+    {
+      "relative_path": "src/launcher/gameplayRenderer.ts",
+      "size_bytes": 34075,
+      "line_count": 1034,
+      "sha256": "7162348d87d0162665b0924b622f5649b25b8335bbf90fe6936854107472f736",
+      "exported_interfaces": ["GameplayRenderContext", "GameplayRenderState"],
+      "exported_functions": ["createGameplayRenderState", "renderGameplayFrame"],
+      "exported_constants": [],
+      "exported_classes": []
+    },
+    {
+      "relative_path": "src/launcher/session.ts",
+      "size_bytes": 16273,
+      "line_count": 508,
+      "sha256": "728f89c05621d67f778fe37ff635b93b9751cf50c0dc8656180d8b5d3207bdd9",
+      "exported_interfaces": ["LauncherInputState", "LauncherResources", "LauncherSession", "LauncherSessionOptions"],
+      "exported_functions": ["advanceLauncherSession", "createLauncherSession", "loadLauncherResources", "renderLauncherFrame"],
+      "exported_constants": ["EMPTY_LAUNCHER_INPUT"],
+      "exported_classes": []
+    },
+    {
+      "relative_path": "src/launcher/win32.ts",
+      "size_bytes": 12824,
+      "line_count": 368,
+      "sha256": "8515550c4bab8d35259c97e519081da5040b129f4b75a8caf8f0ee5ae400c37d",
+      "exported_interfaces": ["LauncherWindowOptions"],
+      "exported_functions": ["runLauncherWindow"],
+      "exported_constants": [],
+      "exported_classes": []
+    }
+  ],
+  "cli_flags": {
+    "supported_sorted": ["--help", "--iwad", "--list-maps", "--map", "--scale", "--skill", "-h", "-help"],
+    "boolean_flags_sorted": ["--help", "--list-maps", "-h", "-help"],
+    "value_flags_sorted": ["--iwad", "--map", "--scale", "--skill"],
+    "parser_module": "src/bootstrap/cmdline.ts",
+    "parser_class": "CommandLine"
+  },
+  "cli_defaults": {
+    "default_map_name": "E1M1",
+    "default_scale": 2,
+    "default_skill": 2,
+    "default_local_iwad_path_template": "${REFERENCE_BUNDLE_PATH}\\${PRIMARY_TARGET.wadFilename}",
+    "default_local_iwad_path_source_constants": ["REFERENCE_BUNDLE_PATH from src/reference/policy.ts", "PRIMARY_TARGET from src/reference/target.ts"]
+  },
+  "ffi_dependencies": {
+    "dlopen_libraries_sorted": ["gdi32.dll", "user32.dll"],
+    "user32_symbols_sorted": ["AdjustWindowRect", "CreateWindowExW", "DestroyWindow", "DispatchMessageW", "GetAsyncKeyState", "GetClientRect", "GetDC", "GetForegroundWindow", "PeekMessageW", "ReleaseDC", "ShowWindow", "TranslateMessage"],
+    "gdi32_symbols_sorted": ["StretchDIBits"],
+    "host_modules_imported": ["src/host/win32/clock.ts", "src/host/win32/messagePump.ts", "src/host/ticAccumulator.ts", "src/host/windowPolicy.ts"]
+  },
+  "vanilla_d_doom_main_path_status": {
+    "is_vanilla_path": false,
+    "vanilla_orchestrator_module": "src/mainLoop.ts",
+    "vanilla_phase_modules_under_src_bootstrap": ["src/bootstrap/initOrder.ts", "src/bootstrap/quitFlow.ts", "src/bootstrap/titleLoop.ts"],
+    "notes": "src/main.ts and src/launcher/* implement a simplified gameplay-only launcher: parse CLI, load WAD resources via loadLauncherResources, build a LauncherSession via createLauncherSession, and drive runLauncherWindow which presents indexed frames via Win32 StretchDIBits. The vanilla D_DoomMain pre-loop sequence (initialTryRunTics, restoreBuffer, executeSetViewSize, startGameLoop) and per-frame phase ordering modeled by src/mainLoop.ts are not invoked by this launcher. Title loop, intermission, finale, save/load, and demo playback paths are intentionally absent from the simplified surface."
+  },
+  "implications": [
+    "src/launcher/ owns the only currently runnable wiring; the canonical bun run doom.ts entrypoint declared by plan_vanilla_parity/establish-vanilla-parity-control-center.md must replace this surface, not extend it.",
+    "The simplified launcher exposes nine interfaces (GameplayRenderContext, GameplayRenderResources, GameplayRenderState, GameplayTexture, LauncherInputState, LauncherResources, LauncherSession, LauncherSessionOptions, LauncherWindowOptions), eight functions (advanceLauncherSession, createGameplayRenderState, createLauncherSession, loadGameplayRenderResources, loadLauncherResources, renderGameplayFrame, renderLauncherFrame, runLauncherWindow), and one constant (EMPTY_LAUNCHER_INPUT) that downstream parity steps must keep stable until the launch lane swaps in the vanilla startup path.",
+    "The simplified launcher accepts six CLI surface flags (--help/-help/-h, --iwad, --list-maps, --map, --scale, --skill) and three default constants (DEFAULT_MAP_NAME=E1M1, DEFAULT_SCALE=2, DEFAULT_SKILL=2) which differ from vanilla DOOM's command-line surface and must not be treated as a parity contract.",
+    "src/launcher/win32.ts dlopens user32.dll and gdi32.dll directly with thirteen Win32 symbols (twelve user32 plus StretchDIBits) and depends on src/host/win32/* and src/host/windowPolicy.ts/ticAccumulator.ts; the launch lane's vanilla replacement must preserve these FFI surfaces or migrate them in lockstep with their host module dependencies.",
+    "The simplified launcher does not call D_DoomMain or D_DoomLoop and bypasses src/mainLoop.ts; downstream lanes that rely on the vanilla phase ordering must not assume the simplified launcher exercises those phases."
+  ],
+  "follow_up_steps": ["01-003 inventory-src-bootstrap-surface", "01-004 inventory-src-playable-contract-modules", "03-001 add-root-doom-ts-bun-entrypoint"]
+}
