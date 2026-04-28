@@ -44,7 +44,7 @@
 - [x] `01-014` `inventory-demo-and-replay-modules` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-014-inventory-demo-and-replay-modules.md`
 - [x] `01-015` `inventory-oracle-fixtures-with-pending-status` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-015-inventory-oracle-fixtures-with-pending-status.md`
 - [x] `01-016` `inventory-parity-tests-that-lock-fixtures` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-016-inventory-parity-tests-that-lock-fixtures.md`
-- [ ] `01-017` `inventory-plan-fps-manifest-only-gates` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-017-inventory-plan-fps-manifest-only-gates.md`
+- [x] `01-017` `inventory-plan-fps-manifest-only-gates` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-017-inventory-plan-fps-manifest-only-gates.md`
 - [ ] `01-018` `inventory-tools-reference-capture-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-018-inventory-tools-reference-capture-surface.md`
 - [ ] `01-019` `inventory-local-doom-reference-files` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-019-inventory-local-doom-reference-files.md`
 - [ ] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
@@ -141,7 +141,7 @@
 - [x] `04-007` `audit-doom-random-table-and-indices` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-007-audit-doom-random-table-and-indices.md`
 - [x] `04-008` `implement-deterministic-reset-seed` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-008-implement-deterministic-reset-seed.md`
 - [x] `04-009` `implement-game-tic-counter-ownership` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-009-implement-game-tic-counter-ownership.md`
-- [ ] `04-010` `implement-tic-accumulator-at-thirty-five-hertz` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-010-implement-tic-accumulator-at-thirty-five-hertz.md`
+- [x] `04-010` `implement-tic-accumulator-at-thirty-five-hertz` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-010-implement-tic-accumulator-at-thirty-five-hertz.md`
 - [ ] `04-011` `implement-try-run-tics-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-011-implement-try-run-tics-ordering.md`
 - [ ] `04-012` `implement-i-start-tic-event-pump-contract` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-012-implement-i-start-tic-event-pump-contract.md`
 - [ ] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
