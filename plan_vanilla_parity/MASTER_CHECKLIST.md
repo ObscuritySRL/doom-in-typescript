@@ -103,7 +103,7 @@
 - [x] `03-008` `implement-d-doommain-init-order-skeleton` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`
 - [x] `03-009` `implement-d-doomloop-entry-timing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`
 - [x] `03-010` `implement-clean-quit-and-endoom-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-010-implement-clean-quit-and-endoom-policy.md`
-- [ ] `03-011` `implement-fatal-error-shutdown-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-011-implement-fatal-error-shutdown-ordering.md`
+- [x] `03-011` `implement-fatal-error-shutdown-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-011-implement-fatal-error-shutdown-ordering.md`
 - [x] `03-012` `create-win32-window-with-vanilla-framebuffer-contract` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-012-create-win32-window-with-vanilla-framebuffer-contract.md`
 - [ ] `03-013` `apply-window-title-and-icon-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-013-apply-window-title-and-icon-policy.md`
 - [ ] `03-014` `lock-internal-320-by-200-indexed-framebuffer` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-014-lock-internal-320-by-200-indexed-framebuffer.md`
@@ -173,7 +173,7 @@
 - [x] `05-006` `parse-patch-picture-format` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-006-parse-patch-picture-format.md`
 - [x] `05-007` `parse-flat-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`
 - [x] `05-008` `parse-pnames-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-008-parse-pnames-lump.md`
-- [ ] `05-009` `parse-texture-one-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-009-parse-texture-one-lump.md`
+- [x] `05-009` `parse-texture-one-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-009-parse-texture-one-lump.md`
 - [ ] `05-010` `parse-texture-two-when-present` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-010-parse-texture-two-when-present.md`
 - [ ] `05-011` `parse-sprite-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-011-parse-sprite-namespace.md`
 - [ ] `05-012` `parse-sound-effect-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-012-parse-sound-effect-lumps.md`
