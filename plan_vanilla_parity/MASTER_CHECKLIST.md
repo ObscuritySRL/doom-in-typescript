@@ -182,7 +182,7 @@
 - [x] `05-015` `parse-map-lump-bundle-boundaries` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-015-parse-map-lump-bundle-boundaries.md`
 - [x] `05-016` `detect-shareware-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-016-detect-shareware-iwad-capabilities.md`
 - [x] `05-017` `detect-registered-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-017-detect-registered-iwad-capabilities.md`
-- [ ] `05-018` `detect-ultimate-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-018-detect-ultimate-iwad-capabilities.md`
+- [x] `05-018` `detect-ultimate-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-018-detect-ultimate-iwad-capabilities.md`
 - [ ] `05-019` `reject-missing-proprietary-assets-with-clear-error` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-019-reject-missing-proprietary-assets-with-clear-error.md`
 - [ ] `05-020` `enforce-no-asset-redistribution-in-tests` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-020-enforce-no-asset-redistribution-in-tests.md`
 - [ ] `05-021` `build-asset-cache-lifetime-policy` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-021-build-asset-cache-lifetime-policy.md`
