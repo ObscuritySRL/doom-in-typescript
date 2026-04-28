@@ -138,7 +138,7 @@
 - [x] `04-004` `audit-angle-type-and-wrap-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-004-audit-angle-type-and-wrap-semantics.md`
 - [x] `04-005` `audit-trig-lookup-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-005-audit-trig-lookup-tables.md`
 - [x] `04-006` `audit-fine-tangent-and-slope-tables` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-006-audit-fine-tangent-and-slope-tables.md`
-- [ ] `04-007` `audit-doom-random-table-and-indices` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-007-audit-doom-random-table-and-indices.md`
+- [x] `04-007` `audit-doom-random-table-and-indices` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-007-audit-doom-random-table-and-indices.md`
 - [ ] `04-008` `implement-deterministic-reset-seed` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-008-implement-deterministic-reset-seed.md`
 - [ ] `04-009` `implement-game-tic-counter-ownership` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-009-implement-game-tic-counter-ownership.md`
 - [ ] `04-010` `implement-tic-accumulator-at-thirty-five-hertz` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-010-implement-tic-accumulator-at-thirty-five-hertz.md`
