@@ -47,7 +47,7 @@
 - [x] `01-017` `inventory-plan-fps-manifest-only-gates` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-017-inventory-plan-fps-manifest-only-gates.md`
 - [x] `01-018` `inventory-tools-reference-capture-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-018-inventory-tools-reference-capture-surface.md`
 - [x] `01-019` `inventory-local-doom-reference-files` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-019-inventory-local-doom-reference-files.md`
-- [ ] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
+- [x] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
 - [ ] `01-021` `classify-real-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-021-classify-real-implementations.md`
 - [ ] `01-022` `classify-simplified-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md`
 - [ ] `01-023` `classify-stubbed-or-manifest-only-surfaces` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md`
@@ -179,7 +179,7 @@
 - [x] `05-012` `parse-sound-effect-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-012-parse-sound-effect-lumps.md`
 - [x] `05-013` `parse-music-mus-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-013-parse-music-mus-lumps.md`
 - [x] `05-014` `parse-demo-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-014-parse-demo-lumps.md`
-- [ ] `05-015` `parse-map-lump-bundle-boundaries` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-015-parse-map-lump-bundle-boundaries.md`
+- [x] `05-015` `parse-map-lump-bundle-boundaries` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-015-parse-map-lump-bundle-boundaries.md`
 - [ ] `05-016` `detect-shareware-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-016-detect-shareware-iwad-capabilities.md`
 - [ ] `05-017` `detect-registered-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-017-detect-registered-iwad-capabilities.md`
 - [ ] `05-018` `detect-ultimate-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-018-detect-ultimate-iwad-capabilities.md`
