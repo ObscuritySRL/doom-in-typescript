@@ -104,7 +104,7 @@
 - [x] `03-009` `implement-d-doomloop-entry-timing` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`
 - [x] `03-010` `implement-clean-quit-and-endoom-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-010-implement-clean-quit-and-endoom-policy.md`
 - [ ] `03-011` `implement-fatal-error-shutdown-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-011-implement-fatal-error-shutdown-ordering.md`
-- [ ] `03-012` `create-win32-window-with-vanilla-framebuffer-contract` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-012-create-win32-window-with-vanilla-framebuffer-contract.md`
+- [x] `03-012` `create-win32-window-with-vanilla-framebuffer-contract` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-012-create-win32-window-with-vanilla-framebuffer-contract.md`
 - [ ] `03-013` `apply-window-title-and-icon-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-013-apply-window-title-and-icon-policy.md`
 - [ ] `03-014` `lock-internal-320-by-200-indexed-framebuffer` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-014-lock-internal-320-by-200-indexed-framebuffer.md`
 - [ ] `03-015` `implement-palette-blit-without-filtering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-015-implement-palette-blit-without-filtering.md`
