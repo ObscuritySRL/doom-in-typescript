@@ -185,7 +185,7 @@
 - [x] `05-018` `detect-ultimate-iwad-capabilities` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-018-detect-ultimate-iwad-capabilities.md`
 - [x] `05-019` `reject-missing-proprietary-assets-with-clear-error` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-019-reject-missing-proprietary-assets-with-clear-error.md`
 - [x] `05-020` `enforce-no-asset-redistribution-in-tests` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-020-enforce-no-asset-redistribution-in-tests.md`
-- [ ] `05-021` `build-asset-cache-lifetime-policy` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-021-build-asset-cache-lifetime-policy.md`
+- [x] `05-021` `build-asset-cache-lifetime-policy` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-021-build-asset-cache-lifetime-policy.md`
 - [ ] `05-022` `build-texture-composition-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md`
 - [ ] `05-023` `build-flat-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-023-build-flat-cache.md`
 - [ ] `05-024` `build-sprite-frame-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-024-build-sprite-frame-cache.md`
