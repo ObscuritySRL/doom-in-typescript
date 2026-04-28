@@ -1,0 +1,171 @@
+{
+  "id": "01-014",
+  "title": "Inventory Demo And Replay Modules",
+  "lane": "inventory",
+  "summary": "Current-state inventory of source-only metadata for the four committed src/demo/ TypeScript modules that together model the vanilla DOOM 1.9 demo and replay surface: the demoFile.ts standalone Doom 1.9 lump parser (DEMO_VERSION_19=109, DEMO_HEADER_SIZE=13, DEMO_TIC_SIZE=4, DEMO_END_MARKER=0x80, DEMO_MAX_PLAYERS=4, DEMO_TIC_RATE=35) used by the WAD asset and ticcmd test surfaces, the demoParse.ts full-spectrum demo header parser that branches between the vanilla DOOM 1.9 (version=109, header=13, command=4), longtics (DEMO_LONG_TICS_VERSION=111, DEMO_LONG_TICS_COMMAND_SIZE=5), and pre-v1.4 old (DEMO_OLD_FORMAT_HEADER_SIZE=7, DEMO_OLD_FORMAT_MAX_SKILL=4) header variants in the same way G_DoPlayDemo selects them, the demoPlayback.ts stateful G_DoPlayDemo+G_ReadDemoTiccmd playback wrapper with the DemoPlayback class, the netDemo/netGame/playersInGame[] mutable bitmap, the singleDemo->quit completion action, and the marker-on-next-read finish ordering, and the demoRecord.ts stateful G_BeginRecording+G_WriteDemoTiccmd recorder with DEMO_RECORD_DEFAULT_MAXIMUM_SIZE=0x20000 (131072) maxdemo cap, DEMO_RECORD_WRITE_HEADROOM=16 vanilla precheck, the longtics int16 angle path, the vanilla angle-byte rounding plus turn-carry quantization, and the trailing 0x80 finish marker, without embedding raw demo bytes from the bundled DOOM1.WAD DEMO1/DEMO2/DEMO3 lumps or any proprietary configuration data.",
+  "captured_at_utc": "2026-04-28T05:25:00Z",
+  "evidence_method": "inventory lane local repository audit using git ls-files-compatible Bun.Glob scans, sha256sum-equivalent SHA-256 fingerprints, src/demo/, test/demo/, test/parity/bundled-demo-sync.test.ts, test/playable/demo-replay/, reference/manifests/demo-lump-summary.json, reference/manifests/vanilla-limit-summary.json, reference/manifests/source-catalog.json Chocolate Doom 2.2.1 anchors, and package.json Bun script context.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "source_directories": [
+    {
+      "relative_path": "src/demo/",
+      "exists": true,
+      "committed_file_count": 4,
+      "committed_filenames_sorted": ["demoFile.ts", "demoParse.ts", "demoPlayback.ts", "demoRecord.ts"],
+      "total_size_bytes": 35463,
+      "total_line_count": 1029,
+      "total_export_count": 33
+    }
+  ],
+  "modules": [
+    {
+      "relative_path": "src/demo/demoFile.ts",
+      "group": "demo_lump",
+      "role": "Implements the standalone Doom 1.9 demo lump parser with DEMO_VERSION_19=109 vanilla version byte, DEMO_HEADER_SIZE=13 fixed header span, DEMO_TIC_SIZE=4 per-player tic command width, DEMO_END_MARKER=0x80 trailing marker, DEMO_MAX_PLAYERS=4 player-array cardinality, and DEMO_TIC_RATE=35 tic-rate constant, the DemoTicCommand{forwardmove,sidemove,angleturn,buttons} per-player record, the DemoFile{version,skill,episode,map,deathmatch,respawn,fast,nomonsters,consoleplayer,playersPresent,activePlayers,ticCount,durationSeconds,tics} parsed-lump record, and the parseDemoLump function that walks the canonical 13-byte header followed by activePlayers*4 bytes per tic into a frozen DemoFile with throw on truncation or missing 0x80 marker.",
+      "vanilla_concept_modeled": "Chocolate Doom 2.2.1 g_game.c G_DoPlayDemo demo lump entry point for vanilla DOOM 1.9 demos (version byte 109) and the doomdef.h MAXPLAYERS=4 / TICRATE=35 baseline, scoped to the single DOOM 1.9 versioned-demo branch without longtics or pre-v1.4 header variants.",
+      "size_bytes": 6625,
+      "line_count": 197,
+      "sha256": "1078b6cf86119f01735dab17f0b881bda94a01c722aa28b62fa58f81753e7a90",
+      "exported_interfaces": ["DemoFile", "DemoTicCommand"],
+      "exported_functions": ["parseDemoLump"],
+      "exported_constants": ["DEMO_END_MARKER", "DEMO_HEADER_SIZE", "DEMO_MAX_PLAYERS", "DEMO_TIC_RATE", "DEMO_TIC_SIZE", "DEMO_VERSION_19"],
+      "exported_classes": [],
+      "exported_types": [],
+      "exported_const_enums": [],
+      "external_imports": ["src/core/binaryReader.ts"],
+      "src_importer_count": 0,
+      "test_importer_count": 2
+    },
+    {
+      "relative_path": "src/demo/demoParse.ts",
+      "group": "demo_parse",
+      "role": "Implements the full-spectrum G_DoPlayDemo header branching parser with DEMO_END_MARKER=0x80 trailing marker, DEMO_VANILLA_VERSION_19=109 vanilla version byte, DEMO_VANILLA_HEADER_SIZE=13 / DEMO_VANILLA_COMMAND_SIZE=4 vanilla layout, DEMO_LONG_TICS_VERSION=111 non-vanilla version byte, DEMO_LONG_TICS_COMMAND_SIZE=5 longtics command width with int16 angleTurn, DEMO_OLD_FORMAT_HEADER_SIZE=7 / DEMO_OLD_FORMAT_MAX_SKILL=4 pre-v1.4 leading-byte branch (skill <= 4 is treated as a no-version old demo), DEMO_MAX_PLAYERS=4 player slots, and DEMO_TIC_RATE=35 tic-rate, the DemoFormat 'longtics'|'old'|'vanilla' discriminator, the DemoTicCommand{angleTurn,buttons,forwardMove,sideMove} normalized-int16 record, the ParsedDemo{activePlayerCount,commandByteLength,commandsByTic,consolePlayer,deathmatch,durationSeconds,endMarkerOffset,episode,fastMonsters,format,headerByteLength,map,noMonsters,playersInGame,respawnMonsters,skill,ticCount,versionByte} unified parsed-demo record, and the parseDemo first-byte format dispatcher that decodes either the vanilla shifted-byte angle (raw_byte<<8 to int16) or the longtics int16 LE angle and terminates on the trailing 0x80 marker.",
+      "vanilla_concept_modeled": "Chocolate Doom 2.2.1 g_game.c G_DoPlayDemo header dispatch (treating leading bytes 0..4 as the skill field of a pre-v1.4 no-version demo, otherwise reading versionByte then routing to the longtics int16-angle path when versionByte == DOOM_191_VERSION = 111) and the matching G_ReadDemoTiccmd per-tic decoder for the three demo header variants.",
+      "size_bytes": 8656,
+      "line_count": 256,
+      "sha256": "d51adada79d9b21d921d0470ba03f5ceb466fef9a0981ed5875fd1be1470241e",
+      "exported_interfaces": ["DemoTicCommand", "ParsedDemo"],
+      "exported_functions": ["parseDemo"],
+      "exported_constants": [
+        "DEMO_END_MARKER",
+        "DEMO_LONG_TICS_COMMAND_SIZE",
+        "DEMO_LONG_TICS_VERSION",
+        "DEMO_MAX_PLAYERS",
+        "DEMO_OLD_FORMAT_HEADER_SIZE",
+        "DEMO_OLD_FORMAT_MAX_SKILL",
+        "DEMO_TIC_RATE",
+        "DEMO_VANILLA_COMMAND_SIZE",
+        "DEMO_VANILLA_HEADER_SIZE",
+        "DEMO_VANILLA_VERSION_19"
+      ],
+      "exported_classes": [],
+      "exported_types": ["DemoFormat"],
+      "exported_const_enums": [],
+      "external_imports": ["src/core/binaryReader.ts"],
+      "src_importer_count": 2,
+      "test_importer_count": 4
+    },
+    {
+      "relative_path": "src/demo/demoPlayback.ts",
+      "group": "demo_playback",
+      "role": "Implements the stateful G_DoPlayDemo+G_ReadDemoTiccmd playback wrapper with the DemoPlayback class, DEMO_PLAYBACK_DEFAULT_VERSION=DEMO_VANILLA_VERSION_19=109 expected version baseline, the DemoPlaybackCompletionAction 'advance-demo'|'none'|'quit' G_CheckDemoStatus result discriminator, the DemoPlaybackOptions{allowOldFormat,allowLongTics,expectedVersionByte,netDemo,soloNet,singleDemo} -netdemo/-solo-net/singledemo/longtics gates, the DemoPlaybackSnapshot{completionAction,consolePlayer,deathmatch,demoplayback,fastMonsters,netDemo,netGame,noMonsters,playersInGame,respawnMonsters,singleDemo,ticIndex} immutable view, the netdemo derivation from playersInGame[1] || netDemo || soloNet, the readNextTic streaming reader that returns the final real tic and only finishes playback on the next read past ticCount (matching G_ReadDemoTiccmd's marker-on-next-read ordering), and the finishPlayback reset that clears consolePlayer/deathmatch/fastMonsters/netDemo/netGame/noMonsters/respawnMonsters and unsets playersInGame[1..3] before transitioning demoplayback to false.",
+      "vanilla_concept_modeled": "Chocolate Doom 2.2.1 g_game.c G_DoPlayDemo, G_ReadDemoTiccmd, and G_CheckDemoStatus demo playback state machine with the netdemo/netgame derivation from playersInGame[1] and the -netdemo/-solo-net/singledemo command-line gates, plus the marker-on-next-read final-tic ordering preserved by the vanilla reader before D_AdvanceDemo or quit completion runs.",
+      "size_bytes": 7543,
+      "line_count": 212,
+      "sha256": "124e7ebd58d2c1c0944fac7d45882562c07fad862b2929da8a7352d137c998b5",
+      "exported_interfaces": ["DemoPlaybackOptions", "DemoPlaybackSnapshot"],
+      "exported_functions": [],
+      "exported_constants": ["DEMO_PLAYBACK_DEFAULT_VERSION"],
+      "exported_classes": ["DemoPlayback"],
+      "exported_types": ["DemoPlaybackCompletionAction"],
+      "exported_const_enums": [],
+      "external_imports": ["src/demo/demoParse.ts", "src/demo/demoParse.ts"],
+      "src_importer_count": 11,
+      "test_importer_count": 5
+    },
+    {
+      "relative_path": "src/demo/demoRecord.ts",
+      "group": "demo_record",
+      "role": "Implements the stateful G_BeginRecording+G_WriteDemoTiccmd+G_CheckDemoStatus recorder with the DemoRecorder class, DEMO_RECORD_DEFAULT_MAXIMUM_SIZE=0x20000 (131072) MAXDEMOSIZE buffer cap, DEMO_RECORD_WRITE_HEADROOM=16 vanilla precheck (Doom stops recording before a tic when fewer than 16 bytes remain), the DemoRecordCommand{angleTurn,buttons,chatCharacter?,consistency?,forwardMove,sideMove} input record (chatCharacter and consistency are savegame-only ticcmd_t fields intentionally ignored by the demo writer), the DemoRecorderOptions{consolePlayer,deathmatch,episode,fastMonsters,format,map,maximumSize,noMonsters,playersInGame,respawnMonsters,skill,vanillaDemoLimit,versionByte} header initialization, the format-aware writeHeader that emits 13 bytes for vanilla/longtics and 7 bytes for old (no version byte, no flag bytes), the recordCommand pipeline that runs the vanilla angle quantizer (rounded byte angle plus turn-carry feedback) for non-longtics formats and writes int16-LE angles for longtics, the vanilla-limit gating that returns null on a precheck overflow without throwing, and the finish writer that appends the trailing 0x80 marker and returns a sliced demo buffer.",
+      "vanilla_concept_modeled": "Chocolate Doom 2.2.1 g_game.c G_BeginRecording, G_WriteDemoTiccmd, and G_CheckDemoStatus demo recorder with the MAXDEMOSIZE=0x20000 / vanilla_demo_limit precheck (Demo_Headroom=16) and the angle byte-quantization + turn-carry feedback path used to round the int16 angleTurn into a single byte for non-longtics demos.",
+      "size_bytes": 12639,
+      "line_count": 364,
+      "sha256": "3e00cbd07849c96d347355fc345612a4a01c086ab752e968f587fa2cb88133b5",
+      "exported_interfaces": ["DemoRecordCommand", "DemoRecorderOptions"],
+      "exported_functions": [],
+      "exported_constants": ["DEMO_RECORD_DEFAULT_MAXIMUM_SIZE", "DEMO_RECORD_WRITE_HEADROOM"],
+      "exported_classes": ["DemoRecorder"],
+      "exported_types": [],
+      "exported_const_enums": [],
+      "external_imports": ["src/demo/demoParse.ts", "src/demo/demoParse.ts"],
+      "src_importer_count": 0,
+      "test_importer_count": 2
+    }
+  ],
+  "test_coverage": {
+    "test_roots": [
+      {
+        "relative_path": "test/demo/",
+        "test_file_count": 3,
+        "test_filenames_sorted": ["demo-parse.test.ts", "demo-playback.test.ts", "demo-record.test.ts"]
+      }
+    ],
+    "cross_lane_test_files": [
+      "test/parity/bundled-demo-sync.test.ts",
+      "test/playable/demo-replay/accept-clean-launch-to-gameplay-replay.test.ts",
+      "test/playable/demo-replay/play-bundled-demos-through-title-loop.test.ts",
+      "test/playable/demo-replay/preserve-demo-termination-behavior.test.ts"
+    ],
+    "notes": "test/demo/ covers the full-spectrum G_DoPlayDemo header dispatch (vanilla DOOM 1.9 versioned, longtics, and pre-v1.4 old) and the G_ReadDemoTiccmd per-tic decoder under demo-parse.test.ts, the G_DoPlayDemo+G_ReadDemoTiccmd+G_CheckDemoStatus DemoPlayback streaming reader and marker-on-next-read finish ordering under demo-playback.test.ts, and the G_BeginRecording+G_WriteDemoTiccmd+G_CheckDemoStatus DemoRecorder buffer cap, vanilla angle quantizer, and round-trip-through-parseDemo coverage under demo-record.test.ts. The parity-lane test/parity/bundled-demo-sync.test.ts exercises the parseDemo decoder against the bundled DOOM1.WAD DEMO1/DEMO2/DEMO3 lump sequences as a parity oracle harness, and four playable-contract tests under test/playable/demo-replay/ exercise the DemoPlayback class through the title loop and clean-launch replay surface; the demoFile.ts legacy single-format lump parser is exercised through test/wad/misc-assets.test.ts and test/input/ticcmd.test.ts at the wad and input lane test roots rather than under test/demo/."
+  },
+  "reference_manifest_status": {
+    "vanilla_limit_summary_relative_path": "reference/manifests/vanilla-limit-summary.json",
+    "maxdemosize_limit": 131072,
+    "maxplayers_limit": 4,
+    "ticrate_constant": 35,
+    "demo_version_19_constant": 109,
+    "demo_long_tics_version_constant": 111,
+    "demo_end_marker_constant": 128,
+    "demo_lump_summary_relative_path": "reference/manifests/demo-lump-summary.json",
+    "demo_lump_count": 3,
+    "demo_lump_names_sorted": ["DEMO1", "DEMO2", "DEMO3"],
+    "source_catalog_relative_path": "reference/manifests/source-catalog.json",
+    "vanilla_demo_source_files": ["g_game.c"],
+    "doomwiki_demo_doc_id": "S-041",
+    "notes": "Manifest alignment records the vanilla MAXDEMOSIZE=131072 (0x20000) demo recording buffer cap that src/demo/demoRecord.ts mirrors as DEMO_RECORD_DEFAULT_MAXIMUM_SIZE, the MAXPLAYERS=4 player-array cardinality that src/demo/demoFile.ts and src/demo/demoParse.ts mirror as DEMO_MAX_PLAYERS, the TICRATE=35 game-tic baseline that src/demo/demoFile.ts and src/demo/demoParse.ts mirror as DEMO_TIC_RATE and that drives durationSeconds = ticCount/35, the DOOM 1.9 versioned-demo magic byte 109 that src/demo/demoFile.ts mirrors as DEMO_VERSION_19 and src/demo/demoParse.ts mirrors as DEMO_VANILLA_VERSION_19, the non-vanilla longtics version byte 111 that src/demo/demoParse.ts mirrors as DEMO_LONG_TICS_VERSION, and the trailing 0x80 (128) end marker that all four modules mirror as DEMO_END_MARKER. The demo-lump-summary.json manifest catalogs the three bundled DOOM1.WAD DEMO1/DEMO2/DEMO3 lumps with skill=2 / episode=1 / map=5/3/7 / activePlayers=1 metadata and SHA-256 fingerprints (DEMO1 5026 tics, DEMO2 3836 tics, DEMO3 2134 tics) that the parity-lane bundled-demo-sync.test.ts compares parseDemo output against; this inventory does not embed raw DEMO1/DEMO2/DEMO3 lump bytes or any proprietary configuration data."
+  },
+  "demo_and_replay_boundary_status": {
+    "demo_modules_sorted": ["src/demo/demoFile.ts", "src/demo/demoParse.ts", "src/demo/demoPlayback.ts", "src/demo/demoRecord.ts"],
+    "runtime_module_count": 4,
+    "parser_module_count": 2,
+    "playback_module_count": 1,
+    "record_module_count": 1,
+    "source_only_metadata": true,
+    "notes": "src/demo/ owns the demo and replay surface partitioned into demo_lump (demoFile.ts) for the legacy standalone Doom 1.9 single-format lump parser (used by test/wad/misc-assets.test.ts and test/input/ticcmd.test.ts as a thin lump decoder), demo_parse (demoParse.ts) for the full-spectrum vanilla/longtics/old G_DoPlayDemo header dispatch with the matching G_ReadDemoTiccmd per-tic decoder, demo_playback (demoPlayback.ts) for the stateful DemoPlayback streaming reader that mirrors G_DoPlayDemo+G_ReadDemoTiccmd+G_CheckDemoStatus including the netdemo derivation and the marker-on-next-read finish ordering, and demo_record (demoRecord.ts) for the stateful DemoRecorder that mirrors G_BeginRecording+G_WriteDemoTiccmd+G_CheckDemoStatus with the MAXDEMOSIZE=0x20000 / vanilla_demo_limit precheck and the vanilla angle byte-quantization + turn-carry feedback path. Demo modules accept buffer inputs, DemoRecorderOptions, DemoPlaybackOptions, DemoRecordCommand records, and frozen ParsedDemo snapshots through injected parameters; each module is unit-tested without a live filesystem, WAD, or active game state, and the only WAD-bound entry point is the parity-lane bundled-demo-sync.test.ts harness that reads DEMO1/DEMO2/DEMO3 from the read-only reference DOOM1.WAD."
+  },
+  "implications": [
+    "src/demo/demoParse.ts is the central parser surface that demoPlayback.ts (11 src/ importers, 5 test importers) and demoRecord.ts both build on; reshaping the DemoFormat 'longtics'|'old'|'vanilla' discriminator, the ParsedDemo{format,headerByteLength,commandByteLength,playersInGame,commandsByTic,...} record, the DemoTicCommand{angleTurn,buttons,forwardMove,sideMove} normalized record, or the DEMO_VANILLA_VERSION_19=109/DEMO_LONG_TICS_VERSION=111/DEMO_OLD_FORMAT_MAX_SKILL=4 header-dispatch constants is a cross-lane breaking change that the demo, playback, record, parity, and 11 playable demo-replay importer modules in src/playable/demo-replay/ must absorb together; downstream Phase 04 follow-ups 04-019 through 04-026 and the gate 04-030 depend on these exports staying stable across the inventory baseline.",
+    "src/demo/demoPlayback.ts owns the DemoPlayback class, the DemoPlaybackCompletionAction 'advance-demo'|'none'|'quit' G_CheckDemoStatus result discriminator, the netdemo derivation from playersInGame[1] || netDemo || soloNet, and the marker-on-next-read finish ordering that returns the final real tic before transitioning demoplayback to false. The 11 src/ importers under src/playable/demo-replay/ (acceptAttractLoopAndLongRunReplays, acceptCleanLaunchToGameplayReplay, captureReplayFramebufferStateAudioMusic, convertDemoInputStream, detectLongRunDrift, playBundledDemosThroughTitleLoop, preserveDemoTerminationBehavior, replayDemo1Deterministically, replayDemo2Deterministically, replayDemo3Deterministically, replayScriptedInputFromCleanLaunch) compose this class into the playable contract surface, so reshaping DemoPlaybackOptions, DemoPlaybackSnapshot, or readNextTic's null-on-finish contract is also a break of the playable demo-replay surface inventoried by 01-004 inventory-src-playable-contract-modules.",
+    "src/demo/demoRecord.ts DEMO_RECORD_DEFAULT_MAXIMUM_SIZE=0x20000 (131072 bytes) is a bit-exact mirror of vanilla MAXDEMOSIZE=0x20000 from g_game.c that the vanilla_demo_limit compatibility flag enforces; the DEMO_RECORD_WRITE_HEADROOM=16 byte precheck and the recordCommand return-null-on-overflow contract preserve the vanilla 'demo recording stops before the next tic when fewer than 16 bytes remain' behavior. Reshaping these constants or removing the headroom precheck breaks the vanilla-demo-limit gate 04-023 enforce-vanilla-demo-size-limit and the downstream 04-024/04-025/04-026 ticcmd-stream comparisons.",
+    "src/demo/demoFile.ts is a narrower legacy parser scoped to vanilla DOOM 1.9 (version 109) lumps and is owned by the WAD asset and ticcmd test surfaces (2 test importers, 0 src importers). Its DemoTicCommand{forwardmove,sidemove,angleturn,buttons} record uses raw lump field names (lowercase, no normalization), distinct from demoParse.ts's normalized DemoTicCommand{angleTurn,buttons,forwardMove,sideMove}; consumers that need longtics support, old-format support, or the netdemo state machine must use demoParse.ts and demoPlayback.ts instead. Phase 05 follow-up 05-014 parse-demo-lumps must keep this dual-API distinction in mind so the WAD-side parser does not regress longtics or pre-v1.4 demos.",
+    "Demo modules accept Buffer inputs, DemoRecorderOptions / DemoPlaybackOptions, DemoRecordCommand and ticcmd records, and frozen ParsedDemo snapshots through injected parameters and never read the filesystem or open a WAD directly; the only WAD-bound entry point is the parity-lane test/parity/bundled-demo-sync.test.ts harness that reads DEMO1/DEMO2/DEMO3 from the read-only reference DOOM1.WAD via the existing wad/asset modules. This boundary lets the launch and core lanes wire DemoPlayback into the title loop and DemoRecorder into the gameplay loop without leaking filesystem or WAD-decoding concerns into the demo modules; downstream Phase 10 follow-up 10-002 implement-page-ticker-and-advance-demo and the Phase 02 oracle-capture follow-ups 02-009/02-028/02-029/02-030 own the live evidence path.",
+    "src/demo/ shares a strict no-proprietary-bytes boundary with the rest of the inventory lane: the DEMO_VERSION_19=109, DEMO_LONG_TICS_VERSION=111, DEMO_END_MARKER=0x80, DEMO_HEADER_SIZE=13, DEMO_TIC_SIZE=4, DEMO_VANILLA_HEADER_SIZE=13, DEMO_VANILLA_COMMAND_SIZE=4, DEMO_LONG_TICS_COMMAND_SIZE=5, DEMO_OLD_FORMAT_HEADER_SIZE=7, DEMO_OLD_FORMAT_MAX_SKILL=4, DEMO_TIC_RATE=35, DEMO_MAX_PLAYERS=4, DEMO_RECORD_DEFAULT_MAXIMUM_SIZE=0x20000, and DEMO_RECORD_WRITE_HEADROOM=16 constants are derived from Chocolate Doom 2.2.1 g_game.c source (S-011 in reference/manifests/source-catalog.json) and the DoomWiki Demo reference (S-041), but the inventory must never embed raw DEMO1/DEMO2/DEMO3 lump bytes or raw recorded demo bytes. Phase 02 oracle-capture follow-ups 02-009 (define-deterministic-input-stream-format) and 02-028 through 02-030 (capture-demo-N-playback-oracle) own the live evidence capture path that produces oracle artifacts under test/oracles/fixtures/."
+  ],
+  "follow_up_steps": [
+    "02-009 define-deterministic-input-stream-format",
+    "02-028 capture-demo-one-playback-oracle",
+    "02-029 capture-demo-two-playback-oracle",
+    "02-030 capture-demo-three-playback-oracle",
+    "04-019 implement-demo-lump-header-parser",
+    "04-020 implement-demo-ticcmd-parser",
+    "04-021 implement-demo-playback-state-machine",
+    "04-022 implement-demo-recording-state-machine",
+    "04-023 enforce-vanilla-demo-size-limit",
+    "04-024 compare-demo-one-ticcmd-stream",
+    "04-025 compare-demo-two-ticcmd-stream",
+    "04-026 compare-demo-three-ticcmd-stream",
+    "04-030 gate-demo-sync-primitives",
+    "05-014 parse-demo-lumps",
+    "10-002 implement-page-ticker-and-advance-demo"
+  ]
+}
