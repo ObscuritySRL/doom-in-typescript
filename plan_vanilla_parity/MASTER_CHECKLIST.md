@@ -176,7 +176,7 @@
 - [x] `05-009` `parse-texture-one-lump` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-009-parse-texture-one-lump.md`
 - [x] `05-010` `parse-texture-two-when-present` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-010-parse-texture-two-when-present.md`
 - [x] `05-011` `parse-sprite-namespace` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-011-parse-sprite-namespace.md`
-- [ ] `05-012` `parse-sound-effect-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-012-parse-sound-effect-lumps.md`
+- [x] `05-012` `parse-sound-effect-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-012-parse-sound-effect-lumps.md`
 - [ ] `05-013` `parse-music-mus-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-013-parse-music-mus-lumps.md`
 - [ ] `05-014` `parse-demo-lumps` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-014-parse-demo-lumps.md`
 - [ ] `05-015` `parse-map-lump-bundle-boundaries` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-015-parse-map-lump-bundle-boundaries.md`
