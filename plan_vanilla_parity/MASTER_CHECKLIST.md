@@ -50,7 +50,7 @@
 - [x] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
 - [x] `01-021` `classify-real-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-021-classify-real-implementations.md`
 - [x] `01-022` `classify-simplified-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md`
-- [ ] `01-023` `classify-stubbed-or-manifest-only-surfaces` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md`
+- [x] `01-023` `classify-stubbed-or-manifest-only-surfaces` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md`
 - [ ] `01-024` `gate-current-state-inventory` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-024-gate-current-state-inventory.md`
 
 ## Phase 02: Reference / Oracle Capture Foundation

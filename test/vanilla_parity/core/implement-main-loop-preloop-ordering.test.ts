@@ -57,6 +57,32 @@ const EARLY_STARTED_MAIN_LOOP_PRELOOP_CANDIDATE: DoomMainLoopPreLoopOrderingCand
   create: (): DoomMainLoopPreLoopOrderingCandidateInstance => new EarlyStartedMainLoopPreLoopCandidateInstance(),
 });
 
+class FrameAdvancingMainLoopPreLoopCandidateInstance implements DoomMainLoopPreLoopOrderingCandidateInstance {
+  #frameCount = 0;
+  #started = false;
+
+  get frameCount(): number {
+    return this.#frameCount;
+  }
+
+  setup(callbacks: DoomMainLoopPreLoopCallbacks): void {
+    callbacks.initialTryRunTics();
+    callbacks.restoreBuffer();
+    callbacks.executeSetViewSize();
+    callbacks.startGameLoop();
+    this.#frameCount++;
+    this.#started = true;
+  }
+
+  get started(): boolean {
+    return this.#started;
+  }
+}
+
+const FRAME_ADVANCING_MAIN_LOOP_PRELOOP_CANDIDATE: DoomMainLoopPreLoopOrderingCandidate = Object.freeze({
+  create: (): DoomMainLoopPreLoopOrderingCandidateInstance => new FrameAdvancingMainLoopPreLoopCandidateInstance(),
+});
+
 describe('D_DoomLoop pre-loop ordering audit', () => {
   it('pins the four canonical setup callbacks in order', () => {
     expect(AUDITED_MAIN_LOOP_PRELOOP_STEP_COUNT).toBe(4);
@@ -87,5 +113,9 @@ describe('D_DoomLoop pre-loop ordering audit', () => {
 
   it('reports a candidate that marks setup started before callbacks finish', () => {
     expect(crossCheckDoomMainLoopPreLoopOrdering(EARLY_STARTED_MAIN_LOOP_PRELOOP_CANDIDATE)).toContain('MAIN_LOOP_PRELOOP_SETUP_MARKS_STARTED_AFTER_CALLBACKS');
+  });
+
+  it('reports a candidate that advances frameCount during setup', () => {
+    expect(crossCheckDoomMainLoopPreLoopOrdering(FRAME_ADVANCING_MAIN_LOOP_PRELOOP_CANDIDATE)).toContain('MAIN_LOOP_PRELOOP_SETUP_DOES_NOT_ADVANCE_FRAME_COUNT');
   });
 });
