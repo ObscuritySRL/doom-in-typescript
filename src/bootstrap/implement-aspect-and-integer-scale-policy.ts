@@ -480,6 +480,24 @@ export const VANILLA_ASPECT_INTEGER_SCALE_PROBES: readonly VanillaAspectIntegerS
     scaleMultiplier: null,
   },
   {
+    aspectRatioCorrect: true,
+    clientHeight: 239,
+    clientWidth: 320,
+    expected: Object.freeze({
+      ...NULL_RESULT,
+      answeredPresentation: Object.freeze({
+        displayHeight: 0,
+        displayWidth: 0,
+        integerScale: 0,
+        leftOffset: 0,
+        topOffset: 0,
+      }),
+    }),
+    id: 'too-short-corrected-client-does-not-use-fractional-scale',
+    queryKind: 'presentation-rectangle',
+    scaleMultiplier: null,
+  },
+  {
     aspectRatioCorrect: false,
     clientHeight: 600,
     clientWidth: 960,
@@ -523,7 +541,7 @@ export const VANILLA_ASPECT_INTEGER_SCALE_PROBES: readonly VanillaAspectIntegerS
   },
 ]);
 
-export const VANILLA_ASPECT_INTEGER_SCALE_PROBE_COUNT = 11;
+export const VANILLA_ASPECT_INTEGER_SCALE_PROBE_COUNT = 12;
 
 export const REFERENCE_VANILLA_ASPECT_INTEGER_SCALE_HANDLER: VanillaAspectIntegerScaleHandler = Object.freeze({
   runProbe: referenceVanillaAspectIntegerScaleProbe,

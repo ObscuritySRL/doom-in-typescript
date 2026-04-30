@@ -186,6 +186,13 @@ describe('vanilla parity launch: aspect and integer scale policy', () => {
       leftOffset: 0,
       topOffset: 0,
     });
+    expect(computeCenteredAspectIntegerScalePresentation(320, 239, true)).toEqual({
+      displayHeight: 0,
+      displayWidth: 0,
+      integerScale: 0,
+      leftOffset: 0,
+      topOffset: 0,
+    });
   });
 
   test('runs the reference handler through every pinned probe', () => {

@@ -48,7 +48,7 @@
 - [x] `01-018` `inventory-tools-reference-capture-surface` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-018-inventory-tools-reference-capture-surface.md`
 - [x] `01-019` `inventory-local-doom-reference-files` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-019-inventory-local-doom-reference-files.md`
 - [x] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
-- [ ] `01-021` `classify-real-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-021-classify-real-implementations.md`
+- [x] `01-021` `classify-real-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-021-classify-real-implementations.md`
 - [ ] `01-022` `classify-simplified-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md`
 - [ ] `01-023` `classify-stubbed-or-manifest-only-surfaces` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md`
 - [ ] `01-024` `gate-current-state-inventory` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-024-gate-current-state-inventory.md`
@@ -108,7 +108,7 @@
 - [x] `03-013` `apply-window-title-and-icon-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-013-apply-window-title-and-icon-policy.md`
 - [x] `03-014` `lock-internal-320-by-200-indexed-framebuffer` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-014-lock-internal-320-by-200-indexed-framebuffer.md`
 - [x] `03-015` `implement-palette-blit-without-filtering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-015-implement-palette-blit-without-filtering.md`
-- [ ] `03-016` `implement-aspect-and-integer-scale-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md`
+- [x] `03-016` `implement-aspect-and-integer-scale-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md`
 - [ ] `03-017` `implement-resize-and-focus-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-017-implement-resize-and-focus-policy.md`
 - [ ] `03-018` `implement-message-pump-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-018-implement-message-pump-ordering.md`
 - [ ] `03-019` `implement-close-button-and-alt-f4-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-019-implement-close-button-and-alt-f4-behavior.md`
@@ -144,7 +144,7 @@
 - [x] `04-010` `implement-tic-accumulator-at-thirty-five-hertz` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-010-implement-tic-accumulator-at-thirty-five-hertz.md`
 - [x] `04-011` `implement-try-run-tics-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-011-implement-try-run-tics-ordering.md`
 - [x] `04-012` `implement-i-start-tic-event-pump-contract` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-012-implement-i-start-tic-event-pump-contract.md`
-- [ ] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
+- [x] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
 - [ ] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
 - [ ] `04-015` `implement-main-loop-per-frame-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-015-implement-main-loop-per-frame-ordering.md`
 - [ ] `04-016` `reject-frame-rate-dependent-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-016-reject-frame-rate-dependent-simulation.md`
@@ -186,7 +186,7 @@
 - [x] `05-019` `reject-missing-proprietary-assets-with-clear-error` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-019-reject-missing-proprietary-assets-with-clear-error.md`
 - [x] `05-020` `enforce-no-asset-redistribution-in-tests` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-020-enforce-no-asset-redistribution-in-tests.md`
 - [x] `05-021` `build-asset-cache-lifetime-policy` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-021-build-asset-cache-lifetime-policy.md`
-- [ ] `05-022` `build-texture-composition-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md`
+- [x] `05-022` `build-texture-composition-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md`
 - [ ] `05-023` `build-flat-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-023-build-flat-cache.md`
 - [ ] `05-024` `build-sprite-frame-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-024-build-sprite-frame-cache.md`
 - [ ] `05-025` `build-patch-font-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-025-build-patch-font-cache.md`
