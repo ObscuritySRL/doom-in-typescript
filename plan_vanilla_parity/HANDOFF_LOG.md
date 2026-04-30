@@ -2,6 +2,26 @@
 
 Append-only Ralph-loop execution history for completed `plan_vanilla_parity` steps.
 
+## 2026-04-29 - 05-023 build-flat-cache
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: 462e25f9-5761-4c65-b354-14b47446dd22
+- step_id: 05-023
+- step_title: build-flat-cache
+- summary: Completed the wad-lane flat cache step. Added `src/assets/build-flat-cache.ts`, which builds a PU_STATIC flat cache from the parsed WAD directory and WAD bytes, reuses the existing flat namespace parser, preserves firstflat-relative flat numbers, copies 4096-byte data flat pixels, keeps inner marker entries as null-pixel slots, and exposes case-insensitive flat lookup with last duplicate names winning. Added focused coverage in `test/vanilla_parity/wad/build-flat-cache.test.ts` for synthetic cache construction, copied-pixel ownership, malformed flat size rejection, pre-parsed namespace input, duplicate flat-name lookup, and the live shareware `iwad/DOOM1.WAD` flat cache. Updated the WAD inventory metadata so its directory/test guardrails account for the new write-locked source and test files. Marked 05-023 complete in `plan_vanilla_parity/MASTER_CHECKLIST.md`.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-flat-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-flat-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: Updated the WAD inventory source directory totals, WAD test-root list, and importer counts after the new source/test files made the inventory guardrail fail. For isolated full-suite verification, temporarily moved unrelated untracked core/classification lane files (`src/core/implement-main-loop-preloop-ordering.ts`, `test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts`, `plan_vanilla_parity/current-state/classify-simplified-implementations.json`, and `test/vanilla_parity/current-state/classify-simplified-implementations.test.ts`) to a temp directory, ran the suite, then restored those files.
+- tests_run: bun run format (Formatted 9 files in 16ms, no fixes applied); bun test test/vanilla_parity/wad/build-flat-cache.test.ts (4 pass, 0 fail, 37 expects); bun test (12793 pass, 0 fail, 2432462 expects across 489 files in 31.12s, with unrelated untracked core/classification lane files temporarily hidden and restored); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- reference_sources: plan_vanilla_parity/steps/05-023-build-flat-cache.md (selected step file, lane lock, write lock, read-only paths, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad-lane eligibility and completion state); src/assets/flats.ts and src/assets/parse-flat-namespace.ts (flat range, flat number, inner-marker, and 4096-byte flat contracts); src/assets/build-asset-cache-lifetime-policy.ts (flat-data-lump PU_STATIC policy); src/wad/directory.ts, src/wad/header.ts, src/wad/lumpLookup.ts, and src/wad/markerRange.ts (WAD directory/header and marker semantics); reference/manifests/wad-map-summary.json (shareware flat count evidence); doom/DOOM1.WAD and iwad/DOOM1.WAD (local shareware IWAD references, read-only)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-024 build-sprite-frame-cache (wad lane, prereq `00-018` already satisfied)
+- open_risks: The cache returns mutable `Uint8Array` pixel buffers inside a frozen cache shape, matching the existing texture cache convention; callers must treat pixel buffers as read-only until a future cache ownership/zone allocator layer exists. The current dirty working tree still contains unrelated untracked files from other lanes and probe scripts; they were restored after isolated verification and left unstaged. No proprietary assets were modified or staged; `doom/`, `iwad/`, and `reference/` were read-only.
+
 ## 2026-04-29 - 05-022 build-texture-composition-cache
 
 - status: completed

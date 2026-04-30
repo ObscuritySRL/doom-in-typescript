@@ -10,9 +10,10 @@
     {
       "relative_path": "src/assets/",
       "exists": true,
-      "committed_file_count": 29,
+      "committed_file_count": 30,
       "committed_filenames_sorted": [
         "build-asset-cache-lifetime-policy.ts",
+        "build-flat-cache.ts",
         "build-texture-composition-cache.ts",
         "colormap.ts",
         "detect-registered-iwad-capabilities.ts",
@@ -42,9 +43,9 @@
         "verify-marker-range-semantics.ts",
         "verify-wad-header-and-directory-parsing.ts"
       ],
-      "total_size_bytes": 901133,
-      "total_line_count": 18145,
-      "total_export_count": 509
+      "total_size_bytes": 906359,
+      "total_line_count": 18272,
+      "total_export_count": 514
     },
     {
       "relative_path": "src/wad/",
@@ -258,8 +259,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 18,
-      "test_importer_count": 54
+      "src_importer_count": 19,
+      "test_importer_count": 55
     },
     {
       "relative_path": "src/wad/header.ts",
@@ -276,7 +277,7 @@
       "exported_types": ["WadType"],
       "external_imports": [],
       "src_importer_count": 2,
-      "test_importer_count": 51
+      "test_importer_count": 52
     },
     {
       "relative_path": "src/wad/lumpLookup.ts",
@@ -317,9 +318,10 @@
     "test_roots": [
       {
         "relative_path": "test/vanilla_parity/wad/",
-        "test_file_count": 22,
+        "test_file_count": 23,
         "test_filenames_sorted": [
           "build-asset-cache-lifetime-policy.test.ts",
+          "build-flat-cache.test.ts",
           "build-texture-composition-cache.test.ts",
           "detect-registered-iwad-capabilities.test.ts",
           "detect-shareware-iwad-capabilities.test.ts",
