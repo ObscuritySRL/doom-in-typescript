@@ -225,6 +225,14 @@ describe('inventory: classify real implementations', () => {
     }
   });
 
+  test('real group source and test roots are unique across classification groups', async () => {
+    const inventory = await loadInventoryDocument();
+    const sourceRoots = inventory.real_implementation_groups.flatMap((groupEntry) => groupEntry.source_roots);
+    const testRoots = inventory.real_implementation_groups.flatMap((groupEntry) => groupEntry.test_roots);
+    expect(new Set(sourceRoots).size).toBe(sourceRoots.length);
+    expect(new Set(testRoots).size).toBe(testRoots.length);
+  });
+
   test('representative modules and tests exist under their declared roots', async () => {
     const inventory = await loadInventoryDocument();
     const trackedRepositoryPaths = await loadTrackedRepositoryPaths();
