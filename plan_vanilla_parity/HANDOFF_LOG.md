@@ -7062,3 +7062,23 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: none
 - next_eligible_steps: 01-024 gate-current-state-inventory
 - open_risks: This artifact remains source-only current-state inventory metadata and is not final vanilla DOOM 1.9 parity evidence. Concurrent unrelated working-tree changes in launch and wad files plus root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain unstaged and untouched.
+
+## 2026-04-30 - 04-015 implement-main-loop-per-frame-ordering completed c95e9144-7b1b-44eb-aa94-8f45e4b9c96d
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: c95e9144-7b1b-44eb-aa94-8f45e4b9c96d
+- step_id: 04-015
+- step_title: implement-main-loop-per-frame-ordering
+- summary: Selected the first unchecked eligible core-lane step from the working-tree checklist after observing the supplied initial step `04-014` was already checked. Added `src/core/implement-main-loop-per-frame-ordering.ts`, a self-contained per-frame ordering contract that pins the canonical D_DoomLoop frame sequence (`startFrame`, `tryRunTics`, `updateSounds`, `display`), frame-count timing, setup gating, and multi-frame repetition. Added focused coverage in `test/vanilla_parity/core/implement-main-loop-per-frame-ordering.test.ts` for the reference candidate plus failure candidates that swap display/sound order, increment frameCount before callbacks, and allow frames before setup. Marked `04-015` complete in `plan_vanilla_parity/MASTER_CHECKLIST.md`.
+- files_changed: D:/Projects/doom-in-typescript/src/core/implement-main-loop-per-frame-ordering.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-main-loop-per-frame-ordering.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: The first focused test version directly imported `src/mainLoop.ts` for a runtime adapter. Full-suite verification failed in `test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts` because that extra test importer changed the current-state importer count outside this step's write lock. Removed the direct runtime import and kept the focused test scoped to the new core contract and its failure-mode candidates.
+- tests_run: bun run format (pass, final run formatted 5 files with no fixes applied); bun test test/vanilla_parity/core/implement-main-loop-per-frame-ordering.test.ts (pass, 6 tests, 12 expects); bun test (pass); bun x tsc --noEmit --project tsconfig.json (pass)
+- reference_sources: plan_vanilla_parity/steps/04-015-implement-main-loop-per-frame-ordering.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility, observed `04-014` already checked and `04-015` next unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/mainLoop.ts (declared read-only context for existing per-frame order and setup gate); src/core/implement-main-loop-preloop-ordering.ts (neighbor core ordering contract shape); src/core/, src/demo/, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-016 reject-frame-rate-dependent-simulation
+- open_risks: The new contract is intentionally self-contained and does not import `src/mainLoop.ts`; a future runtime-wiring step should cross-check the live loop directly after the current-state inventory importer-count guard can be updated in its own lane. Concurrent unrelated working-tree changes in inventory, launch, and wad files plus root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` were left unstaged and untouched.
