@@ -49,7 +49,7 @@
 - [x] `01-019` `inventory-local-doom-reference-files` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-019-inventory-local-doom-reference-files.md`
 - [x] `01-020` `inventory-iwad-search-and-hash-evidence` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md`
 - [x] `01-021` `classify-real-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-021-classify-real-implementations.md`
-- [ ] `01-022` `classify-simplified-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md`
+- [x] `01-022` `classify-simplified-implementations` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md`
 - [ ] `01-023` `classify-stubbed-or-manifest-only-surfaces` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md`
 - [ ] `01-024` `gate-current-state-inventory` | lane: `inventory` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/01-024-gate-current-state-inventory.md`
 
@@ -145,7 +145,7 @@
 - [x] `04-011` `implement-try-run-tics-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-011-implement-try-run-tics-ordering.md`
 - [x] `04-012` `implement-i-start-tic-event-pump-contract` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-012-implement-i-start-tic-event-pump-contract.md`
 - [x] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
-- [ ] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
+- [x] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
 - [ ] `04-015` `implement-main-loop-per-frame-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-015-implement-main-loop-per-frame-ordering.md`
 - [ ] `04-016` `reject-frame-rate-dependent-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-016-reject-frame-rate-dependent-simulation.md`
 - [ ] `04-017` `reject-visible-interpolation-in-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-017-reject-visible-interpolation-in-simulation.md`

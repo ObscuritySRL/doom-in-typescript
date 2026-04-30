@@ -7002,3 +7002,23 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: none
 - next_eligible_steps: rerun the loop only after the verified commit and push.
 - open_risks: Root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain untracked local files and are not part of this repair. No proprietary files under `doom/` or `iwad/` are staged.
+
+## 2026-04-30 - 01-022 classify-simplified-implementations completed e6403cf7-a14f-4fca-bd4b-43ae921d4d60
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: e6403cf7-a14f-4fca-bd4b-43ae921d4d60
+- step_id: 01-022
+- step_title: classify-simplified-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. Refreshed the write-locked simplified-implementation current-state artifact timestamp and strengthened the focused Bun test so the simplified criteria are exact, sorted, and source-only rather than partial marker checks. Marked `01-022` complete after the required verification sequence passed.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-simplified-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-simplified-implementations.test.ts
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 6 files, no fixes applied); bun test test/vanilla_parity/current-state/classify-simplified-implementations.test.ts (pass, 17 tests, 227 expects); bun test (pass); bun x tsc --noEmit --project tsconfig.json (pass)
+- reference_sources: plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and next unchecked inventory step); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); plan_vanilla_parity/current-state/classify-simplified-implementations.json (write-locked current-state artifact inspected and refreshed); test/vanilla_parity/current-state/classify-simplified-implementations.test.ts (focused write-locked test inspected, strengthened, and executed); src/main.ts, src/launcher/session.ts, src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts, package.json, and tracked src/test file counts from `git ls-files` under the selected read-only scope.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-023 classify-stubbed-or-manifest-only-surfaces
+- open_risks: This artifact remains source-only current-state inventory metadata and is not final vanilla DOOM 1.9 parity evidence. Root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain untracked local files and were left unstaged and untouched.

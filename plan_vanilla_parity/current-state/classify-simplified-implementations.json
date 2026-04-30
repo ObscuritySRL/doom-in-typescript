@@ -3,7 +3,7 @@
   "title": "Classify Simplified Implementations",
   "lane": "inventory",
   "summary": "Classifies source-backed simplified implementation surfaces that execute local TypeScript but remain scoped to the current launcher path, product adapter contracts, or prior-plan manifest authority rather than final vanilla DOOM 1.9 end-to-end parity.",
-  "captured_at_utc": "2026-04-30T03:44:23.3129021Z",
+  "captured_at_utc": "2026-04-30T04:58:03.1514706Z",
   "evidence_method": "inventory lane source-only audit using git ls-files counts over src/main.ts, src/launcher/, src/playable/, test/launcher/, and non-acceptance test/playable/ roots, with supporting evidence from package.json, current tests, and prior plan artifacts listed in the selected step read-only scope.",
   "repository_root": "D:/Projects/doom-in-typescript",
   "classification_definition": {

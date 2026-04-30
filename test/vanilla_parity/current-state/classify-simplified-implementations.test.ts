@@ -10,6 +10,12 @@ const STATUS_SIMPLIFIED = 'simplified';
 const CANONICAL_REQUIRED_FIELDS_IN_ORDER: readonly string[] = ['id', 'title', 'lane', 'summary', 'captured_at_utc', 'evidence_method', 'repository_root', 'implications', 'follow_up_steps'];
 const EXPECTED_EXCLUDED_SURFACE_IDS_SORTED: readonly string[] = ['manifest_only_acceptance_gates', 'pending_oracle_fixtures', 'vanilla_runtime_implementations'];
 const EXPECTED_GROUP_IDS_SORTED: readonly string[] = ['current_launcher_playable_surface', 'playable_contract_adapters'];
+const EXPECTED_SIMPLIFIED_CRITERIA_SORTED: readonly string[] = [
+  'backs an executable TypeScript module or Bun test instead of only a plan manifest',
+  'depends on current launcher contracts, prior-plan audit manifests, or product adapters rather than the final vanilla D_DoomMain path',
+  'does not claim paired reference/implementation parity or full end-to-end vanilla behavior',
+  'records local source evidence that must be replaced or proven by later parity steps',
+];
 
 interface ClassificationDefinition {
   readonly criteria_sorted: readonly string[];
@@ -165,8 +171,7 @@ describe('inventory: classify simplified implementations', () => {
     expect(definition.scope_note).toContain('not sufficient');
     expect(definition.scope_note).toContain('final vanilla DOOM 1.9 behavior claim');
     expectAsciiSorted(definition.criteria_sorted);
-    expect(definition.criteria_sorted.join('\n')).toContain('executable TypeScript module');
-    expect(definition.criteria_sorted.join('\n')).toContain('D_DoomMain');
+    expect(definition.criteria_sorted).toEqual([...EXPECTED_SIMPLIFIED_CRITERIA_SORTED]);
   });
 
   test('simplified implementation groups are sorted, unique, and match the canonical group list', async () => {
