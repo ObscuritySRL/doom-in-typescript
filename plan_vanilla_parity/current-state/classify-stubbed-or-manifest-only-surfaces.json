@@ -1,0 +1,92 @@
+{
+  "id": "01-023",
+  "title": "Classify Stubbed Or Manifest Only Surfaces",
+  "lane": "inventory",
+  "summary": "Classifies local surfaces whose current evidence is an explicit unimplemented branch, pending oracle-capture fixture, or manifest-only gate/missing-surface contract. This artifact is source-only metadata and is not a vanilla DOOM 1.9 parity claim.",
+  "captured_at_utc": "2026-04-30T05:09:44Z",
+  "evidence_method": "inventory lane review of git-tracked files under src/, test/, tools/, plan_fps/, plan_engine/, reference/manifests/, and package.json using grep-style marker searches plus git ls-files counts. AUDIT_LOG files are not used as evidence.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "classification_definition": {
+    "criteria_sorted": [
+      "contains an explicit runtime unimplemented branch or placeholder contract that defers vanilla behavior",
+      "records pending reference-capture or pending-live hash/status markers instead of captured comparator bytes",
+      "stores acceptance or missing-surface evidence as a manifest/test contract without executing the final vanilla side-by-side path",
+      "uses source-only metadata and local git-tracked files rather than proprietary runtime capture output"
+    ],
+    "not_end_to_end_gate": true,
+    "scope_note": "A stubbed_or_manifest_only classification means the surface is valuable local evidence, but it is not sufficient for final vanilla DOOM 1.9 behavior proof until a later implementation or oracle-capture step replaces the deferred marker.",
+    "status_value": "stubbed_or_manifest_only"
+  },
+  "classification_summary": {
+    "group_count": 4,
+    "marker_file_count": 96,
+    "representative_path_count": 8,
+    "source_only_metadata": true,
+    "tracked_file_count": 102,
+    "tracked_test_file_count": 51
+  },
+  "stubbed_or_manifest_only_groups": [
+    {
+      "classification": "stubbed_or_manifest_only",
+      "evidence": "implementScreenSizeDetailGammaControls throws on the Options-menu Messages toggle path, and the focused playable menu test locks that unimplemented branch explicitly.",
+      "group_id": "explicit_unimplemented_runtime_branch",
+      "marker_file_count": 2,
+      "notes": "This is executable TypeScript, but the branch is intentionally a rejection path instead of completed vanilla menu behavior.",
+      "representative_paths": ["src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts", "test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts"],
+      "status_markers": ["Messages toggle is not implemented by implementScreenSizeDetailGammaControls.", "not implemented"],
+      "surface_kind": "runtime_stub",
+      "surface_roots": ["src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts", "test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts"],
+      "tracked_file_count": 2,
+      "tracked_file_patterns_sorted": ["src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts", "test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts"],
+      "tracked_test_file_count": 1
+    },
+    {
+      "classification": "stubbed_or_manifest_only",
+      "evidence": "The prior plan's 15-001..15-010 gate manifests and matching acceptance tests lock command/oracle contracts as files, not live final side-by-side vanilla proof.",
+      "group_id": "manifest_only_acceptance_gates",
+      "marker_file_count": 20,
+      "notes": "These files are useful acceptance-contract inventory, but their evidence is manifest-backed and must not satisfy final gates by itself.",
+      "representative_paths": ["plan_fps/manifests/15-010-gate-final-side-by-side.json", "test/playable/acceptance/gate-final-side-by-side.test.ts"],
+      "status_markers": ["OR-FPS-", "bun run doom.ts", "schemaVersion"],
+      "surface_kind": "manifest_only_gate",
+      "surface_roots": ["plan_fps/manifests/", "test/playable/acceptance/"],
+      "tracked_file_count": 20,
+      "tracked_file_patterns_sorted": ["plan_fps/manifests/15-*.json", "test/playable/acceptance/gate-*.test.ts"],
+      "tracked_test_file_count": 10
+    },
+    {
+      "classification": "stubbed_or_manifest_only",
+      "evidence": "The oracle capture fixtures and matching capture tests include pending live-reference, pending-reference-capture, and pending-unimplemented markers rather than captured comparator bytes.",
+      "group_id": "pending_oracle_capture_fixtures",
+      "marker_file_count": 56,
+      "notes": "These fixtures preserve deterministic capture contracts while explicitly leaving framebuffer, audio, music, state, or side-by-side evidence for later oracle-capture work.",
+      "representative_paths": ["test/oracles/capture-final-side-by-side-replay.test.ts", "test/oracles/fixtures/capture-final-side-by-side-replay.json"],
+      "status_markers": ["pending", "pending-live-capture", "pending-live-reference-capture", "pending-reference-capture", "pending-reference-capture-surface", "pending-reference-execution", "pending-unimplemented-side-by-side-surface"],
+      "surface_kind": "pending_oracle_fixture",
+      "surface_roots": ["test/oracles/", "test/oracles/fixtures/"],
+      "tracked_file_count": 62,
+      "tracked_file_patterns_sorted": ["test/oracles/capture-*.test.ts", "test/oracles/fixtures/capture-*.json"],
+      "tracked_test_file_count": 31
+    },
+    {
+      "classification": "stubbed_or_manifest_only",
+      "evidence": "The prior plan's 01-007..01-015 audit-missing manifests and tests catalog missing root entrypoint, menu, input, audio, rendering, save/config, and side-by-side surfaces.",
+      "group_id": "prior_plan_missing_surface_manifests",
+      "marker_file_count": 18,
+      "notes": "These are prior-art manifests and tests that identify absent behavior; they are not the behavior itself.",
+      "representative_paths": ["plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json", "test/plan_fps/01-015-audit-missing-side-by-side-replay.test.ts"],
+      "status_markers": ["audit-missing", "explicitNullSurfaces", "not implemented in this read scope"],
+      "surface_kind": "missing_surface_manifest",
+      "surface_roots": ["plan_fps/manifests/", "test/plan_fps/"],
+      "tracked_file_count": 18,
+      "tracked_file_patterns_sorted": ["plan_fps/manifests/01-0*-audit-missing-*.json", "test/plan_fps/01-0*-audit-missing-*.test.ts"],
+      "tracked_test_file_count": 9
+    }
+  ],
+  "implications": [
+    "01-024 gate-current-state-inventory must treat these surfaces as deferred evidence, not completed parity.",
+    "Oracle steps must replace pending capture markers with live reference evidence before final gates can rely on those fixtures.",
+    "Implementation lanes must replace explicit unimplemented runtime branches before claiming the corresponding vanilla menu or side-by-side behavior."
+  ],
+  "follow_up_steps": ["01-024 gate-current-state-inventory", "02-034 replace-pending-oracle-fixtures-with-live-evidence", "13-004 gate-full-final-side-by-side-proof"]
+}

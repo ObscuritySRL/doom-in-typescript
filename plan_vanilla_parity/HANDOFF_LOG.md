@@ -7042,3 +7042,23 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: none
 - next_eligible_steps: 04-015 implement-main-loop-per-frame-ordering
 - open_risks: No 04-014-specific blocker remains. Concurrent unrelated working-tree changes in the inventory, launch, and wad lanes were left unstaged and untouched; root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain untracked.
+
+## 2026-04-30 - 01-023 classify-stubbed-or-manifest-only-surfaces completed e6403cf7-a14f-4fca-bd4b-43ae921d4d60
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: e6403cf7-a14f-4fca-bd4b-43ae921d4d60
+- step_id: 01-023
+- step_title: classify-stubbed-or-manifest-only-surfaces
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock after observing that the supplied initial step `01-022` was already checked. Added the write-locked current-state classification artifact for explicit unimplemented runtime branches, manifest-only acceptance gates, pending oracle capture fixtures, and prior-plan missing-surface manifests. Added a focused Bun test that recomputes tracked file counts and marker-bearing file counts from the local repository tree, validates follow-up step references, and proves tampered classifications or marker counts fail. Marked `01-023` complete after the required verification sequence passed.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-stubbed-or-manifest-only-surfaces.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-stubbed-or-manifest-only-surfaces.test.ts
+- recovery_edit: none
+- tests_run: bun run format (pass, final run formatted 6 files with no fixes applied); bun test test/vanilla_parity/current-state/classify-stubbed-or-manifest-only-surfaces.test.ts (pass, 15 tests, 164 expects); bun test (pass); bun x tsc --noEmit --project tsconfig.json (pass)
+- reference_sources: plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and next unchecked inventory step); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun script surface); src/playable/front-end-menus/implementScreenSizeDetailGammaControls.ts and test/playable/front-end-menus/implement-screen-size-detail-gamma-controls.test.ts (explicit unimplemented branch evidence); plan_fps/manifests/15-*.json and test/playable/acceptance/gate-*.test.ts (manifest-only acceptance gate evidence); test/oracles/fixtures/capture-*.json and test/oracles/capture-*.test.ts (pending oracle fixture evidence); plan_fps/manifests/01-0*-audit-missing-*.json and test/plan_fps/01-0*-audit-missing-*.test.ts (prior-plan missing-surface manifest evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-024 gate-current-state-inventory
+- open_risks: This artifact remains source-only current-state inventory metadata and is not final vanilla DOOM 1.9 parity evidence. Concurrent unrelated working-tree changes in launch and wad files plus root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain unstaged and untouched.
