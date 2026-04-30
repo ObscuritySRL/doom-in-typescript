@@ -219,7 +219,7 @@
       "exported_types": ["MainLoopPhase", "PreLoopStep"],
       "external_imports": [],
       "src_importer_count": 21,
-      "test_importer_count": 11
+      "test_importer_count": 12
     }
   ],
   "determinism_boundary_status": {

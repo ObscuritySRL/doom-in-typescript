@@ -24,8 +24,8 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 187,
-    "classified_test_file_count": 231,
+    "classified_source_file_count": 191,
+    "classified_test_file_count": 235,
     "real_group_count": 9,
     "representative_module_count": 47,
     "source_only_metadata": true
@@ -76,9 +76,9 @@
       "notes": "01-003 records that this surface is not yet wired into src/mainLoop.ts, so it is real module evidence but not final launch proof.",
       "representative_modules": ["src/bootstrap/implement-d-doomloop-entry-timing.ts", "src/bootstrap/implement-d-doommain-init-order-skeleton.ts", "src/bootstrap/quitFlow.ts"],
       "representative_tests": ["test/bootstrap/quit-flow.test.ts", "test/vanilla_parity/launch/implement-d-doomloop-entry-timing.test.ts", "test/vanilla_parity/launch/implement-d-doommain-init-order-skeleton.test.ts"],
-      "source_file_count": 22,
+      "source_file_count": 23,
       "source_roots": ["src/bootstrap/"],
-      "test_file_count": 24,
+      "test_file_count": 25,
       "test_roots": ["test/bootstrap/", "test/vanilla_parity/launch/"]
     },
     {
@@ -94,9 +94,9 @@
         "test/host/tic-accumulator.test.ts",
         "test/vanilla_parity/core/implement-tic-accumulator-at-thirty-five-hertz.test.ts"
       ],
-      "source_file_count": 23,
+      "source_file_count": 24,
       "source_roots": ["src/core/", "src/host/", "src/mainLoop.ts"],
-      "test_file_count": 25,
+      "test_file_count": 26,
       "test_roots": ["test/core/", "test/host/", "test/vanilla_parity/core/"]
     },
     {
@@ -186,9 +186,9 @@
         "test/wad/header-directory.test.ts",
         "test/wad/lump-lookup.test.ts"
       ],
-      "source_file_count": 33,
+      "source_file_count": 35,
       "source_roots": ["src/assets/", "src/wad/"],
-      "test_file_count": 45,
+      "test_file_count": 47,
       "test_roots": ["test/reference/", "test/vanilla_parity/wad/", "test/wad/"]
     }
   ]

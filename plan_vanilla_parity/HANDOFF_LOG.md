@@ -4369,6 +4369,66 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
 - open_risks: The blocker is outside the 01-021 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
 
+## 2026-04-29 - 01-022 classify-simplified-implementations blocked verification 727737ab-fd8c-4dae-91fc-c6a02d26d33a
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 727737ab-fd8c-4dae-91fc-c6a02d26d33a
+- step_id: 01-022
+- step_title: classify-simplified-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock because 01-021 is already checked in `MASTER_CHECKLIST.md`. Added the write-locked `plan_vanilla_parity/current-state/classify-simplified-implementations.json` artifact and `test/vanilla_parity/current-state/classify-simplified-implementations.test.ts` focused test. The artifact classifies the current launcher surface and `src/playable/` adapter contracts as source-backed simplified implementation groups while excluding acceptance gates, oracle fixtures, and already-classified vanilla runtime roots. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 01-022 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-simplified-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-simplified-implementations.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 8 files in 10ms, no fixes applied after the marker-order fix); bun test test/vanilla_parity/current-state/classify-simplified-implementations.test.ts (pass, 17 tests, 228 expects); bun test (fail: 4 current-state inventory classification tests failed outside this write lock); diagnostic filtered rerun of bun test (fail, same 4 failing tests); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this prompt's required `bun run format` command run first); package.json, src/main.ts, src/launcher/, src/playable/, test/launcher/, test/playable/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (declared read-only inventory context used for source-only classification and count checks); plan_vanilla_parity/current-state/classify-simplified-implementations.json and test/vanilla_parity/current-state/classify-simplified-implementations.test.ts (write-locked artifact and focused test).
+- decision_changes: Added source-only inventory classification for simplified implementation surfaces. The classification is explicitly not an end-to-end vanilla parity claim and leaves manifest-only or pending evidence surfaces for 01-023.
+- oracle_changes: none
+- next_eligible_steps: 01-022 classify-simplified-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: Full-suite verification is blocked outside the 01-022 write lock by inventory drift: `inventory: core math and timing modules > inventory modules src_importer_count and test_importer_count match a fresh ripgrep walk over committed src/ and test/ files`, `inventory: WAD and asset modules > inventory source_directories enumerate src/assets and src/wad with on-disk totals`, `inventory: WAD and asset modules > inventory modules entries match on-disk size, line count, sha256, exports, imports, and importer counts`, and `inventory: WAD and asset modules > inventory test_coverage matches the committed WAD test roots`. Ralph-loop rules prevent marking 01-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-017 implement-resize-and-focus-policy blocked verification c4e36716-36e6-401f-aab2-afe31caa300d
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: c4e36716-36e6-401f-aab2-afe31caa300d
+- step_id: 03-017
+- step_title: implement-resize-and-focus-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock because 03-016 is already checked in `MASTER_CHECKLIST.md`. Added the write-locked resize/focus policy module and focused test. The policy pins resize to the existing centered integer-scale/aspect presentation contract and focus to the existing grab/input-suppression state machine, with local Chocolate `grabmouse` config evidence. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 03-017 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-resize-and-focus-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-resize-and-focus-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 4 files in 5ms, fixed 3 files); bun test test/vanilla_parity/launch/implement-resize-and-focus-policy.test.ts (pass, 11 tests, 45 expects); bun test (fail: 4 inventory classification tests failed); diagnostic filtered rerun of bun test (fail, same 4 failing tests); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-017-implement-resize-and-focus-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-017 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this prompt's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, and src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence, including `grabmouse 1`); src/bootstrap/implement-resize-and-focus-policy.ts and test/vanilla_parity/launch/implement-resize-and-focus-policy.test.ts (write-locked implementation and focused test).
+- decision_changes: Added a local resize/focus policy surface for 03-017. Resize is modeled as presentation-only recomputation using the 03-016 integer-scale policy; focus is modeled as the existing focused + visible + grab-enabled mouse-grab equation, with gameplay input suppressed only when unfocused.
+- oracle_changes: none
+- next_eligible_steps: 03-017 implement-resize-and-focus-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: Full-suite verification is blocked outside the 03-017 write lock by inventory classification failures: `inventory: core math and timing modules > inventory modules src_importer_count and test_importer_count match a fresh ripgrep walk over committed src/ and test/ files`, `inventory: WAD and asset modules > inventory source_directories enumerate src/assets and src/wad with on-disk totals`, `inventory: WAD and asset modules > inventory modules entries match on-disk size, line count, sha256, exports, imports, and importer counts`, and `inventory: WAD and asset modules > inventory test_coverage matches the committed WAD test roots`. The working tree also contains unrelated untracked files outside the 03-017 write lock; they were left unstaged and untouched. Ralph-loop rules prevent marking 03-017 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made.
+
+## 2026-04-30 - 04-014 implement-main-loop-preloop-ordering blocked verification c753199e-a95b-4a99-8b22-5ed2a815eea5
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: c753199e-a95b-4a99-8b22-5ed2a815eea5
+- step_id: 04-014
+- step_title: implement-main-loop-preloop-ordering
+- summary: Selected 04-014 as the first unchecked eligible core-lane step because 04-013 is already checked in `MASTER_CHECKLIST.md`. Added the write-locked standalone pre-loop ordering audit/cross-check module and focused test. The module pins the four D_DoomLoop pre-loop callbacks in order (`initialTryRunTics`, `restoreBuffer`, `executeSetViewSize`, `startGameLoop`) and the focused test covers the passing reference candidate plus an out-of-order failure mode. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-014 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/core/implement-main-loop-preloop-ordering.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, latest post-handoff run formatted 9 files in 7ms with no fixes); bun test test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts (pass, 4 tests, 7 expects); bun test test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts (diagnostic: fails outside 04-014 because `src/mainLoop.ts` test_importer_count is expected 11 but observed 12 from existing `test/bootstrap/main-loop-order.test.ts`); bun test test/vanilla_parity/current-state/inventory-wad-and-asset-modules.test.ts (diagnostic: previously failed outside 04-014 because unrelated `build-flat-cache` files were visible to inventory tests; later out-of-scope WAD inventory edits in the shared worktree removed this blocker); bun test (latest filtered rerun failed only the core inventory importer-count test); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-014 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this prompt's required `bun run format` command run first); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (allowed step read-only scope); src/core/implement-main-loop-preloop-ordering.ts and test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts (write-locked implementation and focused test). Upstream research sources listed by the step were not opened because this Ralph-loop prompt restricted reads before editing to the step file plus the `read-only paths` section.
+- decision_changes: Kept the 04-014 implementation independent of `src/mainLoop.ts` imports so the new uncommitted file does not perturb current-state inventory importer counts. The focused test verifies the pinned pre-loop sequence and a reordered-candidate failure mode without modifying shared runtime loop code outside the write lock.
+- oracle_changes: none
+- next_eligible_steps: 04-014 implement-main-loop-preloop-ordering remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: Full-suite verification is blocked outside the 04-014 write lock by inventory drift: `inventory: core math and timing modules > inventory modules src_importer_count and test_importer_count match a fresh ripgrep walk over committed src/ and test/ files` reports `src/mainLoop.ts` test_importer_count expected 11 but observed 12 from existing `test/bootstrap/main-loop-order.test.ts`. The working tree also contains unrelated modified and untracked files outside the 04-014 write lock; they were left unstaged and untouched. Ralph-loop rules prevent marking 04-014 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made.
+
 ## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy completed c4e36716-36e6-401f-aab2-afe31caa300d
 
 - status: completed
@@ -6925,3 +6985,20 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: none
 - next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
 - open_risks: The blocker is outside the 01-021 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-30 - Ralph-loop current-state drift repair
+
+- status: verified
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: cross-lane repair
+- summary: Four parallel no-audit lanes produced source-backed artifacts for `03-017`, `04-014`, `05-024`, and `01-022`, then stopped at `BLOCKED` because full-suite verification detected current-state inventory drift outside each step's write lock. Staged the loop-produced artifacts, refreshed the derived current-state classification and inventory counts against the staged repository view, and prepared the verified set for direct commit and push.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-sprite-frame-cache.ts; D:/Projects/doom-in-typescript/src/bootstrap/implement-resize-and-focus-policy.ts; D:/Projects/doom-in-typescript/src/core/implement-main-loop-preloop-ordering.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-simplified-implementations.json; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-real-implementations.json; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-simplified-implementations.test.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-resize-and-focus-policy.test.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-sprite-frame-cache.test.ts
+- recovery_edit: refreshed source/test counts that depend on `git ls-files` after staging the new files, and refreshed glob/readdir-derived importer totals, source directory totals, and WAD test coverage lists.
+- tests_run: bun run format (pass, fixed 4 files); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts test/vanilla_parity/current-state/classify-simplified-implementations.test.ts test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts test/vanilla_parity/current-state/inventory-wad-and-asset-modules.test.ts test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts test/vanilla_parity/launch/implement-resize-and-focus-policy.test.ts test/vanilla_parity/wad/build-sprite-frame-cache.test.ts (pass, 99 tests); bun test (pass); bun x tsc --noEmit --project tsconfig.json (pass)
+- reference_sources: plan_vanilla_parity/loop_logs/loop_wad_0003_20260429_235904.txt and sibling blocked lane logs; test/vanilla_parity/current-state/classify-real-implementations.test.ts; test/vanilla_parity/current-state/classify-simplified-implementations.test.ts; test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts; test/vanilla_parity/current-state/inventory-wad-and-asset-modules.test.ts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: rerun the loop only after the verified commit and push.
+- open_risks: Root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain untracked local files and are not part of this repair. No proprietary files under `doom/` or `iwad/` are staged.

@@ -1,0 +1,148 @@
+{
+  "id": "01-022",
+  "title": "Classify Simplified Implementations",
+  "lane": "inventory",
+  "summary": "Classifies source-backed simplified implementation surfaces that execute local TypeScript but remain scoped to the current launcher path, product adapter contracts, or prior-plan manifest authority rather than final vanilla DOOM 1.9 end-to-end parity.",
+  "captured_at_utc": "2026-04-30T03:44:23.3129021Z",
+  "evidence_method": "inventory lane source-only audit using git ls-files counts over src/main.ts, src/launcher/, src/playable/, test/launcher/, and non-acceptance test/playable/ roots, with supporting evidence from package.json, current tests, and prior plan artifacts listed in the selected step read-only scope.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "classification_definition": {
+    "criteria_sorted": [
+      "backs an executable TypeScript module or Bun test instead of only a plan manifest",
+      "depends on current launcher contracts, prior-plan audit manifests, or product adapters rather than the final vanilla D_DoomMain path",
+      "does not claim paired reference/implementation parity or full end-to-end vanilla behavior",
+      "records local source evidence that must be replaced or proven by later parity steps"
+    ],
+    "not_end_to_end_gate": true,
+    "scope_note": "simplified means source-backed and locally testable, but not sufficient by itself as a final vanilla DOOM 1.9 behavior claim.",
+    "status_value": "simplified"
+  },
+  "classification_summary": {
+    "classified_source_file_count": 158,
+    "classified_test_file_count": 156,
+    "excluded_surface_count": 3,
+    "representative_module_count": 8,
+    "simplified_group_count": 2,
+    "source_only_metadata": true
+  },
+  "simplified_implementation_groups": [
+    {
+      "classification": "simplified",
+      "evidence": "src/main.ts exposes the DOOM Codex launcher command path, defaults to E1M1, parses launcher-specific flags, and invokes src/launcher/win32.ts instead of importing src/mainLoop.ts or a D_DoomMain/D_DoomLoop orchestrator.",
+      "group_id": "current_launcher_playable_surface",
+      "notes": "This is the current playable local surface and has executable launcher tests, but it is intentionally not the final vanilla startup path.",
+      "representative_modules": ["src/launcher/session.ts", "src/launcher/win32.ts", "src/main.ts"],
+      "representative_tests": ["test/launcher/cli.test.ts", "test/launcher/session.test.ts", "test/vanilla_parity/current-state/inventory-simplified-launcher-surface.test.ts"],
+      "simplification_markers": [
+        "package.json start script is bun run src/main.ts rather than bun run doom.ts",
+        "src/launcher/session.ts enables automap cheating level 2 for the launcher view",
+        "src/main.ts help identifies the surface as DOOM Codex launcher",
+        "src/main.ts launches gameplay directly and offers Tab automap toggle instead of vanilla title/menu startup"
+      ],
+      "source_file_count": 5,
+      "source_roots": ["src/launcher/", "src/main.ts"],
+      "test_file_count": 3,
+      "test_roots": ["test/launcher/", "test/vanilla_parity/current-state/inventory-simplified-launcher-surface.test.ts"]
+    },
+    {
+      "classification": "simplified",
+      "evidence": "src/playable modules provide executable adapter and contract surfaces for the planned playable product path, but many entries encode runtime-command guards, prior plan audit manifest links, and current launcher handoffs instead of direct final vanilla parity execution.",
+      "group_id": "playable_contract_adapters",
+      "notes": "The modules are real TypeScript and have matching Bun tests, but the group is classified separately because it adapts the current launcher and prior-plan contracts while final parity gates remain pending.",
+      "representative_modules": [
+        "src/playable/audio-product-integration/connectSfxMixer.ts",
+        "src/playable/bun-runtime-entry-point/wireRootDoomTsEntrypoint.ts",
+        "src/playable/front-end-menus/implementMainMenu.ts",
+        "src/playable/game-session-wiring/wireGameplayRendererInvocation.ts",
+        "src/playable/window-host/createBunCompatibleWin32Window.ts"
+      ],
+      "representative_tests": [
+        "test/playable/audio-product-integration/connect-sfx-mixer.test.ts",
+        "test/playable/bun-runtime-entry-point/wire-root-doom-ts-entrypoint.test.ts",
+        "test/playable/front-end-menus/implement-main-menu.test.ts",
+        "test/playable/game-session-wiring/wire-gameplay-renderer-invocation.test.ts",
+        "test/playable/window-host/create-bun-compatible-win32-window.test.ts"
+      ],
+      "simplification_markers": [
+        "representative modules guard on bun run doom.ts while delegating to src/main.ts or src/launcher surfaces",
+        "representative modules retain sourceAuditPath or sourceAuditManifest references to plan_fps artifacts",
+        "representative tests prove adapter contracts and deterministic traces, not paired reference process parity"
+      ],
+      "source_file_count": 153,
+      "source_roots": [
+        "src/playable/audio-product-integration/",
+        "src/playable/bun-launch-local-distribution-boundary/",
+        "src/playable/bun-runtime-entry-point/",
+        "src/playable/config-persistence/",
+        "src/playable/demo-replay/",
+        "src/playable/front-end-menus/",
+        "src/playable/game-session-wiring/",
+        "src/playable/input/",
+        "src/playable/real-time-main-loop/",
+        "src/playable/rendering-product-integration/",
+        "src/playable/save-load-playability/",
+        "src/playable/window-host/"
+      ],
+      "test_file_count": 153,
+      "test_roots": [
+        "test/playable/audio-product-integration/",
+        "test/playable/bun-launch-local-distribution-boundary/",
+        "test/playable/bun-runtime-entry-point/",
+        "test/playable/config-persistence/",
+        "test/playable/demo-replay/",
+        "test/playable/front-end-menus/",
+        "test/playable/game-session-wiring/",
+        "test/playable/input/",
+        "test/playable/real-time-main-loop/",
+        "test/playable/rendering-product-integration/",
+        "test/playable/save-load-playability/",
+        "test/playable/window-host/"
+      ]
+    }
+  ],
+  "excluded_surfaces": [
+    {
+      "classified_by_follow_up": "01-023 classify-stubbed-or-manifest-only-surfaces",
+      "reason": "Acceptance gate tests under this root are gate/manifest checks without a matching src/playable acceptance implementation root.",
+      "surface_id": "manifest_only_acceptance_gates",
+      "surface_roots": ["test/playable/acceptance/"]
+    },
+    {
+      "classified_by_follow_up": "01-023 classify-stubbed-or-manifest-only-surfaces",
+      "reason": "Oracle fixtures are evidence artifacts or pending capture contracts, not simplified implementation code.",
+      "surface_id": "pending_oracle_fixtures",
+      "surface_roots": ["test/oracles/fixtures/"]
+    },
+    {
+      "classified_by_follow_up": "01-021 classify-real-implementations",
+      "reason": "Runtime implementation roots outside src/main.ts, src/launcher/, and src/playable/ were already classified as source-backed real implementation groups.",
+      "surface_id": "vanilla_runtime_implementations",
+      "surface_roots": [
+        "src/ai/",
+        "src/assets/",
+        "src/audio/",
+        "src/bootstrap/",
+        "src/config/",
+        "src/core/",
+        "src/demo/",
+        "src/host/",
+        "src/input/",
+        "src/map/",
+        "src/oracles/",
+        "src/player/",
+        "src/render/",
+        "src/save/",
+        "src/specials/",
+        "src/ui/",
+        "src/wad/",
+        "src/world/"
+      ]
+    }
+  ],
+  "implications": [
+    "01-023 must still classify manifest-only, pending, or stubbed surfaces such as acceptance gates and oracle fixtures.",
+    "01-024 should treat this artifact as source-only inventory metadata, not as a final parity gate.",
+    "Future launch and acceptance steps must replace the current launcher shortcut with bun run doom.ts and the vanilla D_DoomMain/D_DoomLoop path before claiming end-to-end parity."
+  ],
+  "follow_up_steps": ["01-023 classify-stubbed-or-manifest-only-surfaces", "01-024 gate-current-state-inventory"]
+}
