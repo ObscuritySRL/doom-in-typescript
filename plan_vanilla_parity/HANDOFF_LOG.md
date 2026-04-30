@@ -7022,3 +7022,23 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: none
 - next_eligible_steps: 01-023 classify-stubbed-or-manifest-only-surfaces
 - open_risks: This artifact remains source-only current-state inventory metadata and is not final vanilla DOOM 1.9 parity evidence. Root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain untracked local files and were left unstaged and untouched.
+
+## 2026-04-30 - 04-014 implement-main-loop-preloop-ordering completed c95e9144-7b1b-44eb-aa94-8f45e4b9c96d
+
+- status: completed
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: c95e9144-7b1b-44eb-aa94-8f45e4b9c96d
+- step_id: 04-014
+- step_title: implement-main-loop-preloop-ordering
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked pre-loop ordering audit module and focused test were already present before this invocation. Added a focused failure-mode candidate that marks setup started before all pre-loop callbacks finish, proving the cross-check catches early-start drift in addition to callback reordering.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 6 files in 8ms, no fixes applied); bun test test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts (pass, 5 tests, 8 expects); bun test (pass, 12820 tests); bun x tsc --noEmit --project tsconfig.json (pass)
+- reference_sources: plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-015 next step); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-main-loop-preloop-ordering.ts (write-locked pre-loop ordering audit inspected); test/vanilla_parity/core/implement-main-loop-preloop-ordering.test.ts (focused write-locked test updated and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-015 implement-main-loop-per-frame-ordering
+- open_risks: No 04-014-specific blocker remains. Concurrent unrelated working-tree changes in the inventory, launch, and wad lanes were left unstaged and untouched; root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` remain untracked.

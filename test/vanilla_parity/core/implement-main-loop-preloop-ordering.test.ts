@@ -9,6 +9,26 @@ import {
 } from '../../../src/core/implement-main-loop-preloop-ordering.ts';
 import type { DoomMainLoopPreLoopCallbacks, DoomMainLoopPreLoopOrderingCandidate, DoomMainLoopPreLoopOrderingCandidateInstance } from '../../../src/core/implement-main-loop-preloop-ordering.ts';
 
+class EarlyStartedMainLoopPreLoopCandidateInstance implements DoomMainLoopPreLoopOrderingCandidateInstance {
+  #started = false;
+
+  get frameCount(): number {
+    return 0;
+  }
+
+  setup(callbacks: DoomMainLoopPreLoopCallbacks): void {
+    this.#started = true;
+    callbacks.initialTryRunTics();
+    callbacks.restoreBuffer();
+    callbacks.executeSetViewSize();
+    callbacks.startGameLoop();
+  }
+
+  get started(): boolean {
+    return this.#started;
+  }
+}
+
 class ReorderedMainLoopPreLoopCandidateInstance implements DoomMainLoopPreLoopOrderingCandidateInstance {
   #started = false;
 
@@ -31,6 +51,10 @@ class ReorderedMainLoopPreLoopCandidateInstance implements DoomMainLoopPreLoopOr
 
 const REORDERED_MAIN_LOOP_PRELOOP_CANDIDATE: DoomMainLoopPreLoopOrderingCandidate = Object.freeze({
   create: (): DoomMainLoopPreLoopOrderingCandidateInstance => new ReorderedMainLoopPreLoopCandidateInstance(),
+});
+
+const EARLY_STARTED_MAIN_LOOP_PRELOOP_CANDIDATE: DoomMainLoopPreLoopOrderingCandidate = Object.freeze({
+  create: (): DoomMainLoopPreLoopOrderingCandidateInstance => new EarlyStartedMainLoopPreLoopCandidateInstance(),
 });
 
 describe('D_DoomLoop pre-loop ordering audit', () => {
@@ -59,5 +83,9 @@ describe('D_DoomLoop pre-loop ordering audit', () => {
 
   it('reports a candidate that restores the buffer before the initial TryRunTics call', () => {
     expect(crossCheckDoomMainLoopPreLoopOrdering(REORDERED_MAIN_LOOP_PRELOOP_CANDIDATE)).toContain('MAIN_LOOP_PRELOOP_SETUP_RUNS_CANONICAL_ORDER');
+  });
+
+  it('reports a candidate that marks setup started before callbacks finish', () => {
+    expect(crossCheckDoomMainLoopPreLoopOrdering(EARLY_STARTED_MAIN_LOOP_PRELOOP_CANDIDATE)).toContain('MAIN_LOOP_PRELOOP_SETUP_MARKS_STARTED_AFTER_CALLBACKS');
   });
 });
