@@ -76,6 +76,29 @@ describe('buildTextureCompositionCache', () => {
     expect(() => buildTextureCompositionCache({ directory: Object.freeze([]), pnames, textureOne, textureTwo: null, wadBuffer: Buffer.alloc(0) })).toThrow('R_InitTextures: Missing patch in texture BADPATCH');
   });
 
+  test('allows missing PNAMES entries when no texture references them', () => {
+    const patchPicture = createPatchPicture(1, 1, [[{ pixels: [3], topDelta: 0 }]]);
+    const directory: readonly DirectoryEntry[] = Object.freeze([Object.freeze({ name: 'PATCHA', offset: 0, size: patchPicture.length })]);
+    const pnames = createPnames(['PATCHA', 'MISSING']);
+    const textureOne = createTextureOne([
+      {
+        height: 1,
+        name: 'UNUSEDMS',
+        patches: [{ originX: 0, originY: 0, patchIndex: 0 }],
+        width: 1,
+      },
+    ]);
+
+    const cache = buildTextureCompositionCache({ directory, pnames, textureOne, textureTwo: null, wadBuffer: patchPicture });
+    const texture = cache.textures[0];
+    if (texture === undefined) {
+      throw new Error('expected texture with unreferenced missing PNAMES entry');
+    }
+
+    expect(cache.patchLookup).toEqual([0, -1]);
+    expect(readColumn(texture, 0)).toEqual([3]);
+  });
+
   test('resolves PNAMES patches through the last matching WAD directory entry', () => {
     const firstPatchPicture = createPatchPicture(1, 1, [[{ pixels: [1], topDelta: 0 }]]);
     const secondPatchPicture = createPatchPicture(1, 1, [[{ pixels: [7], topDelta: 0 }]]);
