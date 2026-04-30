@@ -1801,3 +1801,5027 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: none — the 41-test inventory is metadata only; no new files under `test/oracles/fixtures/`, `test/parity/fixtures/`, or `plan_vanilla_parity/manifests/` were created. The inventory cross-references existing `test/oracles/fixtures/capture-*.json` (owned by 01-015), existing `test/parity/fixtures/*.json` (unowned by an inventory step until a future Phase 02 oracle step takes responsibility), and existing `reference/manifests/c1-complete.json` (read-only manifest). The `oracle_namespace_origin` block points downstream consumers at the inherited `plan_engine/REFERENCE_ORACLES.md` (for the O-022..O-030 plan_engine namespace) and `plan_fps/REFERENCE_ORACLES.md` (for the OR-FPS-006..OR-FPS-036 plan_fps namespace), neither of which is modified by this step.
 - next_eligible_steps: 01-017 inventory-plan-fps-manifest-only-gates (inventory lane, prereq `00-018` already satisfied; cross-references the same plan_fps/manifests/01-015-audit-missing-side-by-side-replay.json that the 31 capture-* tests in this 01-016 inventory all chain back to)
 - open_risks: The 41-test set is the inherited acceptance suite from prior plan_engine and plan_fps; future plan_vanilla_parity Phase 02 oracle-capture steps (02-005..02-033) will modify some of the 31 test/oracles/fixtures/capture-*.json fixtures (replacing pending-status entries with live evidence per 02-034) which will change the fixture SHA-256 fingerprints recorded in the 01-015 inventory but NOT the SHA-256 fingerprints of the corresponding capture-*.test.ts test files recorded here in 01-016 — except where the per-test assertion structure changes to consume new live-evidence fields, in which case both inventories will need re-running. The closed-enum 5-kind lock-kind vocabulary may need expansion if a future test introduces a new load mechanism (for example, streaming JSON via Bun.file().stream() or memory-mapping via Bun.mmap()); the focused test asserts every observed kind belongs to the closed enum, so a new kind without an inventory update will fail the test rather than silently drift. The plan_engine namespace (O-022..O-030) and plan_fps namespace (OR-FPS-006..OR-FPS-036) are simultaneously load-bearing for the current acceptance suite; future Phase 02 steps that introduce new oracles must allocate new identifiers above OR-FPS-036 (or define a new namespace) rather than reusing existing IDs. The 9 fixtures under test/parity/fixtures/ remain unowned by an inventory step (only 01-015 owns the 31 fixtures under test/oracles/fixtures/); a future plan_vanilla_parity step would be needed to inventory their content metadata if pending-status replacement drifts beyond their current high-trust state. The recurring parallel-lane working-tree race documented in prior 01-008 / 01-009 / 01-010 / 01-011 / 01-012 / 01-013 / 01-014 / 03-008 / 03-009 / 03-010 / 03-011 / 04-005 / 04-006 / 04-007 / 05-005 / 05-006 / 05-007 / 05-009 / 05-010 open_risks is still active: the fifteen `bun test` failures are caused by parallel-lane committed state, parallel-lane untracked state, and prior step-file heading flips that the prior inventory snapshots and validator pre-date. The mitigation pattern remains: (a) document the failures in `tests_run` as expected and outside this lane's write lock, (b) commit only this lane's own write-locked files plus plan-control updates, (c) await the inventory lane's snapshot regeneration as 01-005/01-006/01-007/01-009/01-010/01-011 are revisited for parallel-lane drift and a future governance step un-flips any over-flipped step-file headings. Lane lock `fc9b89dc-f0f5-4e18-8898-c6ea1c1d63b8` is held by the launcher and will be released on normal exit. No proprietary assets were modified or staged; `doom/`, `iwad/`, and `reference/` were strictly read-only.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: 87f6cff9-c781-4a37-8cdb-d050a75895d1
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Prepared `src/assets/build-texture-composition-cache.ts`, a runtime texture-composition cache builder that consumes parsed PNAMES, TEXTURE1, optional TEXTURE2, the WAD directory, and the WAD byte buffer. The cache builds the vanilla `patchlookup` equivalent with `W_CheckNumForName` last-lump-wins semantics, walks TEXTURE1 before TEXTURE2 so runtime indices remain contiguous, resolves every referenced mappatch through PNAMES, loads patch picture lumps through the existing patch parser, composes source patch columns into fixed-height texture columns in source order, clips negative and overhanging patch origins to texture bounds, preserves resolved patch metadata, exposes case-insensitive name lookup with last duplicate winning, and inherits the audited `PU_STATIC` lifetime category from the TEXTURE1 cache policy. Prepared `test/vanilla_parity/wad/build-texture-composition-cache.test.ts`, covering synthetic multi-patch overlay behavior, missing referenced PNAMES patches, out-of-range PNAMES patch indices, and live shareware `iwad/DOOM1.WAD` construction for BIGDOOR1. The focused test passes, but the step is not complete because the required full `bun test` verification failed on pre-existing plan-validator drift outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 4 tests, 27 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports four existing step heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, write lock, read-only scope, and verification commands); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1/PNAMES/patchlookup PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding and pixel data semantics); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts (TEXTURE1 maptexture/mappatch contract); src/assets/parse-texture-two-when-present.ts (optional TEXTURE2 aggregation contract); src/wad/directory.ts and src/wad/lumpLookup.ts (WAD directory parsing and last-lump-wins lookup behavior); iwad/DOOM1.WAD (live shareware IWAD used by the focused test); reference/manifests/wad-map-summary.json (shareware lump inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The live IWAD verification covers the shareware DOOM1.WAD path where TEXTURE2 is absent. Registered and Ultimate IWAD TEXTURE2 composition is covered structurally by the synthetic and parser contracts but still needs user-supplied IWAD evidence in later WAD-lane steps. The cache initializes uncovered composed texture pixels to palette index 0 and the focused test locks that local runtime behavior; if a future oracle shows a renderer-visible distinction between uncovered pixels and actual palette index 0, the cache should grow an explicit coverage mask instead of overloading the pixel value. The full verification sequence is blocked by pre-existing `plan_vanilla_parity/validate-plan.test.ts` failures in step files outside this lane's write lock, so no commit or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 20c77501-4ac9-42c3-8fcb-56b870d89953
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Verified the existing untracked 03-016 implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` defines the vanilla 320x200 internal framebuffer constants, 240-row 4:3 correction target, 6/5 vertical stretch, 1x through 4x integer multiplier policy, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, pinned probes, and a cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers the constants, local `doom/chocolate-doom.cfg` default evidence, agreement with the existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step is not complete because the required full `bun test` verification fails on pre-existing plan-validator drift outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports four existing heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- verification_rerun: Codex/gpt-5.5/xhigh reran the required sequence for lane lock `20c77501-4ac9-42c3-8fcb-56b870d89953`: `bun run format` passed with no fixes, the focused `03-016` test passed, and `bun test` failed on the same four out-of-scope plan-validator heading mismatches. No checklist update, commit, or push was made.
+- verification_rerun_2026_04_29_codex: Codex/gpt-5.5/xhigh reran the required sequence for lane `launch` and lane lock `20c77501-4ac9-42c3-8fcb-56b870d89953`: `bun run format` passed with no fixes, `bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed with 12 tests and 91 expects, and `bun test` failed in `plan_vanilla_parity/validate-plan.test.ts` on the same four out-of-scope step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`. `bun x tsc --noEmit --project tsconfig.json` was not run because verification stopped at the full-suite failure. No checklist update, commit, or push was made.
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The code/test pair for 03-016 is present and focused-tested, but cannot be committed under the Ralph-loop rules until the full suite passes. The observed blocker is outside this lane's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Prepared `plan_vanilla_parity/current-state/classify-real-implementations.json`, a source-only current-state inventory classifying Git-tracked, executable TypeScript implementation surfaces as `real` across nine groups: audio/music/mixer; bootstrap runtime contracts; core math/timing; input/oracle support; map/world simulation; player/AI/specials; renderer/UI; save/config/demo; and WAD/asset loading. Prepared `test/vanilla_parity/current-state/classify-real-implementations.test.ts`, covering canonical metadata, sorted/unique group ids, captured source/test totals, representative module/test existence, excluded surfaces delegated to 01-022/01-023, follow-up step resolution, and two failure modes. Adjusted the partial inventory/test to count only `git ls-files` tracked paths so unrelated untracked work in `src/bootstrap/`, `src/core/`, `src/assets/`, and matching tests does not contaminate this pushed inventory. The focused test passes, but the step is not complete because the required full `bun test` verification failed on existing plan-validator drift outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-real-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-real-implementations.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports four existing step heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`, and `vanilla parity plan validator > reports missing required step fields` timed out after 5000ms); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- verification_rerun: Codex/gpt-5.5/xhigh reran the required sequence for inventory lane lock `fbf41960-352b-4feb-9c85-114790f65702`: `bun run format` passed with no fixes, `bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed with 14 tests and 696 expects, and `bun test` failed on the same out-of-scope `plan_vanilla_parity/validate-plan.test.ts` heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`. `bun x tsc --noEmit --project tsconfig.json` was not run because verification stopped at the failing full suite. No checklist update, commit, or push was made.
+- verification_rerun_2026_04_29_codex: Codex/gpt-5.5/xhigh reran the required sequence for inventory lane lock `fbf41960-352b-4feb-9c85-114790f65702`: `bun run format` passed with no fixes, `bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed with 14 tests and 696 expects, and `bun test` failed on the same out-of-scope `plan_vanilla_parity/validate-plan.test.ts` heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`. `bun x tsc --noEmit --project tsconfig.json` was not run because verification stopped at the failing full suite. No checklist update, commit, or push was made.
+- verification_rerun_2026_04_29_codex_inventory_lock_fbf41960: Codex/gpt-5.5/xhigh reran the required sequence for inventory lane lock `fbf41960-352b-4feb-9c85-114790f65702`: `bun run format` passed with no fixes, `bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed with 14 tests and 696 expects, and `bun test` failed in `plan_vanilla_parity/validate-plan.test.ts` on the same out-of-scope step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`. `bun x tsc --noEmit --project tsconfig.json` was not run because verification stopped at the failing full suite. No checklist update, commit, or push was made.
+- verification_rerun_2026_04_29_codex_inventory_lock_fbf41960_repeat: Codex/gpt-5.5/xhigh reran the required sequence for inventory lane lock `fbf41960-352b-4feb-9c85-114790f65702`: `bun run format` passed with no fixes, `bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed with 14 tests and 696 expects, and `bun test` failed in `plan_vanilla_parity/validate-plan.test.ts` on the same out-of-scope step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`. `bun x tsc --noEmit --project tsconfig.json` was not run because verification stopped at the failing full suite. No checklist update, commit, or push was made.
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); package.json (Bun-only script and dependency context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory and prior-plan/read-only evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The prepared inventory/test pair is focused-tested but cannot be committed under the Ralph-loop rules until the full suite passes. The observed blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: 87f6cff9-c781-4a37-8cdb-d050a75895d1
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Reran verification for the existing untracked 05-022 implementation and focused test. `src/assets/build-texture-composition-cache.ts` and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` remain prepared in the step write lock. The focused test now reports 7 passing tests and 39 expects, covering static cache metadata, source-order patch overlay, missing referenced PNAMES patches, TEXTURE2 runtime-index continuation and duplicate-name override, clipping of negative/out-of-bounds patch origins, mismatched patch counts, out-of-range PNAMES patch indices, and live shareware `iwad/DOOM1.WAD` cache construction. The step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on pre-existing step-heading mismatches outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 7 tests, 39 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports four existing step heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); src/assets/build-texture-composition-cache.ts (current 05-022 implementation under the write lock); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (current focused test under the write lock); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1 and PNAMES PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding); src/assets/parse-pnames-lump.ts (PNAMES table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTUREx maptexture/mappatch contracts); src/wad/directory.ts and src/wad/lumpLookup.ts (directory parsing and last-lump-wins lookup); iwad/DOOM1.WAD (live shareware IWAD read-only evidence); reference/manifests/wad-map-summary.json (shareware WAD inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The out-of-scope validator failures are in `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`; this `wad` lane invocation did not edit those files. No commit or push was made because the canonical verification sequence did not pass. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache verification rerun d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The existing write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test remain prepared: the focused test reports 7 passing tests and 39 expects covering static cache metadata, source-order patch overlay, missing referenced PNAMES patches, TEXTURE2 runtime-index continuation and duplicate-name override, clipping of negative/out-of-bounds patch origins, mismatched patch counts, out-of-range PNAMES patch indices, and live shareware `iwad/DOOM1.WAD` cache construction. Format and focused verification passed, but the step remains blocked because required full-suite verification still fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 7 tests, 39 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports four existing step heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (current 05-022 implementation under the write lock); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (current focused test under the write lock); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1 and PNAMES PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding); src/assets/parse-pnames-lump.ts (PNAMES table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTUREx maptexture/mappatch contracts); src/wad/directory.ts and src/wad/lumpLookup.ts (directory parsing and last-lump-wins lookup); iwad/DOOM1.WAD (live shareware IWAD read-only evidence); reference/manifests/wad-map-summary.json (shareware WAD inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The out-of-scope validator failures are in `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md`; this `wad` lane invocation did not edit those files. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran verification for the existing prepared inventory artifact and focused test under the 01-021 write lock. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and failure modes. The focused test still passes, but the step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (focused/full/typecheck verification workflow); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran verification against the existing 03-016 write-locked implementation/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, corrected 320x240 display target, 6/5 vertical stretch, 1x through 4x integer scale family, unsupported fractional/subpixel/HiDPI presentation, centered integer presentation helpers, pinned probes, and a cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, host constant agreement, corrected and uncorrected dimensions, accepted/rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because the required full suite fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (declared read-only launch context and local config evidence)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, 4:3 corrected and 8:5 uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock and reran verification against the existing 04-013 write-locked implementation and focused test. `src/core/implement-netupdate-no-network-single-player-path.ts` exposes the single-player no-network NetUpdate runtime candidate, audit facts, invariants, probes, and cross-check helper; `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` verifies canonical constants, fact/probe/invariant closure, runtime behavior, and tampered-candidate failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with the Ralph prompt's `bun run format` command run first); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context only).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock and reran the required verification sequence against the existing 04-013 write-locked implementation and focused test. `src/core/implement-netupdate-no-network-single-player-path.ts` models the single-player no-network NetUpdate path with persistent `lasttime`, no-newtics short-circuiting, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, `maketic` advancement, no ticker/demo advancement, and candidate cross-checks. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` covers audited constants, fact/invariant/probe ledgers, reference and runtime candidates, boundary behavior, and tampered failure modes. The focused test passes, but the step remains blocked because the required full `bun test` verification still fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the core lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran verification against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied inventory lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked implementation/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer, 240-row aspect-corrected display target, 6/5 vertical stretch, corrected and uncorrected display ratios, positive integer scale multipliers, no fractional/subpixel/HiDPI presentation, centered integer presentation rectangles, and a probe-based cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers the canonical constants, host framebuffer agreement, local config evidence, audit ledger shape, integer-scale happy paths, rejected fractional/failing paths, centered presentation rectangles, and tampered-handler failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (declared read-only implementation/config context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core step under the supplied lane lock and verified the existing 04-013 write-locked implementation/test pair. `src/core/implement-netupdate-no-network-single-player-path.ts` defines the audited single-player no-network NetUpdate path with persistent `lasttime`, `maketic`, the `BACKUPTICS / 2 - 1` guard, no ticker/demo advancement calls, and a cross-check helper. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` covers canonical constants, fact/invariant/probe ledgers, the reference candidate, runtime behavior, and tampered failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (read-only paths allowed by the selected step).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. Existing unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock and verified the existing 04-013 write-locked implementation/test pair. `src/core/implement-netupdate-no-network-single-player-path.ts` contains the single-player no-network NetUpdate audit ledger, canonical constants, runtime `DoomNetUpdateSinglePlayer` candidate, and cross-check helper. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` verifies canonical constants, fact/invariant/probe ledger closure, runtime behavior, short-circuit behavior, half-buffer guard behavior, ticker/demo role separation, and tampered-candidate failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/core/ (declared read-only core timing/audit context, including the existing 04-013 write-locked source); src/demo/ and src/mainLoop.ts (declared read-only loop/demo context); test/core/ and test/demo/ (declared read-only test pattern context); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (write-locked focused test inspected to preserve existing work).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock, verified the existing 03-016 write-locked implementation, and updated the focused test to prove oversized clients cap at the vanilla 4x scale instead of accepting larger host-derived multipliers. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, 240-row corrected display height, 6/5 vertical stretch, 1x through 4x integer multiplier policy, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probes, and cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, host constant agreement, corrected/uncorrected dimensions, accepted and rejected scales, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification workflow, with this step's required `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock. The existing write-locked aspect/integer-scale module and focused test pin the 320x200 framebuffer, 320x240 corrected display target, 6/5 vertical correction, integer multiplier family 1 through 4, Chocolate config default of 640x480 corrected 2x, centered whole-pixel presentation rectangles, and failure detection for fractional scale and non-integer presentation handlers. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed read-only context and config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked helper/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 320x240 corrected display target, 6/5 vertical stretch, Chocolate 640x480 corrected 2x default, positive integer scale family, whole-pixel centering, and fractional/subpixel/HiDPI rejection. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, host-window-policy agreement, local config evidence, audit/probe uniqueness, scaled-dimension helpers, largest-fitting-scale selection, centered presentation rectangles, and two tampered-handler failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/win32.ts, src/host/windowPolicy.ts, src/bootstrap/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed read-only launch/config context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked source/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, corrected 320x240 display height, 6/5 vertical stretch, corrected and uncorrected aspect ratios, Chocolate default 640x480 corrected 2x evidence, integer-only scale family, centered whole-pixel presentation rectangle, and failure probes for fractional scale and non-integer presentation. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers the canonical constants, local config evidence, host constant agreement, exact dimension math, fit-selection behavior, centered presentation, reference probe pass, and two tampered-handler failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed read-only implementation and local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock. Existing write-locked files `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` already define and verify the vanilla aspect-correction and integer-scale policy, including corrected 320x240 display height, uncorrected 320x200 display height, 1x through 4x integer multipliers, rejection of fractional scale, whole-pixel centering, and local Chocolate config evidence for corrected 640x480 2x output. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed read-only launch context and config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair as far as the Ralph-loop sequence allowed. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/current-state/classify-real-implementations.json and test/vanilla_parity/current-state/classify-real-implementations.test.ts (existing write-locked artifact/test inspected for this invocation)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked module/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer, 320x240 corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, integer-only 1x through 4x scale family, no fractional/subpixel/HiDPI presentation, the Chocolate config default of aspect correction on, and centered integer presentation rectangles. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, host agreement, local config evidence, dimensions, fit/centering policy, probe cross-checks, and two failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed read-only context and local config evidence)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock. The existing write-locked aspect/integer-scale module and focused test are present in the worktree and the focused test passes, covering the 320x200 internal framebuffer, 320x240 corrected display target, 6/5 stretch, corrected and uncorrected ratios, Chocolate's local 640x480 corrected 2x config evidence, accepted integer multipliers 1 through 4, rejection of fractional scales, integer-only fit/centering behavior, and tampered-handler failure modes. The step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed read-only step context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked source/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected display ratios, Chocolate default 640x480 corrected 2x evidence, accepted integer scale multipliers 1 through 4, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probes, and tampered-handler cross-checking. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed, covering constants, config evidence, host constant agreement, corrected/uncorrected dimensions, accepted and rejected scale multipliers, fit and centering behavior, reference probe coverage, and two failure modes. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-real-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-real-implementations.test.ts
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked policy module and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer, corrected 320x240 display target, 1..4 integer scale family, whole-pixel centering policy, and unsupported fractional/subpixel/HiDPI scale behavior. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` verifies the constants, local config evidence, host framebuffer constant agreement, fitting/centering calculations, reference probe set, and tampered fractional/presentation failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (step read-only implementation context); plan_vanilla_parity/REFERENCE_ORACLES.md (confirmed no oracle-capture update was needed for this blocked pass).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair as far as the Ralph-loop sequence allowed. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked implementation/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, corrected 320x240 display target, 6/5 vertical stretch, integer multipliers 1 through 4, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, pinned probes, and a cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers canonical constants, local config evidence, host-window constant agreement, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked implementation/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-line aspect-corrected display height, 6/5 vertical stretch, 4:3 corrected and 8:5 uncorrected display ratios, Chocolate default 640x480 corrected 2x settings, and positive integer scale family 1 through 4. The focused test covers constants, host constant agreement, local config evidence, exact scaled dimensions, largest-fitting integer scale, centered integer presentation rectangles, and failure detection for fractional-scale and non-integer presentation handlers. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (allowed step read-only evidence). Research source names pinned in the audit ledger: i_video.c, m_menu.c, chocolate-doom.cfg, and default.cfg.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. The current runtime `src/host/windowPolicy.ts` still exposes a fractional fill-style `computePresentationRect` for the live Win32 presenter; this step pins the canonical policy and tests it without changing that runtime surface because `src/host/windowPolicy.ts` is read-only for 03-016.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch step under the supplied lane lock and verified the existing 03-016 write-locked artifact/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, corrected 320x240 display target, 6/5 vertical stretch, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer presentation helpers, probes, and cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, existing host constant agreement, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probes, and tampered-handler failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/, doom/default.cfg, and doom/chocolate-doom.cfg (declared read-only launch context and local config evidence)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: 7a401f1b-2679-4c6f-9ea4-d28b043735f4
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation/test pair. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` defines the vanilla 320x200 internal framebuffer constants, 240-row aspect-corrected display target, 6/5 vertical stretch, 1x through 4x integer-scale policy, fractional/subpixel/HiDPI exclusions, centered integer presentation helpers, pinned probes, and cross-check handler. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, host constant agreement, corrected and uncorrected dimensions, accepted/rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 91 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside this lane's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 983a8b7a-ba76-4cf9-a497-9dcbacdf640a
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran verification against the existing 01-021 write-locked artifact/test pair. The source-only classification artifact and focused bun:test coverage pass, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md; plan_vanilla_parity/MASTER_CHECKLIST.md; .claude/skills/verify-step/SKILL.md; package.json; src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ under the step read-only scope.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran verification against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29T06:20:07Z - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, source-only classification scope, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required Ralph verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and validated the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, while `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification after test update
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock, updated the focused test inside the 01-021 write lock to assert excluded surfaces are not simultaneously counted as real implementation source roots, and reran the required verification sequence. `plan_vanilla_parity/current-state/classify-real-implementations.json` remains present, and the focused test now passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, excluded-source-root separation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-real-implementations.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and validated the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation to 01-022/01-023, follow-up step resolution, and two failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and revalidated the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` remains coherent with `test/vanilla_parity/current-state/classify-real-implementations.test.ts`: the focused test passes and verifies canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation to 01-022/01-023, follow-up step resolution, and failure modes for tampered classification/counts. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and validated the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and two failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification still fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because the required full suite fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test still passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reverified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (preflight pass, 14 tests, 696 expects); bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence for the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification still fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` passes with coverage for canonical metadata, tracked source/test counts, representative modules/tests, excluded-surface delegation, follow-up resolution, and two failure modes. The step remains blocked because the required full-suite command fails on out-of-scope plan validation errors.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification still fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. The focused test passes and proves canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked inventory artifact and focused test. The focused test passes and confirms canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` passes with coverage for canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 19ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the locked inventory lane step and verified the existing write-locked classification artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as real across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up resolution, and failure modes. The focused test passes, but the step remains blocked because required full-suite verification still fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, superseded where the active step requires format first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. The focused test passes and verifies canonical metadata, tracked source/test counts, representative real implementation modules and tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the locked inventory lane step and verified the existing write-locked classification artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as real across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up resolution, and failure modes. The focused test passes, but the step remains blocked because required full-suite verification still fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, superseded where the active step requires format first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` is present under the step write lock, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, real-group counts, representative source/test files, excluded-surface delegation, follow-up step resolution, and failure modes. The focused test passes, but the step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test count verification.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` remain present under the step write lock, and the focused test passes. The step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step from `plan_vanilla_parity/MASTER_CHECKLIST.md` under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. The focused test passes and verifies canonical metadata, tracked source/test counts, representative real implementation modules and tests, excluded-surface delegation, follow-up step resolution, and failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 27ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step from `plan_vanilla_parity/MASTER_CHECKLIST.md` and verified the existing write-locked artifact/test pair for classifying source-backed real implementation surfaces. The focused test passes and confirms canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step from `plan_vanilla_parity/MASTER_CHECKLIST.md` and verified the existing write-locked artifact/test pair for classifying source-backed real implementation surfaces. The focused test passes and confirms canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` remain present under the step write lock, and the focused test passes. The step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` remain present under the step write lock, and the focused test passes. The step remains blocked because the required full `bun test` command still fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification skill, superseded by this step's required `bun run format` first command); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are still present under the step write lock, and the focused test passes. The step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (focused/full/typecheck verification workflow); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` still classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` still verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and failure modes. The focused test passes, but the step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required format command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Reran the required verification sequence for the existing prepared 01-021 inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present under the step write lock, and the focused test still passes. The step remains blocked because the required full `bun test` command fails in `plan_vanilla_parity/validate-plan.test.ts` on out-of-scope step-heading mismatches.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step from `plan_vanilla_parity/MASTER_CHECKLIST.md` and verified the existing write-locked artifact/test pair for classifying source-backed real implementation surfaces. The focused test passes and confirms canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step from `plan_vanilla_parity/MASTER_CHECKLIST.md` under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. The focused test passes and verifies canonical metadata, tracked source/test counts, representative real implementation modules and tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and validated the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across nine groups, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted/unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation to 01-022/01-023, follow-up step resolution, and two failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair as far as the Ralph-loop sequence allowed. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present, and the focused test passes with coverage for canonical metadata, tracked source/test counts, representative real implementation modules/tests, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails in `plan_vanilla_parity/validate-plan.test.ts` on step-heading mismatches outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 14 tests, 696 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and two failure modes. The step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and verified the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. The Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: fbf41960-352b-4feb-9c85-114790f65702
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran verification against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran verification against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 9ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, 4:3 corrected and 8:5 uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock and verified the existing untracked 04-013 write-locked implementation and focused test. `src/core/implement-netupdate-no-network-single-player-path.ts` pins the single-player no-network NetUpdate path: static `lasttime` delta behavior, no-newtics short-circuit, per-newtic `startTic` then `processEvents`, `BACKUPTICS / 2 - 1` half-buffer guard, `maketic` advancement, no ticker/demo advancement, and candidate cross-checks. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` covers audited constants, fact/invariant/probe ledgers, reference and runtime candidates, boundary behavior, and tampered failure modes. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test); src/core/implement-try-run-tics-ordering.ts, src/core/implement-i-start-tic-event-pump-contract.ts, src/core/implement-game-tic-counter-ownership.ts, src/core/implement-tic-accumulator-at-thirty-five-hertz.ts, and src/mainLoop.ts (declared read-only core loop context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the core lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory step under the supplied lane lock and reran verification against the existing 01-021 write-locked artifact/test pair. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because the required full suite fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 9ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran verification against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` remain present and focused-tested, but the step remains blocked because the required full `bun test` verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence); .claude/skills/verify-step/SKILL.md (repo-local verification discipline, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran verification against the existing 03-016 write-locked implementation and focused test. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence); .claude/skills/verify-step/SKILL.md (repo-local verification discipline, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran verification against the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the vanilla 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, 4:3 corrected and 8:5 uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local default config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail; the Ralph prompt adds `bun run format` before it).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The observed blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and re-verified the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); sampled representative modules in src/audio/, src/bootstrap/, src/core/, src/map/, src/render/, and src/wad/; git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock and reran the required verification sequence against the existing untracked 04-013 write-locked implementation and focused test. `src/core/implement-netupdate-no-network-single-player-path.ts` pins the single-player no-network NetUpdate path: persistent `lasttime`, `maketic`, no-newtics short-circuiting, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, no ticker/demo advancement, and candidate cross-checking. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` covers constants, fact/invariant/probe ledgers, the reference candidate, runtime behavior, short-circuit behavior, guard behavior, ticker/demo role separation, and tampered-candidate failure modes. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran verification against the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, excluding the simplified launcher, src/playable contract tree, manifest-only oracle fixtures, and plan_fps gate manifests. `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, source-only scope, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification pass, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); plan_vanilla_parity/current-state/classify-real-implementations.json and test/vanilla_parity/current-state/classify-real-implementations.test.ts (write-locked step artifacts).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked texture composition cache implementation and focused test were already present in the workspace before this invocation. `src/assets/build-texture-composition-cache.ts` builds a static texture cache from parsed PNAMES, TEXTURE1, optional TEXTURE2, the WAD directory, and the WAD bytes: it builds the vanilla `patchlookup` equivalent with last-lump-wins lookup semantics, resolves referenced mappatches through PNAMES, decodes referenced patch pictures, overlays patch posts into fixed-height texture columns in source order, clips overhanging origins to texture bounds, appends TEXTURE2 after TEXTURE1, and exposes last-duplicate-wins texture name lookup. `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` passes and covers synthetic overlay behavior, missing referenced patches, TEXTURE2 runtime-index continuation, duplicate texture-name override, clipping, mismatched patch counts, out-of-range PNAMES patch indices, and live shareware `iwad/DOOM1.WAD` construction. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 19ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 7 tests, 39 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1, PNAMES, and patchlookup PU_STATIC policy); src/assets/build-texture-composition-cache.ts (write-locked implementation under verification); src/assets/parse-patch-picture-format.ts (patch column/post decoding contract); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTURE1/TEXTURE2 maptexture and mappatch contracts); src/wad/directory.ts and src/wad/lumpLookup.ts (WAD directory parsing and last-lump-wins lookup behavior); iwad/DOOM1.WAD and doom/DOOM1.WAD (declared local shareware IWAD read-only paths); reference/manifests/wad-map-summary.json (shareware lump inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification e889991e codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked implementation and focused test were already present in the workspace. `src/core/implement-netupdate-no-network-single-player-path.ts` defines a single-player no-network NetUpdate audit ledger, constants for BACKUPTICS/half-buffer/single-player boundary values, a `DoomNetUpdateSinglePlayer` runtime candidate, and a `crossCheckDoomNetUpdateSinglePlayer` probe/invariant harness. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` verifies the ledger, runtime behavior, and tampered candidate failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the core lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/core/implement-netupdate-no-network-single-player-path.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-try-run-tics-ordering.ts and src/core/implement-i-start-tic-event-pump-contract.ts (adjacent core audit precedent and NetUpdate/input-pump ordering context); src/mainLoop.ts (main-loop TryRunTics orchestration context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the core lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The `03-016` write-locked implementation and focused test were already present in the workspace before this invocation. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification 594f3611-faec-4804-828a-39009c0f905d
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test proves the source-only real implementation classification schema, representative module/test evidence, excluded delegated surfaces, and tamper/fabrication failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, test file, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/, test/, tools/, plan_engine/, plan_fps/, reference/manifests/, and package.json (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 01-021 inventory write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e-efe8-479c-9e5b-0f8eb3132bf0
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked `src/core/implement-netupdate-no-network-single-player-path.ts` implementation and `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` focused test were already present before this invocation. No source or focused-test edit was made in this pass. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification 594f3611-faec-4804-828a-39009c0f905d Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` inventory and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test confirms the source-only real-implementation classification schema, group ids, tracked source/test counts, representative module/test existence, excluded follow-up surfaces, and two failure modes. No inventory artifact or focused-test edit was made in this pass. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script and dependency context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (declared read-only source-only inventory and prior-plan evidence surfaces); git ls-files output for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e-efe8-479c-9e5b-0f8eb3132bf0
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked `src/core/implement-netupdate-no-network-single-player-path.ts` implementation and `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` focused test were already present before this invocation. No source or focused-test edit was made in this pass. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc-1d85-4fa4-8d79-eebcf3b5efbd Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/, src/wad/, reference/manifests/wad-map-summary.json, doom/DOOM1.WAD, and iwad/DOOM1.WAD (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification 594f3611-faec-4804-828a-39009c0f905d
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The artifact classifies source-backed real implementation groups across audio, bootstrap, core/timing, input/oracle support, map/world, player/AI/specials, renderer/UI, save/config/demo, and WAD/assets while explicitly excluding simplified launcher, src/playable contracts, pending oracle fixtures, and plan_fps gate manifests for follow-up classification. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); plan_vanilla_parity/current-state/classify-real-implementations.json (write-locked current-state artifact inspected); test/vanilla_parity/current-state/classify-real-implementations.test.ts (focused write-locked test inspected and executed); src/, test/, tools/, plan_engine/, plan_fps/, reference/manifests/, and package.json (declared read-only inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 01-021 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-30 - Ralph-loop blocked-state repair and verified publish
+
+- status: verified
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: cross-lane repair
+- summary: Repaired the Codex no-audit loop failure mode that could read redirected temp output before Windows released the file handle, and changed the no-audit loop to stop after a `BLOCKED` result instead of retrying the same blocked step. Repaired the stale plan-validator heading flips for `01-010`, `03-008`, `03-009`, and `05-007`, refreshed current-state inventory snapshots for the source/test files already present in the worktree, and prepared the accumulated verified loop outputs for direct commit and push. Root diagnostic probe scripts were intentionally left untracked.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/RALPH_LOOP_CODEX_NO_AUDIT.ps1; D:/Projects/doom-in-typescript/plan_vanilla_parity/ralph-loop-scripts.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/*.json; D:/Projects/doom-in-typescript/plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/steps/05-007-parse-flat-namespace.md; D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/src/bootstrap/implement-aspect-and-integer-scale-policy.ts; D:/Projects/doom-in-typescript/src/core/implement-netupdate-no-network-single-player-path.ts; D:/Projects/doom-in-typescript/src/playable/rendering-product-integration/composeMenuOverlay.ts; D:/Projects/doom-in-typescript/test/plan_vanilla_parity/pin-shareware-doom-one-point-nine-primary-target.test.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/**; D:/Projects/doom-in-typescript/test/playable/**
+- recovery_edit: plan inventory snapshots were mechanically refreshed to match on-disk size, line count, SHA-256, export counts, importer counts, and test file lists after the previously blocked full suite began passing.
+- tests_run: bun run format (pass, fixed 3 files); bun test plan_vanilla_parity/ralph-loop-scripts.test.ts test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts test/vanilla_parity/current-state/inventory-src-playable-contract-modules.test.ts test/vanilla_parity/current-state/inventory-wad-and-asset-modules.test.ts test/vanilla_parity/wad/build-texture-composition-cache.test.ts test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts test/vanilla_parity/current-state/classify-real-implementations.test.ts test/vanilla_parity/current-state/inventory-iwad-search-and-hash-evidence.test.ts test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts test/plan_vanilla_parity/pin-shareware-doom-one-point-nine-primary-target.test.ts test/playable/audio-product-integration/play-menu-sounds.test.ts test/playable/config-persistence/write-config-back.test.ts test/playable/rendering-product-integration/compose-menu-overlay.test.ts test/playable/window-host/handle-close-button.test.ts (pass, 279 tests); bun test (pass); bun x tsc --noEmit --project tsconfig.json (pass)
+- reference_sources: RALPH_LOOP_CODEX_NO_AUDIT.ps1 stack trace from the failed temp-file read; plan_vanilla_parity/ralph-loop-scripts.test.ts regression harness; plan_vanilla_parity/validate-plan.test.ts heading diagnostics; current-state inventory focused tests; .claude/skills/verify-step/SKILL.md canonical focused/full/typecheck sequence.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: continue from the master checklist after the verified commit and push; do not rerun the no-audit loop against the stale blocked state.
+- open_risks: The root `probe-pnames.ts` and `probe-texture1.ts` diagnostic scripts remain untracked local files. No proprietary files under `doom/` or `iwad/` are staged.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. No source or focused-test edit was made in this pass. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 05-022 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1, PNAMES, and patchlookup PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding contract); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTURE1/TEXTURE2 maptexture and mappatch contracts); src/assets/texture1.ts, src/assets/pnames.ts, and src/assets/patchCatalog.ts (legacy and namespace context under the declared read-only assets path); src/wad/directory.ts and src/wad/lumpLookup.ts (WAD directory and last-lump-wins lookup behavior); doom/DOOM1.WAD and iwad/DOOM1.WAD (declared local shareware IWAD read-only paths); reference/manifests/wad-map-summary.json (shareware lump inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e-efe8-479c-9e5b-0f8eb3132bf0
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked `src/core/implement-netupdate-no-network-single-player-path.ts` implementation and `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification still fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation and were inspected under the selected step scope. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1, PNAMES, and patchlookup PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding contract); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTURE1/TEXTURE2 maptexture and mappatch contracts); src/wad/directory.ts, src/wad/header.ts, and src/wad/lumpLookup.ts (WAD directory, header, and last-lump-wins lookup behavior); doom/DOOM1.WAD and iwad/DOOM1.WAD (declared local shareware IWAD read-only paths); reference/manifests/wad-map-summary.json (shareware lump inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passed and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification still fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification e889991e codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked 04-013 implementation and focused test were already present in the workspace before this invocation. The implementation exposes `DoomNetUpdateSinglePlayer`, a single-player no-network NetUpdate surface that keeps per-instance `lasttime` and `maketic`, short-circuits no-clock and negative-clock deltas after updating `lasttime`, runs `startTic` before `processEvents`, applies the canonical `BACKUPTICS / 2 - 1` half-buffer guard, and does not invoke ticker or demo-advance callbacks. The focused test passes and covers canonical constants, fact/invariant/probe ledgers, reference and runtime candidates, no-clock and negative-clock paths, guard behavior, role separation, independent instances, and tampered-candidate failure modes. The step remains blocked because required full-suite verification still fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. No artifact or focused-test content edit was made in this pass. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 Codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 17ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked implementation and focused test were already present in the workspace. The focused test verifies the NetUpdate single-player no-network audit ledger, runtime `DoomNetUpdateSinglePlayer` behavior, and tampered-candidate failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the core lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts and test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (write-locked implementation and focused-test artifacts already present); src/core/implement-try-run-tics-ordering.ts, src/core/implement-i-start-tic-event-pump-contract.ts, src/core/implement-tic-accumulator-at-thirty-five-hertz.ts, src/mainLoop.ts, test/core/, and test/demo/ (allowed read-only context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the core lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present in the workspace before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); plan_vanilla_parity/REFERENCE_ORACLES.md (confirmed no oracle-capture update was needed for this blocked rerun).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked texture-composition cache implementation and focused test were already present in the workspace before this invocation. `src/assets/build-texture-composition-cache.ts` builds a PU_STATIC texture composition cache from PNAMES, TEXTURE1, optional TEXTURE2, WAD directory entries, and WAD bytes; resolves PNAMES patch lookup through W_CheckNumForName semantics; composes patch columns with clipping; preserves runtime texture order; and uses last-duplicate texture-name lookup semantics. `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` verifies synthetic composition, missing patch failure, TEXTURE2 append/duplicate lookup, clipping, patch-count mismatch, out-of-range PNAMES index, and local shareware DOOM1.WAD cache construction. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 7 tests, 39 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/wad/ and src/assets/ (allowed implementation and parser context); reference/manifests/wad-map-summary.json (shareware WAD inventory context); doom/DOOM1.WAD and iwad/DOOM1.WAD presence metadata and focused-test live IWAD parsing.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the wad lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-20260429T183941-0400
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. The focused test passes and verifies PU_STATIC cache lifetime metadata, PNAMES patchlookup resolution with last-lump-wins semantics, TEXTURE1/TEXTURE2 runtime ordering, duplicate texture-name override behavior, bounded patch composition, local shareware DOOM1.WAD composition, and failure modes for missing patches, bad patch counts, negative dimensions, and out-of-range PNAMES indices. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/, src/wad/, reference/manifests/wad-map-summary.json, doom/DOOM1.WAD, and iwad/DOOM1.WAD (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. The focused test verifies static lifetime tagging, patchlookup construction, source-order patch overlay composition, TEXTURE2 runtime-index continuation and duplicate-name precedence, clipping behavior, malformed texture failures, missing patch failures, out-of-range PNAMES failures, and live shareware DOOM1.WAD cache construction. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 8 tests, 40 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts, src/assets/build-asset-cache-lifetime-policy.ts, src/assets/parse-patch-picture-format.ts, src/assets/parse-pnames-lump.ts, src/assets/parse-texture-one-lump.ts, src/assets/parse-texture-two-when-present.ts, src/wad/directory.ts, src/wad/header.ts, and src/wad/lumpLookup.ts (allowed wad/asset implementation context); doom/DOOM1.WAD and iwad/DOOM1.WAD presence metadata; reference/manifests/wad-map-summary.json (shareware IWAD manifest context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the wad lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked texture composition cache implementation and focused test were already present before this invocation. The implementation builds the PU_STATIC texture composition cache from parsed PNAMES, TEXTURE1, optional TEXTURE2, WAD directory entries, and WAD bytes; resolves PNAMES through W_CheckNumForName-style last-lump lookup; composes patch posts into zero-filled texture columns; tracks runtime indices and duplicate-name last-wins lookup; and surfaces missing patch, bad patch index, bad patch count, and invalid dimension failures. The focused test was updated with an explicit negative-dimension failure case and passes, but the step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 8 tests, 40 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/ and src/wad/ (allowed implementation and parser context); iwad/DOOM1.WAD (live shareware IWAD exercised by the focused test); reference/manifests/wad-map-summary.json (allowed manifest context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passed and continues to verify canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied; emitted a Biome internal diagnostic for missing `test/playable/save-load-playability/.wire-bun-native-save-read-write.dsg`, but exited 0); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked e889991e codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked NetUpdate implementation and focused vanilla-parity test are present, and the focused test verifies the single-player no-network NetUpdate body, half-buffer guard, lasttime persistence, no-ticker role boundary, negative-delta short-circuit behavior, independent instances, and tampered-candidate failure modes. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/src/core/implement-netupdate-no-network-single-player-path.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: plan_vanilla_parity/validate-plan.test.ts reports step-heading mismatches for 01-010, 03-008, 03-009, and 05-007); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required bun run format command run first); src/core/ and src/mainLoop.ts (allowed core timing and loop context); test/core/ and test/demo/ (allowed neighboring Bun test style); src/core/implement-netupdate-no-network-single-player-path.ts (embedded linuxdoom-1.10 and Chocolate Doom source-reference ledger used by the focused test)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md, plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md, plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md, and plan_vanilla_parity/steps/05-007-parse-flat-namespace.md have headings that do not match their id/title fields according to plan_vanilla_parity/validate-plan.test.ts. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. Unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-launch
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present in the working tree before this invocation. The focused test passes and covers the canonical constants, config evidence, integer-scale helpers, centered presentation rectangles, and failure-mode probe handlers. The step remains blocked because required full-suite verification still fails outside this lane's selected write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt)
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's selected write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification e889991e codex-gpt-5.5-xhigh-core
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The 04-013 write-locked implementation and focused test were already present before this invocation, so no source or test edit was made. `DoomNetUpdateSinglePlayer` models the single-player no-network NetUpdate body with persistent `lasttime`, persistent `maketic`, the `BACKUPTICS / 2 - 1` half-buffer guard, startTic/processEvents/buildTiccmd ordering, and explicit separation from ticker/demo advancement. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (allowed core/demo context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the core lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-observed
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present in the workspace and were reverified: the artifact classifies nine source-backed executable TypeScript implementation groups as real, and the focused test validates canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-latest
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present before this invocation, and the focused test verifies the source-only `real` classification across nine executable TypeScript implementation groups, excluded-surface delegation, follow-up step resolution, tracked source/test counts, representative module/test existence, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification still fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 17ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` were already present in the worktree; no implementation edits were made in this pass. The focused test passed and covers the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and broken-handler failure modes. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The 03-016 write-locked implementation and focused test were already present, and no source or test edit was made in this invocation. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current-turn
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. No source or test edit was made in this invocation. `bun run format` and the focused test passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-eof
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present. Format and focused verification passed, but the required full suite failed outside this lane's write lock, so the step remains unchecked and no commit or push was made.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present. Format and focused verification passed, but the required full suite failed outside this lane's write lock, so the step remains unchecked and no commit or push was made.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-latest
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The 03-016 write-locked implementation and focused test were already present, so no source or test edit was made in this invocation. `bun run format` and the focused test passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-this-turn
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-20260429
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked real-implementation inventory artifact and focused test. The JSON classifies nine source-backed executable TypeScript implementation groups as `real`; the focused test proves canonical metadata, sorted group ids, tracked source/test counts via `git ls-files`, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because the required full-suite verification still fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-rlp
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The existing write-locked draft `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` and focused test were present before this rerun and required no implementation edits. Focused verification passed for the 320x200 internal framebuffer, corrected 240-row display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, config evidence, probe fixtures, and broken-handler failure reporting. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the current 03-016 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt55
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer dimensions, 240-row corrected display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as the focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (exploratory pass, 12 tests, 92 expects); bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-followup
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reverified the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` already contains the aspect/integer-scale policy constants, helper functions, probe fixtures, and cross-check logic. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed focused verification with coverage for constants, config evidence, host constant agreement, happy-path calculations, and tampered-handler failure modes. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-api-run
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. The source and focused test were already present in the worktree, and no additional implementation edits were made. The focused test confirms the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (diagnostic pass before canonical sequence, 13 tests, 95 expects); bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the selected 03-016 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-this-run
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-20260429
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-this-invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-codex
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The 03-016 implementation and focused test were already present in the write-lock paths. No source or focused-test edit was made in this invocation. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-rerun-2
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present and focused verification passed. The step remains blocked because required full-suite verification still fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The 03-016 implementation and focused test were already present in the write-lock paths, so no source or test edit was made in this invocation. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-live
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked implementation and focused test for the aspect/integer scale policy were already present, and the focused test verifies constants, local config evidence, corrected and uncorrected dimensions, integer-only scale acceptance, largest fitting scale selection, centered presentation rectangles, and failure-mode handlers for fractional scale, non-integer fill, and subpixel offsets. No source or focused-test edit was made in this invocation. The step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 03-016 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-20260429
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test without modifying them. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer, 240-row corrected display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt); plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as the focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 framebuffer, 240-row corrected display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun c6436e69 codex
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 9ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification naming cleanup
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock, read the declared step file and allowed core/demo context, and verified the existing 04-013 implementation plus focused test. The write-locked implementation pins the single-player no-network NetUpdate path: persistent `lasttime`, `maketic`, the no-newtics short-circuit, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, and no ticker/demo advancement from NetUpdate. The focused test covers canonical constants, fact/invariant/probe ledgers, a reference candidate, runtime behavior, short-circuit behavior, half-buffer guard behavior, ticker/demo role separation, and tampered-candidate failure modes. This pass made a naming-only cleanup inside the 04-013 write lock, and the focused test still passes. The step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/core/implement-netupdate-no-network-single-player-path.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran verification against the existing untracked 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification current invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The existing untracked 04-013 write-locked implementation and focused test remain in place and the focused test passes: `src/core/implement-netupdate-no-network-single-player-path.ts` exposes the single-player no-network NetUpdate path with persistent `lasttime`, local `maketic`, no-clock/negative-clock short-circuit behavior, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, no ticker or demo-advance callbacks, and a candidate cross-check helper. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` covers canonical constants, fact/invariant/probe ledgers, reference and runtime candidates, runtime guard/short-circuit behavior, role separation from tickers/demo advancement, and tampered-candidate failures. The step remains blocked because the required full `bun test` verification still fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck sequence, with the Ralph prompt's required `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran verification against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and rechecked the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); sampled representative modules in src/audio/, src/map/, src/render/, and src/wad/; git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran verification against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, the 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` covers constants, local config evidence, agreement with existing host window constants, corrected and uncorrected dimensions, accepted and rejected scale multipliers, fit-scale and centering behavior, reference probe coverage, and tampered handler failures. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: 955bdf94-8a6a-4b35-a00f-7b5e776b5574
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock and reran the required verification sequence against the existing untracked 04-013 write-locked implementation and focused test. `src/core/implement-netupdate-no-network-single-player-path.ts` pins the single-player no-network NetUpdate path: persistent `lasttime`, `maketic`, no-newtics short-circuiting, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, no ticker/demo advancement, and candidate cross-checking. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` covers constants, fact/invariant/probe ledgers, the reference candidate, runtime behavior, short-circuit behavior, guard behavior, ticker/demo role separation, and tampered-candidate failure modes. The focused test passes, but the step remains blocked because the required full `bun test` verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with the Ralph prompt's `bun run format` command run first).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as the focused verification. The step remains blocked because the required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The existing write-locked implementation and focused test remain in place: `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as the focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 12 tests, 92 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-20260429T183136-0400
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification d7342afc codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); src/assets/build-asset-cache-lifetime-policy.ts; src/assets/parse-patch-picture-format.ts; src/assets/parse-pnames-lump.ts; src/assets/parse-texture-one-lump.ts; src/assets/parse-texture-two-when-present.ts; src/wad/directory.ts; src/wad/header.ts; src/wad/lumpLookup.ts; iwad/DOOM1.WAD; doom/DOOM1.WAD; reference/manifests/wad-map-summary.json; .claude/skills/verify-step/SKILL.md.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the wad lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. The implementation builds the PNAMES patch lookup with last-lump-wins WAD lookup semantics, composes TEXTURE1 before optional TEXTURE2, resolves referenced mappatches through PNAMES, loads patch picture columns from WAD bytes, clips patch origins to texture bounds, exposes case-insensitive texture lookup with later duplicate names winning, and inherits the audited `PU_STATIC` lifetime policy. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/assets/build-texture-composition-cache.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/wad/build-texture-composition-cache.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1/PNAMES/patchlookup PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding and pixel data semantics); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts (TEXTURE1 maptexture/mappatch contract); src/assets/parse-texture-two-when-present.ts (optional TEXTURE2 aggregation contract); src/wad/directory.ts, src/wad/header.ts, and src/wad/lumpLookup.ts (WAD directory, header, and last-lump-wins lookup behavior); iwad/DOOM1.WAD and doom/DOOM1.WAD (local shareware IWAD evidence); reference/manifests/wad-map-summary.json (shareware lump inventory context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck verification tail, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the wad lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged and unrelated dirty working-tree files were left unstaged and untouched.
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun c6436e69
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran the required verification sequence against the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The focused test passes, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun c6436e69 codex-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: c6436e69-1c74-41ce-8965-ecbe3f8701d7
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and verified the existing 01-021 write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted unique group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification pass, but the step remains blocked because required full-suite verification fails outside the 01-021 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 10ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, 240-row corrected display target, 6/5 vertical stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as the focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test without modifying them. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 framebuffer, 240-row corrected display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-current-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test without modifying them. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 framebuffer, 240-row corrected display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 16 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-latest
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-this-invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test without modifying the step files. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` remains present and pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed as focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current-run
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. The source and focused test were already present in the worktree, and no additional implementation edits were made. The focused test confirms the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and verified the existing `01-021` write-locked inventory artifacts. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across audio/music/mixer, bootstrap runtime contracts, core math/timing, input/oracle support, map/world simulation, player/AI/specials, renderer/UI, save/config/demo, and WAD/asset loading. `test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed focused verification and covers canonical metadata, source/test counts against `git ls-files`, representative modules/tests, delegated excluded surfaces, follow-up step resolution, and failure modes. The step remains blocked because required full-suite verification still fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-real-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-real-implementations.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); package.json (Bun-only script and dependency context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory and prior-plan/read-only evidence surfaces); git ls-files output for tracked source/test counts; .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The prepared inventory/test pair is focused-tested but cannot be committed under the Ralph-loop rules until the full suite passes. The observed blocker is outside this lane's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-this-run
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and verified the existing `03-016` write-locked draft implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed focused verification and covers constants, local config evidence, happy-path calculations, and broken-handler failure modes. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-1542
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and verified the existing `01-021` write-locked inventory artifacts. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across audio/music/mixer, bootstrap runtime contracts, core math/timing, input/oracle support, map/world simulation, player/AI/specials, renderer/UI, save/config/demo, and WAD/asset loading. `test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed focused verification and covers canonical metadata, source/test counts against `git ls-files`, representative modules/tests, delegated excluded surfaces, follow-up step resolution, and failure modes. The step remains blocked because required full-suite verification still fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-real-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-real-implementations.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); package.json (Bun-only script and dependency context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory and prior-plan/read-only evidence surfaces); git ls-files output for tracked source/test counts; .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The prepared inventory/test pair is focused-tested but cannot be committed under the Ralph-loop rules until the full suite passes. The observed blocker is outside this lane's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and verified the existing `01-021` write-locked inventory artifacts. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies source-backed executable TypeScript implementation surfaces as `real` across audio/music/mixer, bootstrap runtime contracts, core math/timing, input/oracle support, map/world simulation, player/AI/specials, renderer/UI, save/config/demo, and WAD/asset loading. `test/vanilla_parity/current-state/classify-real-implementations.test.ts` passed focused verification and covers canonical metadata, source/test counts against `git ls-files`, representative modules/tests, delegated excluded surfaces, follow-up step resolution, and failure modes. The step remains blocked because required full-suite verification still fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/current-state/classify-real-implementations.json; D:/Projects/doom-in-typescript/test/vanilla_parity/current-state/classify-real-implementations.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); package.json (Bun-only script and dependency context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory and prior-plan/read-only evidence surfaces); git ls-files output for tracked source/test counts; .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The prepared inventory/test pair is focused-tested but cannot be committed under the Ralph-loop rules until the full suite passes. The observed blocker is outside this lane's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification pass, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts; plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, sorted group ids, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification pass, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-current-invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` pins the 320x200 internal framebuffer, corrected 240-row display target, 6/5 stretch, corrected and uncorrected aspect ratios, 1x through 4x integer scale family, fractional/subpixel/HiDPI exclusions, centered integer-scale presentation helpers, probe fixtures, and cross-check failure reporting. `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` passed focused verification. The step remains blocked because required full-suite verification still fails outside the 03-016 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence for screenblocks and aspect_ratio_correct/screen_width/screen_height); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per the Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-current-invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification pass, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reran the required verification sequence against the existing 03-016 write-locked implementation and focused test. No source or focused-test edit was made in this invocation. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-observed
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification pass, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-live
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reran the required verification sequence against the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-confirmed
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock and reverified the existing 03-016 write-locked implementation and focused test. Format and focused verification pass. The step remains blocked because required full-suite verification still fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-this-invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-this-invocation
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The 03-016 implementation and focused test were already present in the write-lock paths, so no source or test edit was made in this invocation. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-end-entry
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present, and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun fd58e217 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: fd58e217-60dc-4621-b160-3da4433e9cd1
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The 03-016 write-locked implementation and focused test were already present before this invocation, so no source or test edit was made. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-lane-lock
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` classifies nine source-backed executable TypeScript implementation groups as `real`, and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` verifies canonical metadata, tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the inventory lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 1ab6dbb1 codex-gpt-5.5-xhigh-final-rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 1ab6dbb1-de1b-411e-986d-991d3151d2d3
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock and reverified the existing `01-021` write-locked inventory artifact and focused test. `plan_vanilla_parity/current-state/classify-real-implementations.json` and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` are present and the focused test passes, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present in the workspace, and the focused test verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed. The step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked inventory artifact and focused test were already present in the workspace. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification still fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside this step's write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification e889991e codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked implementation and focused test were already present in the workspace. `src/core/implement-netupdate-no-network-single-player-path.ts` defines a single-player no-network NetUpdate audit ledger, constants for BACKUPTICS/half-buffer/single-player boundary values, a `DoomNetUpdateSinglePlayer` runtime candidate, and a `crossCheckDoomNetUpdateSinglePlayer` probe/invariant harness. `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` verifies the ledger, runtime behavior, and tampered candidate failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the core lane write lock.
+- files_changed: D:/Projects/doom-in-typescript/src/core/implement-netupdate-no-network-single-player-path.ts; D:/Projects/doom-in-typescript/test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-try-run-tics-ordering.ts and src/core/implement-i-start-tic-event-pump-contract.ts (adjacent core audit precedent and NetUpdate/input-pump ordering context); src/mainLoop.ts (main-loop TryRunTics orchestration context); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the core lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-tail
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification e889991e codex-gpt-5.5-xhigh-rerun
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked 04-013 implementation and focused test were already present in the workspace before this invocation. `DoomNetUpdateSinglePlayer` models the single-player no-network NetUpdate body with persistent `lasttime`, persistent `maketic`, no-clock and negative-clock short-circuit behavior, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, and explicit separation from ticker/demo advancement. The focused test verifies constants, fact/invariant/probe ledgers, reference and runtime candidates, runtime guard and short-circuit behavior, role separation, and tampered-candidate failure modes. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local verification workflow, with `bun run format` run first per this Ralph prompt).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-final
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-current
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-repeat
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-20260429T222605Z
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e codex-gpt-5.5-xhigh-20260429Tcurrent
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked 04-013 implementation and focused test were already present in the workspace before this invocation. `DoomNetUpdateSinglePlayer` models the single-player no-network NetUpdate body with persistent `lasttime`, persistent `maketic`, no-clock and negative-clock short-circuit behavior, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, and explicit separation from ticker/demo advancement. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); plan_vanilla_parity/REFERENCE_ORACLES.md (checked; no oracle update needed); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc codex-gpt-5.5-xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. The implementation builds a PU_STATIC texture composition cache from parsed PNAMES, TEXTURE1, optional TEXTURE2, WAD directory entries, and WAD bytes; resolves PNAMES patchlookup with last-lump-wins lookup semantics; composes patch posts into bounded texture columns; preserves TEXTURE1/TEXTURE2 runtime order; and exposes case-insensitive texture lookup. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/, src/wad/, reference/manifests/wad-map-summary.json, doom/DOOM1.WAD, and iwad/DOOM1.WAD (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 codex-gpt-5.5-xhigh-latest
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification rerun 594f3611 codex-gpt-5.5-xhigh-20260429T183335-0400
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The focused test passes and verifies canonical metadata, source-only real implementation grouping, git-tracked source/test counts, representative module/test existence, excluded-surface delegation, follow-up step resolution, and tampered/fabricated-count failure modes. The step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 18ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); package.json (Bun-only script context); src/, test/, tools/, plan_engine/, plan_fps/, and reference/manifests/ (allowed source-only inventory evidence surfaces); git ls-files output used by the focused test for tracked source/test counts.
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the inventory lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e codex-gpt-5.5-xhigh-20260429T183845-0400
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked `src/core/implement-netupdate-no-network-single-player-path.ts` implementation and `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` focused test were already present before this invocation. `DoomNetUpdateSinglePlayer` models the single-player no-network NetUpdate path with persistent `lasttime`, persistent `maketic`, no-clock and negative-clock short-circuit behavior, per-newtic `startTic` then `processEvents`, the `BACKUPTICS / 2 - 1` half-buffer guard, and explicit separation from ticker/demo advancement. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification d7342afc-1d85-4fa4-8d79-eebcf3b5efbd Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. The implementation builds a PU_STATIC texture composition cache, resolves PNAMES patchlookup with last-lump-wins directory semantics, composes TEXTURE1 then optional TEXTURE2 in runtime order, applies source-order patch overlay and clipping, exposes case-insensitive texture lookup, and rejects missing patches, bad patch counts, negative dimensions, and out-of-range PNAMES indices. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 11ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1, PNAMES, and patchlookup PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding contract); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTURE1/TEXTURE2 maptexture and mappatch contracts); src/wad/directory.ts, src/wad/header.ts, src/wad/lumpLookup.ts, and src/wad/markerRange.ts (WAD directory, header, marker, and last-lump-wins lookup behavior); doom/DOOM1.WAD and iwad/DOOM1.WAD (declared local shareware IWAD read-only paths); reference/manifests/wad-map-summary.json (shareware lump inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 14ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9 Codex gpt-5.5 xhigh
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 16ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 04-013 implement-netupdate-no-network-single-player-path blocked verification rerun e889991e codex-gpt-5.5-xhigh-20260429Tcurrent
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: core
+- lock_id: e889991e-efe8-479c-9e5b-0f8eb3132bf0
+- step_id: 04-013
+- step_title: implement-netupdate-no-network-single-player-path
+- summary: Selected the first unchecked eligible core-lane step under the supplied lane lock. The write-locked `src/core/implement-netupdate-no-network-single-player-path.ts` implementation and `test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts` focused test were already present before this invocation. No source or focused-test edit was made in this pass. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside the 04-013 write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (pass, 70 tests, 237 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (core lane eligibility and 04-013 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with `bun run format` run first per this Ralph prompt); src/core/implement-netupdate-no-network-single-player-path.ts (write-locked implementation inspected); test/vanilla_parity/core/implement-netupdate-no-network-single-player-path.test.ts (focused write-locked test inspected and executed); src/core/, src/demo/, src/mainLoop.ts, test/core/, and test/demo/ (declared read-only context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 04-013 implement-netupdate-no-network-single-player-path remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 04-013 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 04-013 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 03-016 implement-aspect-and-integer-scale-policy blocked verification rerun affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: launch
+- lock_id: affbf5e9-f4ae-43fa-871e-6a9cccfaa3ca
+- step_id: 03-016
+- step_title: implement-aspect-and-integer-scale-policy
+- summary: Selected the first unchecked eligible launch-lane step under the supplied lane lock. The write-locked `src/bootstrap/implement-aspect-and-integer-scale-policy.ts` implementation and `test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts` focused test were already present before this invocation. No source or focused-test edit was made. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 15ms, no fixes applied); bun test test/vanilla_parity/launch/implement-aspect-and-integer-scale-policy.test.ts (pass, 13 tests, 95 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (launch lane eligibility and 03-016 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/main.ts, src/launcher/, src/bootstrap/, src/host/, src/input/ (allowed launch/bootstrap context); doom/default.cfg and doom/chocolate-doom.cfg (local config evidence).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 03-016 implement-aspect-and-integer-scale-policy remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the launch lane write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 03-016 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 05-022 build-texture-composition-cache blocked verification rerun d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: wad
+- lock_id: d7342afc-1d85-4fa4-8d79-eebcf3b5efbd
+- step_id: 05-022
+- step_title: build-texture-composition-cache
+- summary: Selected the first unchecked eligible wad-lane step under the supplied lane lock. The write-locked `src/assets/build-texture-composition-cache.ts` implementation and `test/vanilla_parity/wad/build-texture-composition-cache.test.ts` focused test were already present before this invocation. The implementation builds a PU_STATIC texture composition cache, resolves PNAMES patchlookup with last-lump-wins directory semantics, composes TEXTURE1 then optional TEXTURE2 in runtime order, applies source-order patch overlay and clipping, exposes case-insensitive texture lookup, and rejects missing patches, bad patch counts, negative dimensions, and out-of-range PNAMES indices. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this lane's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 13ms, no fixes applied); bun test test/vanilla_parity/wad/build-texture-composition-cache.test.ts (pass, 9 tests, 43 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/05-022-build-texture-composition-cache.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (wad lane eligibility and 05-022 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); src/assets/build-texture-composition-cache.ts (write-locked implementation inspected); test/vanilla_parity/wad/build-texture-composition-cache.test.ts (focused write-locked test inspected and executed); src/assets/build-asset-cache-lifetime-policy.ts (TEXTURE1, PNAMES, and patchlookup PU_STATIC policy); src/assets/parse-patch-picture-format.ts (patch column/post decoding contract); src/assets/parse-pnames-lump.ts (PNAMES patch-name table contract); src/assets/parse-texture-one-lump.ts and src/assets/parse-texture-two-when-present.ts (TEXTURE1/TEXTURE2 maptexture and mappatch contracts); src/assets/texture1.ts, src/assets/pnames.ts, and src/assets/patchCatalog.ts (legacy and namespace context under the declared read-only assets path); src/wad/directory.ts, src/wad/header.ts, src/wad/lumpLookup.ts, and src/wad/markerRange.ts (WAD directory, header, marker, and last-lump-wins lookup behavior); doom/DOOM1.WAD and iwad/DOOM1.WAD (declared local shareware IWAD read-only paths); reference/manifests/wad-map-summary.json (shareware lump inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 05-022 build-texture-composition-cache remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 05-022 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 05-022 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.
+
+## 2026-04-29 - 01-021 classify-real-implementations blocked verification 594f3611-faec-4804-828a-39009c0f905d
+
+- status: blocked
+- agent: Codex
+- model: gpt-5.5
+- effort: xhigh
+- lane: inventory
+- lock_id: 594f3611-faec-4804-828a-39009c0f905d
+- step_id: 01-021
+- step_title: classify-real-implementations
+- summary: Selected the first unchecked eligible inventory-lane step under the supplied lane lock. The write-locked `plan_vanilla_parity/current-state/classify-real-implementations.json` artifact and `test/vanilla_parity/current-state/classify-real-implementations.test.ts` focused test were already present before this invocation. The artifact classifies source-backed real implementation groups across audio, bootstrap, core/timing, input/oracle support, map/world, player/AI/specials, renderer/UI, save/config/demo, and WAD/assets while explicitly excluding simplified launcher, src/playable contracts, pending oracle fixtures, and plan_fps gate manifests for follow-up classification. Format and focused verification passed, but the step remains blocked because required full-suite verification fails outside this step's write lock.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (pass, formatted 17 files in 12ms, no fixes applied); bun test test/vanilla_parity/current-state/classify-real-implementations.test.ts (pass, 15 tests, 714 expects); bun test (fail: `plan_vanilla_parity/validate-plan.test.ts` reports step-heading mismatches for `01-010`, `03-008`, `03-009`, and `05-007`); bun x tsc --noEmit --project tsconfig.json (not run because verification stopped at the failing full suite)
+- reference_sources: plan_vanilla_parity/steps/01-021-classify-real-implementations.md (selected step file, lane, write lock, read-only scope, and verification commands); plan_vanilla_parity/MASTER_CHECKLIST.md (inventory lane eligibility and 01-021 remains unchecked); .claude/skills/verify-step/SKILL.md (repo-local focused/full/typecheck workflow, with this step's required `bun run format` command run first); plan_vanilla_parity/current-state/classify-real-implementations.json (write-locked current-state artifact inspected); test/vanilla_parity/current-state/classify-real-implementations.test.ts (focused write-locked test inspected and executed); src/, test/, tools/, plan_engine/, plan_fps/, reference/manifests/, and package.json (declared read-only inventory context).
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 01-021 classify-real-implementations remains eligible because the checklist was not advanced after the full-suite failure
+- open_risks: The blocker is outside the 01-021 write lock: `plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md`, `plan_vanilla_parity/steps/03-008-implement-d-doommain-init-order-skeleton.md`, `plan_vanilla_parity/steps/03-009-implement-d-doomloop-entry-timing.md`, and `plan_vanilla_parity/steps/05-007-parse-flat-namespace.md` have headings that do not match their id/title fields according to `plan_vanilla_parity/validate-plan.test.ts`. Ralph-loop rules prevent marking 01-021 complete, committing, or pushing until the full suite passes. No checklist update, commit, or push was made. No proprietary assets were modified or staged, and unrelated dirty working-tree files were left unstaged and untouched.

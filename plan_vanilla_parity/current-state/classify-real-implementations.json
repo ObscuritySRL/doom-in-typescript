@@ -1,0 +1,195 @@
+{
+  "id": "01-021",
+  "title": "Classify Real Implementations",
+  "lane": "inventory",
+  "summary": "Classifies the current repository surfaces that contain source-backed, executable TypeScript implementations rather than simplified launcher glue, src/playable contract artifacts, pending oracle fixtures, or plan manifest gates. This is source-only metadata: it proves local implementation surface area and test coverage, not final side-by-side vanilla parity.",
+  "captured_at_utc": "2026-04-29T01:52:15Z",
+  "evidence_method": "inventory lane source-only audit using src/, test/, tools/reference/, plan_engine/, plan_fps/, reference/manifests/, and package.json; counted committed TypeScript and bun:test files with git ls-files from local repository paths and sampled representative modules/tests without embedding proprietary WAD or executable bytes",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "implications": [
+    "The repository already contains substantial real implementation modules across bootstrap, core, WAD/assets, map/world, player/AI/specials, renderer/UI, audio, save/config/demo, input, and oracle support surfaces.",
+    "This classification does not prove the simplified launcher reaches those implementations through the final vanilla `bun run doom.ts` path; launch, oracle, and acceptance lanes must still wire and compare behavior.",
+    "The src/playable/ contract tree, src/main.ts launcher path, src/launcher/ host path, plan_fps manifests, and pending fixture gates need separate classification before 01-024 can gate the inventory."
+  ],
+  "follow_up_steps": ["01-022 classify-simplified-implementations", "01-023 classify-stubbed-or-manifest-only-surfaces", "01-024 gate-current-state-inventory"],
+  "classification_definition": {
+    "criteria_sorted": [
+      "has executable TypeScript source under an implementation root",
+      "has local bun:test coverage or vanilla_parity audit coverage",
+      "models a named DOOM or support-system behavior rather than only declaring a plan gate",
+      "uses local repository, prior plan, and manifest evidence without proprietary byte embedding"
+    ],
+    "not_end_to_end_gate": true,
+    "scope_note": "A real classification here means source-backed implementation evidence exists. It is not a claim that the final vanilla runtime path or reference oracle comparison already passes.",
+    "status_value": "real"
+  },
+  "classification_summary": {
+    "classified_source_file_count": 184,
+    "classified_test_file_count": 228,
+    "real_group_count": 9,
+    "representative_module_count": 47,
+    "source_only_metadata": true
+  },
+  "excluded_surfaces": [
+    {
+      "classified_by_follow_up": "01-023 classify-stubbed-or-manifest-only-surfaces",
+      "reason": "oracle fixture and parity fixture manifests can encode pending expectations without executable implementation behavior",
+      "surface_id": "manifest_only_oracle_fixtures",
+      "surface_roots": ["reference/manifests/", "test/oracles/", "test/parity/fixtures/"]
+    },
+    {
+      "classified_by_follow_up": "01-023 classify-stubbed-or-manifest-only-surfaces",
+      "reason": "prior plan gate manifests and acceptance placeholders document intent and gaps rather than runtime implementation",
+      "surface_id": "plan_fps_gate_manifests",
+      "surface_roots": ["plan_fps/manifests/", "test/plan_fps/"]
+    },
+    {
+      "classified_by_follow_up": "01-022 classify-simplified-implementations",
+      "reason": "01-001 and 01-002 already identify the current launcher as simplified and not the final vanilla D_DoomMain path",
+      "surface_id": "simplified_launcher",
+      "surface_roots": ["src/launcher/", "src/main.ts"]
+    },
+    {
+      "classified_by_follow_up": "01-022 classify-simplified-implementations",
+      "reason": "01-004 records src/playable/ as a contract surface with no non-playable src/ importers and no direct runtime path",
+      "surface_id": "src_playable_contracts",
+      "surface_roots": ["src/playable/", "test/playable/"]
+    }
+  ],
+  "real_implementation_groups": [
+    {
+      "classification": "real",
+      "evidence": "src/audio/ modules implement SFX channel allocation, DMX sample expansion/mixing, MUS parsing/scheduling, music state, OPL register/synthesis models, sound origins, and spatialization with matching test/audio coverage.",
+      "group_id": "audio_music_and_mixer",
+      "notes": "Audio behavior remains downstream-gated by 11-* oracle comparison steps, but these modules are executable implementations rather than manifests.",
+      "representative_modules": ["src/audio/channels.ts", "src/audio/musParser.ts", "src/audio/musicSystem.ts", "src/audio/pcmMixer.ts", "src/audio/soundSystem.ts"],
+      "representative_tests": ["test/audio/channel-allocation.test.ts", "test/audio/mus-parser.test.ts", "test/audio/music-system.test.ts", "test/audio/pcm-mixer.test.ts", "test/audio/sound-order.test.ts"],
+      "source_file_count": 12,
+      "source_roots": ["src/audio/"],
+      "test_file_count": 12,
+      "test_roots": ["test/audio/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/bootstrap/ contains executable command-line, game-mode, init-order, quit, title-loop, tic, and launch-policy implementations, including vanilla_parity launch audit modules with focused tests.",
+      "group_id": "bootstrap_runtime_contracts",
+      "notes": "01-003 records that this surface is not yet wired into src/mainLoop.ts, so it is real module evidence but not final launch proof.",
+      "representative_modules": ["src/bootstrap/implement-d-doomloop-entry-timing.ts", "src/bootstrap/implement-d-doommain-init-order-skeleton.ts", "src/bootstrap/quitFlow.ts"],
+      "representative_tests": ["test/bootstrap/quit-flow.test.ts", "test/vanilla_parity/launch/implement-d-doomloop-entry-timing.test.ts", "test/vanilla_parity/launch/implement-d-doommain-init-order-skeleton.test.ts"],
+      "source_file_count": 21,
+      "source_roots": ["src/bootstrap/"],
+      "test_file_count": 23,
+      "test_roots": ["test/bootstrap/", "test/vanilla_parity/launch/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/core/, src/host/, and src/mainLoop.ts provide fixed-point math, angle wrapping, deterministic RNG, trig lookup, binary reading, tic accumulation, Win32 timing/message pump helpers, and frame-loop orchestration with core/host/vanilla_parity tests.",
+      "group_id": "core_math_and_timing",
+      "notes": "This surface is the determinism boundary used by downstream gameplay systems and remains source-backed even where final orchestrator wiring still needs launch-lane proof.",
+      "representative_modules": ["src/core/fixed.ts", "src/core/rng.ts", "src/core/trig.ts", "src/host/ticAccumulator.ts", "src/mainLoop.ts"],
+      "representative_tests": [
+        "test/core/fixed.multiply.test.ts",
+        "test/core/rng.test.ts",
+        "test/core/trig-lookup.test.ts",
+        "test/host/tic-accumulator.test.ts",
+        "test/vanilla_parity/core/implement-tic-accumulator-at-thirty-five-hertz.test.ts"
+      ],
+      "source_file_count": 22,
+      "source_roots": ["src/core/", "src/host/", "src/mainLoop.ts"],
+      "test_file_count": 24,
+      "test_roots": ["test/core/", "test/host/", "test/vanilla_parity/core/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/input/, src/oracles/, and tools/reference/ contain executable keyboard/mouse/ticcmd, capture-format, sandbox, hash, music-event, input-script, and Win32 reference probe implementations with input/oracle tests.",
+      "group_id": "input_and_oracle_support",
+      "notes": "Oracle support is real support code, but captured oracle data and pending fixture manifests are separately excluded from this real-implementation classification.",
+      "representative_modules": ["src/input/keyboard.ts", "src/input/mouse.ts", "src/input/ticcmd.ts", "src/oracles/framebufferHash.ts", "src/oracles/inputScript.ts", "tools/reference/windowCaptureProbe.ts"],
+      "representative_tests": [
+        "test/input/keyboard-mapping.test.ts",
+        "test/input/mouse-sampling.test.ts",
+        "test/input/ticcmd.test.ts",
+        "test/oracles/framebuffer-hash-format.test.ts",
+        "test/oracles/input-script-format.test.ts",
+        "test/oracles/window-capture-feasibility.test.ts"
+      ],
+      "source_file_count": 15,
+      "source_roots": ["src/input/", "src/oracles/", "tools/reference/"],
+      "test_file_count": 46,
+      "test_roots": ["test/input/", "test/oracles/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/map/ and src/world/ implement map lump structures, setup, blockmap/BSP traversal, intercepts, mobj state, collision, line use, teleport, movement, and thinker behavior with map/world tests.",
+      "group_id": "map_world_simulation",
+      "notes": "This classification is backed by local source and tests plus reference manifest anchors for map lump order and vanilla limits.",
+      "representative_modules": ["src/map/mapSetup.ts", "src/map/nodeTraversal.ts", "src/world/checkPosition.ts", "src/world/mobj.ts", "src/world/xyMovement.ts"],
+      "representative_tests": ["test/map/map-setup-parity.test.ts", "test/map/node-traversal.test.ts", "test/world/check-position.test.ts", "test/world/mobj-spawn.test.ts", "test/world/xy-movement.test.ts"],
+      "source_file_count": 22,
+      "source_roots": ["src/map/", "src/world/"],
+      "test_file_count": 21,
+      "test_roots": ["test/map/", "test/world/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/ai/, src/player/, and src/specials/ implement monster targeting/attacks/chase behavior, player spawn/weapons/pickups, and sector/line/door/floor/platform/switch specials with ai/player/specials tests.",
+      "group_id": "player_ai_specials",
+      "notes": "These gameplay modules are source-backed implementation surfaces, with final live-game parity still dependent on downstream core/map/render/audio integration gates.",
+      "representative_modules": ["src/ai/attacks.ts", "src/ai/chase.ts", "src/player/playerSpawn.ts", "src/player/weapons.ts", "src/specials/doors.ts", "src/specials/lineTriggers.ts"],
+      "representative_tests": ["test/ai/chase.test.ts", "test/ai/monster-attacks.test.ts", "test/player/player-spawn.test.ts", "test/player/weapon-states.test.ts", "test/specials/doors.test.ts", "test/specials/line-triggers.test.ts"],
+      "source_file_count": 26,
+      "source_roots": ["src/ai/", "src/player/", "src/specials/"],
+      "test_file_count": 26,
+      "test_roots": ["test/ai/", "test/player/", "test/specials/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/render/ and src/ui/ implement column/span drawing, visplanes, wall/sprite/masked rendering, fuzz, sky, menus, status bar, automap, HUD, finale, intermission, and UI asset handling with render/ui tests.",
+      "group_id": "renderer_and_ui",
+      "notes": "Rendering and UI surfaces contain executable implementations, while framebuffer and menu-oracle parity remains gated by downstream render/UI comparison steps.",
+      "representative_modules": ["src/render/drawPrimitives.ts", "src/render/spriteProjection.ts", "src/render/visplanes.ts", "src/ui/automap.ts", "src/ui/menus.ts", "src/ui/statusBar.ts"],
+      "representative_tests": ["test/render/column-span-draw.test.ts", "test/render/sprite-projection.test.ts", "test/render/visplane-build.test.ts", "test/ui/automap.test.ts", "test/ui/menus.test.ts", "test/ui/status-bar.test.ts"],
+      "source_file_count": 23,
+      "source_roots": ["src/render/", "src/ui/"],
+      "test_file_count": 22,
+      "test_roots": ["test/render/", "test/ui/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/config/, src/demo/, and src/save/ implement default/host config parsing, demo parse/playback/recording, vanilla save headers, core serialization, loadgame, special serialization, and limits with config/demo/save tests.",
+      "group_id": "save_config_and_demo",
+      "notes": "The modules provide real serialization/parsing behavior, while byte-for-byte save and demo oracle comparisons remain downstream acceptance work.",
+      "representative_modules": ["src/config/defaultCfg.ts", "src/config/hostConfig.ts", "src/demo/demoParse.ts", "src/demo/demoPlayback.ts", "src/save/coreSerialization.ts", "src/save/loadgame.ts"],
+      "representative_tests": [
+        "test/config/default-cfg-parse.test.ts",
+        "test/config/host-config.test.ts",
+        "test/demo/demo-parse.test.ts",
+        "test/demo/demo-playback.test.ts",
+        "test/save/core-serialization.test.ts",
+        "test/save/loadgame.test.ts"
+      ],
+      "source_file_count": 11,
+      "source_roots": ["src/config/", "src/demo/", "src/save/"],
+      "test_file_count": 10,
+      "test_roots": ["test/config/", "test/demo/", "test/save/"]
+    },
+    {
+      "classification": "real",
+      "evidence": "src/assets/ and src/wad/ implement WAD headers/directories/lump lookup, marker ranges, PLAYPAL/COLORMAP, PNAMES, TEXTURE1/TEXTURE2, patches, flats, sprites, MUS/SFX/demo/map lump parsing, IWAD capability checks, and asset boundary enforcement with wad/reference/vanilla_parity tests.",
+      "group_id": "wad_and_asset_loading",
+      "notes": "This group is classified real because it parses and validates concrete data structures without embedding proprietary bytes; runtime asset-cache wiring remains downstream WAD-lane work.",
+      "representative_modules": ["src/assets/parse-demo-lumps.ts", "src/assets/parse-map-lump-bundle-boundaries.ts", "src/assets/parse-playpal-and-colormap-lumps.ts", "src/wad/header.ts", "src/wad/lumpLookup.ts"],
+      "representative_tests": [
+        "test/vanilla_parity/wad/parse-demo-lumps.test.ts",
+        "test/vanilla_parity/wad/parse-map-lump-bundle-boundaries.test.ts",
+        "test/vanilla_parity/wad/parse-playpal-and-colormap-lumps.test.ts",
+        "test/wad/header-directory.test.ts",
+        "test/wad/lump-lookup.test.ts"
+      ],
+      "source_file_count": 32,
+      "source_roots": ["src/assets/", "src/wad/"],
+      "test_file_count": 44,
+      "test_roots": ["test/reference/", "test/vanilla_parity/wad/", "test/wad/"]
+    }
+  ]
+}

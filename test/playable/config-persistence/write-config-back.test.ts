@@ -111,6 +111,64 @@ describe('write config back', () => {
     expect(await Bun.file(hostExtraCfgPath).exists()).toBe(false);
   });
 
+  test('rejects iwad and reference reference roots before writing', async () => {
+    const temporaryDirectory = await createTemporaryDirectory();
+    const defaultCfgPath = join(temporaryDirectory, 'default.cfg');
+    const hostExtraCfgPath = join(temporaryDirectory, 'chocolate-doom.cfg');
+
+    await expect(
+      writeConfigBack({
+        defaultCfgPath: 'iwad/default.cfg',
+        hostExtraCfgPath,
+      }),
+    ).rejects.toThrow('defaultCfgPath must not target read-only reference root iwad');
+    expect(await Bun.file(defaultCfgPath).exists()).toBe(false);
+    expect(await Bun.file(hostExtraCfgPath).exists()).toBe(false);
+
+    await expect(
+      writeConfigBack({
+        defaultCfgPath,
+        hostExtraCfgPath: 'reference/chocolate-doom.cfg',
+      }),
+    ).rejects.toThrow('hostExtraCfgPath must not target read-only reference root reference');
+    expect(await Bun.file(defaultCfgPath).exists()).toBe(false);
+    expect(await Bun.file(hostExtraCfgPath).exists()).toBe(false);
+  });
+
+  test('rejects empty paths and embedded NUL characters before writing', async () => {
+    const temporaryDirectory = await createTemporaryDirectory();
+    const defaultCfgPath = join(temporaryDirectory, 'default.cfg');
+    const hostExtraCfgPath = join(temporaryDirectory, 'chocolate-doom.cfg');
+
+    await expect(writeConfigBack({ defaultCfgPath: '   ', hostExtraCfgPath })).rejects.toThrow('defaultCfgPath must not be empty');
+    expect(await Bun.file(hostExtraCfgPath).exists()).toBe(false);
+
+    await expect(writeConfigBack({ defaultCfgPath, hostExtraCfgPath: 'choc\0lat.cfg' })).rejects.toThrow('hostExtraCfgPath must not contain NUL');
+    expect(await Bun.file(defaultCfgPath).exists()).toBe(false);
+  });
+
+  test('applies the configured Windows line ending', async () => {
+    const temporaryDirectory = await createTemporaryDirectory();
+    const defaultCfgPath = join(temporaryDirectory, 'default.cfg');
+    const hostExtraCfgPath = join(temporaryDirectory, 'chocolate-doom.cfg');
+
+    await writeConfigBack({
+      defaultCfgPath,
+      hostExtraCfgPath,
+      lineEnding: '\r\n',
+    });
+
+    const defaultCfgText = await Bun.file(defaultCfgPath).text();
+    const hostExtraCfgText = await Bun.file(hostExtraCfgPath).text();
+
+    expect(defaultCfgText).toContain('mouse_sensitivity 5\r\n');
+    expect(defaultCfgText.endsWith('\r\n')).toBe(true);
+    expect(defaultCfgText).not.toMatch(/[^\r]\n/);
+    expect(hostExtraCfgText).toContain('opl_io_port 0x388\r\n');
+    expect(hostExtraCfgText.endsWith('\r\n')).toBe(true);
+    expect(hostExtraCfgText).not.toMatch(/[^\r]\n/);
+  });
+
   test('rejects ambiguous string values before writing', async () => {
     const temporaryDirectory = await createTemporaryDirectory();
     const defaultCfgPath = join(temporaryDirectory, 'default.cfg');

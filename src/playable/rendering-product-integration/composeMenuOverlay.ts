@@ -43,30 +43,41 @@ export function composeMenuOverlay(input: ComposeMenuOverlayInput): ComposeMenuO
     validateLayer(layer);
   }
 
+  const framebuffer = input.framebuffer;
   let copiedPixels = 0;
   let skippedOffscreenPixels = 0;
   let skippedTransparentPixels = 0;
 
   for (const layer of input.layers) {
-    for (let rowIndex = 0; rowIndex < layer.height; rowIndex += 1) {
-      const framebufferRow = layer.top + rowIndex;
+    const layerPixels = layer.pixels;
+    const layerWidth = layer.width;
+    const layerHeight = layer.height;
+    const layerLeft = layer.left;
+    const layerTop = layer.top;
+    const transparentPaletteIndex = layer.transparentPaletteIndex;
 
-      for (let columnIndex = 0; columnIndex < layer.width; columnIndex += 1) {
-        const paletteIndex = layer.pixels[rowIndex * layer.width + columnIndex]!;
+    for (let rowIndex = 0; rowIndex < layerHeight; rowIndex += 1) {
+      const framebufferRow = layerTop + rowIndex;
+      const layerRowOffset = rowIndex * layerWidth;
+      const framebufferRowOffset = framebufferRow * SCREENWIDTH;
+      const rowOnScreen = framebufferRow >= 0 && framebufferRow < SCREENHEIGHT;
 
-        if (paletteIndex === layer.transparentPaletteIndex) {
+      for (let columnIndex = 0; columnIndex < layerWidth; columnIndex += 1) {
+        const paletteIndex = layerPixels[layerRowOffset + columnIndex]!;
+
+        if (paletteIndex === transparentPaletteIndex) {
           skippedTransparentPixels += 1;
           continue;
         }
 
-        const framebufferColumn = layer.left + columnIndex;
+        const framebufferColumn = layerLeft + columnIndex;
 
-        if (framebufferColumn < 0 || framebufferColumn >= SCREENWIDTH || framebufferRow < 0 || framebufferRow >= SCREENHEIGHT) {
+        if (!rowOnScreen || framebufferColumn < 0 || framebufferColumn >= SCREENWIDTH) {
           skippedOffscreenPixels += 1;
           continue;
         }
 
-        input.framebuffer[framebufferRow * SCREENWIDTH + framebufferColumn] = paletteIndex;
+        framebuffer[framebufferRowOffset + framebufferColumn] = paletteIndex;
         copiedPixels += 1;
       }
     }
@@ -76,7 +87,7 @@ export function composeMenuOverlay(input: ComposeMenuOverlayInput): ComposeMenuO
     auditManifestPath: COMPOSE_MENU_OVERLAY_AUDIT_MANIFEST_PATH,
     commandContract: COMPOSE_MENU_OVERLAY_COMMAND_CONTRACT,
     copiedPixels,
-    framebufferLength: input.framebuffer.length,
+    framebufferLength: framebuffer.length,
     layerCount: input.layers.length,
     skippedOffscreenPixels,
     skippedTransparentPixels,

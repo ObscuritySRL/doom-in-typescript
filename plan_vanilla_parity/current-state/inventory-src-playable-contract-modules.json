@@ -938,8 +938,8 @@
       "subdirectory_name": "rendering-product-integration",
       "vanilla_concept_modeled": "software-renderer product wiring contract derived from Chocolate Doom 2.2.1 src/r_main.c and src/v_video.c",
       "file_count": 13,
-      "total_size_bytes": 72187,
-      "total_line_count": 2033,
+      "total_size_bytes": 72592,
+      "total_line_count": 2044,
       "total_export_count": 91,
       "files": [
         {
@@ -958,9 +958,9 @@
         },
         {
           "relative_path": "src/playable/rendering-product-integration/composeMenuOverlay.ts",
-          "size_bytes": 4199,
-          "line_count": 122,
-          "sha256": "02b8c231b4f5d8e8c2df97a2227a3ed0eb2ae687a3450647162f760923894c5e",
+          "size_bytes": 4604,
+          "line_count": 133,
+          "sha256": "aa043492326858b39319d161e289753d3eafa9fd4352f36c37a5c3a8edc62db9",
           "export_count": 6
         },
         {

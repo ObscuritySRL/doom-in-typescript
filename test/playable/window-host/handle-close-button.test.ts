@@ -96,4 +96,36 @@ describe('handleCloseButton', () => {
   test('rejects non-Bun runtime commands', () => {
     expect(() => handleCloseButton({ runtimeCommand: 'bun run src/main.ts', windowMessage: 0x0010 })).toThrow('handleCloseButton only supports bun run doom.ts');
   });
+
+  test('rejects an empty runtime command before checking the window message', () => {
+    expect(() => handleCloseButton({ runtimeCommand: '', windowMessage: 0x0010 })).toThrow('handleCloseButton only supports bun run doom.ts');
+  });
+
+  test('treats WM_DESTROY (0x0002), zero, and the high uint16 boundary as non-close messages', () => {
+    for (const windowMessage of [0x0000, 0x0001, 0x0002, 0x000f, 0x0011, 0x00ff, 0xffff]) {
+      const plan = handleCloseButton({ runtimeCommand: 'bun run doom.ts', windowMessage });
+      expect(plan.action).toBe('continue-message-pump');
+      expect(plan.destroyWindow).toBe(false);
+      expect(plan.handled).toBe(false);
+      expect(plan.returnFromLoop).toBe(false);
+      expect(plan.windowDestroyed).toBe(false);
+      expect(plan.windowMessage).toBe(windowMessage);
+    }
+  });
+
+  test('returns a frozen plan whose windowMessage echoes the input verbatim', () => {
+    const plan = handleCloseButton({ runtimeCommand: 'bun run doom.ts', windowMessage: 0x0010 });
+
+    expect(Object.isFrozen(plan)).toBe(true);
+    expect(plan.windowMessage).toBe(0x0010);
+    expect(plan.deterministicReplayCompatible).toBe(true);
+  });
+
+  test('keeps the close-button contract object frozen so callers cannot mutate it', () => {
+    expect(Object.isFrozen(HANDLE_CLOSE_BUTTON_CONTRACT)).toBe(true);
+    expect(Object.isFrozen(HANDLE_CLOSE_BUTTON_CONTRACT.defaultClientSize)).toBe(true);
+    expect(Object.isFrozen(HANDLE_CLOSE_BUTTON_CONTRACT.liveCloseButtonHandling)).toBe(true);
+    expect(Object.isFrozen(HANDLE_CLOSE_BUTTON_CONTRACT.windowMessages)).toBe(true);
+    expect(Object.isFrozen(HANDLE_CLOSE_BUTTON_CONTRACT.windowMessages.close)).toBe(true);
+  });
 });

@@ -16,7 +16,7 @@ interface AuditNullSurface {
 
 const FULL_FRAMEBUFFER_LENGTH = SCREENWIDTH * SCREENHEIGHT;
 const IMPLEMENTATION_PATH = 'src/playable/rendering-product-integration/composeMenuOverlay.ts';
-const LOCKED_IMPLEMENTATION_SHA256 = '02b8c231b4f5d8e8c2df97a2227a3ed0eb2ae687a3450647162f760923894c5e';
+const LOCKED_IMPLEMENTATION_SHA256 = 'aa043492326858b39319d161e289753d3eafa9fd4352f36c37a5c3a8edc62db9';
 
 describe('composeMenuOverlay', () => {
   test('locks the Bun runtime command contract and missing-rendering audit linkage', async () => {
@@ -153,6 +153,173 @@ describe('composeMenuOverlay', () => {
       }),
     ).toThrow('compose menu overlay layer pixel length must match width and height');
     expect(framebuffer[0]).toBe(13);
+  });
+
+  test('returns zero-pixel evidence for an empty layers array without mutating the framebuffer', () => {
+    const framebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH);
+    framebuffer.fill(17);
+    const beforeHash = hashBytes(framebuffer);
+
+    const evidence = composeMenuOverlay({
+      framebuffer,
+      layers: [],
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(evidence).toEqual({
+      auditManifestPath: 'plan_fps/manifests/01-012-audit-missing-live-rendering.json',
+      commandContract: {
+        entryFile: 'doom.ts',
+        program: 'bun',
+        runtimeCommand: 'bun run doom.ts',
+        subcommand: 'run',
+      },
+      copiedPixels: 0,
+      framebufferLength: FULL_FRAMEBUFFER_LENGTH,
+      layerCount: 0,
+      skippedOffscreenPixels: 0,
+      skippedTransparentPixels: 0,
+    });
+    expect(hashBytes(framebuffer)).toBe(beforeHash);
+  });
+
+  test('counts a fully transparent layer as transparent skips with no copies', () => {
+    const framebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH);
+    framebuffer.fill(5);
+    const beforeHash = hashBytes(framebuffer);
+
+    const evidence = composeMenuOverlay({
+      framebuffer,
+      layers: [
+        {
+          height: 4,
+          left: 10,
+          pixels: new Uint8Array(12).fill(0xff),
+          top: 20,
+          transparentPaletteIndex: 0xff,
+          width: 3,
+        },
+      ],
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(evidence.copiedPixels).toBe(0);
+    expect(evidence.skippedOffscreenPixels).toBe(0);
+    expect(evidence.skippedTransparentPixels).toBe(12);
+    expect(evidence.layerCount).toBe(1);
+    expect(hashBytes(framebuffer)).toBe(beforeHash);
+  });
+
+  test('composes multiple layers in array order so later layers overwrite earlier pixels', () => {
+    const framebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH);
+
+    const evidence = composeMenuOverlay({
+      framebuffer,
+      layers: [
+        {
+          height: 1,
+          left: 50,
+          pixels: new Uint8Array([10, 11, 12]),
+          top: 30,
+          transparentPaletteIndex: 0xff,
+          width: 3,
+        },
+        {
+          height: 1,
+          left: 51,
+          pixels: new Uint8Array([0xff, 99]),
+          top: 30,
+          transparentPaletteIndex: 0xff,
+          width: 2,
+        },
+      ],
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(evidence.copiedPixels).toBe(4);
+    expect(evidence.skippedOffscreenPixels).toBe(0);
+    expect(evidence.skippedTransparentPixels).toBe(1);
+    expect(evidence.layerCount).toBe(2);
+    expect(framebuffer[30 * SCREENWIDTH + 50]).toBe(10);
+    expect(framebuffer[30 * SCREENWIDTH + 51]).toBe(11);
+    expect(framebuffer[30 * SCREENWIDTH + 52]).toBe(99);
+    expect(framebuffer[30 * SCREENWIDTH + 53]).toBe(0);
+  });
+
+  test('clips a layer entirely above the framebuffer as fully offscreen', () => {
+    const framebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH);
+    framebuffer.fill(8);
+    const beforeHash = hashBytes(framebuffer);
+
+    const evidence = composeMenuOverlay({
+      framebuffer,
+      layers: [
+        {
+          height: 4,
+          left: 0,
+          pixels: new Uint8Array([0xff, 1, 2, 3, 0xff, 4, 5, 6]),
+          top: -10,
+          transparentPaletteIndex: 0xff,
+          width: 2,
+        },
+      ],
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(evidence.copiedPixels).toBe(0);
+    expect(evidence.skippedOffscreenPixels).toBe(6);
+    expect(evidence.skippedTransparentPixels).toBe(2);
+    expect(hashBytes(framebuffer)).toBe(beforeHash);
+  });
+
+  test('clips a layer entirely below the framebuffer as fully offscreen', () => {
+    const framebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH);
+    framebuffer.fill(9);
+    const beforeHash = hashBytes(framebuffer);
+
+    const evidence = composeMenuOverlay({
+      framebuffer,
+      layers: [
+        {
+          height: 2,
+          left: 100,
+          pixels: new Uint8Array([10, 0xff, 12, 13]),
+          top: SCREENHEIGHT,
+          transparentPaletteIndex: 0xff,
+          width: 2,
+        },
+      ],
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(evidence.copiedPixels).toBe(0);
+    expect(evidence.skippedOffscreenPixels).toBe(3);
+    expect(evidence.skippedTransparentPixels).toBe(1);
+    expect(hashBytes(framebuffer)).toBe(beforeHash);
+  });
+
+  test('rejects a framebuffer whose length does not match the screen dimensions', () => {
+    const wrongFramebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH - 1);
+
+    expect(() =>
+      composeMenuOverlay({
+        framebuffer: wrongFramebuffer,
+        layers: [],
+        runtimeCommand: 'bun run doom.ts',
+      }),
+    ).toThrow(`compose menu overlay requires a ${SCREENWIDTH}x${SCREENHEIGHT} framebuffer`);
+  });
+
+  test('returns a frozen evidence object so callers cannot mutate it', () => {
+    const framebuffer = new Uint8Array(FULL_FRAMEBUFFER_LENGTH);
+    const evidence = composeMenuOverlay({
+      framebuffer,
+      layers: [],
+      runtimeCommand: 'bun run doom.ts',
+    });
+
+    expect(Object.isFrozen(evidence)).toBe(true);
+    expect(Object.isFrozen(evidence.commandContract)).toBe(true);
   });
 });
 

@@ -1,4 +1,4 @@
-# [x] STEP 01-010: Inventory Renderer Modules
+# [ ] STEP 01-010: Inventory Renderer Modules
 
 ## id
 

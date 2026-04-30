@@ -1,4 +1,4 @@
-# [x] STEP 03-009: Implement D DoomLoop Entry Timing
+# [ ] STEP 03-009: Implement D DoomLoop Entry Timing
 
 ## id
 

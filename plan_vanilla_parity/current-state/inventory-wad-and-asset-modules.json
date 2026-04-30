@@ -10,23 +10,41 @@
     {
       "relative_path": "src/assets/",
       "exists": true,
-      "committed_file_count": 11,
+      "committed_file_count": 29,
       "committed_filenames_sorted": [
+        "build-asset-cache-lifetime-policy.ts",
+        "build-texture-composition-cache.ts",
         "colormap.ts",
+        "detect-registered-iwad-capabilities.ts",
+        "detect-shareware-iwad-capabilities.ts",
+        "detect-ultimate-iwad-capabilities.ts",
+        "enforce-no-asset-redistribution-in-tests.ts",
         "flats.ts",
         "mus.ts",
+        "parse-demo-lumps.ts",
+        "parse-flat-namespace.ts",
+        "parse-map-lump-bundle-boundaries.ts",
+        "parse-music-mus-lumps.ts",
+        "parse-patch-picture-format.ts",
+        "parse-playpal-and-colormap-lumps.ts",
+        "parse-pnames-lump.ts",
+        "parse-sound-effect-lumps.ts",
+        "parse-sprite-namespace.ts",
+        "parse-texture-one-lump.ts",
+        "parse-texture-two-when-present.ts",
         "patchCatalog.ts",
         "playpal.ts",
         "pnames.ts",
+        "reject-missing-proprietary-assets-with-clear-error.ts",
         "texture1.ts",
         "verify-duplicate-lump-precedence.ts",
         "verify-lump-name-lookup-semantics.ts",
         "verify-marker-range-semantics.ts",
         "verify-wad-header-and-directory-parsing.ts"
       ],
-      "total_size_bytes": 110172,
-      "total_line_count": 2445,
-      "total_export_count": 95
+      "total_size_bytes": 901133,
+      "total_line_count": 18145,
+      "total_export_count": 509
     },
     {
       "relative_path": "src/wad/",
@@ -53,7 +71,7 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 1
     },
     {
@@ -121,7 +139,7 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 1
     },
     {
@@ -240,8 +258,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 10,
-      "test_importer_count": 38
+      "src_importer_count": 18,
+      "test_importer_count": 54
     },
     {
       "relative_path": "src/wad/header.ts",
@@ -258,7 +276,7 @@
       "exported_types": ["WadType"],
       "external_imports": [],
       "src_importer_count": 2,
-      "test_importer_count": 38
+      "test_importer_count": 51
     },
     {
       "relative_path": "src/wad/lumpLookup.ts",
@@ -274,8 +292,8 @@
       "exported_classes": ["LumpLookup"],
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 18
+      "src_importer_count": 3,
+      "test_importer_count": 19
     },
     {
       "relative_path": "src/wad/markerRange.ts",
@@ -299,8 +317,31 @@
     "test_roots": [
       {
         "relative_path": "test/vanilla_parity/wad/",
-        "test_file_count": 4,
-        "test_filenames_sorted": ["verify-duplicate-lump-precedence.test.ts", "verify-lump-name-lookup-semantics.test.ts", "verify-marker-range-semantics.test.ts", "verify-wad-header-and-directory-parsing.test.ts"]
+        "test_file_count": 22,
+        "test_filenames_sorted": [
+          "build-asset-cache-lifetime-policy.test.ts",
+          "build-texture-composition-cache.test.ts",
+          "detect-registered-iwad-capabilities.test.ts",
+          "detect-shareware-iwad-capabilities.test.ts",
+          "detect-ultimate-iwad-capabilities.test.ts",
+          "enforce-no-asset-redistribution-in-tests.test.ts",
+          "parse-demo-lumps.test.ts",
+          "parse-flat-namespace.test.ts",
+          "parse-map-lump-bundle-boundaries.test.ts",
+          "parse-music-mus-lumps.test.ts",
+          "parse-patch-picture-format.test.ts",
+          "parse-playpal-and-colormap-lumps.test.ts",
+          "parse-pnames-lump.test.ts",
+          "parse-sound-effect-lumps.test.ts",
+          "parse-sprite-namespace.test.ts",
+          "parse-texture-one-lump.test.ts",
+          "parse-texture-two-when-present.test.ts",
+          "reject-missing-proprietary-assets-with-clear-error.test.ts",
+          "verify-duplicate-lump-precedence.test.ts",
+          "verify-lump-name-lookup-semantics.test.ts",
+          "verify-marker-range-semantics.test.ts",
+          "verify-wad-header-and-directory-parsing.test.ts"
+        ]
       },
       {
         "relative_path": "test/wad/",

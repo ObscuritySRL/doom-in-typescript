@@ -13,7 +13,7 @@ const CLAUDE_CODE_SCRIPT_PATH = 'plan_vanilla_parity/RALPH_LOOP_CLAUDE_CODE.ps1'
 const PROMPT_PATH = 'plan_vanilla_parity/PROMPT.md';
 const README_PATH = 'plan_vanilla_parity/README.md';
 
-async function createFakeCodexCommand(temporaryDirectory: string, delayBeforeResponseSeconds = 0): Promise<string> {
+async function createFakeCodexCommand(temporaryDirectory: string, delayBeforeResponseSeconds = 0, lingerAfterExitMilliseconds = 0): Promise<string> {
   const fakeCodexCommandPath = join(temporaryDirectory, 'codex.cmd');
 
   await Bun.write(
@@ -39,6 +39,40 @@ async function createFakeCodexCommand(temporaryDirectory: string, delayBeforeRes
       'echo RLP_PROGRESS_LOG: NONE',
       'echo RLP_NEXT_STEP: NONE',
       'echo RLP_REASON: fake done',
+      ...(lingerAfterExitMilliseconds > 0 ? [`start "" /b powershell -NoProfile -ExecutionPolicy Bypass -Command "Start-Sleep -Milliseconds ${lingerAfterExitMilliseconds}"`] : []),
+      'exit /b 0',
+      '',
+    ].join('\r\n'),
+  );
+
+  return fakeCodexCommandPath;
+}
+
+async function createFakeBlockedCodexCommand(temporaryDirectory: string): Promise<string> {
+  const fakeCodexCommandPath = join(temporaryDirectory, 'codex.cmd');
+
+  await Bun.write(
+    fakeCodexCommandPath,
+    [
+      '@echo off',
+      'if "%~1"=="--version" (',
+      '  echo codex-fake 1.0',
+      '  exit /b 0',
+      ')',
+      'echo RLP_STATUS: BLOCKED',
+      'echo RLP_STEP_ID: 99-999',
+      'echo RLP_STEP_TITLE: fake blocked step',
+      'echo RLP_LANE: governance',
+      'echo RLP_AGENT: Codex',
+      'echo RLP_MODEL: fake-model',
+      'echo RLP_EFFORT: fake-effort',
+      'echo RLP_FILES_CHANGED: NONE',
+      'echo RLP_TEST_COMMANDS: bun test fake.test.ts',
+      'echo RLP_CHECKLIST_UPDATED: NO',
+      'echo RLP_HANDOFF_UPDATED: YES',
+      'echo RLP_PROGRESS_LOG: NONE',
+      'echo RLP_NEXT_STEP: 99-999 fake blocked step',
+      'echo RLP_REASON: fake blocker',
       'exit /b 0',
       '',
     ].join('\r\n'),
@@ -288,6 +322,47 @@ describe('vanilla parity Ralph-loop scripts', () => {
 
       const lockEntries = await readdir(lockDirectory);
       expect(lockEntries).toEqual([]);
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
+  });
+
+  test('Codex no-audit loop waits for redirected output files to unlock', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-vanilla-loop-'));
+    const logDirectory = join(temporaryDirectory, 'logs');
+    const lockDirectory = join(temporaryDirectory, 'locks');
+    const fakeCodexCommandPath = await createFakeCodexCommand(temporaryDirectory, 0, 750);
+    const expectedInitialStep = await readFirstEligibleStep();
+
+    try {
+      if (expectedInitialStep === null) {
+        return;
+      }
+      const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '1', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
+
+      expect(result.exitCode).toBe(0);
+      expect(result.combinedOutput).not.toContain('Exception calling "ReadAllText"');
+      expect(result.combinedOutput).toContain('LOOP_STATUS: NO_ELIGIBLE_STEP');
+      expect(result.combinedOutput).toContain(`LOOP_LANE: ${expectedInitialStep.lane}`);
+    } finally {
+      await rm(temporaryDirectory, { force: true, recursive: true });
+    }
+  });
+
+  test('Codex no-audit loop exits after a blocked step without retrying', async () => {
+    const temporaryDirectory = await mkdtemp(join(tmpdir(), 'doom-vanilla-loop-'));
+    const logDirectory = join(temporaryDirectory, 'logs');
+    const lockDirectory = join(temporaryDirectory, 'locks');
+    const fakeCodexCommandPath = await createFakeBlockedCodexCommand(temporaryDirectory);
+
+    try {
+      const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '3', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
+
+      expect(result.exitCode).toBe(1);
+      expect(result.combinedOutput).toContain('Iteration 1');
+      expect(result.combinedOutput).not.toContain('Iteration 2');
+      expect(result.combinedOutput).toContain('LOOP_STATUS: BLOCKED');
+      expect(result.combinedOutput).toContain('LOOP_REASON: fake blocker');
     } finally {
       await rm(temporaryDirectory, { force: true, recursive: true });
     }

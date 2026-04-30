@@ -198,6 +198,8 @@ function Invoke-CodexCommand {
     $standardOutputPath = [System.IO.Path]::GetTempFileName()
     $standardErrorPath = [System.IO.Path]::GetTempFileName()
 
+    $process = $null
+
     try {
         [System.IO.File]::WriteAllText($standardInputPath, $InputText, (New-Object System.Text.UTF8Encoding($false)))
         $argumentText = ($Arguments | ForEach-Object { ConvertTo-ProcessArgument -Value $_ }) -join " "
@@ -213,17 +215,40 @@ function Invoke-CodexCommand {
             }
         }
 
-        $standardOutputText = [System.IO.File]::ReadAllText($standardOutputPath)
-        $standardErrorText = [System.IO.File]::ReadAllText($standardErrorPath)
+        $process.WaitForExit()
+        $exitCode = $process.ExitCode
+        $process.Dispose()
+        $process = $null
+
+        $standardOutputText = ""
+        $standardErrorText = ""
+        $outputFilesRead = $false
+        for ($readAttempt = 0; -not $outputFilesRead -and $readAttempt -lt 50; $readAttempt++) {
+            try {
+                $standardOutputText = [System.IO.File]::ReadAllText($standardOutputPath)
+                $standardErrorText = [System.IO.File]::ReadAllText($standardErrorPath)
+                $outputFilesRead = $true
+            }
+            catch [System.IO.IOException] {
+                if ($readAttempt -eq 49) {
+                    throw
+                }
+                Start-Sleep -Milliseconds 100
+            }
+        }
+
         $response = ($standardOutputText + "`n" + $standardErrorText).Trim()
         [System.IO.File]::WriteAllText($ResponsePath, $response, (New-Object System.Text.UTF8Encoding($false)))
 
         return @{
-            ExitCode = $process.ExitCode
+            ExitCode = $exitCode
             Response = $response
         }
     }
     finally {
+        if ($null -ne $process) {
+            $process.Dispose()
+        }
         Remove-Item -LiteralPath $standardInputPath, $standardOutputPath, $standardErrorPath -Force -ErrorAction SilentlyContinue
     }
 }
@@ -546,6 +571,7 @@ try {
                 }
                 "BLOCKED" {
                     Write-LoopSummary -Status $status -Reason $reason -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath
+                    exit 1
                 }
                 "NO_ELIGIBLE_STEP" {
                     Write-LoopSummary -Status $status -Reason $reason -StepId $stepId -StepTitle $stepTitle -ResponsePath $responsePath

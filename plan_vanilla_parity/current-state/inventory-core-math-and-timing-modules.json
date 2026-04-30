@@ -49,7 +49,7 @@
       "exported_types": ["Angle"],
       "external_imports": [],
       "src_importer_count": 15,
-      "test_importer_count": 18
+      "test_importer_count": 19
     },
     {
       "relative_path": "src/core/audit-angle-type-and-wrap-semantics.ts",
@@ -133,7 +133,7 @@
       "exported_classes": ["BinaryReader"],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 10,
+      "src_importer_count": 16,
       "test_importer_count": 1
     },
     {
@@ -150,8 +150,8 @@
       "exported_classes": [],
       "exported_types": ["Fixed"],
       "external_imports": [],
-      "src_importer_count": 46,
-      "test_importer_count": 62
+      "src_importer_count": 47,
+      "test_importer_count": 64
     },
     {
       "relative_path": "src/core/rng.ts",
@@ -168,7 +168,7 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 17,
-      "test_importer_count": 21
+      "test_importer_count": 23
     },
     {
       "relative_path": "src/core/trig.ts",
@@ -185,7 +185,7 @@
       "exported_types": [],
       "external_imports": ["src/core/fixed.ts"],
       "src_importer_count": 12,
-      "test_importer_count": 8
+      "test_importer_count": 9
     },
     {
       "relative_path": "src/host/ticAccumulator.ts",
