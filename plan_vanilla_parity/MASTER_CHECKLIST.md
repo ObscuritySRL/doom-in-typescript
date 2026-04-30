@@ -145,7 +145,7 @@
 - [x] `04-011` `implement-try-run-tics-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-011-implement-try-run-tics-ordering.md`
 - [x] `04-012` `implement-i-start-tic-event-pump-contract` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-012-implement-i-start-tic-event-pump-contract.md`
 - [x] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
-- [x] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
+- [ ] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
 - [ ] `04-015` `implement-main-loop-per-frame-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-015-implement-main-loop-per-frame-ordering.md`
 - [ ] `04-016` `reject-frame-rate-dependent-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-016-reject-frame-rate-dependent-simulation.md`
 - [ ] `04-017` `reject-visible-interpolation-in-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-017-reject-visible-interpolation-in-simulation.md`
