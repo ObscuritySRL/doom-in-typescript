@@ -10,13 +10,14 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 17,
+      "committed_file_count": 18,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-bob-and-viewheight-semantics.ts",
         "implement-death-and-reborn-flow.ts",
         "implement-forward-side-and-turn-movement.ts",
         "implement-god-mode-and-powerup-flags.ts",
+        "implement-health-and-armor-pickups.ts",
         "implement-player-damage-and-armor.ts",
         "implement-player-reborn-state.ts",
         "implement-player-spawn-state.ts",
@@ -30,9 +31,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 128703,
-      "total_line_count": 3613,
-      "total_export_count": 244
+      "total_size_bytes": 131360,
+      "total_line_count": 3677,
+      "total_export_count": 254
     }
   ],
   "modules": [
@@ -168,7 +169,7 @@
         "src/world/thinkers.ts"
       ],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/player/playerSpawn.ts",
