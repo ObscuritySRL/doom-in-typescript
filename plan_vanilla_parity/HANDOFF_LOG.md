@@ -7991,3 +7991,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: evaluateTeleportMove: telefrag damage 10000; out-of-range destination rejects; in-range commits and telefrags non-voodoo overlapping things. Inventory: src/map 23->24 (106019 bytes, 2996 lines, 167 exports); map+world 34->35 src; totals 242->243.
 - tests: format pass; focused 5/0; full 13567/0; tsc pass
 
+
+## 2026-05-13 - 06-014 implement-radius-attack-block-traversal completed
+
+- status: completed
+- lane: map
+- step_id: 06-014
+- summary: buildRadiusAttackBoundingBox + computeRadiusAttackDamage with Chebyshev distance (matches vanilla P_RadiusAttack), proportional damage falloff. Inventory: src/map 24->25 (107413 bytes, 3038 lines, 171 exports); map+world source 35->36; totals 243->244.
+- tests: format pass; focused 5/0; full 13572/0; tsc pass
+
