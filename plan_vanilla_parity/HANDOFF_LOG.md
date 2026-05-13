@@ -8541,3 +8541,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-012
 - summary: getVanillaReadThisSequence + advanceVanillaReadThisPage + vanillaReadThisIsReachableFromMainMenu pin Chocolate Doom 2.2.1 m_menu.c M_ReadThis/M_ReadThis2/M_FinishReadThis + M_Init: shareware/registered show HELP1->HELP2->MainDef (2 pages); retail (Ultimate Doom) shows HELP1->MainDef (1 page, M_FinishReadThis fires directly); commercial has no help pages reachable from menu (entry removed). Inventory: src/ui 20->21 (237518 bytes, 6170 lines, 447 exports).
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-030 compare-scripted-pickup-oracle completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-030
+- summary: VANILLA_SCRIPTED_PICKUP_ORACLES pins 5 scripted pickup scenarios cross-validating Chocolate Doom 2.2.1 p_inter.c contracts captured by 07-010..07-014: stimpack at MAXHEALTH no-op, stimpack +10 below cap, soulsphere from 100->200, green armor from 0->100 type 1, backpack doubles maxammo to 400 and grants 10 bullets. Inventory: src/player 37->38 (167471 bytes, 4698 lines, 408 exports); player_ai_specials group 55->56 src; totals 302->304.
+- tests: format pass; focused 7/0; full pass; tsc pass
