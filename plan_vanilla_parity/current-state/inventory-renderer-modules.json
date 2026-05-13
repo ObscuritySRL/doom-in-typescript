@@ -10,10 +10,11 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 14,
+      "committed_file_count": 15,
       "committed_filenames_sorted": [
         "drawPrimitives.ts",
         "fuzz.ts",
+        "implement-view-setup-constants.ts",
         "maskedTextures.ts",
         "patchDraw.ts",
         "projection.ts",
@@ -27,9 +28,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 193264,
-      "total_line_count": 4721,
-      "total_export_count": 135
+      "total_size_bytes": 196819,
+      "total_line_count": 4834,
+      "total_export_count": 142
     }
   ],
   "modules": [

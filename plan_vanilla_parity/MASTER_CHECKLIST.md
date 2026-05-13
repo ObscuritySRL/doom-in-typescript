@@ -270,7 +270,7 @@
 
 - [x] `08-001` `implement-thinker-list-ordering` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-001-implement-thinker-list-ordering.md`
 - [x] `08-002` `implement-mobj-state-transitions` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-002-implement-mobj-state-transitions.md`
-- [ ] `08-003` `implement-monster-spawn-flags` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-003-implement-monster-spawn-flags.md`
+- [x] `08-003` `implement-monster-spawn-flags` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-003-implement-monster-spawn-flags.md`
 - [ ] `08-004` `implement-look-for-players` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-004-implement-look-for-players.md`
 - [ ] `08-005` `implement-sound-target-propagation` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-005-implement-sound-target-propagation.md`
 - [ ] `08-006` `implement-chase-direction-selection` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-006-implement-chase-direction-selection.md`

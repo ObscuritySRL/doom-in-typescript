@@ -8739,3 +8739,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-028
 - summary: VANILLA_INTERMISSION_AND_FINALE_GATE_INVARIANTS + assertVanillaIntermissionAndFinaleGateInvariants gate-wraps the contracts pinned by 10-022..10-025 (intermission stats counting + map graphics + finale text timing + finale cast/bunny scroll scope). Asserts intermission percent step 2, you-are-here blink 9 tics, finale text speed 3 tics/char, finale text wait 250 tics. Phase 10 UI lane fully complete. Inventory: src/ui 36->37 (284581 bytes, 7418 lines, 573 exports).
 - tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-003 implement-monster-spawn-flags completed
+
+- status: completed
+- lane: ai
+- step_id: 08-003
+- summary: Pinned vanilla monster MAPTHING mobjflag set per Chocolate Doom 2.2.1 info.c info table: monsters carry MF_COUNTKILL=0x400000 (kill counter), most are MF_SOLID|MF_SHOOTABLE; flying monsters (cacodemon/lost soul/pain elemental) carry MF_NOGRAVITY=0x200 + MF_FLOAT=0x4000; lost soul also MF_DROPOFF; specters (MT_SPECTRE) add MF_SHADOW=0x40000. Inventory: src/ai 10->11 (160403 bytes, 4080 lines, 218 exports); player_ai_specials 62->63 src; totals 322->323.
+- tests: format pass; focused 6/0; full pass; tsc pass
