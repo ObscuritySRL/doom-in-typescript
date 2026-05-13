@@ -237,7 +237,7 @@
 - [x] `07-004` `implement-forward-side-and-turn-movement` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-004-implement-forward-side-and-turn-movement.md`
 - [x] `07-005` `implement-bob-and-viewheight-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-005-implement-bob-and-viewheight-semantics.md`
 - [x] `07-006` `implement-player-thrust-and-friction` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-006-implement-player-thrust-and-friction.md`
-- [ ] `07-007` `implement-player-damage-and-armor` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-007-implement-player-damage-and-armor.md`
+- [x] `07-007` `implement-player-damage-and-armor` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-007-implement-player-damage-and-armor.md`
 - [ ] `07-008` `implement-death-and-reborn-flow` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-008-implement-death-and-reborn-flow.md`
 - [ ] `07-009` `implement-god-mode-and-powerup-flags` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-009-implement-god-mode-and-powerup-flags.md`
 - [ ] `07-010` `implement-health-and-armor-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-010-implement-health-and-armor-pickups.md`

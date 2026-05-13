@@ -8216,3 +8216,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-006
 - summary: Pinned vanilla P_Thrust angle index (>> ANGLETOFINESHIFT = 19) and player friction constants from p_mobj.c: FRICTION=0xE800 (~0.90625) applied to momentum above STOPSPEED=0x1000; momentum within +/-STOPSPEED snaps to zero. angleToFineIndex returns 0..8191. Inventory: src/player 13->14 (123003 bytes, 3429 lines, 208 exports); player_ai_specials group 31->32 src; totals 267->268.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-007 implement-player-damage-and-armor completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-007
+- summary: applyVanillaPlayerDamage mirrors Chocolate Doom 2.2.1 p_inter.c P_DamageMobj player branch: CF_GODMODE zeroes damage; sk_baby halves damage; green armor (type 1) absorbs damage/3, blue armor (type 2) absorbs damage/2; armor depletes and armortype clears when armorpoints <= saved; remaining damage clamps health to >= 0. Inventory: src/player 14->15 (124846 bytes, 3494 lines, 215 exports); player_ai_specials group 32->33 src; totals 268->269.
+- tests: format pass; focused 9/0; full pass; tsc pass
