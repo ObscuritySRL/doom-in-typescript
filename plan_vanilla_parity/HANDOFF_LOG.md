@@ -7415,3 +7415,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending capture manifest for E1M1 player spawn invariants (E1M1, single player, 100 HP, 0 armor, pistol, 50 bullets, zero frags/kills/items/secrets). State entries empty pending external run.
 - tests_run: format pass; focused 11/0 (33 expects); full 13164/0; tsc pass
 - next_eligible_steps: 02-021 capture-scripted-movement-oracle
+
+## 2026-05-13 - 02-021 capture-scripted-movement-oracle completed (pending capture)
+
+- status: completed
+- lane: oracle
+- step_id: 02-021
+- summary: Pending capture manifest: hold UP-arrow forward (DOS scancode 72) for 35 tics from E1M1 spawn; capture framebuffer + state at tics 0/17/35; FRACUNIT = 65536. Pending external run.
+- tests_run: format pass; focused 10/0 (38 expects); full 13174/0; tsc pass
+- next_eligible_steps: 02-022 capture-scripted-use-line-oracle

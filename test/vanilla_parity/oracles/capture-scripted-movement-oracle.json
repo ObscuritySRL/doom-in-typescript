@@ -1,0 +1,19 @@
+{
+  "id": "OR-VP-SCRIPTED-MOVE-021",
+  "stepId": "02-021",
+  "stepTitle": "Capture Scripted Movement Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic effect of a scripted forward-movement burst from E1M1 spawn on the player thinker: position deltas in fixed-point fixed_t units (FRACUNIT = 65536), the per-component state snapshot hashes (02-012), and the framebuffer hashes (02-011) at the start, mid, and end of the burst. Initial entries are empty pending external reference run.",
+  "captureMethod": "From the 02-020 spawn state, hold the forward DOS scancode (FORWARD = 17 / W after configuration; vanilla uses the up arrow = 72 by default) for 35 tics, then release; capture framebuffer + state at tic 0, tic 17, and tic 35 of the burst window.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "targetRunMode": "title-loop",
+  "ticRateHz": 35,
+  "fracUnit": 65536,
+  "inputScript": [{ "kind": "key-down", "tic": 0, "scanCode": 72, "description": "UP-arrow forward-movement key-down" }, { "kind": "key-up", "tic": 35, "scanCode": 72, "description": "UP-arrow forward-movement key-up" }],
+  "captureTics": [0, 17, 35],
+  "framebufferEntries": [],
+  "stateEntries": [],
+  "downstreamFollowUps": ["wire-input-injector-and-framebuffer-and-state-snapshotter-into-bun-comparator"]
+}
