@@ -347,7 +347,7 @@
 - [x] `10-001` `implement-title-loop-sequence` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-001-implement-title-loop-sequence.md`
 - [x] `10-002` `implement-page-ticker-and-advance-demo` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-002-implement-page-ticker-and-advance-demo.md`
 - [x] `10-003` `implement-main-menu-tree` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-003-implement-main-menu-tree.md`
-- [ ] `10-004` `implement-new-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-004-implement-new-game-menu.md`
+- [x] `10-004` `implement-new-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-004-implement-new-game-menu.md`
 - [ ] `10-005` `implement-episode-menu-shareware-restrictions` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-005-implement-episode-menu-shareware-restrictions.md`
 - [ ] `10-006` `implement-skill-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-006-implement-skill-menu.md`
 - [ ] `10-007` `implement-options-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-007-implement-options-menu.md`
