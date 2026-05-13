@@ -66,7 +66,7 @@
 - [x] `02-009` `define-deterministic-input-stream-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-009-define-deterministic-input-stream-format.md`
 - [x] `02-010` `define-keyboard-and-mouse-injection-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-010-define-keyboard-and-mouse-injection-oracle.md`
 - [x] `02-011` `define-framebuffer-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-011-define-framebuffer-capture-format.md`
-- [ ] `02-012` `define-state-snapshot-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-012-define-state-snapshot-format.md`
+- [x] `02-012` `define-state-snapshot-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-012-define-state-snapshot-format.md`
 - [ ] `02-013` `define-audio-window-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-013-define-audio-window-capture-format.md`
 - [ ] `02-014` `define-music-event-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-014-define-music-event-capture-format.md`
 - [ ] `02-015` `define-save-byte-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-015-define-save-byte-capture-format.md`

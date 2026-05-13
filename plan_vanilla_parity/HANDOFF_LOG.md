@@ -7333,3 +7333,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned the framebuffer capture schema for visual-parity oracle work: 320x200 palette-indexed framebuffer, 64000 bytes, 14-entry PLAYPAL palette index range [0,13], SHA-256 hash per entry, default 35-tic sampling at 35 Hz, strict ascending-by-tic ordering. Focused test cross-checks with FRAMEBUFFER_WIDTH/HEIGHT/SIZE, PALETTE_COUNT, and DEFAULT_FRAMEBUFFER_SAMPLING_INTERVAL_TICS in src/oracles/framebufferHash.ts.
 - tests_run: format pass; focused 15/0 (40 expects); full 13048/0 (2435958 expects, 33.93s); tsc pass
 - next_eligible_steps: 02-012 define-state-snapshot-format
+
+## 2026-05-13 - 02-012 define-state-snapshot-format completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-012
+- summary: Pinned state-snapshot schema (components automap/combined/player/rng/sectors/thinkers, 5 individual + combined derived from asciibetical hash concat, SHA-256, 64-hex per hash, 35 Hz tic rate, 35-tic default sampling, ascending-by-tic ordering). Focused test cross-checks STATE_HASH_COMPONENTS, INDIVIDUAL_COMPONENT_COUNT, DEFAULT_SAMPLING_INTERVAL_TICS.
+- tests_run: format pass; focused 13/0 (35 expects); full 13061/0; tsc pass
+- next_eligible_steps: 02-013 define-audio-window-capture-format

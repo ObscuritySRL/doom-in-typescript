@@ -1,0 +1,18 @@
+{
+  "id": "OR-VP-STATE-FORMAT-012",
+  "stepId": "02-012",
+  "stepTitle": "Define State Snapshot Format",
+  "lane": "oracle",
+  "description": "Pins the state-snapshot schema used by oracle game-state parity verification. Each entry holds a tic number and per-component SHA-256 hashes for automap, player, rng, sectors, thinkers, plus a combined hash derived from the concatenation of the individual component hashes in ASCIIbetical order. The default sampling interval is 35 tics (one second at the 35 Hz tic rate).",
+  "sourceModule": "src/oracles/stateHash.ts",
+  "components": ["automap", "combined", "player", "rng", "sectors", "thinkers"],
+  "individualComponentCount": 5,
+  "combinedComponentName": "combined",
+  "ticRateHz": 35,
+  "defaultSamplingIntervalTics": 35,
+  "hashAlgorithm": "SHA-256",
+  "hashHexLength": 64,
+  "entryOrderingRule": "ascending-by-tic-number-strict",
+  "combinedHashDerivationRule": "sha256(concat(component-hashes, asciibetical))",
+  "downstreamFollowUps": ["create-state-snapshot-runner", "wire-into-bun-test-state-comparator"]
+}
