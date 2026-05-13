@@ -8865,3 +8865,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-010
 - summary: applyVanillaImpAttack pins Chocolate Doom 2.2.1 p_enemy.c A_TroopAttack: melee-first probe via P_CheckMeleeRange; on hit, damage = 3*(P_Random()%8+1) yielding {3,6,9,...,24}, plays SFX_CLAW=32, no missile spawn; on miss, no damage but spawns MT_TROOPSHOT=23 projectile (no probability gate). Inventory: src/ai 17->18 (173022 bytes, 4437 lines, 270 exports); player_ai_specials 69->70 src; totals 338->340.
 - tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-007 implement-wall-texture-column-fetch completed
+
+- status: completed
+- lane: render
+- step_id: 09-007
+- summary: computeVanillaTextureWidthMask + fetchVanillaTextureColumnIndex + vanillaTextureWidthIsPowerOfTwo pin Chocolate Doom 2.2.1 r_data.c R_GetColumn + R_InitTextures: texturewidthmask = (largest j where 2j <= width) - 1, so power-of-2 widths wrap correctly but non-pow-2 widths (e.g. 100) clamp to the previous power-of-2 (mask 63) producing the vanilla non-pow-2 wrap visual quirk. Column index is `col & texturewidthmask` regardless. Inventory: src/render 20->21 (215838 bytes, 5367 lines, 190 exports).
+- tests: format pass; focused 15/0; full pass; tsc pass
