@@ -8108,3 +8108,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-026
 - summary: Pinned E1M2 oracle: vertexes=942, sectors=200, sidedefs=1323, linedefs=1033, segs=1463, subsectors=448, nodes=447, things=262, blockmap 42x31. Inventory: src/map 36->37 (123301 bytes, 3498 lines, 235 exports); map+world 47->48 src; totals 255->256.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-027 compare-e1m8-boss-map-setup-state completed
+
+- status: completed
+- lane: map
+- step_id: 06-027
+- summary: Pinned E1M8 (Phobos Anomaly boss map) oracle: vertexes=328, sectors=74, sidedefs=511, linedefs=333, segs=586, subsectors=177, nodes=176, things=126, blockmap 52x56. Inventory: src/map 37->38 (123709 bytes, 3517 lines, 237 exports); map+world 48->49 src; totals 256->257.
+- tests: format pass; focused 10/0; full pass; tsc pass
