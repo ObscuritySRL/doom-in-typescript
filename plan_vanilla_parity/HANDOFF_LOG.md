@@ -8847,3 +8847,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-005
 - summary: classifyVanillaPassClipFragment + vanillaPassClipFragmentRange + vanillaPassClipBottomIsContained + vanillaPassClipGapBetween pin Chocolate Doom 2.2.1 r_bsp.c R_ClipPassWallSegment: pass walls (two-sided non-solid) emit drawsegs for visible fragments WITHOUT modifying solidsegs; 4 fragment classes (fully-visible / fragment-above-start / fully-occluded / inter-segment-gap); adjacency rule matches solidseg path (start->last < first - 1 = NOT touching). Inventory: src/render 18->19 (210451 bytes, 5217 lines, 178 exports).
 - tests: format pass; focused 16/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-006 implement-wall-column-scale-math completed
+
+- status: completed
+- lane: render
+- step_id: 09-006
+- summary: clampVanillaWallScale + vanillaWallScaleDenominatorPasses + applyVanillaWallScaleSaturated pin Chocolate Doom 2.2.1 r_main.c R_ScaleFromGlobalAngle: scale clamp [256, 64*FRACUNIT=4_194_304], denominator guard `den > num >> 16` saturates to max when wall is overhead/behind. The min of 256 is the literal value, NOT FRACUNIT. Inventory: src/render 19->20 (213198 bytes, 5296 lines, 185 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
