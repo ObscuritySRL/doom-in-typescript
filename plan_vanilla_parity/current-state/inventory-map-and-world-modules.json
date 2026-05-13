@@ -60,11 +60,12 @@
     {
       "relative_path": "src/world/",
       "exists": true,
-      "committed_file_count": 13,
+      "committed_file_count": 14,
       "committed_filenames_sorted": [
         "checkPosition.ts",
         "gate-blockmap-collision.ts",
         "gate-line-use-and-trigger-collision.ts",
+        "gate-world-movement-against-oracle.ts",
         "mobj.ts",
         "radiusAttack.ts",
         "sectorChange.ts",
@@ -76,9 +77,9 @@
         "xyMovement.ts",
         "zMovement.ts"
       ],
-      "total_size_bytes": 272320,
-      "total_line_count": 8599,
-      "total_export_count": 118
+      "total_size_bytes": 273302,
+      "total_line_count": 8627,
+      "total_export_count": 120
     }
   ],
   "modules": [
@@ -552,7 +553,7 @@
       "exported_types": ["CrossSpecialLineFunction", "SetThingPositionFunction", "UnsetThingPositionFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/map/lineSectorGeometry.ts", "src/map/mapSetup.ts", "src/world/checkPosition.ts", "src/world/checkPosition.ts", "src/world/mobj.ts", "src/world/mobj.ts"],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 1
     },
     {
@@ -599,7 +600,7 @@
         "src/world/tryMove.ts",
         "src/world/tryMove.ts"
       ],
-      "src_importer_count": 2,
+      "src_importer_count": 3,
       "test_importer_count": 1
     },
     {
@@ -617,7 +618,7 @@
       "exported_types": ["PlayerLandingFunction", "PlayerSmoothStepFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/rng.ts", "src/world/mobj.ts", "src/world/mobj.ts", "src/world/thinkers.ts", "src/world/xyMovement.ts"],
-      "src_importer_count": 5,
+      "src_importer_count": 6,
       "test_importer_count": 3
     }
   ],

@@ -8153,3 +8153,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-031
 - summary: SHAREWARE_EPISODE_MAP_NAMES lists all 9 E1MX maps; gate test loads each from DOOM1.WAD via parseMapBundle/setupLevel and cross-checks vertexes/sectors/linedefs/things against pinned oracles. Inventory: src/map 39->40 (125153 bytes, 3558 lines, 242 exports); map+world 52->53 src; totals 260->261.
 - tests: format pass; focused 3/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-032 gate-world-movement-against-oracle completed
+
+- status: completed
+- lane: map
+- step_id: 06-032
+- summary: WORLD_MOVEMENT_GATE pins vanilla GRAVITY, FLOATSPEED, VIEWHEIGHT, MAXMOVE, STOPSPEED, FRICTION, MAXSTEPHEIGHT from p_mobj.c, p_map.c, p_user.c. Inventory: src/world 13->14 (273302 bytes, 8627 lines, 120 exports); map+world 53->54 src; totals 261->262.
+- tests: format pass; focused 8/0; full pass; tsc pass

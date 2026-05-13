@@ -227,7 +227,7 @@
 - [x] `06-029` `gate-blockmap-collision` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-029-gate-blockmap-collision.md`
 - [x] `06-030` `gate-line-use-and-trigger-collision` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-030-gate-line-use-and-trigger-collision.md`
 - [x] `06-031` `gate-map-setup-across-shareware-episode` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-031-gate-map-setup-across-shareware-episode.md`
-- [ ] `06-032` `gate-world-movement-against-oracle` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-032-gate-world-movement-against-oracle.md`
+- [x] `06-032` `gate-world-movement-against-oracle` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-032-gate-world-movement-against-oracle.md`
 
 ## Phase 07: Gameplay / Player / Weapons / Items
 
