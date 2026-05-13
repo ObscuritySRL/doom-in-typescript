@@ -7657,3 +7657,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned ESC-to-main-menu contract: ESCAPE scancode 1; freezes attract page; pauses page timer; M_DOOM lump anchor (97,64); initial cursor on New Game (0). decideEscFromTitle handles closed/open menu + non-ESC paths. Inventory: 38 src / 40 test.
 - tests: format pass; focused 7/0 (13 expects); full 13357/0; tsc pass
 
+
+## 2026-05-13 - 03-033 implement-menu-route-to-e1m1 completed
+
+- status: completed
+- lane: launch
+- step_id: 03-033
+- summary: Pinned main-menu -> E1M1 deterministic route: E1M1 startup (episode 1, map 1, skill 2 HMP); 3 ENTER presses, default cursor on HMP (0 DOWN); decideMenuRouteToE1M1 routes between queued-e1m1-hmp / not-confirmed / other-episode / other-skill. Inventory: 39 src / 41 test, config.ts src_importer_count 3->4 (importer regex false positive on `-from-config.ts` suffix).
+- tests: format pass; focused 8/0; full 13365/0; tsc pass
+
