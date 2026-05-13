@@ -8559,3 +8559,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-013
 - summary: pickVanillaQuitMessageIndex + pickVanillaQuitSound + resolveVanillaQuitResponse pin Chocolate Doom 2.2.1 m_menu.c M_QuitDOOM/M_QuitResponse: message picker = (gametic % (NUM_QUITMESSAGES-1)) + 1 with NUM_QUITMESSAGES=22 yielding indices 1..21; quit sound = quitsounds[(gametic>>2)&7] for non-commercial, quitsounds2 for commercial (8-entry tables); single-player plays sound and waits 105 VBLs before I_Quit; netgame exits immediately; non-confirm key cancels. Inventory: src/ui 21->22 (240743 bytes, 6261 lines, 460 exports).
 - tests: format pass; focused 15/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-014 implement-end-game-confirmation completed
+
+- status: completed
+- lane: ui
+- step_id: 10-014
+- summary: resolveVanillaEndGameEntry + resolveVanillaEndGameResponse pin Chocolate Doom 2.2.1 m_menu.c M_EndGame/M_EndGameResponse: !usergame plays sfx_oof and returns; netgame shows NETEND popup; single-player shows ENDGAME popup with confirm gate; confirm key triggers M_ClearMenus + D_StartTitle. Inventory: src/ui 22->23 (243063 bytes, 6334 lines, 470 exports).
+- tests: format pass; focused 8/0; full pass; tsc pass
