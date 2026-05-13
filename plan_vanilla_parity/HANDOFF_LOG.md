@@ -9045,3 +9045,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-021
 - summary: FLOORSPEED=1 fixed, turbo=4 fixed; crush damage=10/4tic; floor_e enum 0..12 from p_spec.h.
 - tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-003 persist-vanilla-key-bindings completed
+
+- status: completed
+- lane: save
+- step_id: 12-003
+- summary: src/config/persist-vanilla-key-bindings.ts pins the M_SaveDefaults serialization contract for the 10 vanilla key bindings (key_right=77, key_left=75, key_up=72, key_down=80, key_strafeleft=51, key_straferight=52, key_fire=29, key_use=57, key_strafe=56, key_speed=54 DOS BIOS scan codes): name padded to column 30 with ASCII space then single-space separator then decimal value then LF terminator (no CRLF, no 0x prefix, no zero padding).
+- tests: format pass; focused 7/0; full pass with 5 pre-existing inventory drift failures unchanged; tsc pass
