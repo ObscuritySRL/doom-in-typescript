@@ -7856,3 +7856,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/assets/compare-local-doom1-wad-manifest.ts comparator validating a parsed WAD directory against wad-map-summary.json: total lump count (1264 shareware), per-map entry index, lump offsets and sizes. Violations: wrong_total_lump_count, missing_map, lump_offset_mismatch, lump_size_mismatch, wrong_directory_index. Inventory: src/assets committed 32->33, wad+assets 36->37 src / 48->49 test, totals 227/271 -> 228/272, src/wad/directory.ts importers 21->22 src / 57->58 test, total_size_bytes 919371->921942, total_line_count 18562->18631, total_export_count 531->539.
 - tests: format pass; focused 6/0 (8 expects); full 13487/0; tsc pass
 
+
+## 2026-05-13 - 05-027 gate-wad-and-asset-loading completed
+
+- status: completed
+- lane: wad
+- step_id: 05-027
+- summary: Phase 05 wad+asset gate aggregates 22 required modules + canonical WAD constants (shareware total 1264 lumps, IWAD type, 8-byte patch header, 14 palettes, 64 flat dimension). evaluateWadGate flags missing_module/wrong_constants. Inventory: src/assets committed 33->34 src, wad+assets group 37->38 src / 49->50 test; totals 228/272 -> 229/273.
+- tests: format pass; focused 5/0; full 13492/0; tsc pass
+
