@@ -7351,3 +7351,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned audio-window capture schema (SFX only): 44100 Hz output, 11025 Hz DMX native, max 8 channels, SAMPLES_PER_TIC = 1260 (44100/35), SHA-256 per tic window, signed 16-bit stereo LE PCM, 35-tic default sampling. Music handled by 02-014. Cross-checked AUDIO_SAMPLE_RATE/AUDIO_MAX_CHANNELS/DMX_NATIVE_SAMPLE_RATE/SAMPLES_PER_TIC/DEFAULT_AUDIO_SAMPLING_INTERVAL_TICS in src/oracles/audioHash.ts.
 - tests_run: format pass; focused 15/0 (31 expects); full 13076/0; tsc pass
 - next_eligible_steps: 02-014 define-music-event-capture-format
+
+## 2026-05-13 - 02-014 define-music-event-capture-format completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-014
+- summary: Pinned music-event log schema (event kinds change-music/pause-music/resume-music/stop-music, volume range [0,15], MUS max channels 16, percussion ch 15, MIDI percussion ch 9, ascending-by-tic ordering). Music event-driven; SFX PCM tracked separately by 02-013. Cross-checked MUSIC_EVENT_KINDS, MUS_MAX_CHANNELS, MUS_PERCUSSION_CHANNEL, MUSIC_VOLUME_MIN/MAX in src/oracles/musicEventLog.ts.
+- tests_run: format pass; focused 12/0 (27 expects); full 13088/0; tsc pass
+- next_eligible_steps: 02-015 define-save-byte-capture-format

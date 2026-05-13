@@ -1,0 +1,17 @@
+{
+  "id": "OR-VP-MUSIC-EVENT-014",
+  "stepId": "02-014",
+  "stepTitle": "Define Music Event Capture Format",
+  "lane": "oracle",
+  "description": "Pins the music-event log schema. Each entry holds a tic number and a discriminator-tagged event (change-music, pause-music, resume-music, stop-music). Music is event-driven and synthesized differently depending on the music device, so this log captures discrete state transitions rather than periodic PCM hashes (SFX uses the 02-013 audio-window format).",
+  "sourceModule": "src/oracles/musicEventLog.ts",
+  "eventKinds": ["change-music", "pause-music", "resume-music", "stop-music"],
+  "musicVolumeMin": 0,
+  "musicVolumeMax": 15,
+  "musMaxChannels": 16,
+  "musPercussionChannel": 15,
+  "midiPercussionChannel": 9,
+  "entryOrderingRule": "ascending-by-tic-number-strict",
+  "scopeNote": "Music events only; SFX PCM mix is captured by 02-013.",
+  "downstreamFollowUps": ["create-music-event-runner", "wire-into-bun-test-music-comparator"]
+}
