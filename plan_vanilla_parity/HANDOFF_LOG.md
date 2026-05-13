@@ -7666,3 +7666,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned main-menu -> E1M1 deterministic route: E1M1 startup (episode 1, map 1, skill 2 HMP); 3 ENTER presses, default cursor on HMP (0 DOWN); decideMenuRouteToE1M1 routes between queued-e1m1-hmp / not-confirmed / other-episode / other-skill. Inventory: 39 src / 41 test, config.ts src_importer_count 3->4 (importer regex false positive on `-from-config.ts` suffix).
 - tests: format pass; focused 8/0; full 13365/0; tsc pass
 
+
+## 2026-05-13 - 03-034 implement-screenshot-capture-hook completed
+
+- status: completed
+- lane: launch
+- step_id: 03-034
+- summary: Pinned screenshot hook: unbound by default (scancode 0), PCX default (png_screenshots=0), DOOM00.PCX through DOOM99.PCX naming, 320x200 raw framebuffer. Pure decideScreenshotFormat + buildScreenshotFilename. Inventory: 40 src / 42 test.
+- tests: format pass; focused 8/0; full 13373/0; tsc pass
+
