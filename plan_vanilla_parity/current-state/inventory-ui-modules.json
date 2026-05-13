@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 28,
+      "committed_file_count": 29,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
@@ -20,6 +20,7 @@
         "hudMessages.ts",
         "implement-end-game-confirmation.ts",
         "implement-episode-menu-shareware-restrictions.ts",
+        "implement-hud-message-queue.ts",
         "implement-load-game-menu.ts",
         "implement-main-menu-tree.ts",
         "implement-menu-repeat-timing.ts",
@@ -41,9 +42,9 @@
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 256179,
-      "total_line_count": 6699,
-      "total_export_count": 512
+      "total_size_bytes": 259733,
+      "total_line_count": 6809,
+      "total_export_count": 520
     }
   ],
   "modules": [
