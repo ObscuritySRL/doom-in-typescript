@@ -1,0 +1,63 @@
+{
+  "id": "OR-VP-SANDBOX-POLICY-003",
+  "stepId": "02-003",
+  "stepTitle": "Define Read Only Reference Sandbox Copy Policy",
+  "lane": "oracle",
+  "description": "Pins the read-only reference sandbox copy policy used by oracle-capture runs: source root, sandbox parent directory, sandbox name prefix, required and excluded file sets with their SHA-256 hashes and roles, hash verification, cleanup, and mutable-config copy flags. The doom/ source tree must never be mutated during a run; instead, every oracle-capture run snapshots a sandbox under workspaceRoot/sandboxParent/sandboxPrefix<id>/ and writes there.",
+  "readOnlySourceDirectory": "doom/",
+  "sandboxParent": ".sandboxes",
+  "sandboxPrefix": "sandbox-",
+  "verifyHashesAfterCopy": true,
+  "cleanupAfterRun": true,
+  "copyConfigsAsMutable": true,
+  "validRoles": ["config", "executable", "iwad"],
+  "manifestCrossReferences": ["reference/manifests/file-hashes.json", "test/vanilla_parity/oracles/catalog-local-reference-binaries-and-configs.json", "test/vanilla_parity/oracles/verify-local-reference-file-hashes.json"],
+  "requiredFiles": [
+    {
+      "filename": "DOOM.EXE",
+      "role": "executable",
+      "sha256": "5CA97717FD79F833B248AE5985FFFADBEE39533F5E0529BC9D7B439E08B8F1D2",
+      "sizeBytes": 1893888,
+      "mutableDuringRun": false
+    },
+    {
+      "filename": "DOOM1.WAD",
+      "role": "iwad",
+      "sha256": "1D7D43BE501E67D927E415E0B8F3E29C3BF33075E859721816F652A526CAC771",
+      "sizeBytes": 4196020,
+      "mutableDuringRun": false
+    },
+    {
+      "filename": "chocolate-doom.cfg",
+      "role": "config",
+      "sha256": "A4FB5E9C3EB88091E41F088AFC885F628812A4A1EBD37A71B08474229A8CB770",
+      "sizeBytes": 3838,
+      "mutableDuringRun": true
+    },
+    {
+      "filename": "default.cfg",
+      "role": "config",
+      "sha256": "0E1854B8109FE9D3C3BBDC1407F2AA0F75BA7A89807CB7EE21E146AF6CFAFABC",
+      "sizeBytes": 1565,
+      "mutableDuringRun": true
+    }
+  ],
+  "excludedFiles": [
+    {
+      "filename": "DOOMD.EXE",
+      "reason": "DOS-only binary; cannot execute on Windows host without DOSBox-like emulation"
+    },
+    {
+      "filename": "DOOMDUPX.EXE",
+      "reason": "UPX-packed DOS binary; cannot execute on Windows host without DOSBox-like emulation"
+    },
+    {
+      "filename": "DOOMWUPX.exe",
+      "reason": "UPX-packed alternative Windows binary; DOOM.EXE is the canonical primary executable for oracle runs"
+    },
+    {
+      "filename": "smash.py",
+      "reason": "Bundle merge utility; not part of any reference run"
+    }
+  ]
+}

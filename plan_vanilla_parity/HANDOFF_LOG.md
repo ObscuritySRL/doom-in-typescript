@@ -7202,3 +7202,23 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Added a new oracle-lane verification artifact pinning the expected SHA-256 hash, byte length, and role of every locally bundled DOOM 1.9 reference binary and configuration file under `doom/`.
 - next_eligible_steps: 02-003 define-read-only-reference-sandbox-copy-policy
 - open_risks: Verification depends on the five locally bundled files remaining bit-identical to the captured hashes; any unintended modification or substitution would surface as a focused test failure. Concurrent unrelated working-tree changes from prior blocked iterations (`src/bootstrap/implement-resize-and-focus-policy.ts`, `test/vanilla_parity/launch/implement-resize-and-focus-policy.test.ts`, `test/vanilla_parity/wad/build-sprite-frame-cache.test.ts`, untracked `src/core/reject-frame-rate-dependent-simulation.ts`, and `test/vanilla_parity/core/reject-frame-rate-dependent-simulation.test.ts` with the uncommitted readonly-spread fix) plus root diagnostic scripts `probe-pnames.ts` and `probe-texture1.ts` and `.claude/settings.local.json` remain unstaged and untouched.
+
+## 2026-05-13 - 02-003 define-read-only-reference-sandbox-copy-policy completed ea1d4268-c24e-43b4-9684-69363608665f
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: medium
+- lane: oracle
+- lock_id: ea1d4268-c24e-43b4-9684-69363608665f
+- step_id: 02-003
+- step_title: define-read-only-reference-sandbox-copy-policy
+- summary: Added the oracle-lane sandbox policy JSON `test/vanilla_parity/oracles/define-read-only-reference-sandbox-copy-policy.json` declaring the read-only `doom/` source, `.sandboxes/sandbox-<id>/` parent, required/excluded file sets with SHA-256 hashes and roles, hash-verify, cleanup, and mutable-config flags. Added the focused test covering shape, on-disk existence and size for required files, cross-reference with `reference/manifests/file-hashes.json`, disjointness of required vs excluded sets, full coverage of the 8-file upstream manifest, and failure modes for malformed hashes and unsafe sandbox paths.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/define-read-only-reference-sandbox-copy-policy.json; D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/define-read-only-reference-sandbox-copy-policy.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md
+- recovery_edit: none
+- tests_run: bun run format (pass, no fixes); bun test test/vanilla_parity/oracles/define-read-only-reference-sandbox-copy-policy.test.ts (pass, 23 tests, 119 expects); bun test (pass, 12912 tests, 0 fail, 2433682 expects, 33.72 s); bun x tsc --noEmit --project tsconfig.json (pass, no output)
+- reference_sources: plan_vanilla_parity/steps/02-003-define-read-only-reference-sandbox-copy-policy.md; src/oracles/referenceSandbox.ts (existing source-level sandbox policy); src/reference/policy.ts (asset boundaries and read-only bundle path); reference/manifests/file-hashes.json (upstream hash manifest, source of expected hashes); test/vanilla_parity/oracles/catalog-local-reference-binaries-and-configs.json and verify-local-reference-file-hashes.json (cross-reference oracle artifacts).
+- decision_changes: none
+- oracle_changes: Added a new oracle-lane sandbox copy policy declaration covering required files, excluded files, and lifecycle flags for read-only reference runs.
+- next_eligible_steps: 02-004 define-reference-process-launch-manifest
+- open_risks: The JSON policy must remain in sync with the source-level `REFERENCE_SANDBOX_POLICY` in `src/oracles/referenceSandbox.ts`; future updates to either side should land in the same commit.
