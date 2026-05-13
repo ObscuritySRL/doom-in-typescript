@@ -8856,3 +8856,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-006
 - summary: clampVanillaWallScale + vanillaWallScaleDenominatorPasses + applyVanillaWallScaleSaturated pin Chocolate Doom 2.2.1 r_main.c R_ScaleFromGlobalAngle: scale clamp [256, 64*FRACUNIT=4_194_304], denominator guard `den > num >> 16` saturates to max when wall is overhead/behind. The min of 256 is the literal value, NOT FRACUNIT. Inventory: src/render 19->20 (213198 bytes, 5296 lines, 185 exports).
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-010 implement-imp-attacks completed
+
+- status: completed
+- lane: ai
+- step_id: 08-010
+- summary: applyVanillaImpAttack pins Chocolate Doom 2.2.1 p_enemy.c A_TroopAttack: melee-first probe via P_CheckMeleeRange; on hit, damage = 3*(P_Random()%8+1) yielding {3,6,9,...,24}, plays SFX_CLAW=32, no missile spawn; on miss, no damage but spawns MT_TROOPSHOT=23 projectile (no probability gate). Inventory: src/ai 17->18 (173022 bytes, 4437 lines, 270 exports); player_ai_specials 69->70 src; totals 338->340.
+- tests: format pass; focused 7/0; full pass; tsc pass
