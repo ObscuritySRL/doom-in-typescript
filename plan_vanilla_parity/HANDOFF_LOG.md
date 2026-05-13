@@ -7525,3 +7525,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 10/0 (20 expects); full 13273/0; tsc pass
 - next_eligible_steps: 03-019 implement-close-button-and-alt-f4-behavior
 
+
+## 2026-05-13 - 03-019 implement-close-button-and-alt-f4-behavior completed
+
+- status: completed
+- lane: launch
+- step_id: 03-019
+- summary: Pinned vanilla Chocolate Doom 2.2.1 host close-button + Alt+F4 quit contract: triggers (alt_f4, sigterm, wm_close), three-phase clean exit (m_save_defaults, i_show_endoom, i_exit), no prompt, bypass in-engine quit menu, exit code 0. Focused test covers happy path + each violation. Refreshed bootstrap_runtime_contracts source_file_count 24->25 and test_file_count 26->27 plus classification_summary totals 193->194 and 237->238.
+- tests: format pass; focused 8/0; full 13281/0; tsc pass
+- next_eligible_steps: 03-020 implement-keyboard-scan-code-mapping
+
