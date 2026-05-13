@@ -10,8 +10,9 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 38,
+      "committed_file_count": 39,
       "committed_filenames_sorted": [
+        "compare-scripted-combat-oracle.ts",
         "compare-scripted-pickup-oracle.ts",
         "hitscan.ts",
         "implement-ammo-pickups.ts",
@@ -51,9 +52,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 167471,
-      "total_line_count": 4698,
-      "total_export_count": 408
+      "total_size_bytes": 170708,
+      "total_line_count": 4804,
+      "total_export_count": 410
     }
   ],
   "modules": [
