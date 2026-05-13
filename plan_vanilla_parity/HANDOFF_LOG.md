@@ -8937,3 +8937,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-011
 - summary: vanillaVisplaneOverflowWouldFire + vanillaVisplaneCountIsValid + vanillaVisplaneRemainingCapacity pin Chocolate Doom 2.2.1 r_plane.c R_FindPlane overflow guard: MAXVISPLANES=128 hard limit, "R_FindPlane: no more visplanes" error message, strict equality check `lastvisplane - visplanes == MAXVISPLANES` (128th allocation succeeds, 129th errors). No graceful recovery. Inventory: src/render 24->25 (226512 bytes, 5673 lines, 230 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-015 implement-cyberdemon-attack-for-registered-iwad completed
+
+- status: completed
+- lane: ai
+- step_id: 08-015
+- summary: A_CyberAttack always fires MT_ROCKET=10; explosion damage=128. MT_CYBORG=18, registered/retail IWAD only.
+- tests: format pass; focused 4/0; full pass; tsc pass
