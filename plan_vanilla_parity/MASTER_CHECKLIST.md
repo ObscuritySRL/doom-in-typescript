@@ -353,7 +353,7 @@
 - [x] `10-007` `implement-options-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-007-implement-options-menu.md`
 - [x] `10-008` `implement-sound-volume-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-008-implement-sound-volume-menu.md`
 - [x] `10-009` `implement-screen-size-detail-gamma-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-009-implement-screen-size-detail-gamma-menu.md`
-- [ ] `10-010` `implement-save-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-010-implement-save-game-menu.md`
+- [x] `10-010` `implement-save-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-010-implement-save-game-menu.md`
 - [ ] `10-011` `implement-load-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-011-implement-load-game-menu.md`
 - [ ] `10-012` `implement-read-this-help-pages` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-012-implement-read-this-help-pages.md`
 - [ ] `10-013` `implement-quit-confirmation` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-013-implement-quit-confirmation.md`
