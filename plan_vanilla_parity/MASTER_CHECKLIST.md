@@ -304,7 +304,7 @@
 ## Phase 09: Renderer / World / Sprites / Status Bar / Automap
 
 - [x] `09-001` `implement-view-setup-constants` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-001-implement-view-setup-constants.md`
-- [ ] `09-002` `implement-projection-and-clip-angle-tables` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-002-implement-projection-and-clip-angle-tables.md`
+- [x] `09-002` `implement-projection-and-clip-angle-tables` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-002-implement-projection-and-clip-angle-tables.md`
 - [ ] `09-003` `implement-bsp-front-to-back-render-walk` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-003-implement-bsp-front-to-back-render-walk.md`
 - [ ] `09-004` `implement-solid-segment-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-004-implement-solid-segment-clipping.md`
 - [ ] `09-005` `implement-two-sided-wall-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-005-implement-two-sided-wall-clipping.md`
