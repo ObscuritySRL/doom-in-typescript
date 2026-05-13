@@ -8694,3 +8694,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-024
 - summary: computeVanillaFinaleVisibleCharCount + computeVanillaFinaleTextStageDurationTics + vanillaFinaleTextStageShouldAdvance pin Chocolate Doom 2.2.1 f_finale.c F_Ticker/F_TextWrite: TEXTSPEED=3 tics/char, TEXTWAIT=250 tics post-text, 10-tic lead-in delay. Visible chars = max(0, (finalecount-10)/3) clamped to textLength. Stage advances when finalecount > textLength*3+250. Inventory: src/ui 32->33 (270854 bytes, 7122 lines, 556 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-025 implement-finale-cast-and-bunny-scroll-scope completed
+
+- status: completed
+- lane: ui
+- step_id: 10-025
+- summary: resolveVanillaFinalePostTextScope + vanillaFinaleBunnyScrollIsAvailable + vanillaFinaleCastCallIsAvailable pin Chocolate Doom 2.2.1 f_finale.c F_Ticker post-text branch: commercial -> 'cast-call' (Doom II cast); non-commercial episode 1 -> 'bunny-scroll' (Daisy); non-commercial episodes 2/3/4 -> 'static-art'. Cast call exclusive to commercial; bunny scroll exclusive to non-commercial episode 1. Inventory: src/ui 33->34 (273305 bytes, 7193 lines, 563 exports).
+- tests: format pass; focused 9/0; full pass; tsc pass
