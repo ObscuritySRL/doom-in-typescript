@@ -7811,3 +7811,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added per-tic state-hash hook contract (insertion after P_Ticker before D_Display; components automap/player/rng/sectors/thinkers + combined; SHA-256 64-hex). validatePerTicStateHashCollection flags invalid_tic, missing_component_hash, malformed_hash. Inventory: core 34->35 src / 39->40 test; totals 223/267 -> 224/268.
 - tests: format pass; focused 7/0; full 13464/0; tsc pass
 
+
+## 2026-05-13 - 04-029 gate-core-determinism completed
+
+- status: completed
+- lane: core
+- step_id: 04-029
+- summary: Phase 04 core determinism gate aggregates 13 required modules (src/core + src/demo comparators) and 13 required tests, verifies on-disk presence, 1:1 pairing, sorted/unique invariants. evaluateCoreDeterminismGate flags missing_module, missing_test, count_mismatch. Inventory: core 35->36 src / 40->41 test; totals 224/268 -> 225/269.
+- tests: format pass; focused 7/0; full 13471/0; tsc pass
+
