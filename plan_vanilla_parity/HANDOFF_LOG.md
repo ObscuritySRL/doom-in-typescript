@@ -7648,3 +7648,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla clean-launch -> title-loop contract: attract sequence titlepic/demo1/credit/demo2/titlepic/demo3, PAGETIME=200 tics. decideLaunchOutcome routes between title-loop, warped-into-map, loaded-game, played-demo. Inventory: 37 src / 39 test.
 - tests: format pass; focused 7/0; full 13350/0; tsc pass
 
+
+## 2026-05-13 - 03-032 implement-escape-to-main-menu-from-title completed
+
+- status: completed
+- lane: launch
+- step_id: 03-032
+- summary: Pinned ESC-to-main-menu contract: ESCAPE scancode 1; freezes attract page; pauses page timer; M_DOOM lump anchor (97,64); initial cursor on New Game (0). decideEscFromTitle handles closed/open menu + non-ESC paths. Inventory: 38 src / 40 test.
+- tests: format pass; focused 7/0 (13 expects); full 13357/0; tsc pass
+
