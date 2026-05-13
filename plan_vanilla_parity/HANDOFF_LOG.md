@@ -8838,3 +8838,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-009
 - summary: computeZombieBulletDamage + computeZombieBulletSpreadAngleDelta pin Chocolate Doom 2.2.1 p_enemy.c A_PosAttack/A_SPosAttack/A_CPosAttack: damage = ((P_Random()%5)+1)*3 yielding {3,6,9,12,15} (corrected from auto-generated source's `1+(rng&7)*3 = 1..22` which was a parity bug). Zombieman fires 1 bullet, shotgun guy 3, chaingunner 1/tic (refire via state chain). Bullet spread angle = (rng-rng)<<20. Chaingunner uses SFX_SHOTGN (vanilla shared sound). Inventory: src/ai 16->17 (171276 bytes, 4388 lines, 263 exports); player_ai_specials 68->69 src; totals 336->337.
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-005 implement-two-sided-wall-clipping completed
+
+- status: completed
+- lane: render
+- step_id: 09-005
+- summary: classifyVanillaPassClipFragment + vanillaPassClipFragmentRange + vanillaPassClipBottomIsContained + vanillaPassClipGapBetween pin Chocolate Doom 2.2.1 r_bsp.c R_ClipPassWallSegment: pass walls (two-sided non-solid) emit drawsegs for visible fragments WITHOUT modifying solidsegs; 4 fragment classes (fully-visible / fragment-above-start / fully-occluded / inter-segment-gap); adjacency rule matches solidseg path (start->last < first - 1 = NOT touching). Inventory: src/render 18->19 (210451 bytes, 5217 lines, 178 exports).
+- tests: format pass; focused 16/0; full pass; tsc pass
