@@ -9333,3 +9333,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-016
 - summary: src/save/serialize-sector-specials.ts pins p_saveg.c P_ArchiveSpecials saveg_specialclass_t enum: tc_ceiling=0, tc_door=1, tc_floor=2, tc_plat=3, tc_flash=4, tc_strobe=5, tc_glow=6, tc_endspecials=7. MAXCEILINGS=30, MAXPLATS=30, MAXBUTTONS=16 active-list caps. SAVE_GAME_TERMINATOR=0x1d follows tc_endspecials as the file end marker. T_*InStasis variants share class bytes; inactive flag stored in record body.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-021 implement-fuzz-invisibility-rendering completed
+
+- status: completed
+- lane: render
+- step_id: 09-021
+- summary: FUZZTABLE=50, fuzz colormap index=6, 50-entry ±1 offset pattern from r_draw.c.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
