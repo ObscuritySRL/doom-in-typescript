@@ -10,7 +10,7 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 27,
+      "committed_file_count": 28,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-ammo-pickups.ts",
@@ -29,6 +29,7 @@
         "implement-player-reborn-state.ts",
         "implement-player-spawn-state.ts",
         "implement-player-thrust-and-friction.ts",
+        "implement-shotgun-actions.ts",
         "implement-ticcmd-application.ts",
         "implement-weapon-ownership-and-selection.ts",
         "implement-weapon-pickups.ts",
@@ -40,9 +41,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 149942,
-      "total_line_count": 4210,
-      "total_export_count": 343
+      "total_size_bytes": 151161,
+      "total_line_count": 4238,
+      "total_export_count": 350
     }
   ],
   "modules": [

@@ -8334,3 +8334,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-017
 - summary: isWeaponSelectable mirrors Chocolate Doom 2.2.1 p_user.c BT_CHANGE validation (weaponowned + ammo>=1 from weaponinfo[].ammo table); pickBestAutoSwitchWeapon follows P_DropWeapon priority plasma > chaingun > shotgun > pistol > chainsaw > fist for vanilla auto-switch. Re-exports VANILLA_WEAPONS_RE_EXPORT enum mirror. Inventory: src/player 24->25 (146626 bytes, 4112 lines, 326 exports); player_ai_specials group 42->43 src; totals 278->279.
 - tests: format pass; focused 13/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-019 implement-pistol-actions completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-019
+- summary: applyVanillaPistolFire mirrors Chocolate Doom 2.2.1 p_pspr.c A_FirePistol: decrements am_clip by 1 per shot, plays sfx_pistol=1, sets ps_flash psprite, and gates bullet accuracy on player.refire (accurate when refire=0, spread otherwise). Returns didFire=false when bullets<=0 (no ammo consumption). Inventory: src/player 25->27 (149942 bytes, 4210 lines, 343 exports — also catches up 07-018 fist-and-chainsaw which had been committed without inventory bump); player_ai_specials group 43->45 src; totals 279->281.
+- tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-020 implement-shotgun-actions completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-020
+- summary: computeShotgunPelletDamage + computeBulletSpreadAngleDelta pin Chocolate Doom 2.2.1 p_pspr.c A_FireShotgun + p_map.c P_GunShot contract: 7 pellets per shot, 1 shell consumed, damage = 5 * (P_Random()%3+1) yielding {5,10,15}, bullet spread angle delta = (P_Random()-P_Random()) << 18. Inventory: src/player 27->28 (151161 bytes, 4238 lines, 350 exports); player_ai_specials group 45->46 src; totals 281->282.
+- tests: format pass; focused 6/0; full pass; tsc pass
