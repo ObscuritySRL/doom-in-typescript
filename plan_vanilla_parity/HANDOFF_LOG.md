@@ -7883,3 +7883,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/map/parse-vertex-linedef-sidedef-sector-lumps.ts with byte-level parsers for VERTEXES (4 bytes), LINEDEFS (14 bytes), SIDEDEFS (30 bytes), SECTORS (26 bytes) lumps per p_setup.c. Signed-16/unsigned-16 LE decoding plus 8-byte texture-name extraction with trailing NUL trimming. Throws RangeError on non-multiple buffer sizes. Inventory: map+world source 22->23, src/map committed 11->12 (82352 bytes, 2354 lines, 105 exports), totals 230/274 -> 231/274.
 - tests: format pass; focused 6/0 (24 expects); full 13507/0; tsc pass
 
+
+## 2026-05-13 - 06-002 parse-seg-ssector-node-reject-blockmap-lumps completed
+
+- status: completed
+- lane: map
+- step_id: 06-002
+- summary: Added src/map/parse-seg-ssector-node-reject-blockmap-lumps.ts with byte-level parsers for SEGS (12 bytes), SSECTORS (4 bytes), NODES (28 bytes including 2x4 bboxes and 2 children). Child flag helpers isSubsectorChild + subsectorIndexFromChild handle the 0x8000 subsector flag. Constants for blockmap (8-byte header, 0xFFFF terminator). Inventory: map+world 23->24 src; src/map 12->13 committed (87549 bytes, 2487 lines, 119 exports); totals 231->232.
+- tests: format pass; focused 7/0; full 13514/0; tsc pass
+

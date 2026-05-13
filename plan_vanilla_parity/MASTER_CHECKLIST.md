@@ -197,7 +197,7 @@
 ## Phase 06: Map / BSP / Blockmap / Collision
 
 - [x] `06-001` `parse-vertex-linedef-sidedef-sector-lumps` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-001-parse-vertex-linedef-sidedef-sector-lumps.md`
-- [ ] `06-002` `parse-seg-ssector-node-reject-blockmap-lumps` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-002-parse-seg-ssector-node-reject-blockmap-lumps.md`
+- [x] `06-002` `parse-seg-ssector-node-reject-blockmap-lumps` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-002-parse-seg-ssector-node-reject-blockmap-lumps.md`
 - [ ] `06-003` `parse-things-with-skill-and-game-mode-filters` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-003-parse-things-with-skill-and-game-mode-filters.md`
 - [ ] `06-004` `implement-map-setup-init-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-004-implement-map-setup-init-ordering.md`
 - [ ] `06-005` `implement-subsector-point-query` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-005-implement-subsector-point-query.md`
