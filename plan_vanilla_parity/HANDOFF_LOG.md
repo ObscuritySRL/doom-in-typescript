@@ -7757,3 +7757,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned demo recording FSM: phases idle/writing/finalized/error; events request_record, append_ticcmd, finalize_demo, write_failed, unsupported_flag_combo; terminal phases sticky. Inventory: core 32 src / 34 test.
 - tests: format pass; focused 7/0; full 13429/0; tsc pass
 
+
+## 2026-05-13 - 04-023 enforce-vanilla-demo-size-limit completed
+
+- status: completed
+- lane: core
+- step_id: 04-023
+- summary: Pinned vanilla 128 KiB (0x20000) demo buffer cap. chocolate-doom.cfg vanilla_demo_limit=1 enforces truncated-at-limit; =0 allows over-limit-but-relaxed. Inventory: core 33 src / 35 test.
+- tests: format pass; focused 6/0; full 13435/0; tsc pass
+
