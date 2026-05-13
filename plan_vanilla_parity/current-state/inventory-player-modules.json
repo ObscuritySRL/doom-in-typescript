@@ -10,10 +10,12 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 39,
+      "committed_file_count": 41,
       "committed_filenames_sorted": [
         "compare-scripted-combat-oracle.ts",
         "compare-scripted-pickup-oracle.ts",
+        "gate-player-movement-and-damage.ts",
+        "gate-weapon-and-item-semantics.ts",
         "hitscan.ts",
         "implement-ammo-pickups.ts",
         "implement-autoaim-semantics.ts",
@@ -52,9 +54,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 170708,
-      "total_line_count": 4804,
-      "total_export_count": 410
+      "total_size_bytes": 174014,
+      "total_line_count": 4869,
+      "total_export_count": 413
     }
   ],
   "modules": [
@@ -142,7 +144,7 @@
         "src/world/mobj.ts",
         "src/world/zMovement.ts"
       ],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 3
     },
     {
@@ -189,7 +191,7 @@
         "src/world/mobj.ts",
         "src/world/thinkers.ts"
       ],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 6
     },
     {
