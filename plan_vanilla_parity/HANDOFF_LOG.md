@@ -7565,3 +7565,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 5/0 (27 expects); full 13299/0; tsc pass
 - next_eligible_steps: 03-023 implement-mouse-button-mapping
 
+
+## 2026-05-13 - 03-023 implement-mouse-button-mapping completed
+
+- status: completed
+- lane: launch
+- step_id: 03-023
+- summary: Pinned mouse button bindings (FIRE=0, STRAFE=1, FORWARD=2; STRAFELEFT/STRAFERIGHT/USE/BACKWARD/PREVWEAPON/NEXTWEAPON unbound at -1). SDL range [0,4]. Inventory refreshed: 29 src / 31 test.
+- tests: format pass; focused 6/0 (20 expects); full 13305/0; tsc pass
+- next_eligible_steps: 03-024 implement-mouse-motion-accumulation
+
