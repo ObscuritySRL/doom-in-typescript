@@ -9027,3 +9027,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-014
 - summary: selectVanillaSkyTextureLumpName + vanillaSkyTextureExistsInGameMode pin Chocolate Doom 2.2.1 g_game.c G_InitNew + r_main.c R_InitSkyMap: SKYFLATNAME=F_SKY1, skytexturemid=100*FRACUNIT; non-commercial episode 1..4 -> SKY1..SKY4 (SKY4 retail-only); commercial Doom II maps 1..11=SKY1, 12..20=SKY2, 21+=SKY3. Inventory: src/render 27->28 (235099 bytes, 5930 lines, 253 exports).
 - tests: format pass; focused 12/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-020 implement-door-specials completed
+
+- status: completed
+- lane: ai
+- step_id: 08-020
+- summary: VDOORSPEED=2 fixed, VDOORWAIT=150 tics, raise-in-5-mins=10500 tics; vldoor_e enum {NORMAL=0, CLOSE30THEN=1, CLOSE=2, OPEN=3, RAISE_IN_5_MINS=4}.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352

@@ -287,7 +287,7 @@
 - [x] `08-017` `implement-pain-elemental-and-doom-two-guarded-path` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-017-implement-pain-elemental-and-doom-two-guarded-path.md`
 - [x] `08-018` `implement-boss-death-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-018-implement-boss-death-specials.md`
 - [x] `08-019` `implement-keen-and-icon-paths-behind-doom-two-scope` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-019-implement-keen-and-icon-paths-behind-doom-two-scope.md`
-- [ ] `08-020` `implement-door-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-020-implement-door-specials.md`
+- [x] `08-020` `implement-door-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-020-implement-door-specials.md`
 - [ ] `08-021` `implement-floor-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-021-implement-floor-specials.md`
 - [ ] `08-022` `implement-ceiling-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-022-implement-ceiling-specials.md`
 - [ ] `08-023` `implement-platform-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-023-implement-platform-specials.md`
