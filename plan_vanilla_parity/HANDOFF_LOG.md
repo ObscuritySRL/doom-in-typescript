@@ -7793,3 +7793,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/demo/compare-demo-three-ticcmd-stream.ts (version 109, episode 1). Inventory: src/demo committed 6->7, save_config_demo source 12->13, core test 36->37; totals 220/264 -> 221/265.
 - tests: format pass; focused 5/0; full 13452/0; tsc pass
 
+
+## 2026-05-13 - 04-027 detect-long-run-drift completed
+
+- status: completed
+- lane: core
+- step_id: 04-027
+- summary: Added src/core/detect-long-run-drift.ts. Compares observed vs expected per-tic state hash sequences; flags first_divergence at the earliest mismatch tic, length_mismatch when sequences differ in length, empty_streams when both are empty. Inventory: core 33->34 src / 38->39 test; save_config_demo source 13->14 (caught additional drift from prior 04-026 commit); totals 222/266 -> 223/267.
+- tests: format pass; focused 5/0; full 13457/0; tsc pass
+

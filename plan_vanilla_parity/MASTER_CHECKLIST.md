@@ -158,7 +158,7 @@
 - [x] `04-024` `compare-demo-one-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-024-compare-demo-one-ticcmd-stream.md`
 - [x] `04-025` `compare-demo-two-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-025-compare-demo-two-ticcmd-stream.md`
 - [x] `04-026` `compare-demo-three-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-026-compare-demo-three-ticcmd-stream.md`
-- [ ] `04-027` `detect-long-run-drift` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-027-detect-long-run-drift.md`
+- [x] `04-027` `detect-long-run-drift` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-027-detect-long-run-drift.md`
 - [ ] `04-028` `add-determinism-state-hash-hook` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-028-add-determinism-state-hash-hook.md`
 - [ ] `04-029` `gate-core-determinism` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-029-gate-core-determinism.md`
 - [ ] `04-030` `gate-demo-sync-primitives` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-030-gate-demo-sync-primitives.md`
