@@ -10,7 +10,7 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 25,
+      "committed_file_count": 27,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-ammo-pickups.ts",
@@ -18,11 +18,13 @@
         "implement-berserk-partial-invisibility-radiation-suit.ts",
         "implement-bob-and-viewheight-semantics.ts",
         "implement-death-and-reborn-flow.ts",
+        "implement-fist-and-chainsaw-actions.ts",
         "implement-forward-side-and-turn-movement.ts",
         "implement-god-mode-and-powerup-flags.ts",
         "implement-health-and-armor-pickups.ts",
         "implement-invulnerability-and-infrared.ts",
         "implement-keycard-and-skull-key-pickups.ts",
+        "implement-pistol-actions.ts",
         "implement-player-damage-and-armor.ts",
         "implement-player-reborn-state.ts",
         "implement-player-spawn-state.ts",
@@ -38,9 +40,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 146626,
-      "total_line_count": 4112,
-      "total_export_count": 326
+      "total_size_bytes": 149942,
+      "total_line_count": 4210,
+      "total_export_count": 343
     }
   ],
   "modules": [

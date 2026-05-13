@@ -249,7 +249,7 @@
 - [x] `07-016` `implement-invulnerability-and-infrared` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-016-implement-invulnerability-and-infrared.md`
 - [x] `07-017` `implement-weapon-ownership-and-selection` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-017-implement-weapon-ownership-and-selection.md`
 - [x] `07-018` `implement-fist-and-chainsaw-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-018-implement-fist-and-chainsaw-actions.md`
-- [ ] `07-019` `implement-pistol-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-019-implement-pistol-actions.md`
+- [x] `07-019` `implement-pistol-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-019-implement-pistol-actions.md`
 - [ ] `07-020` `implement-shotgun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-020-implement-shotgun-actions.md`
 - [ ] `07-021` `implement-chaingun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-021-implement-chaingun-actions.md`
 - [ ] `07-022` `implement-rocket-launcher-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-022-implement-rocket-launcher-actions.md`

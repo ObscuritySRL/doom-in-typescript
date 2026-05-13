@@ -150,8 +150,8 @@
       "exported_classes": [],
       "exported_types": ["Fixed"],
       "external_imports": [],
-      "src_importer_count": 52,
-      "test_importer_count": 70
+      "src_importer_count": 53,
+      "test_importer_count": 71
     },
     {
       "relative_path": "src/core/rng.ts",
