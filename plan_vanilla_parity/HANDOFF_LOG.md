@@ -7575,3 +7575,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 6/0 (20 expects); full 13305/0; tsc pass
 - next_eligible_steps: 03-024 implement-mouse-motion-accumulation
 
+
+## 2026-05-13 - 03-024 implement-mouse-motion-accumulation completed
+
+- status: completed
+- lane: launch
+- step_id: 03-024
+- summary: Pinned mouse motion accumulation contract (mouse_acceleration=2, mouse_threshold=10, novert=0 default, no acceleration at accumulation stage, no per-tic clamping). Pure `accumulateMotion` adds dx/dy with novert zeroing dy. Inventory refreshed: 30 src / 32 test.
+- tests: format pass; focused 6/0 (11 expects); full 13311/0; tsc pass
+- next_eligible_steps: 03-025 (next launch lane unchecked)
+
