@@ -59,10 +59,11 @@
     {
       "relative_path": "src/world/",
       "exists": true,
-      "committed_file_count": 12,
+      "committed_file_count": 13,
       "committed_filenames_sorted": [
         "checkPosition.ts",
         "gate-blockmap-collision.ts",
+        "gate-line-use-and-trigger-collision.ts",
         "mobj.ts",
         "radiusAttack.ts",
         "sectorChange.ts",
@@ -74,9 +75,9 @@
         "xyMovement.ts",
         "zMovement.ts"
       ],
-      "total_size_bytes": 271031,
-      "total_line_count": 8569,
-      "total_export_count": 110
+      "total_size_bytes": 272320,
+      "total_line_count": 8599,
+      "total_export_count": 118
     }
   ],
   "modules": [

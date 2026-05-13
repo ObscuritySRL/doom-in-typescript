@@ -8135,3 +8135,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-029
 - summary: BLOCKMAP_COLLISION_GATE pins vanilla blockmap collision constants: MAPBLOCKSIZE=128, MAPBLOCKSHIFT=23 (FRACBITS+7), MAPBTOFRAC=7, MAXRADIUS=32 fixed. Inventory: src/world 11->12 (271031 bytes, 8569 lines, 110 exports); map+world 50->51 src; totals 258->259.
 - tests: format pass; focused 4/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-030 gate-line-use-and-trigger-collision completed
+
+- status: completed
+- lane: map
+- step_id: 06-030
+- summary: Pinned vanilla USERANGE=64 fixed, MELEERANGE=64 fixed; trigger groups {walk,push,gun,switch}; repeat modes {once,repeatable}. Inventory: src/world 12->13 (272320 bytes, 8599 lines, 118 exports); map+world 51->52 src; totals 259->260.
+- tests: format pass; focused 5/0; full pass; tsc pass
