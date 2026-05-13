@@ -1,0 +1,16 @@
+{
+  "id": "OR-VP-FINALE-027",
+  "stepId": "02-027",
+  "stepTitle": "Capture Finale Transition Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic transition into the E1 finale screen after E1M9 completion (or the shareware end-of-episode after E1M8): F_StartFinale entry, F_TextWrite scrolling text rate (~3 tics per character), the F_BUNNY_SCROLLRATE (640 pixels over 105 tics during E1 cast call), and the framebuffer/state captures at finale entry, text-write end, and cast-call sequence end.",
+  "captureMethod": "Run scripted full E1 path to the finale; capture state + framebuffer at finale-entry, text-write end (~280 tics for E1 text), and post-cast-call.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "expectedTextWriteTicsPerCharacter": 3,
+  "stateEntries": [],
+  "framebufferEntries": [],
+  "downstreamFollowUps": ["wire-state-and-framebuffer-grabber-into-bun-comparator"]
+}

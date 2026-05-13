@@ -7452,3 +7452,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: intermission animation 6 frames, state/framebuffer captures at WI_INITIAL_PAUSE end, bar fill end, WI_NEXTLOC end.
 - tests: focused 5/0; full 13206/0; tsc pass
 - next: 02-027
+
+## 2026-05-13 - 02-027 capture-finale-transition-oracle (pending)
+- summary: Pending manifest: F_TextWrite at 3 tics/char, captures at finale entry / text end / cast end.
+- tests: focused 5/0; full 13211/0; tsc pass
+- next: 02-028

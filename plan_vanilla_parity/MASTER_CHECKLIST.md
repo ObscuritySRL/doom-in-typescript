@@ -81,7 +81,7 @@
 - [x] `02-024` `capture-scripted-combat-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-024-capture-scripted-combat-oracle.md`
 - [x] `02-025` `capture-damage-death-reborn-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-025-capture-damage-death-reborn-oracle.md`
 - [x] `02-026` `capture-intermission-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-026-capture-intermission-transition-oracle.md`
-- [ ] `02-027` `capture-finale-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-027-capture-finale-transition-oracle.md`
+- [x] `02-027` `capture-finale-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-027-capture-finale-transition-oracle.md`
 - [ ] `02-028` `capture-demo-one-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-028-capture-demo-one-playback-oracle.md`
 - [ ] `02-029` `capture-demo-two-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-029-capture-demo-two-playback-oracle.md`
 - [ ] `02-030` `capture-demo-three-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-030-capture-demo-three-playback-oracle.md`
