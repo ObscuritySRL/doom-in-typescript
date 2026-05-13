@@ -8379,3 +8379,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-002
 - summary: tickVanillaPagetic + requestVanillaAdvanceDemo pin Chocolate Doom 2.2.1 d_main.c D_PageTicker pre-decrement contract: pagetic -= 1 then advanceTriggered = (decremented < 0), so a 170-tic TITLEPIC takes 171 ticks before advance fires, and a 200-tic CREDIT/HELP2 interlude takes 201 ticks. D_AdvanceDemo is idempotent and just sets advancedemo=true. Inventory: src/ui 10->11 (206523 bytes, 5358 lines, 356 exports).
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-003 implement-main-menu-tree completed
+
+- status: completed
+- lane: ui
+- step_id: 10-003
+- summary: getVanillaMainMenuTree pins Chocolate Doom 2.2.1 m_menu.c MainMenu + M_Init contract: non-commercial gamemodes (shareware/registered/retail) show 6 items in order newgame/options/loadgame/savegame/readthis/quitdoom with lump names M_NGAME/M_OPTION/M_LOADG/M_SAVEG/M_RDTHIS/M_QUITG and hotkeys n/o/l/s/r/q; commercial (Doom II) drops the readthis slot leaving 5 items. Frozen, deeply immutable. Inventory: src/ui 11->12 (209662 bytes, 5427 lines, 361 exports).
+- tests: format pass; focused 13/0; full pass; tsc pass
