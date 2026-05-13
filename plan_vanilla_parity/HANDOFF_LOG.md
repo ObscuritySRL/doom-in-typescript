@@ -8586,3 +8586,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-015
 - summary: resolveVanillaQuickSaveAction + resolveVanillaQuickLoadAction pin Chocolate Doom 2.2.1 m_menu.c M_QuickSave/M_QuickLoad: quick save guards !usergame->play-oof-sound, gamestate!=GS_LEVEL->ignored, quickSaveSlot<0->pick-slot (opens save menu with sentinel -2), else confirm-prompt with QSPROMPT; quick load guards netgame->QLOADNET, quickSaveSlot<0->QSAVESPOT, else confirm-prompt with QLPROMPT. Sentinel constants -1 (no slot), -2 (pick-slot mode). Inventory: src/ui 23->24 (246352 bytes, 6425 lines, 482 exports).
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-016 implement-menu-skull-cursor-timing completed
+
+- status: completed
+- lane: ui
+- step_id: 10-016
+- summary: tickVanillaSkullCursor + getVanillaSkullLumpForFrame pin Chocolate Doom 2.2.1 m_menu.c M_Ticker skull cursor: counter decrements per tick; at <= 0 whichSkull XORs with 1 and counter resets to 8 (steady-state). Initial M_Init value is 10 (longer first phase). M_SKULL1/M_SKULL2 alternate, SKULLXOFF -32, LINEHEIGHT 16. Inventory: src/ui 24->25 (248792 bytes, 6501 lines, 492 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
