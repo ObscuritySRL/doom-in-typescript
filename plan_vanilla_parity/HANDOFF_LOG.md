@@ -8469,3 +8469,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-008
 - summary: VANILLA_SOUND_VOLUME_MENU_TREE + clampVanillaSoundVolume pin Chocolate Doom 2.2.1 m_menu.c SoundMenu: 4 entries SFX(M_SFXVOL slider)/separator/music(M_MUSVOL slider)/separator, both sliders use status byte 2 with hotkeys s and m. Volume range 0..15 (16 slots) for both snd_SfxVolume and snd_MusicVolume. Inventory: src/ui 16->17 (225139 bytes, 5816 lines, 408 exports).
 - tests: format pass; focused 12/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-026 implement-hitscan-aim-and-damage completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-026
+- summary: MISSILERANGE=2048 fixed, MELEERANGE=64 fixed, bullet damage formula 5*(rng%3+1) pinned.
+- tests: format pass; focused 4/0; full pass; tsc pass
