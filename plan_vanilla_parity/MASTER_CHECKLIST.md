@@ -234,7 +234,7 @@
 - [x] `07-001` `implement-player-reborn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-001-implement-player-reborn-state.md`
 - [x] `07-002` `implement-player-spawn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-002-implement-player-spawn-state.md`
 - [x] `07-003` `implement-ticcmd-application` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-003-implement-ticcmd-application.md`
-- [ ] `07-004` `implement-forward-side-and-turn-movement` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-004-implement-forward-side-and-turn-movement.md`
+- [x] `07-004` `implement-forward-side-and-turn-movement` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-004-implement-forward-side-and-turn-movement.md`
 - [ ] `07-005` `implement-bob-and-viewheight-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-005-implement-bob-and-viewheight-semantics.md`
 - [ ] `07-006` `implement-player-thrust-and-friction` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-006-implement-player-thrust-and-friction.md`
 - [ ] `07-007` `implement-player-damage-and-armor` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-007-implement-player-damage-and-armor.md`

@@ -10,9 +10,10 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 11,
+      "committed_file_count": 12,
       "committed_filenames_sorted": [
         "hitscan.ts",
+        "implement-forward-side-and-turn-movement.ts",
         "implement-player-reborn-state.ts",
         "implement-player-spawn-state.ts",
         "implement-ticcmd-application.ts",
@@ -24,9 +25,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 118530,
-      "total_line_count": 3314,
-      "total_export_count": 192
+      "total_size_bytes": 120487,
+      "total_line_count": 3363,
+      "total_export_count": 200
     }
   ],
   "modules": [
@@ -115,7 +116,7 @@
         "src/world/zMovement.ts"
       ],
       "src_importer_count": 1,
-      "test_importer_count": 2
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/player/pickups.ts",

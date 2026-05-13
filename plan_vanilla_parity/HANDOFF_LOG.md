@@ -8189,3 +8189,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-003
 - summary: Pinned vanilla ticcmd button bits from doomdef.h: BT_ATTACK=1, BT_USE=2, BT_CHANGE=4, BT_WEAPONMASK=56 (bits 3..5), BT_WEAPONSHIFT=3, BT_SPECIAL=128, BTS_PAUSE=1, BTS_SAVEGAME=2, BTS_SAVESHIFT=2. applyUseButtonLatch implements P_PlayerThink's BT_USE rising-edge gate (fires P_UseLines once until released). decodeWeaponChangeRequest extracts weapon index from BT_CHANGE+(buttons>>3). Inventory: src/player 10->11 (118530 bytes, 3314 lines, 192 exports); player_ai_specials group 28->29 src; totals 264->265.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-004 implement-forward-side-and-turn-movement completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-004
+- summary: Pinned vanilla G_BuildTiccmd speed tables from g_game.c: FORWARD_MOVE={25,50}, SIDE_MOVE={24,40}, ANGLE_TURN={640,1280,320} normal/fast/slow, SLOW_TURN_TICS=6, MAXPLMOVE=50, PLAYER_THRUST_SCALE=2048. pickAngleTurnForHoldDurationTics returns slow-ramp angle (320) for first 6 tics then normal/fast based on shift state. clampMovementToMaxPlayerMove enforces +-MAXPLMOVE limit. Inventory: src/player 11->12 (120487 bytes, 3363 lines, 200 exports); player_ai_specials group 29->30 src; totals 265->266.
+- tests: format pass; focused 12/0; full pass; tsc pass
