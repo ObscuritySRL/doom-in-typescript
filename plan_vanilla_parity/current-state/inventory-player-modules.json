@@ -10,12 +10,13 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 16,
+      "committed_file_count": 17,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-bob-and-viewheight-semantics.ts",
         "implement-death-and-reborn-flow.ts",
         "implement-forward-side-and-turn-movement.ts",
+        "implement-god-mode-and-powerup-flags.ts",
         "implement-player-damage-and-armor.ts",
         "implement-player-reborn-state.ts",
         "implement-player-spawn-state.ts",
@@ -29,9 +30,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 126739,
-      "total_line_count": 3549,
-      "total_export_count": 225
+      "total_size_bytes": 128703,
+      "total_line_count": 3613,
+      "total_export_count": 244
     }
   ],
   "modules": [

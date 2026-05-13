@@ -8234,3 +8234,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-008
 - summary: stepVanillaDeathThink mirrors Chocolate Doom 2.2.1 p_user.c P_DeathThink view-fall + reborn trigger: viewheight drops by FRACUNIT per tic while above 6*FRACUNIT floor, clamps to floor, deltaviewheight zeroed every tic; reborn triggered solely by `cmd.buttons & BT_USE` (no attackdown gate — corrected from the auto-generated source's spurious attackButtonReleased field). PST_LIVE=0, PST_DEAD=1, PST_REBORN=2. RESPAWN_TIME=10 tics is enforced by the caller. Inventory: src/player 15->16 (126739 bytes, 3549 lines, 225 exports); player_ai_specials group 33->34 src; totals 269->270.
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-009 implement-god-mode-and-powerup-flags completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-009
+- summary: Pinned vanilla cheat flag bits from doomdef.h cheat_t: CF_NOCLIP=1, CF_GODMODE=2, CF_NOMOMENTUM=4. Powerup slot enum (NUMPOWERS=6): invul=0, strength=1, invisibility=2, ironfeet=3, allmap=4, infrared=5. Powerup durations at TICRATE=35: INVULN=1050, INVIS=2100, IRON=2100, INFRA=4200. powerupInitialDuration returns timed-power durations or 0 for untimed slots (strength, allmap). Inventory: src/player 16->17 (128703 bytes, 3613 lines, 244 exports); player_ai_specials group 34->35 src; totals 270->271.
+- tests: format pass; focused 10/0; full pass; tsc pass
