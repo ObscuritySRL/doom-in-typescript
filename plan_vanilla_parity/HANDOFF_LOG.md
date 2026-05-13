@@ -8829,3 +8829,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-008
 - summary: P_CheckMissileRange constants pinned: distance offset 64, cap 200, melee-monster divisor 2, P_AproxDistance = max + min/2.
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-009 implement-zombie-attacks completed
+
+- status: completed
+- lane: ai
+- step_id: 08-009
+- summary: computeZombieBulletDamage + computeZombieBulletSpreadAngleDelta pin Chocolate Doom 2.2.1 p_enemy.c A_PosAttack/A_SPosAttack/A_CPosAttack: damage = ((P_Random()%5)+1)*3 yielding {3,6,9,12,15} (corrected from auto-generated source's `1+(rng&7)*3 = 1..22` which was a parity bug). Zombieman fires 1 bullet, shotgun guy 3, chaingunner 1/tic (refire via state chain). Bullet spread angle = (rng-rng)<<20. Chaingunner uses SFX_SHOTGN (vanilla shared sound). Inventory: src/ai 16->17 (171276 bytes, 4388 lines, 263 exports); player_ai_specials 68->69 src; totals 336->337.
+- tests: format pass; focused 9/0; full pass; tsc pass

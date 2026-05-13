@@ -276,7 +276,7 @@
 - [x] `08-006` `implement-chase-direction-selection` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-006-implement-chase-direction-selection.md`
 - [x] `08-007` `implement-monster-melee-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-007-implement-monster-melee-range.md`
 - [x] `08-008` `implement-monster-missile-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-008-implement-monster-missile-range.md`
-- [ ] `08-009` `implement-zombie-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-009-implement-zombie-attacks.md`
+- [x] `08-009` `implement-zombie-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-009-implement-zombie-attacks.md`
 - [ ] `08-010` `implement-imp-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-010-implement-imp-attacks.md`
 - [ ] `08-011` `implement-demon-and-spectre-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-011-implement-demon-and-spectre-attacks.md`
 - [ ] `08-012` `implement-lost-soul-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-012-implement-lost-soul-attack.md`

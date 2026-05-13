@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ai/",
       "exists": true,
-      "committed_file_count": 16,
+      "committed_file_count": 17,
       "committed_filenames_sorted": [
         "attacks.ts",
         "bossSpecials.ts",
@@ -23,15 +23,16 @@
         "implement-monster-spawn-flags.ts",
         "implement-sound-target-propagation.ts",
         "implement-thinker-list-ordering.ts",
+        "implement-zombie-attacks.ts",
         "meleeRange.ts",
         "missileRange.ts",
         "soundPropagation.ts",
         "stateTransitions.ts",
         "targeting.ts"
       ],
-      "total_size_bytes": 169770,
-      "total_line_count": 4351,
-      "total_export_count": 255
+      "total_size_bytes": 171276,
+      "total_line_count": 4388,
+      "total_export_count": 263
     },
     {
       "relative_path": "src/specials/",
@@ -139,7 +140,7 @@
         "src/world/zMovement.ts"
       ],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/ai/bossSpecials.ts",
