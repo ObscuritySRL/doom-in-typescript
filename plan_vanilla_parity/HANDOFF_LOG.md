@@ -9108,3 +9108,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-024
 - summary: Stairs build_8 = FLOORSPEED/4 step 8, build_16 = 4*FLOORSPEED step 16; donut pillar+floor = FLOORSPEED/2; crusher = CEILSPEED, fast = 2*CEILSPEED.
 - tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 09-016 implement-extra-light-and-palette-effects completed
+
+- status: completed
+- lane: render
+- step_id: 09-016
+- summary: selectVanillaPlayerPaletteIndex pins Chocolate Doom 2.2.1 st_stuff.c ST_doPaletteStuff PLAYPAL palette selection: NUMREDPALS=8/STARTREDPALS=1 damage range, NUMBONUSPALS=4/STARTBONUSPALS=9 yellow bonus range, RADIATIONPAL=13 green tint. Precedence: damage > bonus > radiation > normal (0). Damage index = ((cnt+7)>>3) clamped + STARTREDPALS, bonus index = ((bonus+7)>>3) clamped + STARTBONUSPALS. Berserk strength power bzc = max(0, 12 - (powersStrength>>6)) compares against damagecount. Radiation triggers on powersIronfeet > 128 OR (powersIronfeet & 8). Inventory: src/render 29->30 (241449 bytes, 6120 lines, 272 exports).
+- tests: format pass; focused 17/0; full pass; tsc pass
