@@ -364,7 +364,7 @@
 - [x] `10-018` `implement-menu-repeat-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-018-implement-menu-repeat-timing.md`
 - [x] `10-019` `implement-pause-overlay` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-019-implement-pause-overlay.md`
 - [x] `10-020` `implement-hud-message-queue` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-020-implement-hud-message-queue.md`
-- [ ] `10-021` `implement-chat-macro-storage-for-config-compatibility` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-021-implement-chat-macro-storage-for-config-compatibility.md`
+- [x] `10-021` `implement-chat-macro-storage-for-config-compatibility` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-021-implement-chat-macro-storage-for-config-compatibility.md`
 - [ ] `10-022` `implement-intermission-stats-counting` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-022-implement-intermission-stats-counting.md`
 - [ ] `10-023` `implement-intermission-map-graphics` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-023-implement-intermission-map-graphics.md`
 - [ ] `10-024` `implement-finale-text-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-024-implement-finale-text-timing.md`
