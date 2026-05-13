@@ -8757,3 +8757,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-001
 - summary: executeVanillaSetViewSize pins Chocolate Doom 2.2.1 r_main.c R_ExecuteSetViewSize: SCREENWIDTH=320, SCREENHEIGHT=200, ST_HEIGHT=32 (view area = 168). Setblocks 11 fullscreen yields 320x200 (status bar hidden); otherwise scaledviewwidth = setblocks*32 and viewheight = (setblocks*168/10) & ~7. detailshift halves viewwidth (1=low detail). centerx=viewwidth/2, centery=viewheight/2, centerxfrac=centerx<<FRACBITS, projection=centerxfrac. Inventory: src/render 14->15 (196819 bytes, 4834 lines, 142 exports).
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-002 implement-projection-and-clip-angle-tables completed
+
+- status: completed
+- lane: render
+- step_id: 09-002
+- summary: computeVanillaProjectionTableSizes + vanillaXToViewangleIndex + vanillaAngleToFineangleIndex pin Chocolate Doom 2.2.1 r_main.c R_InitTextureMapping constants: FIELDOFVIEW=2048 BAM (90 degrees), FINEANGLES=8192 (half=4096, quarter=2048), ANGLETOFINESHIFT=19, ANG90=0x40000000. viewangletox spans FINEANGLES/2=4096 entries, xtoviewangle spans viewwidth+1 entries, focallength uses fineangle index FINEANGLES/4+FIELDOFVIEW/2=3072. Inventory: src/render 15->16 (200469 bytes, 4931 lines, 153 exports).
+- tests: format pass; focused 14/0; full pass; tsc pass
