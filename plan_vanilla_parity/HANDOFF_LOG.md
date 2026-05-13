@@ -7258,3 +7258,19 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Pinned the DOOMD.EXE feasibility verdict and the DOOM.EXE substitute recommendation for downstream Win64 host capture steps.
 - next_eligible_steps: 02-006 capture-doom-exe-clean-launch-feasibility
 - open_risks: If the host wants to capture vanilla DOOMD.EXE behavior directly, a future step must add DOSBox or equivalent emulator wiring; the recommended substitute DOOM.EXE diverges from pure vanilla on Windows-specific code paths (host, audio, input).
+
+## 2026-05-13 - 02-006 capture-doom-exe-clean-launch-feasibility completed 5c3a8f1e-94a6-4d8a-92fe-2fa3f3b1b1e9
+
+- status: completed
+- agent: Claude Code
+- lane: oracle
+- step_id: 02-006
+- summary: Captured feasibility for direct Win64 launch of doom/DOOM.EXE. Verdict: launchable-directly. Byte-level header inspection confirms MZ signature 0x4D 0x5A, PE offset 0x1AC (in-file), `PE  ` signature, machine type IMAGE_FILE_MACHINE_I386 (0x14C), 10 sections, optional header size 224, optional-header magic PE32 (0x10B); 32-bit PE32 i386 binaries launch under Win64 NT loader through WOW64 without DOS emulation. Focused test re-reads the bytes on disk and proves each header field; one recovery edit corrected the declared `numberOfSections` from 16 to the actual decimal 10 (header reports 0x000A).
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-doom-exe-clean-launch-feasibility.json; D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-doom-exe-clean-launch-feasibility.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md
+- recovery_edit: Corrected declared `numberOfSections` from initially-mistyped decimal 16 (which I had read as decimal of the hex output `0x10`) to the actual decimal 10 returned by readUInt16LE.
+- tests_run: bun run format (pass); bun test focused (pass, 16 tests, 47 expects); bun test (pass, 12965 tests, 0 fail, 2433908 expects, 33.94 s); bun x tsc --noEmit (pass)
+- reference_sources: plan_vanilla_parity/steps/02-006-capture-doom-exe-clean-launch-feasibility.md; doom/DOOM.EXE byte-level header inspection (PE offset, signature, machine, sections, optional header).
+- decision_changes: none
+- oracle_changes: Pinned the DOOM.EXE Win64-host feasibility verdict for downstream capture steps.
+- next_eligible_steps: 02-007 capture-default-cfg-baseline
+- open_risks: WOW64 must be enabled on the host; future capture steps that exec DOOM.EXE need permission and a sandboxed working directory per the 02-003 policy.

@@ -1,0 +1,25 @@
+{
+  "id": "OR-VP-DOOMEXE-FEASIBILITY-006",
+  "stepId": "02-006",
+  "stepTitle": "Capture Doom Exe Clean Launch Feasibility",
+  "lane": "oracle",
+  "description": "Captures the feasibility verdict for cleanly launching doom/DOOM.EXE on a modern 64-bit Windows host. Verdict is derived from local byte-level header inspection: DOOM.EXE is a valid 32-bit Windows PE32 executable (IMAGE_FILE_MACHINE_I386, optional header magic 0x10B) that launches under the Win64 NT loader through the WOW64 32-bit subsystem without DOS emulation, satisfying the host capability requirements for Win32 process creation.",
+  "subjectFilename": "DOOM.EXE",
+  "subjectRelativePath": "doom/DOOM.EXE",
+  "verdict": "launchable-directly",
+  "verdictRationale": "doom/DOOM.EXE begins with the MZ signature 0x4D 0x5A, the DWORD at file offset 0x3C points to a valid in-file PE header at offset 0x1AC carrying the `PE\\0\\0` signature, the machine type is IMAGE_FILE_MACHINE_I386 (0x14C), and the optional-header magic is PE32 (0x10B). The Win64 NT loader resolves 32-bit PE32 i386 binaries through the WOW64 subsystem, so DOOM.EXE can be launched as a Windows process on this host without DOS emulation.",
+  "subjectHeader": {
+    "mzSignatureBytes": "4D5A",
+    "peOffsetFieldHex": "1AC",
+    "peOffsetWithinFile": true,
+    "peSignatureBytes": "50450000",
+    "machineHex": "14C",
+    "machineName": "IMAGE_FILE_MACHINE_I386",
+    "numberOfSections": 10,
+    "sizeOfOptionalHeader": 224,
+    "optionalHeaderMagicHex": "10B",
+    "optionalHeaderFormat": "PE32"
+  },
+  "hostCapabilityRequirements": ["win64-host-with-wow64-subsystem-enabled", "win32-process-creation-permissions"],
+  "downstreamFollowUps": ["create-isolated-sandbox-process-launch-step", "capture-doom-exe-startup-stdout-oracle", "capture-doom-exe-init-sequence-oracle"]
+}
