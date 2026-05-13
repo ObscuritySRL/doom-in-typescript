@@ -8595,3 +8595,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-016
 - summary: tickVanillaSkullCursor + getVanillaSkullLumpForFrame pin Chocolate Doom 2.2.1 m_menu.c M_Ticker skull cursor: counter decrements per tick; at <= 0 whichSkull XORs with 1 and counter resets to 8 (steady-state). Initial M_Init value is 10 (longer first phase). M_SKULL1/M_SKULL2 alternate, SKULLXOFF -32, LINEHEIGHT 16. Inventory: src/ui 24->25 (248792 bytes, 6501 lines, 492 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-017 implement-menu-sound-events completed
+
+- status: completed
+- lane: ui
+- step_id: 10-017
+- summary: getVanillaMenuSfx pins Chocolate Doom 2.2.1 m_menu.c menu sound events: cursor-move -> sfx_pstop, select -> sfx_pistol, menu-open -> sfx_swtchn, menu-close -> sfx_swtchx, slider-step -> sfx_stnmov, invalid -> sfx_oof. Each event maps to a single sfxenum_t. Inventory: src/ui 25->26 (251005 bytes, 6546 lines, 496 exports).
+- tests: format pass; focused 8/0; full pass; tsc pass
