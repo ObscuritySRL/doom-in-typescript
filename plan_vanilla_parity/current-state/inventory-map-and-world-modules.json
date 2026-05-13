@@ -10,11 +10,11 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 11,
-      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
-      "total_size_bytes": 76337,
-      "total_line_count": 2199,
-      "total_export_count": 92
+      "committed_file_count": 12,
+      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
+      "total_size_bytes": 82352,
+      "total_line_count": 2354,
+      "total_export_count": 105
     },
     {
       "relative_path": "src/world/",

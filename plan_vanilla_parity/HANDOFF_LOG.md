@@ -7874,3 +7874,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added IWAD capability detection gate. detectIwadCapability routes shareware (E1 only) / registered (E1+E2+E3) / ultimate (E1+E2+E3+E4) / unknown. evaluateIwadDetectionGate flags inconsistent_episode_set and unknown_iwad. Inventory: src/assets committed 34->35 src, wad+assets 38->39 src / 50->51 test; totals 229/273 -> 230/274.
 - tests: format pass; focused 9/0; full 13501/0; tsc pass
 
+
+## 2026-05-13 - 06-001 parse-vertex-linedef-sidedef-sector-lumps completed
+
+- status: completed
+- lane: map
+- step_id: 06-001
+- summary: Added src/map/parse-vertex-linedef-sidedef-sector-lumps.ts with byte-level parsers for VERTEXES (4 bytes), LINEDEFS (14 bytes), SIDEDEFS (30 bytes), SECTORS (26 bytes) lumps per p_setup.c. Signed-16/unsigned-16 LE decoding plus 8-byte texture-name extraction with trailing NUL trimming. Throws RangeError on non-multiple buffer sizes. Inventory: map+world source 22->23, src/map committed 11->12 (82352 bytes, 2354 lines, 105 exports), totals 230/274 -> 231/274.
+- tests: format pass; focused 6/0 (24 expects); full 13507/0; tsc pass
+
