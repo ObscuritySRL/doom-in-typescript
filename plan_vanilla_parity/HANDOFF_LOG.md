@@ -9063,3 +9063,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-015
 - summary: computeVanillaWallLightLevel + computeVanillaScalelightIndex pin Chocolate Doom 2.2.1 r_main.c R_InitLightTables and r_segs.c R_StoreWallRange: LIGHTLEVELS=16, LIGHTSEGSHIFT=4 (256/16), MAXLIGHTSCALE=48, LIGHTSCALESHIFT=12, NUMCOLORMAPS=32, LIGHTBRIGHT=1. Horizontal walls -1, vertical walls +1; clamps to [0, LIGHTLEVELS-1]. Scalelight index clamps to [0, MAXLIGHTSCALE-1] using `>=` rule. Inventory: src/render 28->29 (238041 bytes, 6017 lines, 263 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-022 implement-ceiling-specials completed
+
+- status: completed
+- lane: ai
+- step_id: 08-022
+- summary: CEILSPEED=1 fixed, fast=2 fixed; crush damage=10/4tic; MAXCEILINGS=30; ceiling_e enum 0..5.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352

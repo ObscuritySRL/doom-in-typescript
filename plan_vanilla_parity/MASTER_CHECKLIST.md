@@ -289,7 +289,7 @@
 - [x] `08-019` `implement-keen-and-icon-paths-behind-doom-two-scope` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-019-implement-keen-and-icon-paths-behind-doom-two-scope.md`
 - [x] `08-020` `implement-door-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-020-implement-door-specials.md`
 - [x] `08-021` `implement-floor-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-021-implement-floor-specials.md`
-- [ ] `08-022` `implement-ceiling-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-022-implement-ceiling-specials.md`
+- [x] `08-022` `implement-ceiling-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-022-implement-ceiling-specials.md`
 - [ ] `08-023` `implement-platform-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-023-implement-platform-specials.md`
 - [ ] `08-024` `implement-stairs-donut-and-crusher-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-024-implement-stairs-donut-and-crusher-specials.md`
 - [ ] `08-025` `implement-switch-texture-and-sound-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-025-implement-switch-texture-and-sound-semantics.md`
