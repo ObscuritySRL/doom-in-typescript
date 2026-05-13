@@ -8000,3 +8000,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: buildRadiusAttackBoundingBox + computeRadiusAttackDamage with Chebyshev distance (matches vanilla P_RadiusAttack), proportional damage falloff. Inventory: src/map 24->25 (107413 bytes, 3038 lines, 171 exports); map+world source 35->36; totals 243->244.
 - tests: format pass; focused 5/0; full 13572/0; tsc pass
 
+
+## 2026-05-13 - 06-015 implement-use-line-traversal completed
+
+- status: completed
+- lane: map
+- step_id: 06-015
+- summary: selectUseLineCandidate models vanilla P_UseLines: USERANGE=64; activates first special within range; passes through two-sided non-special lines; blocks on single-sided non-special. Inventory: src/map 25->26 (108785 bytes, 3082 lines, 176 exports); map+world source 36->37; totals 244->245.
+- tests: format pass; focused 5/0; full 13577/0; tsc pass
+

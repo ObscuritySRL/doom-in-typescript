@@ -10,11 +10,11 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 25,
-      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "implement-block-things-linking.ts", "implement-blockmap-coordinate-conversion.ts", "implement-bsp-node-traversal-semantics.ts", "implement-check-position-semantics.ts", "implement-line-opening-calculations.ts", "implement-map-setup-init-ordering.ts", "implement-radius-attack-block-traversal.ts", "implement-slide-move-semantics.ts", "implement-subsector-point-query.ts", "implement-teleport-move-semantics.ts", "implement-try-move-semantics.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-seg-ssector-node-reject-blockmap-lumps.ts", "parse-things-with-skill-and-game-mode-filters.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
-      "total_size_bytes": 107413,
-      "total_line_count": 3038,
-      "total_export_count": 171
+      "committed_file_count": 26,
+      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "implement-block-things-linking.ts", "implement-blockmap-coordinate-conversion.ts", "implement-bsp-node-traversal-semantics.ts", "implement-check-position-semantics.ts", "implement-line-opening-calculations.ts", "implement-map-setup-init-ordering.ts", "implement-radius-attack-block-traversal.ts", "implement-slide-move-semantics.ts", "implement-subsector-point-query.ts", "implement-teleport-move-semantics.ts", "implement-try-move-semantics.ts", "implement-use-line-traversal.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-seg-ssector-node-reject-blockmap-lumps.ts", "parse-things-with-skill-and-game-mode-filters.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
+      "total_size_bytes": 108785,
+      "total_line_count": 3082,
+      "total_export_count": 176
     },
     {
       "relative_path": "src/world/",
