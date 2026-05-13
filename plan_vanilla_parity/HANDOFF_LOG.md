@@ -7487,3 +7487,9 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: full E1M1-E1M9 deterministic route master oracle.
 - tests: focused 5/0; full 13243/0; tsc pass
 - next: 02-034
+
+## 2026-05-13 - 02-034 replace-pending-oracle-fixtures-with-live-evidence completed (tracker)
+- summary: Tracker manifest enumerating all 17 pending oracle capture fixtures (02-017..02-033) with per-entry replacement-work descriptions; tracker status open until each underlying artifact reports `captureStatus: captured` with non-empty entries.
+- tests: focused 10/0 (86 expects, cross-checks every tracked artifact captureStatus); full 13253/0; tsc pass
+- next: 02-035 gate-oracle-foundation-without-deferred-status
+- open_risks: 02-035 gate explicitly forbids pending status and will BLOCK until the 17 tracked pending fixtures are populated by an external reference-run host. The Ralph loop should declare BLOCKED on 02-035 unless and until those captures land.

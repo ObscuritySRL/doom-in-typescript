@@ -1,0 +1,45 @@
+{
+  "id": "OR-VP-REPLACE-PENDING-034",
+  "stepId": "02-034",
+  "stepTitle": "Replace Pending Oracle Fixtures With Live Evidence",
+  "lane": "oracle",
+  "description": "Tracks every oracle-capture fixture that currently carries `captureStatus: pending-external-reference-run` and the live-evidence work required to flip each to `captured`. The replacement work itself happens in each fixture's own write lock; this manifest is the tracker the 02-035 gate consumes to determine completeness.",
+  "trackedPendingFixtures": [
+    { "stepId": "02-017", "artifactPath": "test/vanilla_parity/oracles/capture-initial-title-frame-oracle.json", "replacementWork": "External run of doom/DOOM.EXE captures the 320x200 title screen framebuffer SHA-256." },
+    { "stepId": "02-018", "artifactPath": "test/vanilla_parity/oracles/capture-main-menu-open-oracle.json", "replacementWork": "External run injects ESC, captures framebuffer/state/audio at tic 2." },
+    {
+      "stepId": "02-019",
+      "artifactPath": "test/vanilla_parity/oracles/capture-new-game-episode-skill-path-oracle.json",
+      "replacementWork": "External run drives the scripted ESC/ENTER/ENTER/DOWN/DOWN/ENTER sequence and captures state at tic 20."
+    },
+    { "stepId": "02-020", "artifactPath": "test/vanilla_parity/oracles/capture-e1m1-spawn-state-oracle.json", "replacementWork": "External run captures the E1M1 spawn state snapshot." },
+    { "stepId": "02-021", "artifactPath": "test/vanilla_parity/oracles/capture-scripted-movement-oracle.json", "replacementWork": "External run holds UP-arrow for 35 tics and captures framebuffer+state at tics 0/17/35." },
+    { "stepId": "02-022", "artifactPath": "test/vanilla_parity/oracles/capture-scripted-use-line-oracle.json", "replacementWork": "External run drives forward to a door, presses USE, captures state at the USE+0/+1/+70 tics." },
+    { "stepId": "02-023", "artifactPath": "test/vanilla_parity/oracles/capture-scripted-pickup-oracle.json", "replacementWork": "External run drives over the E1M1 starting armor and captures the state delta." },
+    { "stepId": "02-024", "artifactPath": "test/vanilla_parity/oracles/capture-scripted-combat-oracle.json", "replacementWork": "External run fires pistol at a zombieman and captures weapon-state and target-health snapshots." },
+    {
+      "stepId": "02-025",
+      "artifactPath": "test/vanilla_parity/oracles/capture-damage-death-reborn-oracle.json",
+      "replacementWork": "External run drives the death-and-reborn cycle and captures state at health-zero, death-anim end, and reborn tics."
+    },
+    { "stepId": "02-026", "artifactPath": "test/vanilla_parity/oracles/capture-intermission-transition-oracle.json", "replacementWork": "External run reaches the E1M1 exit and captures framebuffer/state at intermission entry and exit." },
+    { "stepId": "02-027", "artifactPath": "test/vanilla_parity/oracles/capture-finale-transition-oracle.json", "replacementWork": "External run reaches the finale and captures framebuffer/state at finale entry/text-end/cast-end." },
+    { "stepId": "02-028", "artifactPath": "test/vanilla_parity/oracles/capture-demo-one-playback-oracle.json", "replacementWork": "External run plays DEMO1 and captures framebuffer/state per the 35-tic schedule." },
+    { "stepId": "02-029", "artifactPath": "test/vanilla_parity/oracles/capture-demo-two-playback-oracle.json", "replacementWork": "External run plays DEMO2 and captures framebuffer/state per the 35-tic schedule." },
+    { "stepId": "02-030", "artifactPath": "test/vanilla_parity/oracles/capture-demo-three-playback-oracle.json", "replacementWork": "External run plays DEMO3 and captures framebuffer/state per the 35-tic schedule." },
+    {
+      "stepId": "02-031",
+      "artifactPath": "test/vanilla_parity/oracles/capture-save-load-roundtrip-oracle.json",
+      "replacementWork": "External run saves to slot 0, restarts, loads slot 0, and captures state before save / save bytes / state after load."
+    },
+    { "stepId": "02-032", "artifactPath": "test/vanilla_parity/oracles/capture-sfx-and-music-oracle-windows.json", "replacementWork": "External run captures WASAPI-loopback SFX windows and music events through E1M1." },
+    {
+      "stepId": "02-033",
+      "artifactPath": "test/vanilla_parity/oracles/capture-full-e1-route-oracle.json",
+      "replacementWork": "External run drives the full E1 deterministic route and captures state every tic / framebuffer every 35 tics / music events."
+    }
+  ],
+  "trackerStatus": "open",
+  "completionRule": "Tracker closes only when every entry's underlying artifact reports `captureStatus: captured` with non-empty entries.",
+  "downstreamFollowUps": ["build-reference-run-host-and-input-injector-and-framebuffer-grabber-and-state-snapshotter-and-audio-loopback-as-a-single-tool"]
+}
