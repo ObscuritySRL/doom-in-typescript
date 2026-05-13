@@ -8198,3 +8198,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-004
 - summary: Pinned vanilla G_BuildTiccmd speed tables from g_game.c: FORWARD_MOVE={25,50}, SIDE_MOVE={24,40}, ANGLE_TURN={640,1280,320} normal/fast/slow, SLOW_TURN_TICS=6, MAXPLMOVE=50, PLAYER_THRUST_SCALE=2048. pickAngleTurnForHoldDurationTics returns slow-ramp angle (320) for first 6 tics then normal/fast based on shift state. clampMovementToMaxPlayerMove enforces +-MAXPLMOVE limit. Inventory: src/player 11->12 (120487 bytes, 3363 lines, 200 exports); player_ai_specials group 29->30 src; totals 265->266.
 - tests: format pass; focused 12/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-005 implement-bob-and-viewheight-semantics completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-005
+- summary: computeVanillaBobAmplitude mirrors Chocolate Doom 2.2.1 p_user.c P_CalcHeight bob computation: bob = (fixedMul(momx,momx) + fixedMul(momy,momy)) >> 2, clamped to MAXBOB = 0x100000 (16 pixels fixed). Inventory: src/player 12->13 (121685 bytes, 3393 lines, 203 exports); player_ai_specials group 30->31 src; totals 266->267.
+- tests: format pass; focused 6/0; full pass; tsc pass
