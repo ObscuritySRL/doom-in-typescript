@@ -8207,3 +8207,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-005
 - summary: computeVanillaBobAmplitude mirrors Chocolate Doom 2.2.1 p_user.c P_CalcHeight bob computation: bob = (fixedMul(momx,momx) + fixedMul(momy,momy)) >> 2, clamped to MAXBOB = 0x100000 (16 pixels fixed). Inventory: src/player 12->13 (121685 bytes, 3393 lines, 203 exports); player_ai_specials group 30->31 src; totals 266->267.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-006 implement-player-thrust-and-friction completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-006
+- summary: Pinned vanilla P_Thrust angle index (>> ANGLETOFINESHIFT = 19) and player friction constants from p_mobj.c: FRICTION=0xE800 (~0.90625) applied to momentum above STOPSPEED=0x1000; momentum within +/-STOPSPEED snaps to zero. angleToFineIndex returns 0..8191. Inventory: src/player 13->14 (123003 bytes, 3429 lines, 208 exports); player_ai_specials group 31->32 src; totals 267->268.
+- tests: format pass; focused 10/0; full pass; tsc pass
