@@ -9398,3 +9398,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-023
 - summary: Screen blocks 3..11; default 10, fullscreen 11; isValidScreenBlock and isFullscreenScreenBlock helpers.
 - tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-018 serialize-world-archive-terminators completed
+
+- status: completed
+- lane: save
+- step_id: 12-018
+- summary: src/save/serialize-world-archive-terminators.ts pins g_game.c G_DoSaveGame section sequence and three distinct terminator bytes: thinkers section ends with tc_end=0, specials section ends with tc_endspecials=7, file ends with SAVE_GAME_TERMINATOR=0x1d. Canonical order header -> players -> world -> thinkers -> specials -> file-end. G_DoLoadGame raises "Bad savegame" when 0x1d does not match.
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
