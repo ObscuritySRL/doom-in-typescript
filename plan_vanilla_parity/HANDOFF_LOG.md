@@ -8649,3 +8649,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-034
 - summary: PLAYER_ORACLE_REPLAY_GATE aggregates scripted pickup oracle (07-030) + scripted combat oracle (07-031) and replays them against canonical implementations (applyVanillaPlayerDamage from 07-007, classifyVanillaPlayerUseAction from 07-029) so any drift surfaces in a single gate. Phase 07 (gameplay) lane fully closed — Phase 08 ai, Phase 09 render, and Phase 12 save lanes now unblocked. Inventory: src/player 41->42 (176279 bytes, 4916 lines, 417 exports); player_ai_specials group 59->60 src; totals 313->316.
 - tests: format pass; focused 5/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-021 implement-chat-macro-storage-for-config-compatibility completed
+
+- status: completed
+- lane: ui
+- step_id: 10-021
+- summary: VANILLA_CHAT_MACRO_DEFAULTS + getVanillaChatMacroConfigKey + getVanillaChatMacroDefault + listVanillaChatMacroConfigKeys pin Chocolate Doom 2.2.1 m_config.c chat-macro config compatibility: 10 macros indexed 0..9 with upstream HUSTR_CHATMACRO* defaults ('No', "I'm ready to kick butt!", ..., 'Yes'); config keys are chatmacro0..chatmacro9 (lowercase, no underscore). Inventory: src/ui 29->30 (262201 bytes, 6880 lines, 525 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
