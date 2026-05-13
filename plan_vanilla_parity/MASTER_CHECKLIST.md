@@ -262,7 +262,7 @@
 - [x] `07-029` `implement-player-use-action` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-029-implement-player-use-action.md`
 - [x] `07-030` `compare-scripted-pickup-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-030-compare-scripted-pickup-oracle.md`
 - [x] `07-031` `compare-scripted-combat-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-031-compare-scripted-combat-oracle.md`
-- [ ] `07-032` `gate-player-movement-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-032-gate-player-movement-and-damage.md`
+- [x] `07-032` `gate-player-movement-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-032-gate-player-movement-and-damage.md`
 - [ ] `07-033` `gate-weapon-and-item-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-033-gate-weapon-and-item-semantics.md`
 - [ ] `07-034` `gate-player-oracle-replay` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-034-gate-player-oracle-replay.md`
 
