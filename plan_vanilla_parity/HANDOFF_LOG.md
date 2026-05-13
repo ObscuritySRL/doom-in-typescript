@@ -8487,3 +8487,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-027
 - summary: VANILLA_AUTOAIM_ANGLE_SEQUENCE pins Chocolate Doom 2.2.1 p_pspr.c P_BulletSlope cascade: try center angle, then +1<<26 BAM offset (left cone), then -1<<26 BAM offset (right cone) with 16*64*FRACUNIT bullet aim range. P_AimLineAttack walks the cone selecting highest-priority shootable target. Inventory: src/player 34->35 (159782 bytes, 4453 lines, 390 exports); player_ai_specials group 52->53 src; totals 296->297.
 - tests: format pass; focused 4/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-009 implement-screen-size-detail-gamma-menu completed
+
+- status: completed
+- lane: ui
+- step_id: 10-009
+- summary: applyVanillaSizeDisplay + toggleVanillaDetail + cycleVanillaGamma pin Chocolate Doom 2.2.1 m_menu.c contracts: screenblocks 3..11 (default 10) with companion screenSize 0..8 (default 7), detail toggle 0=high/1=low (default high), gamma 5-level cycle 0..4 (default 0) wrapping 4->0. Inventory: src/ui 17->18 (228723 bytes, 5914 lines, 426 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
