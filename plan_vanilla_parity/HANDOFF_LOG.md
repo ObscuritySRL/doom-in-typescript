@@ -8496,3 +8496,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-009
 - summary: applyVanillaSizeDisplay + toggleVanillaDetail + cycleVanillaGamma pin Chocolate Doom 2.2.1 m_menu.c contracts: screenblocks 3..11 (default 10) with companion screenSize 0..8 (default 7), detail toggle 0=high/1=low (default high), gamma 5-level cycle 0..4 (default 0) wrapping 4->0. Inventory: src/ui 17->18 (228723 bytes, 5914 lines, 426 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-010 implement-save-game-menu completed
+
+- status: completed
+- lane: ui
+- step_id: 10-010
+- summary: getVanillaSaveMenuSlots + resolveVanillaSaveMenuEntry + clampVanillaSaveDescription pin Chocolate Doom 2.2.1 m_menu.c SaveMenu + M_SaveGame: 6 save slots with hotkeys '1'..'6' and routine M_SaveSelect, SAVESTRINGSIZE=24-character description limit, usergame=false yields 'save-dead-warning' (SAVEDEAD popup), gamestate!=GS_LEVEL yields 'ignored', otherwise opens save menu. Inventory: src/ui 18->19 (231849 bytes, 6006 lines, 435 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
