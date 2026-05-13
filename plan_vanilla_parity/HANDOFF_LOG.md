@@ -8550,3 +8550,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-030
 - summary: VANILLA_SCRIPTED_PICKUP_ORACLES pins 5 scripted pickup scenarios cross-validating Chocolate Doom 2.2.1 p_inter.c contracts captured by 07-010..07-014: stimpack at MAXHEALTH no-op, stimpack +10 below cap, soulsphere from 100->200, green armor from 0->100 type 1, backpack doubles maxammo to 400 and grants 10 bullets. Inventory: src/player 37->38 (167471 bytes, 4698 lines, 408 exports); player_ai_specials group 55->56 src; totals 302->304.
 - tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-013 implement-quit-confirmation completed
+
+- status: completed
+- lane: ui
+- step_id: 10-013
+- summary: pickVanillaQuitMessageIndex + pickVanillaQuitSound + resolveVanillaQuitResponse pin Chocolate Doom 2.2.1 m_menu.c M_QuitDOOM/M_QuitResponse: message picker = (gametic % (NUM_QUITMESSAGES-1)) + 1 with NUM_QUITMESSAGES=22 yielding indices 1..21; quit sound = quitsounds[(gametic>>2)&7] for non-commercial, quitsounds2 for commercial (8-entry tables); single-player plays sound and waits 105 VBLs before I_Quit; netgame exits immediately; non-confirm key cancels. Inventory: src/ui 21->22 (240743 bytes, 6261 lines, 460 exports).
+- tests: format pass; focused 15/0; full pass; tsc pass
