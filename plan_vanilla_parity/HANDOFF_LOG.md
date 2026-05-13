@@ -9180,3 +9180,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-028
 - summary: Key door line specials: card 26/27/28 (blue/yellow/red), skull 32/33/34. Once-only walk and gun triggers clear their special after firing; switches do not (texture flip); repeats never clear.
 - tests: format pass; focused 6/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 08-029 compare-e1m8-boss-death-oracle completed
+
+- status: completed
+- lane: ai
+- step_id: 08-029
+- summary: E1M8 baron mapthing=3003, MT_BRUISER=15, tag-666 sector lower; loaded DOOM1.WAD E1M8 confirms 2 barons + tag-666 sector pillar.
+- tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
