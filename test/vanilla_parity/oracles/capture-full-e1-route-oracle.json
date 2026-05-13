@@ -1,0 +1,17 @@
+{
+  "id": "OR-VP-FULL-E1-033",
+  "stepId": "02-033",
+  "stepTitle": "Capture Full E1 Route Oracle",
+  "lane": "oracle",
+  "description": "Captures a complete deterministic E1 (shareware) run from spawn through E1M9 to the finale, recording per-tic state hashes (02-012) and per-second framebuffer hashes (02-011) across the entire route. This is the master end-to-end oracle that downstream side-by-side comparison tests use to validate the TS engine against vanilla. Entries empty pending external reference run.",
+  "captureMethod": "Drive a scripted full-clear E1 route (E1M1 through E1M8 then E1M9 secret then back to E1M9 exit then finale) under deterministic input injection; capture state every tic (full 35 Hz resolution) and framebuffer every 35 tics; record music events on each level transition.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "expectedLevelOrder": ["E1M1", "E1M2", "E1M3", "E1M4", "E1M5", "E1M6", "E1M7", "E1M8", "E1M9"],
+  "stateEntries": [],
+  "framebufferEntries": [],
+  "musicEventEntries": [],
+  "downstreamFollowUps": ["wire-full-route-runner-and-state-snapshotter-and-framebuffer-grabber-and-music-logger-into-bun-comparator"]
+}

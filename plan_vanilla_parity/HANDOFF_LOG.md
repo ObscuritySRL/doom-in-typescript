@@ -7482,3 +7482,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: WASAPI loopback SFX windows + music event log for E1M1 (D_E1M1).
 - tests: focused 5/0; full 13238/0; tsc pass
 - next: 02-033
+
+## 2026-05-13 - 02-033 capture-full-e1-route-oracle (pending)
+- summary: Pending manifest: full E1M1-E1M9 deterministic route master oracle.
+- tests: focused 5/0; full 13243/0; tsc pass
+- next: 02-034
