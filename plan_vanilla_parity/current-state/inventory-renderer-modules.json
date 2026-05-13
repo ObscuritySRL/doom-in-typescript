@@ -10,10 +10,11 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 16,
+      "committed_file_count": 17,
       "committed_filenames_sorted": [
         "drawPrimitives.ts",
         "fuzz.ts",
+        "implement-bsp-front-to-back-render-walk.ts",
         "implement-projection-and-clip-angle-tables.ts",
         "implement-view-setup-constants.ts",
         "maskedTextures.ts",
@@ -29,9 +30,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 200469,
-      "total_line_count": 4931,
-      "total_export_count": 153
+      "total_size_bytes": 203089,
+      "total_line_count": 5016,
+      "total_export_count": 163
     }
   ],
   "modules": [

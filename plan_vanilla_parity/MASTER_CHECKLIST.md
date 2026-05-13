@@ -271,7 +271,7 @@
 - [x] `08-001` `implement-thinker-list-ordering` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-001-implement-thinker-list-ordering.md`
 - [x] `08-002` `implement-mobj-state-transitions` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-002-implement-mobj-state-transitions.md`
 - [x] `08-003` `implement-monster-spawn-flags` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-003-implement-monster-spawn-flags.md`
-- [ ] `08-004` `implement-look-for-players` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-004-implement-look-for-players.md`
+- [x] `08-004` `implement-look-for-players` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-004-implement-look-for-players.md`
 - [ ] `08-005` `implement-sound-target-propagation` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-005-implement-sound-target-propagation.md`
 - [ ] `08-006` `implement-chase-direction-selection` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-006-implement-chase-direction-selection.md`
 - [ ] `08-007` `implement-monster-melee-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-007-implement-monster-melee-range.md`
@@ -305,7 +305,7 @@
 
 - [x] `09-001` `implement-view-setup-constants` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-001-implement-view-setup-constants.md`
 - [x] `09-002` `implement-projection-and-clip-angle-tables` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-002-implement-projection-and-clip-angle-tables.md`
-- [ ] `09-003` `implement-bsp-front-to-back-render-walk` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-003-implement-bsp-front-to-back-render-walk.md`
+- [x] `09-003` `implement-bsp-front-to-back-render-walk` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-003-implement-bsp-front-to-back-render-walk.md`
 - [ ] `09-004` `implement-solid-segment-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-004-implement-solid-segment-clipping.md`
 - [ ] `09-005` `implement-two-sided-wall-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-005-implement-two-sided-wall-clipping.md`
 - [ ] `09-006` `implement-wall-column-scale-math` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-006-implement-wall-column-scale-math.md`
