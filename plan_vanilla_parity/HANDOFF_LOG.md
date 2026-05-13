@@ -9018,3 +9018,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-002
 - summary: src/config/parse-chocolate-doom-cfg.ts pins the Chocolate Doom 2.2.1 chocolate-doom.cfg extended-config parser contract: 113 disjoint variables (zero overlap with the 43 default.cfg variables per F-022/F-065), float trailing-zero decimal accepted, hex 0x388 opl_io_port=904, -1 unbound sentinel for mouseb/joyb/joystick disconnected axes, vanilla_savegame_limit=vanilla_demo_limit=vanilla_keyboard_mapping=1 by default, M_LoadDefaultCollection silently ignores unknown variables.
 - tests: format pass; focused 7/0; full pass with 4 pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-014 implement-sky-rendering-semantics completed
+
+- status: completed
+- lane: render
+- step_id: 09-014
+- summary: selectVanillaSkyTextureLumpName + vanillaSkyTextureExistsInGameMode pin Chocolate Doom 2.2.1 g_game.c G_InitNew + r_main.c R_InitSkyMap: SKYFLATNAME=F_SKY1, skytexturemid=100*FRACUNIT; non-commercial episode 1..4 -> SKY1..SKY4 (SKY4 retail-only); commercial Doom II maps 1..11=SKY1, 12..20=SKY2, 21+=SKY3. Inventory: src/render 27->28 (235099 bytes, 5930 lines, 253 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
