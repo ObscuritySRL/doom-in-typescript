@@ -7775,3 +7775,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/demo/compare-demo-one-ticcmd-stream.ts comparator validating DEMO1 byte stream against vanilla DOOM 1.9 format (version 109, episode 1, map 5). Routes header_parse_failed, wrong_version/episode/map, missing_terminator, tic_count_mismatch. Recovery edit: fixed src/core/implement-demo-ticcmd-parser.ts terminator detection (peek 1 byte, not require 4 bytes; vanilla writes 0x80 at single byte boundary). Inventory: src/demo/ committed_file_count 4->5 (compare-demo-one-ticcmd-stream.ts), total_size 35463->38027, total_line 1029->1095, total_export 33->41.
 - tests: format pass; focused 7/0 (11 expects); full 13442/0; tsc pass
 
+
+## 2026-05-13 - 04-025 compare-demo-two-ticcmd-stream completed
+
+- status: completed
+- lane: core
+- step_id: 04-025
+- summary: Added src/demo/compare-demo-two-ticcmd-stream.ts (version 109, episode 1). Recovery: relaxed both compare-demo-one/two comparators to bail with header_parse_failed only when header is null (not when violations array is non-empty), so wrong_version/wrong_episode/wrong_map surface as their own violations. Inventory: src/demo committed 5->6, save_config_demo source_file_count 11->12; classify totals 219/263 -> 220/264; core test_file_count 35->36.
+- tests: format pass; focused 5/0 (7 expects); full 13447/0; tsc pass
+

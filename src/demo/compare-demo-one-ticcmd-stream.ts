@@ -34,7 +34,7 @@ export interface Demo1ComparisonDecision {
 export function compareDemo1(input: Demo1ComparisonInput): Demo1ComparisonDecision {
   const violations = new Set<Demo1ComparisonViolation>();
   const headerResult = parseDemoHeader(input.demoBytes);
-  if (headerResult.violations.length > 0 || headerResult.header === null) {
+  if (headerResult.header === null) {
     violations.add('header_parse_failed');
     return Object.freeze({
       accepted: false,
