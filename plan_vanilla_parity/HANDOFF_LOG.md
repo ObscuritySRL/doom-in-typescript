@@ -8874,3 +8874,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-007
 - summary: computeVanillaTextureWidthMask + fetchVanillaTextureColumnIndex + vanillaTextureWidthIsPowerOfTwo pin Chocolate Doom 2.2.1 r_data.c R_GetColumn + R_InitTextures: texturewidthmask = (largest j where 2j <= width) - 1, so power-of-2 widths wrap correctly but non-pow-2 widths (e.g. 100) clamp to the previous power-of-2 (mask 63) producing the vanilla non-pow-2 wrap visual quirk. Column index is `col & texturewidthmask` regardless. Inventory: src/render 20->21 (215838 bytes, 5367 lines, 190 exports).
 - tests: format pass; focused 15/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-008 implement-draw-column-low-and-high-detail completed
+
+- status: completed
+- lane: render
+- step_id: 09-008
+- summary: vanillaDrawColumnPixelCount + computeVanillaDrawColumnInitialFrac + vanillaDrawColumnTextureIndex + vanillaDrawColumnPixelStride pin Chocolate Doom 2.2.1 r_draw.c R_DrawColumn/R_DrawColumnLow: pixel count = yh-yl+1 (0 when negative); initial frac = dc_texturemid + (dc_yl-centery)*dc_iscale; texture index = (frac>>FRACBITS) & 127 (128-tall texture wrap); high-detail stride 1, low-detail stride 2 (pixel doubling). Inventory: src/render 21->22 (218605 bytes, 5450 lines, 200 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
