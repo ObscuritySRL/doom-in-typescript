@@ -7430,3 +7430,9 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: USE on E1M1 door (SPACE scancode 57); captures at USE+0/+1/+70.
 - tests: format pass; focused 7/0; full 13181/0; tsc pass
 - next: 02-023
+
+## 2026-05-13 - 02-023 capture-scripted-pickup-oracle completed (pending)
+- lane: oracle
+- summary: Pending manifest: pickup E1M1 mega-armor (+100 armorpoints, armortype 2, +1 item count). State entries empty pending external run.
+- tests: format pass; focused 6/0; full 13187/0; tsc pass
+- next: 02-024

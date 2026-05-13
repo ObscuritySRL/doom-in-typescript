@@ -1,0 +1,18 @@
+{
+  "id": "OR-VP-PICKUP-023",
+  "stepId": "02-023",
+  "stepTitle": "Capture Scripted Pickup Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic player inventory and state-snapshot delta when the scripted forward-movement burst (02-021) collides with the E1M1 starting armor pickup. Verifies the vanilla armor pickup grants armorpoints += 100, armortype = 2 (mega), removes the mobj from the world thinker list, and increments item_count by 1. Entries empty pending external reference run.",
+  "captureMethod": "From 02-020 spawn, drive forward 35 tics; capture state at the pickup-collision tic and pickup + 1.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "expectedPickupSubject": "E1M1-starting-armor-mega-bonus",
+  "expectedArmorPointsDelta": 100,
+  "expectedArmorTypeAfterPickup": 2,
+  "expectedItemCountDelta": 1,
+  "stateEntries": [],
+  "downstreamFollowUps": ["wire-state-snapshotter-into-bun-comparator"]
+}
