@@ -8577,3 +8577,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-031
 - summary: VANILLA_SCRIPTED_COMBAT_ORACLES pins 6 P_DamageMobj scenarios cross-validating 07-007 armor absorption: unarmored takes full damage, green armor absorbs 1/3, blue armor absorbs 1/2, CF_GODMODE blocks all damage, sk_baby halves damage before armor, fatal damage clamps health to 0. Inventory: src/player 38->39 (170708 bytes, 4804 lines, 410 exports); player_ai_specials group 56->57 src; totals 304->306.
 - tests: format pass; focused 3/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-015 implement-quick-save-and-quick-load-prompts completed
+
+- status: completed
+- lane: ui
+- step_id: 10-015
+- summary: resolveVanillaQuickSaveAction + resolveVanillaQuickLoadAction pin Chocolate Doom 2.2.1 m_menu.c M_QuickSave/M_QuickLoad: quick save guards !usergame->play-oof-sound, gamestate!=GS_LEVEL->ignored, quickSaveSlot<0->pick-slot (opens save menu with sentinel -2), else confirm-prompt with QSPROMPT; quick load guards netgame->QLOADNET, quickSaveSlot<0->QSAVESPOT, else confirm-prompt with QLPROMPT. Sentinel constants -1 (no slot), -2 (pick-slot mode). Inventory: src/ui 23->24 (246352 bytes, 6425 lines, 482 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
