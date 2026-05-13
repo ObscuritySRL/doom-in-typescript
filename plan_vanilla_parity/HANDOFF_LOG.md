@@ -9099,3 +9099,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-005
 - summary: src/config/persist-sound-settings.ts pins the 9 vanilla sound variables (sfx_volume=8, music_volume=8 sliders 0..15; snd_channels=8; snd_musicdevice=snd_sfxdevice=3 SoundBlaster; snd_sbport=snd_sbirq=snd_sbdma=snd_mport=0 autodetect). snddevice_t enum: NONE=0, PCSPEAKER=1, ADLIB=2, SB=3, PAS=4, GUS=5, WAVEBLASTER=6, SOUNDCANVAS=7, GENMIDI=8, AWE32=9. Autodetect-zero hardware ports serialize as plain decimal 0 (no 0x); only chocolate-doom.cfg opl_io_port uses hex format.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-024 implement-stairs-donut-and-crusher-specials completed
+
+- status: completed
+- lane: ai
+- step_id: 08-024
+- summary: Stairs build_8 = FLOORSPEED/4 step 8, build_16 = 4*FLOORSPEED step 16; donut pillar+floor = FLOORSPEED/2; crusher = CEILSPEED, fast = 2*CEILSPEED.
+- tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352

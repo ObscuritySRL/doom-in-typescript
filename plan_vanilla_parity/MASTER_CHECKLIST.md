@@ -291,7 +291,7 @@
 - [x] `08-021` `implement-floor-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-021-implement-floor-specials.md`
 - [x] `08-022` `implement-ceiling-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-022-implement-ceiling-specials.md`
 - [x] `08-023` `implement-platform-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-023-implement-platform-specials.md`
-- [ ] `08-024` `implement-stairs-donut-and-crusher-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-024-implement-stairs-donut-and-crusher-specials.md`
+- [x] `08-024` `implement-stairs-donut-and-crusher-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-024-implement-stairs-donut-and-crusher-specials.md`
 - [ ] `08-025` `implement-switch-texture-and-sound-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-025-implement-switch-texture-and-sound-semantics.md`
 - [ ] `08-026` `implement-animated-flats-and-textures` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-026-implement-animated-flats-and-textures.md`
 - [ ] `08-027` `implement-sector-special-effects` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-027-implement-sector-special-effects.md`
@@ -318,7 +318,7 @@
 - [x] `09-013` `implement-ceiling-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-013-implement-ceiling-span-rendering.md`
 - [x] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
 - [x] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
-- [ ] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
+- [x] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
 - [ ] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
 - [ ] `09-018` `implement-sprite-projection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-018-implement-sprite-projection.md`
 - [ ] `09-019` `implement-sprite-sorting` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-019-implement-sprite-sorting.md`
