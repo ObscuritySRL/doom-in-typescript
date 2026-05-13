@@ -8964,3 +8964,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-012
 - summary: vanillaPlaneDistanceLightIndex + computeVanillaSpanYfrac + selectVanillaSpanColormap pin Chocolate Doom 2.2.1 r_plane.c R_MapPlane: LIGHTZSHIFT=20 shifts distance to z-light index, MAXLIGHTZ=128 caps to index 127 (`>=` clamp); ds_yfrac uses NEGATIVE viewy; fixedcolormap (invuln/infrared) precedes planezlight[index]. Inventory: src/render 25->26 (229441 bytes, 5764 lines, 238 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-017 implement-pain-elemental-and-doom-two-guarded-path completed
+
+- status: completed
+- lane: ai
+- step_id: 08-017
+- summary: MT_PAIN=21 (DOOM 2 only), MAXSOULS=21 per pain elemental, A_PainDie spawns 3 lost souls at ANG90 intervals; gameMode guard restricts to commercial.
+- tests: format pass; focused 5/0; full pass; tsc parallel-agent test/vanilla_parity/save/parse-default-cfg.test.ts has pre-existing TS2352 error from save lane unrelated to this step
