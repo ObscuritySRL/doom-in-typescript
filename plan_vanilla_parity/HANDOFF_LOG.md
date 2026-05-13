@@ -8820,3 +8820,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-007
 - summary: isInVanillaMeleeRange + computeMeleeRangeThreshold pin Chocolate Doom 2.2.1 p_enemy.c P_CheckMeleeRange: MELEERANGE=64*FRACUNIT, slack=20*FRACUNIT, threshold = MELEERANGE - 20 + target.radius (~44 + target.radius). Sight check required (P_CheckSight). Null target returns false. Exclusive boundary at threshold (distance >= threshold yields false). Inventory: src/ai 13->15 (168171 bytes, 4303 lines, 249 exports); player_ai_specials 65->67 src; totals 333->335.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-008 implement-monster-missile-range completed
+
+- status: completed
+- lane: ai
+- step_id: 08-008
+- summary: P_CheckMissileRange constants pinned: distance offset 64, cap 200, melee-monster divisor 2, P_AproxDistance = max + min/2.
+- tests: format pass; focused 8/0; full pass; tsc pass
