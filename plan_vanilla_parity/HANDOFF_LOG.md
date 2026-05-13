@@ -7955,3 +7955,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added computeLineOpening: vanilla P_LineOpening for two-sided lines (openTop=min ceilings, openBottom=max floors, openRange=max(0, top-bottom)); single-sided yields openrange=0. Inventory: src/map 19->20 (100469 bytes, 2843 lines, 152 exports); map+world source 30->31; totals 238->239.
 - tests: format pass; focused 4/0; full 13548/0; tsc pass
 
+
+## 2026-05-13 - 06-010 implement-check-position-semantics completed
+
+- status: completed
+- lane: map
+- step_id: 06-010
+- summary: Added evaluateCheckPosition: pure model of vanilla P_CheckPosition decision (canFit = !blocker && verticalSpace >= height); records tmFloorZ/tmCeilingZ/tmDropoffZ. Inventory: src/map 20->21 (102057 bytes, 2888 lines, 155 exports); map+world source 31->32; totals 239->240.
+- tests: format pass; focused 4/0; full 13552/0; tsc pass
+

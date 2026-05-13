@@ -10,11 +10,11 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 20,
-      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "implement-block-things-linking.ts", "implement-blockmap-coordinate-conversion.ts", "implement-bsp-node-traversal-semantics.ts", "implement-line-opening-calculations.ts", "implement-map-setup-init-ordering.ts", "implement-subsector-point-query.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-seg-ssector-node-reject-blockmap-lumps.ts", "parse-things-with-skill-and-game-mode-filters.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
-      "total_size_bytes": 100469,
-      "total_line_count": 2843,
-      "total_export_count": 152
+      "committed_file_count": 21,
+      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "implement-block-things-linking.ts", "implement-blockmap-coordinate-conversion.ts", "implement-bsp-node-traversal-semantics.ts", "implement-check-position-semantics.ts", "implement-line-opening-calculations.ts", "implement-map-setup-init-ordering.ts", "implement-subsector-point-query.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-seg-ssector-node-reject-blockmap-lumps.ts", "parse-things-with-skill-and-game-mode-filters.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
+      "total_size_bytes": 102057,
+      "total_line_count": 2888,
+      "total_export_count": 155
     },
     {
       "relative_path": "src/world/",
