@@ -421,7 +421,7 @@
 - [x] `12-010` `define-save-directory-policy` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-010-define-save-directory-policy.md`
 - [x] `12-011` `implement-save-slot-descriptions` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-011-implement-save-slot-descriptions.md`
 - [x] `12-012` `implement-save-header-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-012-implement-save-header-version.md`
-- [ ] `12-013` `serialize-player-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-013-serialize-player-state.md`
+- [x] `12-013` `serialize-player-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-013-serialize-player-state.md`
 - [ ] `12-014` `serialize-mobj-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-014-serialize-mobj-state.md`
 - [ ] `12-015` `serialize-thinker-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-015-serialize-thinker-state.md`
 - [ ] `12-016` `serialize-sector-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-016-serialize-sector-specials.md`
