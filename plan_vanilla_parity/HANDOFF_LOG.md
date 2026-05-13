@@ -8784,3 +8784,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-003
 - summary: vanillaBspChildIsSubsector + decodeVanillaBspSubsectorIndex + getVanillaBspRenderOrder pin Chocolate Doom 2.2.1 r_bsp.c R_RenderBSPNode: NF_SUBSECTOR=0x8000 child-tag bit, special -1 sentinel maps to subsector 0, front-to-back render order recurses children[side] first then children[side^1] after R_CheckBBox. side 0 = front of partition, 1 = back. Inventory: src/render 16->17 (203089 bytes, 5016 lines, 163 exports).
 - tests: format pass; focused 12/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-004 implement-solid-segment-clipping completed
+
+- status: completed
+- lane: render
+- step_id: 09-004
+- summary: vanillaSolidSegRangeIsTouching + vanillaSolidSegRangeContains + getVanillaSolidSegInitialSentinels pin Chocolate Doom 2.2.1 r_bsp.c R_ClipSolidWallSegment: solidsegs[] sentinels at left (first=-0x7fffffff, last=-1) and right (first=viewwidth, last=0x7fffffff); adjacency rule treats rangeA.last+1==rangeB.first as touching (advance condition is start->last < first - 1). MAXDRAWSEGS=256 vanilla limit. Inventory: src/render 17->18 (206898 bytes, 5121 lines, 172 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
