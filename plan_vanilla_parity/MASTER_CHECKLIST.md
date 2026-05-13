@@ -307,7 +307,7 @@
 - [x] `09-002` `implement-projection-and-clip-angle-tables` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-002-implement-projection-and-clip-angle-tables.md`
 - [x] `09-003` `implement-bsp-front-to-back-render-walk` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-003-implement-bsp-front-to-back-render-walk.md`
 - [x] `09-004` `implement-solid-segment-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-004-implement-solid-segment-clipping.md`
-- [ ] `09-005` `implement-two-sided-wall-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-005-implement-two-sided-wall-clipping.md`
+- [x] `09-005` `implement-two-sided-wall-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-005-implement-two-sided-wall-clipping.md`
 - [ ] `09-006` `implement-wall-column-scale-math` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-006-implement-wall-column-scale-math.md`
 - [ ] `09-007` `implement-wall-texture-column-fetch` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-007-implement-wall-texture-column-fetch.md`
 - [ ] `09-008` `implement-draw-column-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-008-implement-draw-column-low-and-high-detail.md`
