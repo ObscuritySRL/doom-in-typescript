@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 35,
+      "committed_file_count": 36,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
@@ -18,6 +18,7 @@
         "endoom.ts",
         "finale.ts",
         "frontEndSequence.ts",
+        "gate-menu-and-hud-parity.ts",
         "hudMessages.ts",
         "implement-chat-macro-storage-for-config-compatibility.ts",
         "implement-end-game-confirmation.ts",
@@ -48,9 +49,9 @@
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 277038,
-      "total_line_count": 7282,
-      "total_export_count": 567
+      "total_size_bytes": 281392,
+      "total_line_count": 7341,
+      "total_export_count": 570
     }
   ],
   "modules": [

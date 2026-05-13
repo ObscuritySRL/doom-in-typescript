@@ -370,7 +370,7 @@
 - [x] `10-024` `implement-finale-text-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-024-implement-finale-text-timing.md`
 - [x] `10-025` `implement-finale-cast-and-bunny-scroll-scope` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-025-implement-finale-cast-and-bunny-scroll-scope.md`
 - [x] `10-026` `compare-menu-navigation-oracles` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-026-compare-menu-navigation-oracles.md`
-- [ ] `10-027` `gate-menu-and-hud-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-027-gate-menu-and-hud-parity.md`
+- [x] `10-027` `gate-menu-and-hud-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-027-gate-menu-and-hud-parity.md`
 - [ ] `10-028` `gate-intermission-and-finale-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-028-gate-intermission-and-finale-parity.md`
 
 ## Phase 11: Audio / SFX / MUS / OPL / Mixer
