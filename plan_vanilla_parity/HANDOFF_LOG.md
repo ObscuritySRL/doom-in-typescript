@@ -8622,3 +8622,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-033
 - summary: WEAPON_AND_ITEM_GATE re-exports pinned constants from 07-011..07-016 (ammo/cards/powers durations) + 07-018..07-027 (weapon ammo table, BFG cells/shot) so a single import verifies the weapon/item surface is wired and parity-consistent. Inventory: src/player 39->41 (174014 bytes, 4869 lines, 413 exports); player_ai_specials group 57->59 src; renderer_and_ui 36->41 (parallel agent UI lane catch-up); totals 306->313.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-019 implement-pause-overlay completed
+
+- status: completed
+- lane: ui
+- step_id: 10-019
+- summary: resolveVanillaPauseOverlay pins Chocolate Doom 2.2.1 d_main.c D_Display pause overlay draw: only drawn when paused && gamestate==GS_LEVEL, lump M_PAUSE positioned at x=(320-patchWidth)/2 y=4. Inventory: src/ui 27->28 (256179 bytes, 6699 lines, 512 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
