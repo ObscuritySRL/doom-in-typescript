@@ -8523,3 +8523,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-011
 - summary: getVanillaLoadMenuSlots + resolveVanillaLoadMenuEntry pin Chocolate Doom 2.2.1 m_menu.c LoadMenu + M_LoadGame: 6 load slots with hotkeys '1'..'6' and routine M_LoadSelect (status byte 1), netgame yields 'load-net-warning' (LOADNET popup), otherwise 'load-menu'. Demo playback does NOT bypass the netgame guard for load (unlike M_NewGame). Inventory: src/ui 19->20 (234216 bytes, 6070 lines, 441 exports).
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-029 implement-player-use-action completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-029
+- summary: classifyVanillaPlayerUseAction pins Chocolate Doom 2.2.1 p_user.c P_PlayerThink BT_USE rising-edge gate (fires P_UseLines once per press until released). USERANGE=64*FRACUNIT matches MELEERANGE (vanilla shares the use/melee projection). SFX_NOWAY=20 plays when no usable line is hit. Inventory: src/player 36->37 (163406 bytes, 4557 lines, 406 exports); player_ai_specials group 54->55 src; totals 299->302.
+- tests: format pass; focused 5/0; full pass; tsc pass
