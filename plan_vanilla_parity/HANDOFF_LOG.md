@@ -7946,3 +7946,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: computeBlockLinkSet groups things by their blockmap cell linear index, skipping out-of-range positions. Inventory: src/map 18->19, 99174 bytes, 2810 lines, 149 exports; map+world source 29->30; totals 237->238.
 - tests: format pass; focused 3/0; full 13544/0; tsc pass
 
+
+## 2026-05-13 - 06-009 implement-line-opening-calculations completed
+
+- status: completed
+- lane: map
+- step_id: 06-009
+- summary: Added computeLineOpening: vanilla P_LineOpening for two-sided lines (openTop=min ceilings, openBottom=max floors, openRange=max(0, top-bottom)); single-sided yields openrange=0. Inventory: src/map 19->20 (100469 bytes, 2843 lines, 152 exports); map+world source 30->31; totals 238->239.
+- tests: format pass; focused 4/0; full 13548/0; tsc pass
+
