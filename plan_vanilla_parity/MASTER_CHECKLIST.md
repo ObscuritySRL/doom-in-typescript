@@ -274,7 +274,7 @@
 - [x] `08-004` `implement-look-for-players` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-004-implement-look-for-players.md`
 - [x] `08-005` `implement-sound-target-propagation` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-005-implement-sound-target-propagation.md`
 - [x] `08-006` `implement-chase-direction-selection` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-006-implement-chase-direction-selection.md`
-- [ ] `08-007` `implement-monster-melee-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-007-implement-monster-melee-range.md`
+- [x] `08-007` `implement-monster-melee-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-007-implement-monster-melee-range.md`
 - [ ] `08-008` `implement-monster-missile-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-008-implement-monster-missile-range.md`
 - [ ] `08-009` `implement-zombie-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-009-implement-zombie-attacks.md`
 - [ ] `08-010` `implement-imp-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-010-implement-imp-attacks.md`

@@ -8811,3 +8811,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-006
 - summary: Pinned Chocolate Doom 2.2.1 p_enemy.c P_NewChaseDir 8-direction movedir table (DI_EAST=0..DI_NORTHEAST=7, DI_NODIR=8) + xspeed/yspeed tables matching cos/sin*FRACUNIT and the diagonal-bias selection (try positive XY first, then negative). MISSILERANGE=2048 fixed and TURN90=ANG90 for retreat behavior. Inventory totals tracked in parallel agent's prior commit.
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-007 implement-monster-melee-range completed
+
+- status: completed
+- lane: ai
+- step_id: 08-007
+- summary: isInVanillaMeleeRange + computeMeleeRangeThreshold pin Chocolate Doom 2.2.1 p_enemy.c P_CheckMeleeRange: MELEERANGE=64*FRACUNIT, slack=20*FRACUNIT, threshold = MELEERANGE - 20 + target.radius (~44 + target.radius). Sight check required (P_CheckSight). Null target returns false. Exclusive boundary at threshold (distance >= threshold yields false). Inventory: src/ai 13->15 (168171 bytes, 4303 lines, 249 exports); player_ai_specials 65->67 src; totals 333->335.
+- tests: format pass; focused 10/0; full pass; tsc pass

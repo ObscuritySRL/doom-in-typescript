@@ -24,7 +24,7 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 333,
+    "classified_source_file_count": 335,
     "classified_test_file_count": 274,
     "real_group_count": 9,
     "representative_module_count": 47,
@@ -137,7 +137,7 @@
       "notes": "These gameplay modules are source-backed implementation surfaces, with final live-game parity still dependent on downstream core/map/render/audio integration gates.",
       "representative_modules": ["src/ai/attacks.ts", "src/ai/chase.ts", "src/player/playerSpawn.ts", "src/player/weapons.ts", "src/specials/doors.ts", "src/specials/lineTriggers.ts"],
       "representative_tests": ["test/ai/chase.test.ts", "test/ai/monster-attacks.test.ts", "test/player/player-spawn.test.ts", "test/player/weapon-states.test.ts", "test/specials/doors.test.ts", "test/specials/line-triggers.test.ts"],
-      "source_file_count": 66,
+      "source_file_count": 67,
       "source_roots": ["src/ai/", "src/player/", "src/specials/"],
       "test_file_count": 26,
       "test_roots": ["test/ai/", "test/player/", "test/specials/"]
