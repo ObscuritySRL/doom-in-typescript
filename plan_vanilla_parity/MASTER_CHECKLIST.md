@@ -269,7 +269,7 @@
 ## Phase 08: AI / Monster / Boss / Specials
 
 - [x] `08-001` `implement-thinker-list-ordering` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-001-implement-thinker-list-ordering.md`
-- [ ] `08-002` `implement-mobj-state-transitions` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-002-implement-mobj-state-transitions.md`
+- [x] `08-002` `implement-mobj-state-transitions` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-002-implement-mobj-state-transitions.md`
 - [ ] `08-003` `implement-monster-spawn-flags` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-003-implement-monster-spawn-flags.md`
 - [ ] `08-004` `implement-look-for-players` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-004-implement-look-for-players.md`
 - [ ] `08-005` `implement-sound-target-propagation` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-005-implement-sound-target-propagation.md`
@@ -368,7 +368,7 @@
 - [x] `10-022` `implement-intermission-stats-counting` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-022-implement-intermission-stats-counting.md`
 - [x] `10-023` `implement-intermission-map-graphics` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-023-implement-intermission-map-graphics.md`
 - [x] `10-024` `implement-finale-text-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-024-implement-finale-text-timing.md`
-- [ ] `10-025` `implement-finale-cast-and-bunny-scroll-scope` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-025-implement-finale-cast-and-bunny-scroll-scope.md`
+- [x] `10-025` `implement-finale-cast-and-bunny-scroll-scope` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-025-implement-finale-cast-and-bunny-scroll-scope.md`
 - [ ] `10-026` `compare-menu-navigation-oracles` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-026-compare-menu-navigation-oracles.md`
 - [ ] `10-027` `gate-menu-and-hud-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-027-gate-menu-and-hud-parity.md`
 - [ ] `10-028` `gate-intermission-and-finale-parity` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-028-gate-intermission-and-finale-parity.md`
