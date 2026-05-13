@@ -263,7 +263,7 @@
 - [x] `07-030` `compare-scripted-pickup-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-030-compare-scripted-pickup-oracle.md`
 - [x] `07-031` `compare-scripted-combat-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-031-compare-scripted-combat-oracle.md`
 - [x] `07-032` `gate-player-movement-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-032-gate-player-movement-and-damage.md`
-- [ ] `07-033` `gate-weapon-and-item-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-033-gate-weapon-and-item-semantics.md`
+- [x] `07-033` `gate-weapon-and-item-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-033-gate-weapon-and-item-semantics.md`
 - [ ] `07-034` `gate-player-oracle-replay` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-034-gate-player-oracle-replay.md`
 
 ## Phase 08: AI / Monster / Boss / Specials
@@ -362,7 +362,7 @@
 - [x] `10-016` `implement-menu-skull-cursor-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-016-implement-menu-skull-cursor-timing.md`
 - [x] `10-017` `implement-menu-sound-events` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-017-implement-menu-sound-events.md`
 - [x] `10-018` `implement-menu-repeat-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-018-implement-menu-repeat-timing.md`
-- [ ] `10-019` `implement-pause-overlay` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-019-implement-pause-overlay.md`
+- [x] `10-019` `implement-pause-overlay` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-019-implement-pause-overlay.md`
 - [ ] `10-020` `implement-hud-message-queue` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-020-implement-hud-message-queue.md`
 - [ ] `10-021` `implement-chat-macro-storage-for-config-compatibility` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-021-implement-chat-macro-storage-for-config-compatibility.md`
 - [ ] `10-022` `implement-intermission-stats-counting` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-022-implement-intermission-stats-counting.md`
