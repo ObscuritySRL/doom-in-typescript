@@ -1,0 +1,40 @@
+{
+  "id": "OR-VP-INJECTION-010",
+  "stepId": "02-010",
+  "stepTitle": "Define Keyboard And Mouse Injection Oracle",
+  "lane": "oracle",
+  "description": "Pins the Win64 injection protocol used to drive a running DOOM.EXE process for deterministic oracle capture. Each event from the 02-009 deterministic input stream is translated into Windows SendInput INPUT records targeting the foreground DOOM window. Keyboard events use INPUT_KEYBOARD with KEYEVENTF_SCANCODE so the host's IME layer is bypassed. Mouse-move events use relative motion with MOUSEEVENTF_MOVE. Mouse-button events use MOUSEEVENTF_LEFTDOWN/UP, MOUSEEVENTF_RIGHTDOWN/UP, and MOUSEEVENTF_MIDDLEDOWN/UP. Injection is synchronized with the DOOM tic clock by gating each batch on the 02-004 manifest's 35 Hz tic rate so events fire at deterministic tic boundaries.",
+  "hostOperatingSystem": "Win64",
+  "windowsApi": "user32!SendInput",
+  "targetProcess": {
+    "executableFilename": "DOOM.EXE",
+    "windowClassNamePattern": "ChocolateDoom",
+    "foregroundRequired": true
+  },
+  "inputStreamSource": "test/vanilla_parity/oracles/define-deterministic-input-stream-format.json",
+  "ticRateHzAnchor": 35,
+  "keyboardInjection": {
+    "inputType": "INPUT_KEYBOARD",
+    "flagsForKeyDown": ["KEYEVENTF_SCANCODE"],
+    "flagsForKeyUp": ["KEYEVENTF_KEYUP", "KEYEVENTF_SCANCODE"],
+    "scanCodeFieldName": "wScan",
+    "useExtendedFlagForArrowKeys": true
+  },
+  "mouseInjection": {
+    "inputType": "INPUT_MOUSE",
+    "motionMode": "relative",
+    "motionFlags": ["MOUSEEVENTF_MOVE"],
+    "buttonFlags": {
+      "button0Down": "MOUSEEVENTF_LEFTDOWN",
+      "button0Up": "MOUSEEVENTF_LEFTUP",
+      "button1Down": "MOUSEEVENTF_RIGHTDOWN",
+      "button1Up": "MOUSEEVENTF_RIGHTUP",
+      "button2Down": "MOUSEEVENTF_MIDDLEDOWN",
+      "button2Up": "MOUSEEVENTF_MIDDLEUP"
+    },
+    "deltaScaleAxisX": 1,
+    "deltaScaleAxisY": 1
+  },
+  "ticBatchingRule": "all-events-for-tic-N-are-sent-before-the-next-frame-message-pump-iteration",
+  "downstreamFollowUps": ["wire-injection-into-the-host-message-pump-step", "capture-injection-jitter-oracle-step"]
+}

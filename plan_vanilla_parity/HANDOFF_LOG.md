@@ -7315,3 +7315,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned the oracle-lane deterministic input stream schema (event kinds key-down/key-up/mouse-button-down/mouse-button-up/mouse-move/quit, scan code range [0,255], mouse button range [0,4], 0-based tic anchor, non-decreasing-tic stable order). Focused test cross-checks with src/oracles/inputScript.ts INPUT_EVENT_KINDS, SCANCODE_MAX, and MOUSE_BUTTON_MAX.
 - tests_run: format pass; focused 13/0 (62 expects); full 13017/0 (2435875 expects, 34.11s); tsc pass
 - next_eligible_steps: 02-010 define-keyboard-and-mouse-injection-oracle
+
+## 2026-05-13 - 02-010 define-keyboard-and-mouse-injection-oracle completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-010
+- summary: Pinned the Win64 SendInput injection protocol that drives a running DOOM.EXE process from the 02-009 deterministic input stream. Keyboard uses INPUT_KEYBOARD + KEYEVENTF_SCANCODE (with KEYEVENTF_KEYUP for releases), wScan as the scancode field, and the extended flag for arrow keys; mouse uses INPUT_MOUSE with relative MOUSEEVENTF_MOVE motion and left/right/middle MOUSEEVENTF_*DOWN/UP buttons; batches are gated to the 35 Hz tic boundary so events fire per-tic before the next message-pump iteration.
+- tests_run: format pass; focused 16/0 (43 expects); full 13033/0 (2435918 expects, 34.25 s); tsc pass
+- next_eligible_steps: 02-011 define-framebuffer-capture-format
