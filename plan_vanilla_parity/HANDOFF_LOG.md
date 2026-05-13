@@ -8730,3 +8730,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-027
 - summary: VANILLA_MENU_AND_HUD_GATE_INVARIANTS + assertVanillaMenuAndHudGateInvariants gate-wraps the 26 contracts pinned by 10-001..10-026 (title loop, menu trees, sliders, save/load gates, skull cursor, sound events, repeat timing, pause overlay, hud message queue, chat macros, intermission, finale, navigation oracles) into a single import surface. The gate asserts title cycle length 6, non-commercial main menu 6 items, commercial main menu 5 items. Inventory: src/ui 35->36 (281392 bytes, 7341 lines, 570 exports).
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-028 gate-intermission-and-finale-parity completed
+
+- status: completed
+- lane: ui
+- step_id: 10-028
+- summary: VANILLA_INTERMISSION_AND_FINALE_GATE_INVARIANTS + assertVanillaIntermissionAndFinaleGateInvariants gate-wraps the contracts pinned by 10-022..10-025 (intermission stats counting + map graphics + finale text timing + finale cast/bunny scroll scope). Asserts intermission percent step 2, you-are-here blink 9 tics, finale text speed 3 tics/char, finale text wait 250 tics. Phase 10 UI lane fully complete. Inventory: src/ui 36->37 (284581 bytes, 7418 lines, 573 exports).
+- tests: format pass; focused 7/0; full pass; tsc pass
