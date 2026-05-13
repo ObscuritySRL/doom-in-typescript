@@ -317,7 +317,7 @@
 - [x] `09-012` `implement-floor-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-012-implement-floor-span-rendering.md`
 - [x] `09-013` `implement-ceiling-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-013-implement-ceiling-span-rendering.md`
 - [x] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
-- [ ] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
+- [x] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
 - [ ] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
 - [ ] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
 - [ ] `09-018` `implement-sprite-projection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-018-implement-sprite-projection.md`

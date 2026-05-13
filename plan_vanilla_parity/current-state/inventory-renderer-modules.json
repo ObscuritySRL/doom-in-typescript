@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 28,
+      "committed_file_count": 29,
       "committed_filenames_sorted": [
         "drawPrimitives.ts",
         "fuzz.ts",
@@ -19,6 +19,7 @@
         "implement-draw-column-low-and-high-detail.ts",
         "implement-draw-span-low-and-high-detail.ts",
         "implement-floor-span-rendering.ts",
+        "implement-light-level-and-colormap-selection.ts",
         "implement-projection-and-clip-angle-tables.ts",
         "implement-sky-rendering-semantics.ts",
         "implement-solid-segment-clipping.ts",
@@ -41,9 +42,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 235099,
-      "total_line_count": 5930,
-      "total_export_count": 253
+      "total_size_bytes": 238041,
+      "total_line_count": 6017,
+      "total_export_count": 263
     }
   ],
   "modules": [
