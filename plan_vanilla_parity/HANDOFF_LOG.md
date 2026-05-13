@@ -8802,3 +8802,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-005
 - summary: nextSoundBlocksAfterCrossing + vanillaSoundFloodVisitsAndStops pin Chocolate Doom 2.2.1 p_enemy.c P_NoiseAlert/P_RecursiveSound: flood from emitter sector via two-sided lines with openrange>0; plain lines propagate same counter; first ML_SOUNDBLOCK bumps counter 0->1; second ML_SOUNDBLOCK at counter>=1 stops propagation (returns null). ML_SOUNDBLOCK=64, ML_TWOSIDED=4. Inventory: src/ai 12->13 (165117 bytes, 4210 lines, 231 exports); player_ai_specials 64->65 src; renderer_and_ui 54->55 (parallel render lane catch-up); totals 329->333.
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-006 implement-chase-direction-selection completed
+
+- status: completed
+- lane: ai
+- step_id: 08-006
+- summary: Pinned Chocolate Doom 2.2.1 p_enemy.c P_NewChaseDir 8-direction movedir table (DI_EAST=0..DI_NORTHEAST=7, DI_NODIR=8) + xspeed/yspeed tables matching cos/sin*FRACUNIT and the diagonal-bias selection (try positive XY first, then negative). MISSILERANGE=2048 fixed and TURN90=ANG90 for retreat behavior. Inventory totals tracked in parallel agent's prior commit.
+- tests: format pass; focused 8/0; full pass; tsc pass
