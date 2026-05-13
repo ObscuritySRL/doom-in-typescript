@@ -8766,3 +8766,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-002
 - summary: computeVanillaProjectionTableSizes + vanillaXToViewangleIndex + vanillaAngleToFineangleIndex pin Chocolate Doom 2.2.1 r_main.c R_InitTextureMapping constants: FIELDOFVIEW=2048 BAM (90 degrees), FINEANGLES=8192 (half=4096, quarter=2048), ANGLETOFINESHIFT=19, ANG90=0x40000000. viewangletox spans FINEANGLES/2=4096 entries, xtoviewangle spans viewwidth+1 entries, focallength uses fineangle index FINEANGLES/4+FIELDOFVIEW/2=3072. Inventory: src/render 15->16 (200469 bytes, 4931 lines, 153 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-004 implement-look-for-players completed
+
+- status: completed
+- lane: ai
+- step_id: 08-004
+- summary: Pinned vanilla P_LookForPlayers cooperative-look invariants per Chocolate Doom 2.2.1 p_enemy.c: round-robin lastlook over 4 player slots (& 3), at most 2 players inspected per call (c++ == 2 gate — vanilla limitation in 3-4 player games), front-half-arc check vs ANG90/ANG270 (rear players ignored unless within MELEERANGE when allaround=false), lastlook mutated even on success. Inventory: src/ai 11->12 (162552 bytes, 4138 lines, 225 exports); player_ai_specials 63->64 src; totals 328->329.
+- tests: format pass; focused 9/0; full pass; tsc pass
