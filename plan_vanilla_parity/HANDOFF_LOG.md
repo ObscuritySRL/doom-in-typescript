@@ -8424,3 +8424,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-024
 - summary: A_FireBFG: BFGCELLS=40, MT_BFG projectile; A_BFGSpray: 40 rays in 90deg sweep, damage=sum((P_Random()&7)+1) over 15 rolls (range 15..120).
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-005 implement-episode-menu-shareware-restrictions completed
+
+- status: completed
+- lane: ui
+- step_id: 10-005
+- summary: getVanillaEpisodeMenuTree + resolveVanillaEpisodeChoice pin Chocolate Doom 2.2.1 m_menu.c EpisodeMenu + M_Episode + M_Init: shareware renders 1 entry (M_EPI1 Knee-Deep), registered renders 3, retail (Ultimate Doom) renders all 4 (M_EPI1..M_EPI4), commercial renders 0 (episode menu unused). M_Episode shareware guard returns 'shareware-warning' (SWSTRING popup -> ReadDef1 fallback) when choice!=0, else routes to skill-menu. Inventory: src/ui 13->14 (215438 bytes, 5579 lines, 374 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
