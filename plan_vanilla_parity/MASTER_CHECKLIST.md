@@ -316,7 +316,7 @@
 - [x] `09-011` `implement-visplane-overflow-limit-behavior` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-011-implement-visplane-overflow-limit-behavior.md`
 - [x] `09-012` `implement-floor-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-012-implement-floor-span-rendering.md`
 - [x] `09-013` `implement-ceiling-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-013-implement-ceiling-span-rendering.md`
-- [ ] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
+- [x] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
 - [ ] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
 - [ ] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
 - [ ] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
@@ -410,7 +410,7 @@
 ## Phase 12: Save / Load / Config
 
 - [x] `12-001` `parse-default-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-001-parse-default-cfg.md`
-- [ ] `12-002` `parse-chocolate-doom-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-002-parse-chocolate-doom-cfg.md`
+- [x] `12-002` `parse-chocolate-doom-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-002-parse-chocolate-doom-cfg.md`
 - [ ] `12-003` `persist-vanilla-key-bindings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-003-persist-vanilla-key-bindings.md`
 - [ ] `12-004` `persist-mouse-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-004-persist-mouse-settings.md`
 - [ ] `12-005` `persist-sound-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-005-persist-sound-settings.md`
