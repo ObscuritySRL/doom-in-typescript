@@ -212,7 +212,7 @@
 - [x] `06-014` `implement-radius-attack-block-traversal` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-014-implement-radius-attack-block-traversal.md`
 - [x] `06-015` `implement-use-line-traversal` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-015-implement-use-line-traversal.md`
 - [x] `06-016` `implement-intercept-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-016-implement-intercept-ordering.md`
-- [ ] `06-017` `implement-path-traverse-limits` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-017-implement-path-traverse-limits.md`
+- [x] `06-017` `implement-path-traverse-limits` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-017-implement-path-traverse-limits.md`
 - [ ] `06-018` `implement-reject-sight-fast-path` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-018-implement-reject-sight-fast-path.md`
 - [ ] `06-019` `implement-line-of-sight-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-019-implement-line-of-sight-semantics.md`
 - [ ] `06-020` `implement-sector-floor-ceiling-change-checks` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-020-implement-sector-floor-ceiling-change-checks.md`

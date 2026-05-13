@@ -8018,3 +8018,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: sortAndCapIntercepts: ascending frac with stable tie-break by insertion order; truncates at MAXINTERCEPTS=128. Inventory: src/map 26->27 (110083 bytes, 3120 lines, 180 exports); map+world source 37->38; totals 245->246.
 - tests: format pass; focused 3/0; full 13580/0; tsc pass
 
+
+## 2026-05-13 - 06-017 implement-path-traverse-limits completed
+
+- status: completed
+- lane: map
+- step_id: 06-017
+- summary: Pinned P_PathTraverse 64-block cap and PT_ADDLINES=1 / PT_ADDTHINGS=2 / PT_EARLYOUT=4 flag bits. Inventory: src/map 27->28 (111074 bytes, 3153 lines, 189 exports); map+world source 38->39; totals 246->247.
+- tests: format pass; focused 3/0; full 13583/0; tsc pass
+
