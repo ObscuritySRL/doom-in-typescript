@@ -7222,3 +7222,22 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Added a new oracle-lane sandbox copy policy declaration covering required files, excluded files, and lifecycle flags for read-only reference runs.
 - next_eligible_steps: 02-004 define-reference-process-launch-manifest
 - open_risks: The JSON policy must remain in sync with the source-level `REFERENCE_SANDBOX_POLICY` in `src/oracles/referenceSandbox.ts`; future updates to either side should land in the same commit.
+
+## 2026-05-13 - 02-004 define-reference-process-launch-manifest completed 7c0e3e74-1cb6-4d62-9d24-2a4f7a2c8b91
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: medium
+- lane: oracle
+- step_id: 02-004
+- step_title: define-reference-process-launch-manifest
+- summary: Pinned the Chocolate Doom 2.2.1 shareware reference run manifest as oracle-lane JSON data (DOOM.EXE/DOOM1.WAD launch, empty base command line, 320x200 internal at 640x480 32bpp display with aspect-correct ON, default screenblocks 9 and gamma 0, OPL at I/O port 0x388, 35 Hz tic rate, emulated version 1.9, vanilla-compat all-on, 15-step init sequence, demo-playback and title-loop run modes). Focused test cross-checks every field against the source-level REFERENCE_RUN_MANIFEST in src/oracles/referenceRunManifest.ts and proves failure modes for malformed init step labels, unknown run modes, and non-integer tic rates. Recovered one tsc strict-typing error by switching the empty-array toEqual assertion to element-by-element comparison.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/define-reference-process-launch-manifest.json; D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/define-reference-process-launch-manifest.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md
+- recovery_edit: Replaced `toEqual([...readonly never[]])` assertions on empty additionalArgs / baseCommandLine arrays with explicit length plus element-wise comparison so TypeScript strict mode does not reject `never[]` vs `string[]` overload selection.
+- tests_run: bun run format (pass, no fixes); bun test test/vanilla_parity/oracles/define-reference-process-launch-manifest.test.ts (pass, 21 tests, 133 expects); bun test (pass, 12933 tests, 0 fail, 2433815 expects, 33.16 s); bun x tsc --noEmit --project tsconfig.json (pass, no output)
+- reference_sources: plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md; src/oracles/referenceRunManifest.ts (existing source-level REFERENCE_RUN_MANIFEST and INIT_SEQUENCE_LENGTH); doom/DOOM.EXE, doom/DOOM1.WAD, doom/default.cfg, doom/chocolate-doom.cfg (declared research sources for launch parameters).
+- decision_changes: none
+- oracle_changes: Added a new oracle-lane reference-run launch manifest declaring executable, IWAD, base command line, screen/audio/startup/vanilla-compat parameters, init sequence, and run modes for downstream Chocolate Doom 2.2.1 oracle captures.
+- next_eligible_steps: 02-005 capture-doomd-clean-launch-feasibility
+- open_risks: Future oracle-capture steps must keep the JSON and source-level manifest in lockstep; any drift will surface in the focused test cross-reference asserts.

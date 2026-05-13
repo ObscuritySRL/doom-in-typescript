@@ -1,0 +1,74 @@
+{
+  "id": "OR-VP-LAUNCH-MANIFEST-004",
+  "stepId": "02-004",
+  "stepTitle": "Define Reference Process Launch Manifest",
+  "lane": "oracle",
+  "description": "Pins the reference Chocolate Doom 2.2.1 shareware process launch manifest used by oracle captures: executable, IWAD, base command line, screen/audio/startup/vanilla-compatibility parameters, engine tic rate, emulated version, observed initialization sequence, and available run modes. The manifest is the same data already implemented in src/oracles/referenceRunManifest.ts; this JSON pins it as oracle-lane data for downstream capture and comparison steps.",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "baseCommandLine": [],
+  "ticRateHz": 35,
+  "emulatedVersion": "1.9",
+  "screen": {
+    "internalWidth": 320,
+    "internalHeight": 200,
+    "displayWidth": 640,
+    "displayHeight": 480,
+    "bitsPerPixel": 32,
+    "aspectRatioCorrect": true,
+    "screenblocks": 9,
+    "detailLevel": 0,
+    "gammaLevel": 0
+  },
+  "audio": {
+    "sampleRate": 44100,
+    "maxChannels": 8,
+    "sfxDevice": 3,
+    "musicDevice": 3,
+    "sfxVolume": 8,
+    "musicVolume": 8,
+    "oplIoPort": 904
+  },
+  "startup": {
+    "skill": 2,
+    "episode": 1,
+    "map": 1,
+    "deathmatch": 0,
+    "playerCount": 1,
+    "totalNodes": 1
+  },
+  "vanillaCompatibility": {
+    "demoLimit": true,
+    "keyboardMapping": true,
+    "savegameLimit": true
+  },
+  "initSequence": [
+    { "label": "Z_Init", "description": "Init zone memory allocation daemon" },
+    { "label": "V_Init", "description": "allocate screens" },
+    { "label": "M_LoadDefaults", "description": "Load system defaults" },
+    { "label": "W_Init", "description": "Init WADfiles" },
+    { "label": "I_Init", "description": "Setting up machine state" },
+    { "label": "OPL_Init", "description": "Using driver 'SDL'" },
+    { "label": "NET_Init", "description": "Init network subsystem" },
+    { "label": "M_Init", "description": "Init miscellaneous info" },
+    { "label": "R_Init", "description": "Init DOOM refresh daemon" },
+    { "label": "P_Init", "description": "Init Playloop state" },
+    { "label": "S_Init", "description": "Setting up sound" },
+    { "label": "D_CheckNetGame", "description": "Checking network game status" },
+    { "label": "HU_Init", "description": "Setting up heads up display" },
+    { "label": "ST_Init", "description": "Init status bar" },
+    { "label": "I_InitStretchTables", "description": "Generating lookup tables" }
+  ],
+  "runModes": [
+    {
+      "mode": "demo-playback",
+      "description": "Replay a recorded demo for deterministic frame-by-frame capture",
+      "additionalArgs": []
+    },
+    {
+      "mode": "title-loop",
+      "description": "Run the title/demo attract loop for full-cycle capture",
+      "additionalArgs": []
+    }
+  ]
+}

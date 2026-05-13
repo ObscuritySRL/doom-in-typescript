@@ -58,7 +58,7 @@
 - [x] `02-001` `catalog-local-reference-binaries-and-configs` | lane: `oracle` | prereqs: `none` | file: `plan_vanilla_parity/steps/02-001-catalog-local-reference-binaries-and-configs.md`
 - [x] `02-002` `verify-local-reference-file-hashes` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-002-verify-local-reference-file-hashes.md`
 - [x] `02-003` `define-read-only-reference-sandbox-copy-policy` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-003-define-read-only-reference-sandbox-copy-policy.md`
-- [ ] `02-004` `define-reference-process-launch-manifest` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md`
+- [x] `02-004` `define-reference-process-launch-manifest` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md`
 - [ ] `02-005` `capture-doomd-clean-launch-feasibility` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-005-capture-doomd-clean-launch-feasibility.md`
 - [ ] `02-006` `capture-doom-exe-clean-launch-feasibility` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-006-capture-doom-exe-clean-launch-feasibility.md`
 - [ ] `02-007` `capture-default-cfg-baseline` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-007-capture-default-cfg-baseline.md`
