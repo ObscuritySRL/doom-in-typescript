@@ -9081,3 +9081,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-004
 - summary: src/config/persist-mouse-settings.ts pins the 5 vanilla mouse variables (mouse_sensitivity=5, use_mouse=1, mouseb_fire=0, mouseb_strafe=1, mouseb_forward=2) — physical button indices 0/1/2 (not scan codes); -1 unbound sentinel reserved for chocolate-doom.cfg extended mouseb_* only. Reuses formatVanillaConfigLine for column-30 padded LF-terminated lines.
 - tests: format pass; focused 5/0; full pass with 4 pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-023 implement-platform-specials completed
+
+- status: completed
+- lane: ai
+- step_id: 08-023
+- summary: PLATSPEED=1 fixed, blaze=8 fixed; PLATWAIT=105 tics; MAXPLATS=30; plattype_e enum 0..4; plat_e state enum 0..3.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
