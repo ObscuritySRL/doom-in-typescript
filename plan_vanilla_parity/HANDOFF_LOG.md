@@ -7505,3 +7505,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - next_eligible_steps: 03-006 implement-window-policy-resolution
 - open_risks: Until external captures land, the gate is documenting-not-enforcing. Phase 13 acceptance gates must add the strict version of this check before final ship.
 
+
+## 2026-05-13 - 03-017 implement-resize-and-focus-policy completed
+
+- status: completed
+- lane: launch
+- step_id: 03-017
+- summary: Adopted the prior-iteration uncommitted resize/focus policy implementation and focused test that were left in the working tree by an earlier blocked attempt. Focused test (12/49) and full suite (13263/0) pass; tsc clean. Inventory drift is no longer blocking now that 01-024 refreshed core counts.
+- tests: format pass; focused 12/0 (49 expects); full 13263/0; tsc pass
+- next_eligible_steps: 03-018 implement-message-pump-ordering
+

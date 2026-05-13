@@ -122,6 +122,22 @@ describe('STEP 03-017 implement-resize-and-focus-policy', () => {
     expect(decision.transition).toBe('release');
   });
 
+  test('keeps an existing mouse grab while focus and visibility still allow it', () => {
+    const decision = evaluateResizeFocusPolicy({
+      aspectRatioCorrect: true,
+      clientHeight: 480,
+      clientWidth: 640,
+      grabEnabled: true,
+      mouseGrabbed: true,
+      screenVisible: true,
+      windowFocused: true,
+    });
+
+    expect(decision.inputSuppressed).toBe(false);
+    expect(decision.mouseGrabbed).toBe(true);
+    expect(decision.transition).toBe('none');
+  });
+
   test('releases mouse grab while minimized without treating the app as unfocused', () => {
     const decision = evaluateResizeFocusPolicy({
       aspectRatioCorrect: true,
@@ -175,7 +191,7 @@ describe('STEP 03-017 implement-resize-and-focus-policy', () => {
   });
 
   test('cross-checks every resize and focus probe against the reference handler', () => {
-    expect(VANILLA_RESIZE_FOCUS_POLICY_PROBE_COUNT).toBe(10);
+    expect(VANILLA_RESIZE_FOCUS_POLICY_PROBE_COUNT).toBe(11);
     expect(VANILLA_RESIZE_FOCUS_POLICY_PROBES).toHaveLength(VANILLA_RESIZE_FOCUS_POLICY_PROBE_COUNT);
     expect(crossCheckVanillaResizeFocusPolicy(REFERENCE_VANILLA_RESIZE_FOCUS_POLICY_HANDLER)).toEqual([]);
 

@@ -213,6 +213,21 @@ export const VANILLA_RESIZE_FOCUS_POLICY_PROBES: readonly VanillaResizeFocusPoli
     clientWidth: 640,
     expected: Object.freeze({
       ...NULL_RESULT,
+      answeredMouseGrabTransition: 'none',
+    }),
+    grabEnabled: true,
+    id: 'focused-visible-already-grabbed-window-keeps-grab',
+    mouseGrabbed: true,
+    queryKind: 'mouse-grab-transition',
+    screenVisible: true,
+    windowFocused: true,
+  },
+  {
+    aspectRatioCorrect: true,
+    clientHeight: 480,
+    clientWidth: 640,
+    expected: Object.freeze({
+      ...NULL_RESULT,
       answeredMouseGrabTransition: 'release',
     }),
     grabEnabled: true,
@@ -299,7 +314,7 @@ export const VANILLA_RESIZE_FOCUS_POLICY_PROBES: readonly VanillaResizeFocusPoli
   },
 ]);
 
-export const VANILLA_RESIZE_FOCUS_POLICY_PROBE_COUNT = 10;
+export const VANILLA_RESIZE_FOCUS_POLICY_PROBE_COUNT = 11;
 
 export const REFERENCE_VANILLA_RESIZE_FOCUS_POLICY_HANDLER: VanillaResizeFocusPolicyHandler = Object.freeze({
   runProbe: deriveExpectedVanillaResizeFocusPolicyResult,
