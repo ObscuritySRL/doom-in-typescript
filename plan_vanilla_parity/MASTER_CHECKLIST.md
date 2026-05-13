@@ -72,7 +72,7 @@
 - [x] `02-015` `define-save-byte-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-015-define-save-byte-capture-format.md`
 - [x] `02-016` `capture-startup-sequence-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-016-capture-startup-sequence-oracle.md`
 - [x] `02-017` `capture-initial-title-frame-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-017-capture-initial-title-frame-oracle.md`
-- [ ] `02-018` `capture-main-menu-open-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-018-capture-main-menu-open-oracle.md`
+- [x] `02-018` `capture-main-menu-open-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-018-capture-main-menu-open-oracle.md`
 - [ ] `02-019` `capture-new-game-episode-skill-path-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-019-capture-new-game-episode-skill-path-oracle.md`
 - [ ] `02-020` `capture-e1m1-spawn-state-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-020-capture-e1m1-spawn-state-oracle.md`
 - [ ] `02-021` `capture-scripted-movement-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-021-capture-scripted-movement-oracle.md`

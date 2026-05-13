@@ -7388,3 +7388,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests_run: format pass; focused 15/0 (40 expects); full 13129/0; tsc pass
 - next_eligible_steps: 02-018 capture-main-menu-open-oracle
 - open_risks: Step 02-035 gate-oracle-foundation-without-deferred-status explicitly forbids pending status. Future external reference run must populate entries before the gate closes.
+
+## 2026-05-13 - 02-018 capture-main-menu-open-oracle completed (pending capture)
+
+- status: completed
+- lane: oracle
+- step_id: 02-018
+- summary: Pending capture manifest for the main-menu-open state: single ESCAPE key-down/key-up at tics 0/1, framebuffer + state + audio capture at tic 2. Empty entries until external reference run lands.
+- tests_run: format pass; focused 13/0; full 13142/0; tsc pass
+- next_eligible_steps: 02-019 capture-new-game-episode-skill-path-oracle

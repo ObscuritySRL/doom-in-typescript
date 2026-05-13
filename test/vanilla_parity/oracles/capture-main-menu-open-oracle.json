@@ -1,0 +1,21 @@
+{
+  "id": "OR-VP-MENU-OPEN-018",
+  "stepId": "02-018",
+  "stepTitle": "Capture Main Menu Open Oracle",
+  "lane": "oracle",
+  "description": "Captures the reference DOOM 1.9 main-menu-open state after a single ESC key press from the title screen. Pins the input event (key-down/key-up of key 1 = M_KEY_ESCAPE per Chocolate Doom 2.2.1) and the framebuffer hash plus state snapshot taken one tic after the menu becomes interactive. Initial entries are empty and require an external reference run.",
+  "captureMethod": "Launch doom/DOOM.EXE -iwad doom/DOOM1.WAD via the 02-003 sandbox, wait for title screen stable (per 02-016/02-017), inject ESCAPE key-down then key-up via the 02-010 injection oracle, advance one tic, then capture both the framebuffer (per 02-011) and the state snapshot (per 02-012) and the next-tic audio window (per 02-013).",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "targetRunMode": "title-loop",
+  "ticRateHz": 35,
+  "inputScript": [{ "kind": "key-down", "tic": 0, "scanCode": 1, "description": "ESCAPE key-down opens the main menu" }, { "kind": "key-up", "tic": 1, "scanCode": 1, "description": "ESCAPE key-up releases the make-code" }],
+  "framebufferCaptureTic": 2,
+  "stateCaptureTic": 2,
+  "audioWindowCaptureTic": 2,
+  "framebufferEntries": [],
+  "stateEntries": [],
+  "audioEntries": [],
+  "downstreamFollowUps": ["build-reference-run-host-with-input-injector-and-framebuffer-grabber", "wire-pending-entries-into-the-bun-comparator"]
+}
