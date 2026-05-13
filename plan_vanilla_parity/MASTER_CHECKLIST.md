@@ -361,7 +361,7 @@
 - [x] `10-015` `implement-quick-save-and-quick-load-prompts` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-015-implement-quick-save-and-quick-load-prompts.md`
 - [x] `10-016` `implement-menu-skull-cursor-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-016-implement-menu-skull-cursor-timing.md`
 - [x] `10-017` `implement-menu-sound-events` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-017-implement-menu-sound-events.md`
-- [ ] `10-018` `implement-menu-repeat-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-018-implement-menu-repeat-timing.md`
+- [x] `10-018` `implement-menu-repeat-timing` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-018-implement-menu-repeat-timing.md`
 - [ ] `10-019` `implement-pause-overlay` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-019-implement-pause-overlay.md`
 - [ ] `10-020` `implement-hud-message-queue` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-020-implement-hud-message-queue.md`
 - [ ] `10-021` `implement-chat-macro-storage-for-config-compatibility` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-021-implement-chat-macro-storage-for-config-compatibility.md`

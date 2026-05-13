@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 26,
+      "committed_file_count": 27,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
@@ -22,6 +22,7 @@
         "implement-episode-menu-shareware-restrictions.ts",
         "implement-load-game-menu.ts",
         "implement-main-menu-tree.ts",
+        "implement-menu-repeat-timing.ts",
         "implement-menu-skull-cursor-timing.ts",
         "implement-menu-sound-events.ts",
         "implement-new-game-menu.ts",
@@ -39,9 +40,9 @@
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 251005,
-      "total_line_count": 6546,
-      "total_export_count": 496
+      "total_size_bytes": 254052,
+      "total_line_count": 6637,
+      "total_export_count": 506
     }
   ],
   "modules": [
