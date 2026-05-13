@@ -7748,3 +7748,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned demo playback FSM: phases idle/loading/playing/stopped/error; events load_demo, start_playback, tick_advance, reach_terminator, request_stop, header_parse_failed, ticcmd_parse_failed; terminal phases sticky on unrelated events. Inventory: core 31 src / 33 test.
 - tests: format pass; focused 9/0; full 13422/0; tsc pass
 
+
+## 2026-05-13 - 04-022 implement-demo-recording-state-machine completed
+
+- status: completed
+- lane: core
+- step_id: 04-022
+- summary: Pinned demo recording FSM: phases idle/writing/finalized/error; events request_record, append_ticcmd, finalize_demo, write_failed, unsupported_flag_combo; terminal phases sticky. Inventory: core 32 src / 34 test.
+- tests: format pass; focused 7/0; full 13429/0; tsc pass
+
