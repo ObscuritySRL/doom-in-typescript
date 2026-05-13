@@ -9243,3 +9243,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-012
 - summary: src/save/implement-save-header-version.ts pins g_game.c VERSION=109 / VERSIONSIZE=16 magic field contract: "version 109" 11-char ASCII string NUL-padded to 16 bytes at offset SAVESTRINGSIZE=24 in the header. Case-sensitive exact match required; DOOM 1.0-1.8 saves (versions 100..108) and DOOM 1.9 demos with whitespace variations are rejected via "Savegame from different version" error.
 - tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-032 gate-boss-and-episode-exit-semantics completed
+
+- status: completed
+- lane: ai
+- step_id: 08-032
+- summary: BOSS_EPISODE_EXIT_GATE pins 5 DOOM 1 episode triggers, E1M8 tag-666 baron exit, DOOM 2-only pain elemental/keen/icon paths.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352

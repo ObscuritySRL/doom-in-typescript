@@ -299,7 +299,7 @@
 - [x] `08-029` `compare-e1m8-boss-death-oracle` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-029-compare-e1m8-boss-death-oracle.md`
 - [x] `08-030` `gate-monster-ai-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-030-gate-monster-ai-semantics.md`
 - [x] `08-031` `gate-sector-and-line-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-031-gate-sector-and-line-specials.md`
-- [ ] `08-032` `gate-boss-and-episode-exit-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-032-gate-boss-and-episode-exit-semantics.md`
+- [x] `08-032` `gate-boss-and-episode-exit-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-032-gate-boss-and-episode-exit-semantics.md`
 
 ## Phase 09: Renderer / World / Sprites / Status Bar / Automap
 
@@ -319,7 +319,7 @@
 - [x] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
 - [x] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
 - [x] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
-- [ ] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
+- [x] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
 - [ ] `09-018` `implement-sprite-projection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-018-implement-sprite-projection.md`
 - [ ] `09-019` `implement-sprite-sorting` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-019-implement-sprite-sorting.md`
 - [ ] `09-020` `implement-sprite-clipping-against-drawsegs` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-020-implement-sprite-clipping-against-drawsegs.md`
