@@ -1,0 +1,20 @@
+{
+  "id": "OR-VP-DEMO1-028",
+  "stepId": "02-028",
+  "stepTitle": "Capture Demo One Playback Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic state evolution while the reference DOOM 1.9 plays back the DEMO1 lump from doom/DOOM1.WAD. DEMO1 is the first attract-loop demo (E1M5, recorded by Romero). State hashes per 02-012 and framebuffer hashes per 02-011 are captured at tic 0, every 35 tics, and at the demo end; the demo end tic equals (lumpsize - 13 header bytes) / 4 bytes-per-ticcmd. Entries empty pending external reference run.",
+  "captureMethod": "Launch DOOM.EXE in title-loop mode, allow the engine to auto-play DEMO1 after the title sequence; capture state + framebuffer at tic 0, every 35 tics, and at demo end. The vanilla demo header is 13 bytes (skill, episode, map, deathmatch, respawn, fast, nomonsters, consoleplayer, then four player-in-game flags) followed by 4-byte ticcmd records (forward, side, turn, buttons) terminated by 0x80.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "demoLumpName": "DEMO1",
+  "targetRunMode": "demo-playback",
+  "ticRateHz": 35,
+  "demoHeaderBytes": 13,
+  "demoTiccmdBytes": 4,
+  "demoTerminatorByte": 128,
+  "stateEntries": [],
+  "framebufferEntries": [],
+  "downstreamFollowUps": ["wire-demo-playback-runner-and-state-snapshotter-into-bun-comparator"]
+}

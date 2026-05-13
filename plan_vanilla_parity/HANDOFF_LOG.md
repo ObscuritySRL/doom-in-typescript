@@ -7457,3 +7457,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: F_TextWrite at 3 tics/char, captures at finale entry / text end / cast end.
 - tests: focused 5/0; full 13211/0; tsc pass
 - next: 02-028
+
+## 2026-05-13 - 02-028 capture-demo-one-playback-oracle (pending)
+- summary: Pending manifest: DEMO1 playback, 13-byte header + 4-byte ticcmds + 0x80 terminator.
+- tests: focused 7/0; full 13218/0; tsc pass
+- next: 02-029
