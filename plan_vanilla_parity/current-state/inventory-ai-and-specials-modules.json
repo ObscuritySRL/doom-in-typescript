@@ -10,13 +10,15 @@
     {
       "relative_path": "src/ai/",
       "exists": true,
-      "committed_file_count": 13,
+      "committed_file_count": 15,
       "committed_filenames_sorted": [
         "attacks.ts",
         "bossSpecials.ts",
         "chase.ts",
+        "implement-chase-direction-selection.ts",
         "implement-look-for-players.ts",
         "implement-mobj-state-transitions.ts",
+        "implement-monster-melee-range.ts",
         "implement-monster-spawn-flags.ts",
         "implement-sound-target-propagation.ts",
         "implement-thinker-list-ordering.ts",
@@ -26,9 +28,9 @@
         "stateTransitions.ts",
         "targeting.ts"
       ],
-      "total_size_bytes": 165117,
-      "total_line_count": 4210,
-      "total_export_count": 231
+      "total_size_bytes": 168171,
+      "total_line_count": 4303,
+      "total_export_count": 249
     },
     {
       "relative_path": "src/specials/",
