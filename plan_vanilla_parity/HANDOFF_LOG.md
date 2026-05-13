@@ -8225,3 +8225,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-007
 - summary: applyVanillaPlayerDamage mirrors Chocolate Doom 2.2.1 p_inter.c P_DamageMobj player branch: CF_GODMODE zeroes damage; sk_baby halves damage; green armor (type 1) absorbs damage/3, blue armor (type 2) absorbs damage/2; armor depletes and armortype clears when armorpoints <= saved; remaining damage clamps health to >= 0. Inventory: src/player 14->15 (124846 bytes, 3494 lines, 215 exports); player_ai_specials group 32->33 src; totals 268->269.
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-008 implement-death-and-reborn-flow completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-008
+- summary: stepVanillaDeathThink mirrors Chocolate Doom 2.2.1 p_user.c P_DeathThink view-fall + reborn trigger: viewheight drops by FRACUNIT per tic while above 6*FRACUNIT floor, clamps to floor, deltaviewheight zeroed every tic; reborn triggered solely by `cmd.buttons & BT_USE` (no attackdown gate — corrected from the auto-generated source's spurious attackButtonReleased field). PST_LIVE=0, PST_DEAD=1, PST_REBORN=2. RESPAWN_TIME=10 tics is enforced by the caller. Inventory: src/player 15->16 (126739 bytes, 3549 lines, 225 exports); player_ai_specials group 33->34 src; totals 269->270.
+- tests: format pass; focused 8/0; full pass; tsc pass
