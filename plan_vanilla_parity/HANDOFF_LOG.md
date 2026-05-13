@@ -9117,3 +9117,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-016
 - summary: selectVanillaPlayerPaletteIndex pins Chocolate Doom 2.2.1 st_stuff.c ST_doPaletteStuff PLAYPAL palette selection: NUMREDPALS=8/STARTREDPALS=1 damage range, NUMBONUSPALS=4/STARTBONUSPALS=9 yellow bonus range, RADIATIONPAL=13 green tint. Precedence: damage > bonus > radiation > normal (0). Damage index = ((cnt+7)>>3) clamped + STARTREDPALS, bonus index = ((bonus+7)>>3) clamped + STARTBONUSPALS. Berserk strength power bzc = max(0, 12 - (powersStrength>>6)) compares against damagecount. Radiation triggers on powersIronfeet > 128 OR (powersIronfeet & 8). Inventory: src/render 29->30 (241449 bytes, 6120 lines, 272 exports).
 - tests: format pass; focused 17/0; full pass; tsc pass
+
+
+## 2026-05-13 - 12-006 persist-screen-settings completed
+
+- status: completed
+- lane: save
+- step_id: 12-006
+- summary: src/config/persist-screen-settings.ts pins the 4 vanilla screen-presentation variables (show_messages=1 HUD toggle, screenblocks=9 in 3..11 range with 11=fullscreen-no-HUD, detaillevel=0 high/1 low, usegamma=0 in 0..4 5-step gamma table). Modern resolution variables (screen_width/height/bpp, fullscreen, aspect_ratio_correct, grabmouse, video_driver, window_position) explicitly excluded — those live in chocolate-doom.cfg only since DOS DOOM was fixed at 320x200 mode 13h.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
