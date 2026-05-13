@@ -243,7 +243,7 @@
 - [x] `07-010` `implement-health-and-armor-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-010-implement-health-and-armor-pickups.md`
 - [x] `07-011` `implement-ammo-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-011-implement-ammo-pickups.md`
 - [x] `07-012` `implement-weapon-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-012-implement-weapon-pickups.md`
-- [ ] `07-013` `implement-keycard-and-skull-key-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-013-implement-keycard-and-skull-key-pickups.md`
+- [x] `07-013` `implement-keycard-and-skull-key-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-013-implement-keycard-and-skull-key-pickups.md`
 - [ ] `07-014` `implement-backpack-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-014-implement-backpack-semantics.md`
 - [ ] `07-015` `implement-berserk-partial-invisibility-radiation-suit` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-015-implement-berserk-partial-invisibility-radiation-suit.md`
 - [ ] `07-016` `implement-invulnerability-and-infrared` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-016-implement-invulnerability-and-infrared.md`

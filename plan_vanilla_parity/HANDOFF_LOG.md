@@ -8270,3 +8270,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-012
 - summary: applyVanillaWeaponPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GiveWeapon (single-player): weaponinfo[].ammo table pins fist/chainsaw -> am_noammo, pistol/chaingun -> am_clip, shotgun/ssg -> am_shell, missile -> am_misl, plasma/bfg -> am_cell. Dropped weapon pickups give 1 clip; normal pickups give 2 clips. First-time pickup sets gaveWeapon and pendingWeapon. Inventory: src/player 19->20 (135643 bytes, 3811 lines, 285 exports); player_ai_specials group 37->38 src; totals 273->274.
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-013 implement-keycard-and-skull-key-pickups completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-013
+- summary: applyVanillaKeyPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GiveCard: 6 card slots (bluecard=0, yellowcard=1, redcard=2, blueskull=3, yellowskull=4, redskull=5, NUMCARDS=6). First pickup sets card[index]=1 and adds BONUSADD=6 to player.bonuscount for screen tint; duplicate pickup is a no-op. Inventory: src/player 20->21 (137525 bytes, 3864 lines, 298 exports); player_ai_specials group 38->39 src; totals 274->275.
+- tests: format pass; focused 7/0; full pass; tsc pass
