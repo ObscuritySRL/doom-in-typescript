@@ -7730,3 +7730,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla 13-byte demo header parser (version 109, skill, episode 1-4, map 1-9, deathmatch, respawn/fast/nomonsters parms, console player 0-3, 4 player-in-game flags). Violations: insufficient_bytes, unsupported_version, skill_out_of_range, invalid_episode, invalid_map, invalid_console_player. Inventory: core 29 src / 31 test.
 - tests: format pass; focused 8/0; full 13407/0; tsc pass
 
+
+## 2026-05-13 - 04-020 implement-demo-ticcmd-parser completed
+
+- status: completed
+- lane: core
+- step_id: 04-020
+- summary: Pinned 4-byte ticcmd parser (signed-8 forwardmove/sidemove, signed-8 angleturn x 256, buttons low 4 bits, chatchar high 4 bits, 0x80 terminator). Tests for terminator handling, signed decode, button/chatchar split, and end-of-buffer stop. Inventory: core 30 src / 32 test.
+- tests: format pass; focused 6/0; full 13413/0; tsc pass
+
