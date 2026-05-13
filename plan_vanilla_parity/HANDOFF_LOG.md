@@ -9306,3 +9306,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-019
 - summary: MAXVISSPRITES=128; sortVisSpritesAscendingByScale orders by xscale ascending (farthest first) per R_SortVisSprites.
 - tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-015 serialize-thinker-state completed
+
+- status: completed
+- lane: save
+- step_id: 12-015
+- summary: src/save/serialize-thinker-state.ts pins p_saveg.c P_ArchiveThinkers traversal contract: forward iteration of doubly-linked thinkercap ring; only P_MobjThinker functions archived here (other functions handled by P_ArchiveSpecials); PADSAVEP() 4-byte alignment after each class byte and before record body; tc_end=0 terminator with no pad between it and the next section.
+- tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
