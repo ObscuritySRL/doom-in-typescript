@@ -10,7 +10,7 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 31,
+      "committed_file_count": 32,
       "committed_filenames_sorted": [
         "blockmap.ts",
         "blockmapIter.ts",
@@ -30,6 +30,7 @@
         "implement-slide-move-semantics.ts",
         "implement-subsector-point-query.ts",
         "implement-teleport-move-semantics.ts",
+        "implement-thing-touch-special-resolution.ts",
         "implement-try-move-semantics.ts",
         "implement-use-line-traversal.ts",
         "intercepts.ts",
@@ -44,9 +45,9 @@
         "subsectorQuery.ts",
         "things.ts"
       ],
-      "total_size_bytes": 115327,
-      "total_line_count": 3266,
-      "total_export_count": 202
+      "total_size_bytes": 117410,
+      "total_line_count": 3320,
+      "total_export_count": 206
     },
     {
       "relative_path": "src/world/",
