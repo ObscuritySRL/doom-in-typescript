@@ -7594,3 +7594,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned mouse grab/release contract: grabmouse=1 default; grab requires enabled+focused+visible+!nomouse; unfocused releases cursor; -nomouse force-disables. Pure `decideMouseGrab` covers all 5 release paths. Inventory: 31 src / 33 test, totals 200/244.
 - tests: format pass; focused 7/0 (10 expects); full 13318/0; tsc pass
 
+
+## 2026-05-13 - 03-026 preserve-key-repeat-behavior completed
+
+- status: completed
+- lane: launch
+- step_id: 03-026
+- summary: Pinned key repeat preservation: auto-repeat preserved as-is, no per-tic coalescing, no duplicate-keydown suppression. Pure `evaluateKeyRepeatPreservation` flags dropped/coalesced/suppressed violations. Inventory: 32 src / 34 test.
+- tests: format pass; focused 5/0; full 13323/0; tsc pass
+
