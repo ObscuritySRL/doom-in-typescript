@@ -1,16 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { FRACUNIT } from '../../../src/core/fixed.ts';
-import {
-  VANILLA_LOWERSPEED,
-  VANILLA_NUMPSPRITES,
-  VANILLA_PS_FLASH,
-  VANILLA_PS_WEAPON,
-  VANILLA_RAISESPEED,
-  VANILLA_WEAPONBOTTOM,
-  VANILLA_WEAPONTOP,
-  stepVanillaPsprite,
-} from '../../../src/player/implement-weapon-sprite-state-machine.ts';
+import { VANILLA_LOWERSPEED, VANILLA_NUMPSPRITES, VANILLA_PS_FLASH, VANILLA_PS_WEAPON, VANILLA_RAISESPEED, VANILLA_WEAPONBOTTOM, VANILLA_WEAPONTOP, stepVanillaPsprite } from '../../../src/player/implement-weapon-sprite-state-machine.ts';
 
 describe('vanilla psprite slot enum', () => {
   test('NUMPSPRITES is 2 (weapon + flash)', () => {
