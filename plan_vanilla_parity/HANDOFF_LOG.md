@@ -9009,3 +9009,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-019
 - summary: MT_KEEN=72, MT_BOSSBRAIN=78, MT_BOSSSPIT=77, MT_BOSSTARGET=76, MT_SPAWNSHOT=74; brain spawn table 9 monster types; all gated to commercial gamemode.
 - tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-002 parse-chocolate-doom-cfg completed
+
+- status: completed
+- lane: save
+- step_id: 12-002
+- summary: src/config/parse-chocolate-doom-cfg.ts pins the Chocolate Doom 2.2.1 chocolate-doom.cfg extended-config parser contract: 113 disjoint variables (zero overlap with the 43 default.cfg variables per F-022/F-065), float trailing-zero decimal accepted, hex 0x388 opl_io_port=904, -1 unbound sentinel for mouseb/joyb/joystick disconnected axes, vanilla_savegame_limit=vanilla_demo_limit=vanilla_keyboard_mapping=1 by default, M_LoadDefaultCollection silently ignores unknown variables.
+- tests: format pass; focused 7/0; full pass with 4 pre-existing inventory drift failures unchanged; tsc pass
