@@ -8685,3 +8685,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-023
 - summary: getVanillaIntermissionBackgroundLump + getVanillaYouAreHereLump pin Chocolate Doom 2.2.1 wi_stuff.c WI_loadData/WI_drawShowNextLoc: episode-1 WIMAP0, episode-2 WIMAP1, episode-3 WIMAP2, episode-4/commercial INTERPIC; you-are-here lumps WIURH0/WIURH1 toggle every 9 tics; splat WISPLAT marker. Inventory: src/ui 31->32 (267875 bytes, 7037 lines, 547 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-024 implement-finale-text-timing completed
+
+- status: completed
+- lane: ui
+- step_id: 10-024
+- summary: computeVanillaFinaleVisibleCharCount + computeVanillaFinaleTextStageDurationTics + vanillaFinaleTextStageShouldAdvance pin Chocolate Doom 2.2.1 f_finale.c F_Ticker/F_TextWrite: TEXTSPEED=3 tics/char, TEXTWAIT=250 tics post-text, 10-tic lead-in delay. Visible chars = max(0, (finalecount-10)/3) clamped to textLength. Stage advances when finalecount > textLength*3+250. Inventory: src/ui 32->33 (270854 bytes, 7122 lines, 556 exports).
+- tests: format pass; focused 14/0; full pass; tsc pass
