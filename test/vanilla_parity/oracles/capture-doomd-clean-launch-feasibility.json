@@ -1,0 +1,25 @@
+{
+  "id": "OR-VP-DOOMD-FEASIBILITY-005",
+  "stepId": "02-005",
+  "stepTitle": "Capture Doomd Clean Launch Feasibility",
+  "lane": "oracle",
+  "description": "Captures the feasibility verdict for cleanly launching doom/DOOMD.EXE on a modern 64-bit Windows host. Verdict is derived from local byte-level header inspection: DOOMD.EXE is a pure DOS MZ executable with no PE header (the 32-bit PE offset at 0x3C points beyond the file end), so it cannot be launched directly as a process by the Windows loader and requires DOS emulation (DOSBox or equivalent) for behavioral capture.",
+  "subjectFilename": "DOOMD.EXE",
+  "subjectRelativePath": "doom/DOOMD.EXE",
+  "verdict": "not-launchable-directly",
+  "verdictRationale": "doom/DOOMD.EXE begins with the MZ signature (0x4D 0x5A) but the DWORD at file offset 0x3C points outside the file (0x09B40000 vs file size 0xAD4F9), so the file has no PE header. The Win64 NT loader requires a valid PE header to create a process; therefore DOOMD.EXE cannot be launched directly on Win64 hosts.",
+  "subjectHeader": {
+    "mzSignatureBytes": "4D5A",
+    "peOffsetFieldHex": "9B40000",
+    "peOffsetWithinFile": false
+  },
+  "hostCapabilityRequirements": ["dosbox-or-equivalent-real-mode-dos-emulator", "vanilla-doom-1.9-dos4gw-extender"],
+  "recommendedSubstitute": {
+    "filename": "DOOM.EXE",
+    "relativePath": "doom/DOOM.EXE",
+    "description": "Polyglot Windows PE binary that bundles Chocolate Doom 2.2.1 Windows code; launches directly under the Win64 NT loader without DOS emulation.",
+    "peSignatureBytes": "50450000",
+    "peOffsetFieldHex": "1AC"
+  },
+  "downstreamFollowUps": ["oracle-captures-targeting-doom-exe-instead-of-doomd-exe", "future-dosbox-host-feasibility-step-if-doomd-exe-behavior-becomes-required"]
+}

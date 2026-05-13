@@ -7241,3 +7241,20 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Added a new oracle-lane reference-run launch manifest declaring executable, IWAD, base command line, screen/audio/startup/vanilla-compat parameters, init sequence, and run modes for downstream Chocolate Doom 2.2.1 oracle captures.
 - next_eligible_steps: 02-005 capture-doomd-clean-launch-feasibility
 - open_risks: Future oracle-capture steps must keep the JSON and source-level manifest in lockstep; any drift will surface in the focused test cross-reference asserts.
+
+## 2026-05-13 - 02-005 capture-doomd-clean-launch-feasibility completed b9a5c6e2-3d18-4ec7-b3b5-1f70a04d4a3d
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- lane: oracle
+- step_id: 02-005
+- summary: Captured the feasibility verdict for launching doom/DOOMD.EXE directly on the local Win64 host. Verdict is `not-launchable-directly`, derived from byte-level header inspection: DOOMD.EXE starts with the DOS MZ signature 0x4D 0x5A but the PE-offset DWORD at file offset 0x3C points to 0x09B40000 which is outside the 0xAD4F9-byte file, so there is no PE header and the Win64 NT loader cannot create a process from it. JSON records the verdict, rationale, host capability requirements (DOSBox-class real-mode DOS emulator), and recommends DOOM.EXE as the practical substitute since DOOM.EXE has a valid PE header at offset 0x1AC with the standard `PE  ` signature. Focused test re-reads the bytes on disk and proves the MZ signature, the declared PE-offset value, the out-of-file condition, and the substitute PE header.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-doomd-clean-launch-feasibility.json; D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-doomd-clean-launch-feasibility.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md
+- recovery_edit: none
+- tests_run: bun run format (pass); bun test focused (pass, 16 tests, 46 expects); bun test (pass, 12949 tests, 0 fail, 2433861 expects, 33.75 s); bun x tsc --noEmit (pass)
+- reference_sources: plan_vanilla_parity/steps/02-005-capture-doomd-clean-launch-feasibility.md; doom/DOOMD.EXE and doom/DOOM.EXE (byte-level header inspection: subject file size 0xAD4F9 = 709753 bytes, subject PE-offset field 0x09B40000 outside file, substitute PE-offset 0x1AC with `PE  ` signature at offset).
+- decision_changes: none
+- oracle_changes: Pinned the DOOMD.EXE feasibility verdict and the DOOM.EXE substitute recommendation for downstream Win64 host capture steps.
+- next_eligible_steps: 02-006 capture-doom-exe-clean-launch-feasibility
+- open_risks: If the host wants to capture vanilla DOOMD.EXE behavior directly, a future step must add DOSBox or equivalent emulator wiring; the recommended substitute DOOM.EXE diverges from pure vanilla on Windows-specific code paths (host, audio, input).
