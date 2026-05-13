@@ -253,7 +253,7 @@
 - [x] `07-020` `implement-shotgun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-020-implement-shotgun-actions.md`
 - [x] `07-021` `implement-chaingun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-021-implement-chaingun-actions.md`
 - [x] `07-022` `implement-rocket-launcher-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-022-implement-rocket-launcher-actions.md`
-- [ ] `07-023` `implement-plasma-rifle-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-023-implement-plasma-rifle-actions.md`
+- [x] `07-023` `implement-plasma-rifle-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-023-implement-plasma-rifle-actions.md`
 - [ ] `07-024` `implement-bfg-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-024-implement-bfg-actions.md`
 - [ ] `07-025` `implement-projectile-spawn-and-explosion` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-025-implement-projectile-spawn-and-explosion.md`
 - [ ] `07-026` `implement-hitscan-aim-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-026-implement-hitscan-aim-and-damage.md`
