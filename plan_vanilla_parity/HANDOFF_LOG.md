@@ -9135,3 +9135,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-025
 - summary: BUTTONTIME=35 tics, SFX_SWTCHN=60, SFX_SWTCHX=61; SW1/SW2 texture naming; classifyVanillaSwitchActivation flips paired indices, schedules revert for repeatable switches.
 - tests: format pass; focused 7/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 08-026 implement-animated-flats-and-textures completed
+
+- status: completed
+- lane: ai
+- step_id: 08-026
+- summary: Flat animations cycle 8 tics/frame; DOOM 1 set: NUKAGE1..3, FWATER1..4, LAVA1..4, BLOOD1..3.
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
