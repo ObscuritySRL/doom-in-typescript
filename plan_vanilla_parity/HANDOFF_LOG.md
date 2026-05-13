@@ -8460,3 +8460,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-007
 - summary: VANILLA_OPTIONS_MENU_TREE pins Chocolate Doom 2.2.1 m_menu.c OptionsMenu: 8 entries in order endgame(M_ENDGAM)/messages(M_MESSG)/detail(M_DETAIL)/scrnsize(M_SCRNSZ slider)/separator/mousesens(M_MSENS slider)/separator/soundvol(M_SVOL). Status byte encoding: 1=selectable, 2=slider, -1=separator. Separators sit at indices 4 and 6, cursor skips them via vanillaOptionsItemIsCursorEligible. Hotkeys e/m/g/s/_/m/_/s. Inventory: src/ui 15->16 (222391 bytes, 5743 lines, 398 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-008 implement-sound-volume-menu completed
+
+- status: completed
+- lane: ui
+- step_id: 10-008
+- summary: VANILLA_SOUND_VOLUME_MENU_TREE + clampVanillaSoundVolume pin Chocolate Doom 2.2.1 m_menu.c SoundMenu: 4 entries SFX(M_SFXVOL slider)/separator/music(M_MUSVOL slider)/separator, both sliders use status byte 2 with hotkeys s and m. Volume range 0..15 (16 slots) for both snd_SfxVolume and snd_MusicVolume. Inventory: src/ui 16->17 (225139 bytes, 5816 lines, 408 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
