@@ -128,7 +128,7 @@
 - [x] `03-033` `implement-menu-route-to-e1m1` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-033-implement-menu-route-to-e1m1.md`
 - [x] `03-034` `implement-screenshot-capture-hook` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-034-implement-screenshot-capture-hook.md`
 - [x] `03-035` `implement-launch-smoke-test-against-doom-ts` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-035-implement-launch-smoke-test-against-doom-ts.md`
-- [ ] `03-036` `gate-clean-launch-host-and-input` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-036-gate-clean-launch-host-and-input.md`
+- [x] `03-036` `gate-clean-launch-host-and-input` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-036-gate-clean-launch-host-and-input.md`
 
 ## Phase 04: Core Timing / Fixed / RNG / Demo Sync
 

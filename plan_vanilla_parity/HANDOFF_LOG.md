@@ -7684,3 +7684,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned launch smoke contract: 19 pre-loop phases (parse_cmdline through i_init_stretch_tables) plus enter doom_loop plus per-tic order from 03-018. evaluateLaunchSmoke flags missing/out-of-order/no-loop-entry/per-tic violations. Inventory: 41 src / 43 test.
 - tests: format pass; focused 6/0; full 13379/0; tsc pass
 
+
+## 2026-05-13 - 03-036 gate-clean-launch-host-and-input completed
+
+- status: completed
+- lane: launch
+- step_id: 03-036
+- summary: Phase 03 launch lane gate closes: enumerates the 19 required bootstrap modules (03-017 through 03-035) + 19 required focused tests, verifies on-disk existence and 1:1 pairing, sorted/unique invariants, and provides pure evaluatePhase03Gate that flags missing_required_module, missing_required_test, count_mismatch. Inventory: 42 src / 44 test.
+- tests: format pass; focused 7/0 (47 expects); full 13386/0; tsc pass
+- next_eligible_steps: 04-016 reject-frame-rate-dependent-simulation (next first unchecked, core lane)
+
