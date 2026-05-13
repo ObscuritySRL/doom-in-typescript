@@ -8532,3 +8532,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-029
 - summary: classifyVanillaPlayerUseAction pins Chocolate Doom 2.2.1 p_user.c P_PlayerThink BT_USE rising-edge gate (fires P_UseLines once per press until released). USERANGE=64*FRACUNIT matches MELEERANGE (vanilla shares the use/melee projection). SFX_NOWAY=20 plays when no usable line is hit. Inventory: src/player 36->37 (163406 bytes, 4557 lines, 406 exports); player_ai_specials group 54->55 src; totals 299->302.
 - tests: format pass; focused 5/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-012 implement-read-this-help-pages completed
+
+- status: completed
+- lane: ui
+- step_id: 10-012
+- summary: getVanillaReadThisSequence + advanceVanillaReadThisPage + vanillaReadThisIsReachableFromMainMenu pin Chocolate Doom 2.2.1 m_menu.c M_ReadThis/M_ReadThis2/M_FinishReadThis + M_Init: shareware/registered show HELP1->HELP2->MainDef (2 pages); retail (Ultimate Doom) shows HELP1->MainDef (1 page, M_FinishReadThis fires directly); commercial has no help pages reachable from menu (entry removed). Inventory: src/ui 20->21 (237518 bytes, 6170 lines, 447 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
