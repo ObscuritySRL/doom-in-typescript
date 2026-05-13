@@ -1,0 +1,53 @@
+{
+  "id": "OR-VP-VERIFY-HASHES-002",
+  "stepId": "02-002",
+  "stepTitle": "Verify Local Reference File Hashes",
+  "lane": "oracle",
+  "description": "Verification manifest pinning the expected SHA-256 hash and byte length for every locally bundled DOOM 1.9 reference binary and configuration file under doom/. The focused Bun test re-hashes each file on disk and proves the local bytes match these expected values, so downstream oracle and capture work can trust the reference-source authority order.",
+  "sourceDirectory": "doom/",
+  "hashAlgorithm": "SHA-256",
+  "manifestCrossReferences": ["reference/manifests/file-hashes.json", "test/vanilla_parity/oracles/catalog-local-reference-binaries-and-configs.json"],
+  "validRoles": ["default-config", "dos-executable", "engine-config", "merged-polyglot-executable", "shareware-iwad"],
+  "entries": [
+    {
+      "description": "Vanilla DOOM 1.9 DOS executable; primary behavioral authority for vanilla shareware semantics.",
+      "filename": "DOOMD.EXE",
+      "relativePath": "doom/DOOMD.EXE",
+      "role": "dos-executable",
+      "sha256": "9D3216605417888D5A699FA3794E46638EB4CB8634501AE748D74F9C2CFAE37B",
+      "sizeBytes": 709753
+    },
+    {
+      "description": "Local merged-polyglot DOOM Windows executable used as a Windows-side practical oracle when behavior agrees with vanilla.",
+      "filename": "DOOM.EXE",
+      "relativePath": "doom/DOOM.EXE",
+      "role": "merged-polyglot-executable",
+      "sha256": "5CA97717FD79F833B248AE5985FFFADBEE39533F5E0529BC9D7B439E08B8F1D2",
+      "sizeBytes": 1893888
+    },
+    {
+      "description": "Canonical shareware DOOM IWAD; primary data set for the C1 vanilla parity target.",
+      "filename": "DOOM1.WAD",
+      "relativePath": "doom/DOOM1.WAD",
+      "role": "shareware-iwad",
+      "sha256": "1D7D43BE501E67D927E415E0B8F3E29C3BF33075E859721816F652A526CAC771",
+      "sizeBytes": 4196020
+    },
+    {
+      "description": "Vanilla DOOM control, audio, and UI defaults bundled beside the reference binaries.",
+      "filename": "default.cfg",
+      "relativePath": "doom/default.cfg",
+      "role": "default-config",
+      "sha256": "0E1854B8109FE9D3C3BBDC1407F2AA0F75BA7A89807CB7EE21E146AF6CFAFABC",
+      "sizeBytes": 1565
+    },
+    {
+      "description": "Host-side oracle configuration including vanilla compatibility flags (vanilla_savegame_limit, vanilla_demo_limit, vanilla_keyboard_mapping).",
+      "filename": "chocolate-doom.cfg",
+      "relativePath": "doom/chocolate-doom.cfg",
+      "role": "engine-config",
+      "sha256": "A4FB5E9C3EB88091E41F088AFC885F628812A4A1EBD37A71B08474229A8CB770",
+      "sizeBytes": 3838
+    }
+  ]
+}
