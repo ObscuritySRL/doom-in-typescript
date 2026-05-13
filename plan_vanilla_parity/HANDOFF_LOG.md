@@ -8406,3 +8406,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-023
 - summary: Pinned A_FirePlasma: 1 cell ammo/shot, MT_PLASMA projectile, 2 muzzle flash states picked via P_Random() & 1.
 - tests: format pass; focused 4/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-004 implement-new-game-menu completed
+
+- status: completed
+- lane: ui
+- step_id: 10-004
+- summary: resolveVanillaNewGameRoute pins Chocolate Doom 2.2.1 m_menu.c M_NewGame routing: netgame without demo playback returns 'netgame-warning' (the NEWGAME message popup); commercial gamemode jumps directly to 'skill-menu' (NewDef); shareware/registered/retail route to 'episode-menu' (EpiDef). VANILLA_NEWGAME_NETGAME_MESSAGE_KEY pins the upstream DeHackEd key. Inventory: src/ui 12->13 (211594 bytes, 5480 lines, 366 exports).
+- tests: format pass; focused 8/0; full pass; tsc pass
