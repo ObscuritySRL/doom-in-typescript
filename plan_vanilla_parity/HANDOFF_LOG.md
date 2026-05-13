@@ -7621,3 +7621,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla D_ProcessEvents responder chain M_Responder -> AM_Responder -> ST_Responder -> HU_Responder -> G_Responder with first-true-consumes semantics. Tests verify consumption priority and skip-list. Inventory: 34 src / 36 test.
 - tests: format pass; focused 5/0 (9 expects); full 13333/0; tsc pass
 
+
+## 2026-05-13 - 03-029 implement-deterministic-input-trace-injection completed
+
+- status: completed
+- lane: launch
+- step_id: 03-029
+- summary: Pinned deterministic input trace injection: per-tic dispatch matching 02-009 schema, future events stay queued, past events flagged, unsorted trace flagged, unknown kinds flagged. Pure injectTraceForTic with frozen output. Inventory: 35 src / 37 test.
+- tests: format pass; focused 5/0; full 13338/0; tsc pass
+
