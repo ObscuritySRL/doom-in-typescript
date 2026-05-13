@@ -114,7 +114,7 @@
 - [x] `03-019` `implement-close-button-and-alt-f4-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-019-implement-close-button-and-alt-f4-behavior.md`
 - [x] `03-020` `implement-keyboard-scan-code-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-020-implement-keyboard-scan-code-mapping.md`
 - [x] `03-021` `implement-menu-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-021-implement-menu-key-mapping-from-config.md`
-- [ ] `03-022` `implement-gameplay-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-022-implement-gameplay-key-mapping-from-config.md`
+- [x] `03-022` `implement-gameplay-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-022-implement-gameplay-key-mapping-from-config.md`
 - [ ] `03-023` `implement-mouse-button-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-023-implement-mouse-button-mapping.md`
 - [ ] `03-024` `implement-mouse-motion-accumulation` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-024-implement-mouse-motion-accumulation.md`
 - [ ] `03-025` `implement-mouse-grab-and-release-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-025-implement-mouse-grab-and-release-policy.md`

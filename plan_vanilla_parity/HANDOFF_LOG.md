@@ -7555,3 +7555,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 5/0 (53 expects); full 13294/0; tsc pass
 - next_eligible_steps: 03-022 implement-mouse-input-policy
 
+
+## 2026-05-13 - 03-022 implement-gameplay-key-mapping-from-config completed
+
+- status: completed
+- lane: launch
+- step_id: 03-022
+- summary: Pinned vanilla gameplay key scan codes from default.cfg (KEY_FIRE=29, KEY_USE=57, KEY_STRAFE=56, KEY_SPEED=54, KEY_STRAFELEFT=51, KEY_STRAFERIGHT=52, KEY_UP=72, KEY_DOWN=80, KEY_LEFT=75, KEY_RIGHT=77); no re-read on level start; rebindable at runtime. Inventory refreshed: bootstrap 28 src / 30 test, config.ts test_importer_count 2->3 (another `-from-config.ts` test triggers the importer regex), totals 197/241.
+- tests: format pass; focused 5/0 (27 expects); full 13299/0; tsc pass
+- next_eligible_steps: 03-023 implement-mouse-button-mapping
+
