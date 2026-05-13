@@ -110,7 +110,7 @@
 - [x] `03-015` `implement-palette-blit-without-filtering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-015-implement-palette-blit-without-filtering.md`
 - [x] `03-016` `implement-aspect-and-integer-scale-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-016-implement-aspect-and-integer-scale-policy.md`
 - [x] `03-017` `implement-resize-and-focus-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-017-implement-resize-and-focus-policy.md`
-- [ ] `03-018` `implement-message-pump-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-018-implement-message-pump-ordering.md`
+- [x] `03-018` `implement-message-pump-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-018-implement-message-pump-ordering.md`
 - [ ] `03-019` `implement-close-button-and-alt-f4-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-019-implement-close-button-and-alt-f4-behavior.md`
 - [ ] `03-020` `implement-keyboard-scan-code-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-020-implement-keyboard-scan-code-mapping.md`
 - [ ] `03-021` `implement-menu-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-021-implement-menu-key-mapping-from-config.md`

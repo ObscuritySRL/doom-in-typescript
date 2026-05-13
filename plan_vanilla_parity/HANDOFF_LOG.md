@@ -7515,3 +7515,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 12/0 (49 expects); full 13263/0; tsc pass
 - next_eligible_steps: 03-018 implement-message-pump-ordering
 
+
+## 2026-05-13 - 03-018 implement-message-pump-ordering completed
+
+- status: completed
+- lane: launch
+- step_id: 03-018
+- summary: Pinned the vanilla Chocolate Doom 2.2.1 per-tic message pump ordering contract in src/bootstrap/implement-message-pump-ordering.ts: five canonical phases (i_start_tic, d_process_events, d_run_tics, i_update_no_blit, i_finish_update), 16-event D_ProcessEvents drain cap, FIFO overflow drops new events, OS queue pumped exactly once per tic, in-order drain. Focused test exercises the order contract, the four quirk constants, and per-violation failure modes. Per the 01-024 precedent, refreshed classify-real-implementations.json bootstrap_runtime_contracts source_file_count (23->24) and test_file_count (25->26) plus classification_summary totals (192->193, 236->237).
+- tests: format pass; focused 10/0 (20 expects); full 13273/0; tsc pass
+- next_eligible_steps: 03-019 implement-close-button-and-alt-f4-behavior
+
