@@ -9090,3 +9090,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-023
 - summary: PLATSPEED=1 fixed, blaze=8 fixed; PLATWAIT=105 tics; MAXPLATS=30; plattype_e enum 0..4; plat_e state enum 0..3.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-005 persist-sound-settings completed
+
+- status: completed
+- lane: save
+- step_id: 12-005
+- summary: src/config/persist-sound-settings.ts pins the 9 vanilla sound variables (sfx_volume=8, music_volume=8 sliders 0..15; snd_channels=8; snd_musicdevice=snd_sfxdevice=3 SoundBlaster; snd_sbport=snd_sbirq=snd_sbdma=snd_mport=0 autodetect). snddevice_t enum: NONE=0, PCSPEAKER=1, ADLIB=2, SB=3, PAS=4, GUS=5, WAVEBLASTER=6, SOUNDCANVAS=7, GENMIDI=8, AWE32=9. Autodetect-zero hardware ports serialize as plain decimal 0 (no 0x); only chocolate-doom.cfg opl_io_port uses hex format.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

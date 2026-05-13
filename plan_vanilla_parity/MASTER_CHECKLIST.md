@@ -413,7 +413,7 @@
 - [x] `12-002` `parse-chocolate-doom-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-002-parse-chocolate-doom-cfg.md`
 - [x] `12-003` `persist-vanilla-key-bindings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-003-persist-vanilla-key-bindings.md`
 - [x] `12-004` `persist-mouse-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-004-persist-mouse-settings.md`
-- [ ] `12-005` `persist-sound-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-005-persist-sound-settings.md`
+- [x] `12-005` `persist-sound-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-005-persist-sound-settings.md`
 - [ ] `12-006` `persist-screen-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-006-persist-screen-settings.md`
 - [ ] `12-007` `persist-chat-macros` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-007-persist-chat-macros.md`
 - [ ] `12-008` `write-config-back-in-vanilla-format` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-008-write-config-back-in-vanilla-format.md`
