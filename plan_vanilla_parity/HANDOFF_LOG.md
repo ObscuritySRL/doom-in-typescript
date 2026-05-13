@@ -8081,3 +8081,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-023
 - summary: classifySpawnOutcome routes mapthings: player start types 1..4 save as playerstart; type 11 saves as DM start; MTF_NETGAME skipped in single-player but spawned in coop/DM; normal pickups spawn. Inventory: src/map 33->34 (120879 bytes, 3417 lines, 226 exports); map+world 44->45 src; totals 252->253.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-024 implement-nightmare-respawn-map-state completed
+
+- status: completed
+- lane: map
+- step_id: 06-024
+- summary: shouldRespawnNightmareMonster: requires respawn_monsters_enabled true, tics_dead >= 420 (35*12), and P_Random low 2 bits == 0. Inventory: src/map 34->35 (122013 bytes, 3447 lines, 230 exports); map+world 45->46 src; totals 253->254.
+- tests: format pass; focused 6/0; full pass; tsc pass
