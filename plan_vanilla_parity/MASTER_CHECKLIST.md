@@ -415,7 +415,7 @@
 - [x] `12-004` `persist-mouse-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-004-persist-mouse-settings.md`
 - [x] `12-005` `persist-sound-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-005-persist-sound-settings.md`
 - [x] `12-006` `persist-screen-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-006-persist-screen-settings.md`
-- [ ] `12-007` `persist-chat-macros` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-007-persist-chat-macros.md`
+- [x] `12-007` `persist-chat-macros` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-007-persist-chat-macros.md`
 - [ ] `12-008` `write-config-back-in-vanilla-format` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-008-write-config-back-in-vanilla-format.md`
 - [ ] `12-009` `isolate-tests-from-user-local-config` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-009-isolate-tests-from-user-local-config.md`
 - [ ] `12-010` `define-save-directory-policy` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-010-define-save-directory-policy.md`

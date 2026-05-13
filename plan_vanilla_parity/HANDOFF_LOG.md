@@ -9144,3 +9144,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-026
 - summary: Flat animations cycle 8 tics/frame; DOOM 1 set: NUKAGE1..3, FWATER1..4, LAVA1..4, BLOOD1..3.
 - tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-007 persist-chat-macros completed
+
+- status: completed
+- lane: save
+- step_id: 12-007
+- summary: src/config/persist-chat-macros.ts pins the 10 vanilla chat macros (chatmacro0..chatmacro9) and the DOOM 1.9 default strings byte-for-byte ("No", "I am ready to kick butt!", "I am OK.", "I am not looking too good!", "Help!", "You suck!", "Next time, scumbag...", "Come here!", "I will take care of it.", "Yes"). Each macro serializes as name padded to column 30 then double-quoted value then LF terminator; no escape processing — apostrophes and ellipses are preserved verbatim. All 10 keys are written unconditionally to match M_SaveDefaults full doom_defaults_list walk.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
