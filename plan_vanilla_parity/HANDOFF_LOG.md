@@ -7378,3 +7378,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Captured the 15-step Chocolate Doom 2.2.1 startup sequence (Z_Init through I_InitStretchTables) as oracle data, anchored to DOOM.EXE/DOOM1.WAD at 35 Hz tic rate. Cross-checked with INIT_SEQUENCE_LENGTH and REFERENCE_RUN_MANIFEST.initSequence in src/oracles/referenceRunManifest.ts.
 - tests_run: format pass; focused 13/0 (85 expects); full 13114/0; tsc pass
 - next_eligible_steps: 02-017 capture-initial-title-frame-oracle
+
+## 2026-05-13 - 02-017 capture-initial-title-frame-oracle completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-017
+- summary: Created a pending-external-reference-run capture manifest for the initial title frame: title-loop target, DOOM.EXE/DOOM1.WAD, 320x200 64000-byte framebuffer, 14-palette, SHA-256 64-hex, expected title palette index 0, 35-tic sampling. Entries are empty until an external reference run lands; the focused test verifies the schema, the pending status, the cross-reference with FRAMEBUFFER_WIDTH/HEIGHT/SIZE and PALETTE_COUNT in src/oracles/framebufferHash.ts, and a hypothetical populated entry shape via failure mode.
+- tests_run: format pass; focused 15/0 (40 expects); full 13129/0; tsc pass
+- next_eligible_steps: 02-018 capture-main-menu-open-oracle
+- open_risks: Step 02-035 gate-oracle-foundation-without-deferred-status explicitly forbids pending status. Future external reference run must populate entries before the gate closes.
