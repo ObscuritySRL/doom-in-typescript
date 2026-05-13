@@ -1,0 +1,18 @@
+{
+  "id": "OR-VP-COMBAT-024",
+  "stepId": "02-024",
+  "stepTitle": "Capture Scripted Combat Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic effect of a scripted pistol attack against an idle zombieman near the E1M1 spawn: weapon state transition (NORMAL -> FIRE -> NORMAL), hitscan damage roll seeded by the LCG, target health delta, mobj state transition (S_POSS_RUN1 -> S_POSS_PAIN -> S_POSS_DIE1 chain), and the player's per-frame state snapshot hashes. Initial entries empty pending external reference run.",
+  "captureMethod": "From 02-020 spawn, drive forward + turn to face the first zombieman, press FIRE = default.cfg key_fire 29 (LCTRL) once, capture state at FIRE press, FIRE+1, FIRE+pistol-cooldown, and FIRE+death-anim-length.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "fireScancode": 29,
+  "expectedPistolDamageMinPerShot": 5,
+  "expectedPistolDamageMaxPerShot": 15,
+  "expectedZombiemanSpawnHealth": 20,
+  "stateEntries": [],
+  "downstreamFollowUps": ["wire-state-snapshotter-into-bun-comparator"]
+}

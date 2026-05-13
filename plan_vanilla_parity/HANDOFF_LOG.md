@@ -7436,3 +7436,9 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: pickup E1M1 mega-armor (+100 armorpoints, armortype 2, +1 item count). State entries empty pending external run.
 - tests: format pass; focused 6/0; full 13187/0; tsc pass
 - next: 02-024
+
+## 2026-05-13 - 02-024 capture-scripted-combat-oracle completed (pending)
+- lane: oracle
+- summary: Pending manifest: scripted FIRE (LCTRL scancode 29) at idle zombieman; expect pistol 5-15 damage, zombieman 20 HP. Pending external run.
+- tests: focused 8/0; full 13195/0; tsc pass
+- next: 02-025

@@ -78,7 +78,7 @@
 - [x] `02-021` `capture-scripted-movement-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-021-capture-scripted-movement-oracle.md`
 - [x] `02-022` `capture-scripted-use-line-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-022-capture-scripted-use-line-oracle.md`
 - [x] `02-023` `capture-scripted-pickup-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-023-capture-scripted-pickup-oracle.md`
-- [ ] `02-024` `capture-scripted-combat-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-024-capture-scripted-combat-oracle.md`
+- [x] `02-024` `capture-scripted-combat-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-024-capture-scripted-combat-oracle.md`
 - [ ] `02-025` `capture-damage-death-reborn-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-025-capture-damage-death-reborn-oracle.md`
 - [ ] `02-026` `capture-intermission-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-026-capture-intermission-transition-oracle.md`
 - [ ] `02-027` `capture-finale-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-027-capture-finale-transition-oracle.md`
