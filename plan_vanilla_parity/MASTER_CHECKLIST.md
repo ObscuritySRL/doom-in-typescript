@@ -375,7 +375,7 @@
 
 ## Phase 11: Audio / SFX / MUS / OPL / Mixer
 
-- [ ] `11-001` `implement-sound-effect-lump-loader` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-001-implement-sound-effect-lump-loader.md`
+- [x] `11-001` `implement-sound-effect-lump-loader` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-001-implement-sound-effect-lump-loader.md`
 - [ ] `11-002` `implement-sound-priority-table` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-002-implement-sound-priority-table.md`
 - [ ] `11-003` `implement-eight-channel-allocation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-003-implement-eight-channel-allocation.md`
 - [ ] `11-004` `implement-sound-origin-tracking` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-004-implement-sound-origin-tracking.md`
@@ -422,7 +422,7 @@
 - [x] `12-011` `implement-save-slot-descriptions` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-011-implement-save-slot-descriptions.md`
 - [x] `12-012` `implement-save-header-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-012-implement-save-header-version.md`
 - [x] `12-013` `serialize-player-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-013-serialize-player-state.md`
-- [ ] `12-014` `serialize-mobj-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-014-serialize-mobj-state.md`
+- [x] `12-014` `serialize-mobj-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-014-serialize-mobj-state.md`
 - [ ] `12-015` `serialize-thinker-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-015-serialize-thinker-state.md`
 - [ ] `12-016` `serialize-sector-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-016-serialize-sector-specials.md`
 - [ ] `12-017` `serialize-line-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-017-serialize-line-specials.md`

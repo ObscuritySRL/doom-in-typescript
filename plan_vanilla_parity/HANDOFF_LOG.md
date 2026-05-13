@@ -9279,3 +9279,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-018
 - summary: VANILLA_SPRITE_MINZ_FIXED=4 fixed (=0x40000), BASEYCENTER=100, screen 320x200; reject sprites too close (depth < MINZ).
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-001 implement-sound-effect-lump-loader completed
+
+- status: completed
+- lane: audio
+- step_id: 11-001
+- summary: src/audio/implement-sound-effect-lump-loader.ts pins the DMX digital sfx lump contract: 8-byte LE header (format=3, sampleRate=11025 Hz, sampleCount=u32), 2 padding bytes (one at byte 0, one at byte sampleCount-1) with audible region starting at byte offset 1, DC-zero silence value 0x80, DS-prefix lump naming (DP for PC speaker variant). DSPISTOL in DOOM1.WAD verifies format/rate/count contract via parseSfxLump.
+- tests: format pass; focused 12/0; full pass with inventory drift in src/audio/ unchanged baseline pattern; tsc pass
+
+
+## 2026-05-13 - 12-014 serialize-mobj-state completed
+
+- status: completed
+- lane: save
+- step_id: 12-014
+- summary: src/save/serialize-mobj-state.ts pins p_saveg.c P_ArchiveThinkers mobj-record contract: 154-byte mobj_t record prefixed by 1-byte tc_mobj=1 class marker, terminated by tc_end=0. Embedded 10-byte mapthing_t spawnpoint inline. Pointer fields (snext/sprev/bnext/bprev/subsector/info/state/target/player/tracer) index-encoded on archive and reattached by P_RestoreTargets on load. Total block bytes = mobjCount*(1+154) + 1 terminator.
+- tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
