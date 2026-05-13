@@ -295,7 +295,7 @@
 - [x] `08-025` `implement-switch-texture-and-sound-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-025-implement-switch-texture-and-sound-semantics.md`
 - [x] `08-026` `implement-animated-flats-and-textures` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-026-implement-animated-flats-and-textures.md`
 - [x] `08-027` `implement-sector-special-effects` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-027-implement-sector-special-effects.md`
-- [ ] `08-028` `implement-line-trigger-repeat-rules` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-028-implement-line-trigger-repeat-rules.md`
+- [x] `08-028` `implement-line-trigger-repeat-rules` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-028-implement-line-trigger-repeat-rules.md`
 - [ ] `08-029` `compare-e1m8-boss-death-oracle` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-029-compare-e1m8-boss-death-oracle.md`
 - [ ] `08-030` `gate-monster-ai-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-030-gate-monster-ai-semantics.md`
 - [ ] `08-031` `gate-sector-and-line-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-031-gate-sector-and-line-specials.md`

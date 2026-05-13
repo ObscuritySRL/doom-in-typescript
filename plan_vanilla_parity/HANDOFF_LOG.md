@@ -9171,3 +9171,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-008
 - summary: src/config/write-config-back-in-vanilla-format.ts pins the M_SaveDefaults full 43-variable doom_defaults_list walk in canonical order: mouse_sensitivity then sfx/music volume then show_messages then 10 key bindings then use_mouse+mouseb then use_joystick+joyb then screen+detail then snd_channels+device+SB+midi then usegamma then 10 chatmacros. All 43 emitted unconditionally; no CRLF; no 0x prefix on integers; chatmacros wrapped in literal double quotes. parse(write(defaults)) round-trips byte-for-byte through parseVanillaDefaultCfg.
 - tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-028 implement-line-trigger-repeat-rules completed
+
+- status: completed
+- lane: ai
+- step_id: 08-028
+- summary: Key door line specials: card 26/27/28 (blue/yellow/red), skull 32/33/34. Once-only walk and gun triggers clear their special after firing; switches do not (texture flip); repeats never clear.
+- tests: format pass; focused 6/0; full pass; tsc pre-existing save lane TS2352
