@@ -8261,3 +8261,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-011
 - summary: applyAmmoPickup + getMaxAmmoFor mirror Chocolate Doom 2.2.1 p_inter.c P_GiveAmmo: NUMAMMO=4 (bullets/shells/cells/rockets), clipammo=[10,4,20,1], maxammo=[200,50,300,50], backpack doubles caps to [400,100,600,100]. sk_baby/sk_nightmare double pickup amount. Returns gave=false when already at cap (no consumption). Inventory: src/player 18->19 (133134 bytes, 3728 lines, 265 exports); player_ai_specials group 36->37 src; totals 272->273.
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-012 implement-weapon-pickups completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-012
+- summary: applyVanillaWeaponPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GiveWeapon (single-player): weaponinfo[].ammo table pins fist/chainsaw -> am_noammo, pistol/chaingun -> am_clip, shotgun/ssg -> am_shell, missile -> am_misl, plasma/bfg -> am_cell. Dropped weapon pickups give 1 clip; normal pickups give 2 clips. First-time pickup sets gaveWeapon and pendingWeapon. Inventory: src/player 19->20 (135643 bytes, 3811 lines, 285 exports); player_ai_specials group 37->38 src; totals 273->274.
+- tests: format pass; focused 11/0; full pass; tsc pass
