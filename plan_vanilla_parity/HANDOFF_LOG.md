@@ -8928,3 +8928,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-014
 - summary: A_BruisAttack (Baron MT_BRUISER=15 / Hell Knight MT_KNIGHT=14): melee claw 10*(rng%8+1)=10..80; missile MT_BRUISERSHOT=22 (info.damage=8).
 - tests: format pass; focused 5/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-011 implement-visplane-overflow-limit-behavior completed
+
+- status: completed
+- lane: render
+- step_id: 09-011
+- summary: vanillaVisplaneOverflowWouldFire + vanillaVisplaneCountIsValid + vanillaVisplaneRemainingCapacity pin Chocolate Doom 2.2.1 r_plane.c R_FindPlane overflow guard: MAXVISPLANES=128 hard limit, "R_FindPlane: no more visplanes" error message, strict equality check `lastvisplane - visplanes == MAXVISPLANES` (128th allocation succeeds, 129th errors). No graceful recovery. Inventory: src/render 24->25 (226512 bytes, 5673 lines, 230 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
