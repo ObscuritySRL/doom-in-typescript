@@ -8361,3 +8361,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-001
 - summary: computeVanillaTitleStep + advanceVanillaTitleSequence pin Chocolate Doom 2.2.1 d_main.c D_DoAdvanceDemo 6-state cycle: state 0 TITLEPIC + D_INTRO/D_DM2TTL music with pagetic 170 (non-commercial) or 385 (commercial = TICRATE*11), state 1 DEMO1, state 2 CREDIT page (pagetic 200, no music change), state 3 DEMO2, state 4 HELP2 (shareware/registered) / CREDIT (retail) / TITLEPIC+D_DM2TTL (commercial) with pagetic 200, state 5 DEMO3. Modular wrap on (demosequence + 6) % 6. Inventory: src/ui 9->10 (205116 bytes, 5309 lines, 351 exports).
 - tests: format pass; focused 19/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-021 implement-chaingun-actions completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-021
+- summary: applyChainGunFire mirrors Chocolate Doom 2.2.1 p_pspr.c A_FireCGun: 1 clip per shot, bullet damage = 5*(rng%3+1), refire-conditional bullet spread (zero spread on first shot, (rng-rng)<<18 on held fire). Inventory: src/player 28->29 (152568 bytes, 4273 lines, 357 exports); player_ai_specials group 46->47 src; totals 283->284.
+- tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-002 implement-page-ticker-and-advance-demo completed
+
+- status: completed
+- lane: ui
+- step_id: 10-002
+- summary: tickVanillaPagetic + requestVanillaAdvanceDemo pin Chocolate Doom 2.2.1 d_main.c D_PageTicker pre-decrement contract: pagetic -= 1 then advanceTriggered = (decremented < 0), so a 170-tic TITLEPIC takes 171 ticks before advance fires, and a 200-tic CREDIT/HELP2 interlude takes 201 ticks. D_AdvanceDemo is idempotent and just sets advancedemo=true. Inventory: src/ui 10->11 (206523 bytes, 5358 lines, 356 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
