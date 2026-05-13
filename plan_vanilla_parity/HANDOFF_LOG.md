@@ -7739,3 +7739,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned 4-byte ticcmd parser (signed-8 forwardmove/sidemove, signed-8 angleturn x 256, buttons low 4 bits, chatchar high 4 bits, 0x80 terminator). Tests for terminator handling, signed decode, button/chatchar split, and end-of-buffer stop. Inventory: core 30 src / 32 test.
 - tests: format pass; focused 6/0; full 13413/0; tsc pass
 
+
+## 2026-05-13 - 04-021 implement-demo-playback-state-machine completed
+
+- status: completed
+- lane: core
+- step_id: 04-021
+- summary: Pinned demo playback FSM: phases idle/loading/playing/stopped/error; events load_demo, start_playback, tick_advance, reach_terminator, request_stop, header_parse_failed, ticcmd_parse_failed; terminal phases sticky on unrelated events. Inventory: core 31 src / 33 test.
+- tests: format pass; focused 9/0; full 13422/0; tsc pass
+

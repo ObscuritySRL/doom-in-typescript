@@ -152,7 +152,7 @@
 - [x] `04-018` `implement-pause-timing-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-018-implement-pause-timing-semantics.md`
 - [x] `04-019` `implement-demo-lump-header-parser` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-019-implement-demo-lump-header-parser.md`
 - [x] `04-020` `implement-demo-ticcmd-parser` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-020-implement-demo-ticcmd-parser.md`
-- [ ] `04-021` `implement-demo-playback-state-machine` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-021-implement-demo-playback-state-machine.md`
+- [x] `04-021` `implement-demo-playback-state-machine` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-021-implement-demo-playback-state-machine.md`
 - [ ] `04-022` `implement-demo-recording-state-machine` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-022-implement-demo-recording-state-machine.md`
 - [ ] `04-023` `enforce-vanilla-demo-size-limit` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-023-enforce-vanilla-demo-size-limit.md`
 - [ ] `04-024` `compare-demo-one-ticcmd-stream` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-024-compare-demo-one-ticcmd-stream.md`
