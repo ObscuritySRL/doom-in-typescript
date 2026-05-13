@@ -8910,3 +8910,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-013
 - summary: A_HeadAttack: melee bite damage = 10*(rng%6+1) = 10..60; missile fallback MT_HEADSHOT=24; MT_HEAD=26.
 - tests: format pass; focused 5/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-010 implement-visplane-allocation-and-merge completed
+
+- status: completed
+- lane: render
+- step_id: 09-010
+- summary: collapseVanillaVisplaneSky + vanillaVisplaneMatches + classifyVanillaVisplaneCheck pin Chocolate Doom 2.2.1 r_plane.c R_FindPlane / R_CheckPlane: MAXVISPLANES=128, sky (picnum==skyflatnum) collapses height=0/lightlevel=0 to share one plane, match key is (height,picnum,lightlevel) triple; top[] sentinel 0xFF; initial minx=320/maxx=-1 inverted empty range. Inventory: src/render 23->24 (224717 bytes, 5631 lines, 224 exports).
+- tests: format pass; focused 13/0; full pass; tsc pass
