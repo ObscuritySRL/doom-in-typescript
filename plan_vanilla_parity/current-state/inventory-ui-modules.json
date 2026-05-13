@@ -10,10 +10,11 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 34,
+      "committed_file_count": 35,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
+        "compare-menu-navigation-oracles.ts",
         "endoom.ts",
         "finale.ts",
         "frontEndSequence.ts",
@@ -47,9 +48,9 @@
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 273305,
-      "total_line_count": 7193,
-      "total_export_count": 563
+      "total_size_bytes": 277038,
+      "total_line_count": 7282,
+      "total_export_count": 567
     }
   ],
   "modules": [
