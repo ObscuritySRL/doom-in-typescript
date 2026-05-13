@@ -259,7 +259,7 @@
 - [x] `07-026` `implement-hitscan-aim-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-026-implement-hitscan-aim-and-damage.md`
 - [x] `07-027` `implement-autoaim-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-027-implement-autoaim-semantics.md`
 - [x] `07-028` `implement-weapon-sprite-state-machine` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-028-implement-weapon-sprite-state-machine.md`
-- [ ] `07-029` `implement-player-use-action` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-029-implement-player-use-action.md`
+- [x] `07-029` `implement-player-use-action` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-029-implement-player-use-action.md`
 - [ ] `07-030` `compare-scripted-pickup-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-030-compare-scripted-pickup-oracle.md`
 - [ ] `07-031` `compare-scripted-combat-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-031-compare-scripted-combat-oracle.md`
 - [ ] `07-032` `gate-player-movement-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-032-gate-player-movement-and-damage.md`
@@ -354,7 +354,7 @@
 - [x] `10-008` `implement-sound-volume-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-008-implement-sound-volume-menu.md`
 - [x] `10-009` `implement-screen-size-detail-gamma-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-009-implement-screen-size-detail-gamma-menu.md`
 - [x] `10-010` `implement-save-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-010-implement-save-game-menu.md`
-- [ ] `10-011` `implement-load-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-011-implement-load-game-menu.md`
+- [x] `10-011` `implement-load-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-011-implement-load-game-menu.md`
 - [ ] `10-012` `implement-read-this-help-pages` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-012-implement-read-this-help-pages.md`
 - [ ] `10-013` `implement-quit-confirmation` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-013-implement-quit-confirmation.md`
 - [ ] `10-014` `implement-end-game-confirmation` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-014-implement-end-game-confirmation.md`
