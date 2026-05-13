@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 23,
+      "committed_file_count": 24,
       "committed_filenames_sorted": [
         "drawPrimitives.ts",
         "fuzz.ts",
@@ -21,6 +21,7 @@
         "implement-solid-segment-clipping.ts",
         "implement-two-sided-wall-clipping.ts",
         "implement-view-setup-constants.ts",
+        "implement-visplane-allocation-and-merge.ts",
         "implement-wall-column-scale-math.ts",
         "implement-wall-texture-column-fetch.ts",
         "maskedTextures.ts",
@@ -36,9 +37,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 220949,
-      "total_line_count": 5522,
-      "total_export_count": 212
+      "total_size_bytes": 224717,
+      "total_line_count": 5631,
+      "total_export_count": 224
     }
   ],
   "modules": [
