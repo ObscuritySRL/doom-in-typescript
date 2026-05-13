@@ -7892,3 +7892,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/map/parse-seg-ssector-node-reject-blockmap-lumps.ts with byte-level parsers for SEGS (12 bytes), SSECTORS (4 bytes), NODES (28 bytes including 2x4 bboxes and 2 children). Child flag helpers isSubsectorChild + subsectorIndexFromChild handle the 0x8000 subsector flag. Constants for blockmap (8-byte header, 0xFFFF terminator). Inventory: map+world 23->24 src; src/map 12->13 committed (87549 bytes, 2487 lines, 119 exports); totals 231->232.
 - tests: format pass; focused 7/0; full 13514/0; tsc pass
 
+
+## 2026-05-13 - 06-003 parse-things-with-skill-and-game-mode-filters completed
+
+- status: completed
+- lane: map
+- step_id: 06-003
+- summary: Added src/map/parse-things-with-skill-and-game-mode-filters.ts: 10-byte THING records (x, y, angle, type, flags); MTF flag constants (EASY=0x01, NORMAL=0x02, HARD=0x04, AMBUSH=0x08, NOT_SINGLE=0x10); shouldThingSpawn implements vanilla P_SpawnMapThing skill bracketing (skill<=1 EASY, ==2 NORMAL, >=3 HARD) + NOT_SINGLE suppression. Inventory: src/map 13->14, 90148 bytes, 2563 lines, 129 exports; map+world source 24->25; totals 232->233.
+- tests: format pass; focused 8/0; full 13522/0; tsc pass
+
