@@ -69,7 +69,7 @@
 - [x] `02-012` `define-state-snapshot-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-012-define-state-snapshot-format.md`
 - [x] `02-013` `define-audio-window-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-013-define-audio-window-capture-format.md`
 - [x] `02-014` `define-music-event-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-014-define-music-event-capture-format.md`
-- [ ] `02-015` `define-save-byte-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-015-define-save-byte-capture-format.md`
+- [x] `02-015` `define-save-byte-capture-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-015-define-save-byte-capture-format.md`
 - [ ] `02-016` `capture-startup-sequence-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-016-capture-startup-sequence-oracle.md`
 - [ ] `02-017` `capture-initial-title-frame-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-017-capture-initial-title-frame-oracle.md`
 - [ ] `02-018` `capture-main-menu-open-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-018-capture-main-menu-open-oracle.md`

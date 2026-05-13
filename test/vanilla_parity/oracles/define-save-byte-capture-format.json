@@ -1,0 +1,18 @@
+{
+  "id": "OR-VP-SAVE-BYTE-015",
+  "stepId": "02-015",
+  "stepTitle": "Define Save Byte Capture Format",
+  "lane": "oracle",
+  "description": "Pins the save-byte capture schema used by oracle save/load parity verification. Each capture pairs a slot id with the raw save file bytes, a SHA-256 hash of the bytes, the byte length, and a tic-bound capture timestamp. The schema mirrors vanilla DOOM 1.9 SAVE_HEADER_SIZE plus payload structure so a saved file written by the reference DOOM.EXE can be compared byte-for-byte with a saved file written by the TS engine for the same scripted run.",
+  "saveHeaderSizeBytes": 24,
+  "vanillaSaveBytesLimit": 180224,
+  "ticRateHz": 35,
+  "hashAlgorithm": "SHA-256",
+  "hashHexLength": 64,
+  "saveSlotIdMin": 0,
+  "saveSlotIdMax": 5,
+  "entryShape": ["slotId", "captureTic", "byteLength", "sha256", "vanillaLimitRespected"],
+  "entryOrderingRule": "ascending-by-slotid-then-by-captureTic",
+  "captureSizeRule": "byteLength-must-not-exceed-vanillaSaveBytesLimit-when-vanillaLimitRespected-is-true",
+  "downstreamFollowUps": ["capture-save-load-roundtrip-oracle-step", "wire-into-bun-test-save-comparator"]
+}
