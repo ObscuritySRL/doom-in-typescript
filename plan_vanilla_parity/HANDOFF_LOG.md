@@ -9189,3 +9189,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-029
 - summary: E1M8 baron mapthing=3003, MT_BRUISER=15, tag-666 sector lower; loaded DOOM1.WAD E1M8 confirms 2 barons + tag-666 sector pillar.
 - tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-009 isolate-tests-from-user-local-config completed
+
+- status: completed
+- lane: save
+- step_id: 12-009
+- summary: src/config/isolate-tests-from-user-local-config.ts pins the test-isolation contract: forbid reading from %APPDATA%/Chocolate Doom/, ~/.local/share/, ~/.config/, ~/Library/Application Support/, %USERPROFILE%, or any home-relative path; allow only the committed doom/default.cfg and doom/chocolate-doom.cfg repository reference fixtures. Provides assertConfigPathIsTestSafe runtime gate and buildInMemoryDefaultCfgFixture for in-string fixture construction.
+- tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

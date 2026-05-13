@@ -417,7 +417,7 @@
 - [x] `12-006` `persist-screen-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-006-persist-screen-settings.md`
 - [x] `12-007` `persist-chat-macros` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-007-persist-chat-macros.md`
 - [x] `12-008` `write-config-back-in-vanilla-format` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-008-write-config-back-in-vanilla-format.md`
-- [ ] `12-009` `isolate-tests-from-user-local-config` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-009-isolate-tests-from-user-local-config.md`
+- [x] `12-009` `isolate-tests-from-user-local-config` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-009-isolate-tests-from-user-local-config.md`
 - [ ] `12-010` `define-save-directory-policy` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-010-define-save-directory-policy.md`
 - [ ] `12-011` `implement-save-slot-descriptions` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-011-implement-save-slot-descriptions.md`
 - [ ] `12-012` `implement-save-header-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-012-implement-save-header-version.md`
