@@ -10,11 +10,23 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 10,
-      "committed_filenames_sorted": ["hitscan.ts", "implement-player-reborn-state.ts", "implement-player-spawn-state.ts", "movement.ts", "pickups.ts", "playerSpawn.ts", "powerups.ts", "projectiles.ts", "weaponStates.ts", "weapons.ts"],
-      "total_size_bytes": 116632,
-      "total_line_count": 3260,
-      "total_export_count": 179
+      "committed_file_count": 11,
+      "committed_filenames_sorted": [
+        "hitscan.ts",
+        "implement-player-reborn-state.ts",
+        "implement-player-spawn-state.ts",
+        "implement-ticcmd-application.ts",
+        "movement.ts",
+        "pickups.ts",
+        "playerSpawn.ts",
+        "powerups.ts",
+        "projectiles.ts",
+        "weaponStates.ts",
+        "weapons.ts"
+      ],
+      "total_size_bytes": 118530,
+      "total_line_count": 3314,
+      "total_export_count": 192
     }
   ],
   "modules": [

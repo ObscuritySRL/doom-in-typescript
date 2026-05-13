@@ -8180,3 +8180,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-002
 - summary: computeSpawnedPlayerViewState mirrors Chocolate Doom 2.2.1 p_mobj.c P_SpawnPlayer view-state reset: viewz = mobj.z + VIEWHEIGHT (41*FRACUNIT), deltaviewheight = 0, bob = 0. VANILLA_PLAYER_VIEWHEIGHT re-exports world VIEWHEIGHT. Inventory: src/player 9->10 (116632 bytes, 3260 lines, 179 exports); player_ai_specials group 27->28 src; totals 263->264.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-003 implement-ticcmd-application completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-003
+- summary: Pinned vanilla ticcmd button bits from doomdef.h: BT_ATTACK=1, BT_USE=2, BT_CHANGE=4, BT_WEAPONMASK=56 (bits 3..5), BT_WEAPONSHIFT=3, BT_SPECIAL=128, BTS_PAUSE=1, BTS_SAVEGAME=2, BTS_SAVESHIFT=2. applyUseButtonLatch implements P_PlayerThink's BT_USE rising-edge gate (fires P_UseLines once until released). decodeWeaponChangeRequest extracts weapon index from BT_CHANGE+(buttons>>3). Inventory: src/player 10->11 (118530 bytes, 3314 lines, 192 exports); player_ai_specials group 28->29 src; totals 264->265.
+- tests: format pass; focused 10/0; full pass; tsc pass
