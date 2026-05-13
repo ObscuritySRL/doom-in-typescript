@@ -8793,3 +8793,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-004
 - summary: vanillaSolidSegRangeIsTouching + vanillaSolidSegRangeContains + getVanillaSolidSegInitialSentinels pin Chocolate Doom 2.2.1 r_bsp.c R_ClipSolidWallSegment: solidsegs[] sentinels at left (first=-0x7fffffff, last=-1) and right (first=viewwidth, last=0x7fffffff); adjacency rule treats rangeA.last+1==rangeB.first as touching (advance condition is start->last < first - 1). MAXDRAWSEGS=256 vanilla limit. Inventory: src/render 17->18 (206898 bytes, 5121 lines, 172 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-005 implement-sound-target-propagation completed
+
+- status: completed
+- lane: ai
+- step_id: 08-005
+- summary: nextSoundBlocksAfterCrossing + vanillaSoundFloodVisitsAndStops pin Chocolate Doom 2.2.1 p_enemy.c P_NoiseAlert/P_RecursiveSound: flood from emitter sector via two-sided lines with openrange>0; plain lines propagate same counter; first ML_SOUNDBLOCK bumps counter 0->1; second ML_SOUNDBLOCK at counter>=1 stops propagation (returns null). ML_SOUNDBLOCK=64, ML_TWOSIDED=4. Inventory: src/ai 12->13 (165117 bytes, 4210 lines, 231 exports); player_ai_specials 64->65 src; renderer_and_ui 54->55 (parallel render lane catch-up); totals 329->333.
+- tests: format pass; focused 9/0; full pass; tsc pass
