@@ -321,7 +321,7 @@
 - [x] `09-016` `implement-extra-light-and-palette-effects` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-016-implement-extra-light-and-palette-effects.md`
 - [x] `09-017` `implement-masked-midtexture-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-017-implement-masked-midtexture-rendering.md`
 - [x] `09-018` `implement-sprite-projection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-018-implement-sprite-projection.md`
-- [ ] `09-019` `implement-sprite-sorting` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-019-implement-sprite-sorting.md`
+- [x] `09-019` `implement-sprite-sorting` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-019-implement-sprite-sorting.md`
 - [ ] `09-020` `implement-sprite-clipping-against-drawsegs` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-020-implement-sprite-clipping-against-drawsegs.md`
 - [ ] `09-021` `implement-fuzz-invisibility-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-021-implement-fuzz-invisibility-rendering.md`
 - [ ] `09-022` `implement-player-weapon-sprite-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-022-implement-player-weapon-sprite-rendering.md`

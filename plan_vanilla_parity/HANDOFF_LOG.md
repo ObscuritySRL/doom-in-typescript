@@ -9297,3 +9297,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-014
 - summary: src/save/serialize-mobj-state.ts pins p_saveg.c P_ArchiveThinkers mobj-record contract: 154-byte mobj_t record prefixed by 1-byte tc_mobj=1 class marker, terminated by tc_end=0. Embedded 10-byte mapthing_t spawnpoint inline. Pointer fields (snext/sprev/bnext/bprev/subsector/info/state/target/player/tracer) index-encoded on archive and reattached by P_RestoreTargets on load. Total block bytes = mobjCount*(1+154) + 1 terminator.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-019 implement-sprite-sorting completed
+
+- status: completed
+- lane: render
+- step_id: 09-019
+- summary: MAXVISSPRITES=128; sortVisSpritesAscendingByScale orders by xscale ascending (farthest first) per R_SortVisSprites.
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
