@@ -8604,3 +8604,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-017
 - summary: getVanillaMenuSfx pins Chocolate Doom 2.2.1 m_menu.c menu sound events: cursor-move -> sfx_pstop, select -> sfx_pistol, menu-open -> sfx_swtchn, menu-close -> sfx_swtchx, slider-step -> sfx_stnmov, invalid -> sfx_oof. Each event maps to a single sfxenum_t. Inventory: src/ui 25->26 (251005 bytes, 6546 lines, 496 exports).
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-018 implement-menu-repeat-timing completed
+
+- status: completed
+- lane: ui
+- step_id: 10-018
+- summary: vanillaMenuInputIsGated + computeVanillaMenuWaitUntil + classifyVanillaMouseVerticalDelta pin Chocolate Doom 2.2.1 m_menu.c joystick/mouse menu repeat timing: 5-tic joywait/mousewait gate (~143ms @ TICRATE 35), 30-pixel mouse vertical threshold per discrete up/down event. Keyboard relies on OS auto-repeat instead. Inventory: src/ui 26->27 (254052 bytes, 6637 lines, 506 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
