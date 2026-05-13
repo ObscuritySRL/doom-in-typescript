@@ -10,11 +10,11 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 8,
-      "committed_filenames_sorted": ["hitscan.ts", "movement.ts", "pickups.ts", "playerSpawn.ts", "powerups.ts", "projectiles.ts", "weaponStates.ts", "weapons.ts"],
-      "total_size_bytes": 113172,
-      "total_line_count": 3150,
-      "total_export_count": 169
+      "committed_file_count": 9,
+      "committed_filenames_sorted": ["hitscan.ts", "implement-player-reborn-state.ts", "movement.ts", "pickups.ts", "playerSpawn.ts", "powerups.ts", "projectiles.ts", "weaponStates.ts", "weapons.ts"],
+      "total_size_bytes": 115190,
+      "total_line_count": 3219,
+      "total_export_count": 175
     }
   ],
   "modules": [
@@ -184,7 +184,7 @@
       "exported_types": ["PspriteActionFunction"],
       "exported_const_enums": ["AmmoType", "CardType", "PlayerState", "PowerType", "PsprNum", "WeaponType"],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/input/ticcmd.ts", "src/input/ticcmd.ts", "src/world/mobj.ts", "src/world/mobj.ts"],
-      "src_importer_count": 13,
+      "src_importer_count": 14,
       "test_importer_count": 14
     },
     {

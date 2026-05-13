@@ -231,7 +231,7 @@
 
 ## Phase 07: Gameplay / Player / Weapons / Items
 
-- [ ] `07-001` `implement-player-reborn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-001-implement-player-reborn-state.md`
+- [x] `07-001` `implement-player-reborn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-001-implement-player-reborn-state.md`
 - [ ] `07-002` `implement-player-spawn-state` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-002-implement-player-spawn-state.md`
 - [ ] `07-003` `implement-ticcmd-application` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-003-implement-ticcmd-application.md`
 - [ ] `07-004` `implement-forward-side-and-turn-movement` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-004-implement-forward-side-and-turn-movement.md`
