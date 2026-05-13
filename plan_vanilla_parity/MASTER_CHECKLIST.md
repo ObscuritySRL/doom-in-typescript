@@ -61,7 +61,7 @@
 - [x] `02-004` `define-reference-process-launch-manifest` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-004-define-reference-process-launch-manifest.md`
 - [x] `02-005` `capture-doomd-clean-launch-feasibility` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-005-capture-doomd-clean-launch-feasibility.md`
 - [x] `02-006` `capture-doom-exe-clean-launch-feasibility` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-006-capture-doom-exe-clean-launch-feasibility.md`
-- [ ] `02-007` `capture-default-cfg-baseline` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-007-capture-default-cfg-baseline.md`
+- [x] `02-007` `capture-default-cfg-baseline` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-007-capture-default-cfg-baseline.md`
 - [ ] `02-008` `capture-chocolate-doom-cfg-baseline` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-008-capture-chocolate-doom-cfg-baseline.md`
 - [ ] `02-009` `define-deterministic-input-stream-format` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-009-define-deterministic-input-stream-format.md`
 - [ ] `02-010` `define-keyboard-and-mouse-injection-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-010-define-keyboard-and-mouse-injection-oracle.md`

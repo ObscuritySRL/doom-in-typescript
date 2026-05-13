@@ -7274,3 +7274,19 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Pinned the DOOM.EXE Win64-host feasibility verdict for downstream capture steps.
 - next_eligible_steps: 02-007 capture-default-cfg-baseline
 - open_risks: WOW64 must be enabled on the host; future capture steps that exec DOOM.EXE need permission and a sandboxed working directory per the 02-003 policy.
+
+## 2026-05-13 - 02-007 capture-default-cfg-baseline completed 7e2c2a14-aa9e-4f0a-8b3e-6f7a1a4b6c5d
+
+- status: completed
+- agent: Claude Code
+- lane: oracle
+- step_id: 02-007
+- summary: Captured the 43-line doom/default.cfg baseline as oracle-lane data with each key, value, and type (boolean-int, dos-scancode, integer, quoted-string). Focused test re-reads default.cfg line-by-line, parses with vanilla `key value` and `key "string"` patterns, and round-trips each entry against the manifest; also verifies dos-scancode values land in 1-127 (vanilla DOS make-code range) and boolean-int values are restricted to 0/1.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-default-cfg-baseline.json; D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-default-cfg-baseline.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md
+- recovery_edit: Replaced a discriminator-based branch with `typeof entry.value` narrowing so TypeScript strict mode resolves the `string | number` union without `as any` or `as unknown as T` casts.
+- tests_run: bun run format (pass); bun test focused (pass, 17 tests, 490 expects); bun test (pass, 12982 tests, 0 fail, 2434398 expects, 34.76 s); bun x tsc --noEmit (pass)
+- reference_sources: plan_vanilla_parity/steps/02-007-capture-default-cfg-baseline.md; doom/default.cfg (full 43-line baseline).
+- decision_changes: none
+- oracle_changes: Pinned the vanilla default.cfg baseline values for downstream config-comparison and parity-test work.
+- next_eligible_steps: 02-008 capture-chocolate-doom-cfg-baseline
+- open_risks: Any change to the locally bundled doom/default.cfg would break the focused test until the baseline is refreshed.
