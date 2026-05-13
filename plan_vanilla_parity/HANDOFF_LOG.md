@@ -9351,3 +9351,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-002
 - summary: src/audio/implement-sound-priority-table.ts pins s_sound.c S_getChannel arbitration: lower-numeric priority is more important; iterate channels and evict the first slot whose priority >= incoming; if every slot is strictly more important, drop the incoming sound. NORM_PRIORITY=64 baseline matches sounds.c pistol/shotgun/sawup/punch entries.
 - tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-022 implement-player-weapon-sprite-rendering completed
+
+- status: completed
+- lane: render
+- step_id: 09-022
+- summary: WEAPONTOP=32 fixed, WEAPONBOTTOM=128 fixed; NUMPSPRITES=2 (ps_weapon=0, ps_flash=1).
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
