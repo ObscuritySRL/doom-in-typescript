@@ -215,7 +215,7 @@
 - [x] `06-017` `implement-path-traverse-limits` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-017-implement-path-traverse-limits.md`
 - [x] `06-018` `implement-reject-sight-fast-path` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-018-implement-reject-sight-fast-path.md`
 - [x] `06-019` `implement-line-of-sight-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-019-implement-line-of-sight-semantics.md`
-- [ ] `06-020` `implement-sector-floor-ceiling-change-checks` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-020-implement-sector-floor-ceiling-change-checks.md`
+- [x] `06-020` `implement-sector-floor-ceiling-change-checks` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-020-implement-sector-floor-ceiling-change-checks.md`
 - [ ] `06-021` `implement-thing-touch-special-resolution` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-021-implement-thing-touch-special-resolution.md`
 - [ ] `06-022` `implement-map-spawn-thing-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-022-implement-map-spawn-thing-ordering.md`
 - [ ] `06-023` `implement-deathmatch-and-multiplayer-spawn-exclusion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-023-implement-deathmatch-and-multiplayer-spawn-exclusion.md`

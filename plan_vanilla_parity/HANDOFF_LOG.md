@@ -8045,3 +8045,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: evaluateSightTrace: linear ray-Z interpolation, single-sided blocks unconditionally; two-sided blocks when interpolated rayZ falls outside [openBottom, openTop]. Inventory: src/map 29->30 (114006 bytes, 3231 lines, 197 exports); map+world 40->41 src; totals 248->249.
 - tests: format pass; focused 5/0; full 13593/0; tsc pass
 
+
+## 2026-05-13 - 06-020 implement-sector-floor-ceiling-change-checks completed
+
+- status: completed
+- lane: map
+- step_id: 06-020
+- summary: evaluateSectorChange: fits if ceiling-floor >= height; crusher damage 10/hit at 4-tic interval, only to living + crush-enabled. Inventory: src/map 30->31 (115327 bytes, 3266 lines, 200 exports); map+world 41->42 src; totals 249->250.
+- tests: format pass; focused 6/0; full 13599/0; tsc pass
+
