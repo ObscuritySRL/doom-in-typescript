@@ -7424,3 +7424,9 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending capture manifest: hold UP-arrow forward (DOS scancode 72) for 35 tics from E1M1 spawn; capture framebuffer + state at tics 0/17/35; FRACUNIT = 65536. Pending external run.
 - tests_run: format pass; focused 10/0 (38 expects); full 13174/0; tsc pass
 - next_eligible_steps: 02-022 capture-scripted-use-line-oracle
+
+## 2026-05-13 - 02-022 capture-scripted-use-line-oracle completed (pending)
+- lane: oracle
+- summary: Pending manifest: USE on E1M1 door (SPACE scancode 57); captures at USE+0/+1/+70.
+- tests: format pass; focused 7/0; full 13181/0; tsc pass
+- next: 02-023

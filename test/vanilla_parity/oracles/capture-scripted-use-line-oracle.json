@@ -1,0 +1,17 @@
+{
+  "id": "OR-VP-USE-LINE-022",
+  "stepId": "02-022",
+  "stepTitle": "Capture Scripted Use Line Oracle",
+  "lane": "oracle",
+  "description": "Captures the reference effect of triggering an E1M1 use-line (the first switch or door): scripted forward movement to the door at the start of the level then a single USE press. State snapshot hashes at the USE press and at the end of the door open animation must reflect the door's sector floor/ceiling thinker plus the player's facing angle. Initial entries empty pending external reference run.",
+  "captureMethod": "From 02-020 spawn, scripted forward burst, turn to the door, press USE per default.cfg key_use = 57 (SPACE), wait ~70 tics for door open animation, capture state at the USE press tic, USE press + 1, and USE press + 70.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "useScancode": 57,
+  "expectedSectorSpecial": "S1_DR_OpenDoorWait_StayOpen_VanillaDoor",
+  "captureTicsRelativeToUsePress": [0, 1, 70],
+  "stateEntries": [],
+  "downstreamFollowUps": ["wire-input-injector-and-state-snapshotter-into-bun-comparator"]
+}
