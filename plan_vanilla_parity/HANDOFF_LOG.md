@@ -8748,3 +8748,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-003
 - summary: Pinned vanilla monster MAPTHING mobjflag set per Chocolate Doom 2.2.1 info.c info table: monsters carry MF_COUNTKILL=0x400000 (kill counter), most are MF_SOLID|MF_SHOOTABLE; flying monsters (cacodemon/lost soul/pain elemental) carry MF_NOGRAVITY=0x200 + MF_FLOAT=0x4000; lost soul also MF_DROPOFF; specters (MT_SPECTRE) add MF_SHADOW=0x40000. Inventory: src/ai 10->11 (160403 bytes, 4080 lines, 218 exports); player_ai_specials 62->63 src; totals 322->323.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-001 implement-view-setup-constants completed
+
+- status: completed
+- lane: render
+- step_id: 09-001
+- summary: executeVanillaSetViewSize pins Chocolate Doom 2.2.1 r_main.c R_ExecuteSetViewSize: SCREENWIDTH=320, SCREENHEIGHT=200, ST_HEIGHT=32 (view area = 168). Setblocks 11 fullscreen yields 320x200 (status bar hidden); otherwise scaledviewwidth = setblocks*32 and viewheight = (setblocks*168/10) & ~7. detailshift halves viewwidth (1=low detail). centerx=viewwidth/2, centery=viewheight/2, centerxfrac=centerx<<FRACBITS, projection=centerxfrac. Inventory: src/render 14->15 (196819 bytes, 4834 lines, 142 exports).
+- tests: format pass; focused 9/0; full pass; tsc pass
