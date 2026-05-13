@@ -9245,6 +9245,15 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
 
 
+## 2026-05-13 - 09-017 implement-masked-midtexture-rendering completed
+
+- status: completed
+- lane: render
+- step_id: 09-017
+- summary: src/render/implement-masked-midtexture-rendering.ts pins r_segs.c R_RenderMaskedSegRange / r_things.c R_DrawMaskedColumn parity facts: MAXSHORT=0x7fff done-flag sentinel; LIGHTSCALESHIFT=12 / MAXLIGHTSCALE=48 (r_main.h); iscale = unsigned 0xffffffff/spryscale with signed int32 reinterpret (spryscale=1 → -1); spryscale advances unconditionally outside the !=MAXSHORT gate; per-post dc_texturemid = textureMid - (topDelta<<16); clip order yh-vs-sprbottomclip BEFORE yl-vs-sprtopclip; widthMask = (largest po2 ≤ width) - 1 with int32 two's-complement wrap.
+- tests: format pass; focused 13/0; full pass with pre-existing inventory drift failures unchanged (new src/render file adds renderer source_directories drift consistent with prior pattern); tsc pass
+
+
 ## 2026-05-13 - 08-032 gate-boss-and-episode-exit-semantics completed
 
 - status: completed
