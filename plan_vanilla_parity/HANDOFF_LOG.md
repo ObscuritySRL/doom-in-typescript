@@ -9207,3 +9207,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-010
 - summary: src/save/define-save-directory-policy.ts pins the Chocolate Doom 2.2.1 g_game.c / m_misc.c savegamedir contract: 6 slots (doomsav0..doomsav5.dsg), temp.dsg staging filename for atomic write-then-rename, SAVEGAMENAMESIZE=24, M_MakeDirectory mode 0o755. Per-platform configDirectory paths: Windows %APPDATA%/Chocolate Doom, Linux ~/.local/share/chocolate-doom, macOS ~/Library/Application Support/Chocolate Doom. -savedir overrides at command line per d_main.c.
 - tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-030 gate-monster-ai-semantics completed
+
+- status: completed
+- lane: ai
+- step_id: 08-030
+- summary: MONSTER_AI_GATE bundles chase dirs (8), caco bite 10..60, baron claw 10..80, lost soul 3..24, direction BAM angles.
+- tests: format pass; focused 6/0; full pass; tsc pre-existing save lane TS2352
