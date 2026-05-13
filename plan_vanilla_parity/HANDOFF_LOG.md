@@ -7766,3 +7766,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla 128 KiB (0x20000) demo buffer cap. chocolate-doom.cfg vanilla_demo_limit=1 enforces truncated-at-limit; =0 allows over-limit-but-relaxed. Inventory: core 33 src / 35 test.
 - tests: format pass; focused 6/0; full 13435/0; tsc pass
 
+
+## 2026-05-13 - 04-024 compare-demo-one-ticcmd-stream completed
+
+- status: completed
+- lane: core
+- step_id: 04-024
+- summary: Added src/demo/compare-demo-one-ticcmd-stream.ts comparator validating DEMO1 byte stream against vanilla DOOM 1.9 format (version 109, episode 1, map 5). Routes header_parse_failed, wrong_version/episode/map, missing_terminator, tic_count_mismatch. Recovery edit: fixed src/core/implement-demo-ticcmd-parser.ts terminator detection (peek 1 byte, not require 4 bytes; vanilla writes 0x80 at single byte boundary). Inventory: src/demo/ committed_file_count 4->5 (compare-demo-one-ticcmd-stream.ts), total_size 35463->38027, total_line 1029->1095, total_export 33->41.
+- tests: format pass; focused 7/0 (11 expects); full 13442/0; tsc pass
+

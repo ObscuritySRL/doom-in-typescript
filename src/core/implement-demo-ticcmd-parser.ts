@@ -40,10 +40,13 @@ export function parseDemoTiccmdStream(bytes: Uint8Array, startOffset: number): D
   const ticcmds: DemoTiccmd[] = [];
   let cursorOffset = startOffset;
   let endedAtTerminator = false;
-  while (cursorOffset + VANILLA_DEMO_TICCMD_RECORD_BYTES <= bytes.length) {
+  while (cursorOffset < bytes.length) {
     if (bytes[cursorOffset] === VANILLA_DEMO_TERMINATOR_BYTE) {
       endedAtTerminator = true;
       cursorOffset += 1;
+      break;
+    }
+    if (cursorOffset + VANILLA_DEMO_TICCMD_RECORD_BYTES > bytes.length) {
       break;
     }
     ticcmds.push(
