@@ -8631,3 +8631,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-019
 - summary: resolveVanillaPauseOverlay pins Chocolate Doom 2.2.1 d_main.c D_Display pause overlay draw: only drawn when paused && gamestate==GS_LEVEL, lump M_PAUSE positioned at x=(320-patchWidth)/2 y=4. Inventory: src/ui 27->28 (256179 bytes, 6699 lines, 512 exports).
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-020 implement-hud-message-queue completed
+
+- status: completed
+- lane: ui
+- step_id: 10-020
+- summary: tickVanillaHudMessageQueue pins Chocolate Doom 2.2.1 hu_stuff.c HU_Ticker message lifecycle: HU_MSGTIMEOUT=140 tics (4*TICRATE), HU_MSGX=0/HU_MSGY=0 top-left position. Counter decrements per tick; reaching 0 clears messageOn and messageNotToBeReplaced. New message accepted when (showMessages || critical) and (!locked || critical); critical messages set lock; lock prevents non-critical replacement until timeout. Inventory: src/ui 28->29 (259733 bytes, 6809 lines, 520 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
