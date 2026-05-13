@@ -7820,3 +7820,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Phase 04 core determinism gate aggregates 13 required modules (src/core + src/demo comparators) and 13 required tests, verifies on-disk presence, 1:1 pairing, sorted/unique invariants. evaluateCoreDeterminismGate flags missing_module, missing_test, count_mismatch. Inventory: core 35->36 src / 40->41 test; totals 224/268 -> 225/269.
 - tests: format pass; focused 7/0; full 13471/0; tsc pass
 
+
+## 2026-05-13 - 04-030 gate-demo-sync-primitives completed
+
+- status: completed
+- lane: core
+- step_id: 04-030
+- summary: Aggregates 8 required demo sync primitive modules + canonical constants (13-byte header, 4-byte ticcmd, 0x80 terminator, version 109, max 4 players, 0x20000 byte limit, 5 playback phases, 4 recording phases). evaluateDemoSyncGate flags missing_module / wrong_constants. Recovery: extracted DemoSyncExpectations interface to widen the constant types for the typo failure test. Inventory: core 37 src / 42 test.
+- tests: format pass; focused 5/0 (22 expects); full 13476/0; tsc pass
+
