@@ -7290,3 +7290,19 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Pinned the vanilla default.cfg baseline values for downstream config-comparison and parity-test work.
 - next_eligible_steps: 02-008 capture-chocolate-doom-cfg-baseline
 - open_risks: Any change to the locally bundled doom/default.cfg would break the focused test until the baseline is refreshed.
+
+## 2026-05-13 - 02-008 capture-chocolate-doom-cfg-baseline completed b3d4f5a8-91c2-4e6f-b8d1-3a2c1d4e5f6a
+
+- status: completed
+- agent: Claude Code
+- lane: oracle
+- step_id: 02-008
+- summary: Captured the 113-line doom/chocolate-doom.cfg baseline as oracle-lane data with each key, decoded value, original raw text, and value type (integer, signed-integer, hex-integer, float, quoted-string). Focused test parses chocolate-doom.cfg line-by-line, verifies per-type raw regex shape, decodes each raw value back to its declared value, asserts the canonical vanilla compatibility flags (vanilla_demo_limit, vanilla_keyboard_mapping, vanilla_savegame_limit all 1) and the AdLib OPL base port 0x388.
+- files_changed: D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-chocolate-doom-cfg-baseline.json; D:/Projects/doom-in-typescript/test/vanilla_parity/oracles/capture-chocolate-doom-cfg-baseline.test.ts; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md
+- recovery_edit: none
+- tests_run: bun run format (pass); bun test focused (pass, 22 tests, 1415 expects); bun test (pass, 13004 tests, 0 fail, 2435813 expects, 34.32 s); bun x tsc --noEmit (pass)
+- reference_sources: plan_vanilla_parity/steps/02-008-capture-chocolate-doom-cfg-baseline.md; doom/chocolate-doom.cfg (113-line baseline).
+- decision_changes: none
+- oracle_changes: Pinned the chocolate-doom.cfg baseline values for downstream Win64 host-side oracle work.
+- next_eligible_steps: 02-009 define-deterministic-input-stream-format
+- open_risks: Some baseline values (player_name="stevp") are local to this workspace; future oracle captures must not assume these identify any particular human user.

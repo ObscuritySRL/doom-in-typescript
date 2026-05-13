@@ -1,0 +1,690 @@
+{
+  "id": "OR-VP-CHOCOLATE-CFG-008",
+  "stepId": "02-008",
+  "stepTitle": "Capture Chocolate Doom Cfg Baseline",
+  "lane": "oracle",
+  "description": "Pins the canonical doom/chocolate-doom.cfg baseline as oracle-lane data: every key, expected value, original raw text, and value type. Chocolate Doom 2.2.1 writes a flat key value text file with integers, hexadecimal integers, floats, signed integers, and quoted strings.",
+  "sourceRelativePath": "doom/chocolate-doom.cfg",
+  "lineCount": 113,
+  "validTypes": ["float", "hex-integer", "integer", "quoted-string", "signed-integer"],
+  "entries": [
+    {
+      "key": "autoadjust_video_settings",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "fullscreen",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "aspect_ratio_correct",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "startup_delay",
+      "value": 1000,
+      "type": "integer",
+      "raw": "1000"
+    },
+    {
+      "key": "screen_width",
+      "value": 640,
+      "type": "integer",
+      "raw": "640"
+    },
+    {
+      "key": "screen_height",
+      "value": 480,
+      "type": "integer",
+      "raw": "480"
+    },
+    {
+      "key": "screen_bpp",
+      "value": 32,
+      "type": "integer",
+      "raw": "32"
+    },
+    {
+      "key": "grabmouse",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "novert",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "mouse_acceleration",
+      "value": 2,
+      "type": "float",
+      "raw": "2.000000"
+    },
+    {
+      "key": "mouse_threshold",
+      "value": 10,
+      "type": "integer",
+      "raw": "10"
+    },
+    {
+      "key": "snd_samplerate",
+      "value": 44100,
+      "type": "integer",
+      "raw": "44100"
+    },
+    {
+      "key": "snd_cachesize",
+      "value": 67108864,
+      "type": "integer",
+      "raw": "67108864"
+    },
+    {
+      "key": "snd_maxslicetime_ms",
+      "value": 28,
+      "type": "integer",
+      "raw": "28"
+    },
+    {
+      "key": "snd_musiccmd",
+      "value": "",
+      "type": "quoted-string",
+      "raw": "\"\""
+    },
+    {
+      "key": "snd_dmxoption",
+      "value": "",
+      "type": "quoted-string",
+      "raw": "\"\""
+    },
+    {
+      "key": "opl_io_port",
+      "value": 904,
+      "type": "hex-integer",
+      "raw": "0x388"
+    },
+    {
+      "key": "show_endoom",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "png_screenshots",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "vanilla_savegame_limit",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "vanilla_demo_limit",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "vanilla_keyboard_mapping",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "video_driver",
+      "value": "",
+      "type": "quoted-string",
+      "raw": "\"\""
+    },
+    {
+      "key": "window_position",
+      "value": "",
+      "type": "quoted-string",
+      "raw": "\"\""
+    },
+    {
+      "key": "player_name",
+      "value": "stevp",
+      "type": "quoted-string",
+      "raw": "\"stevp\""
+    },
+    {
+      "key": "joystick_index",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "joystick_x_axis",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "joystick_x_invert",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "joystick_y_axis",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "joystick_y_invert",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "joystick_strafe_axis",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "joystick_strafe_invert",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "joystick_physical_button0",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "joystick_physical_button1",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "joystick_physical_button2",
+      "value": 2,
+      "type": "integer",
+      "raw": "2"
+    },
+    {
+      "key": "joystick_physical_button3",
+      "value": 3,
+      "type": "integer",
+      "raw": "3"
+    },
+    {
+      "key": "joystick_physical_button4",
+      "value": 4,
+      "type": "integer",
+      "raw": "4"
+    },
+    {
+      "key": "joystick_physical_button5",
+      "value": 5,
+      "type": "integer",
+      "raw": "5"
+    },
+    {
+      "key": "joystick_physical_button6",
+      "value": 6,
+      "type": "integer",
+      "raw": "6"
+    },
+    {
+      "key": "joystick_physical_button7",
+      "value": 7,
+      "type": "integer",
+      "raw": "7"
+    },
+    {
+      "key": "joystick_physical_button8",
+      "value": 8,
+      "type": "integer",
+      "raw": "8"
+    },
+    {
+      "key": "joystick_physical_button9",
+      "value": 9,
+      "type": "integer",
+      "raw": "9"
+    },
+    {
+      "key": "joyb_strafeleft",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "joyb_straferight",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "joyb_menu_activate",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "joyb_prevweapon",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "joyb_nextweapon",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "mouseb_strafeleft",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "mouseb_straferight",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "mouseb_use",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "mouseb_backward",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "mouseb_prevweapon",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "mouseb_nextweapon",
+      "value": -1,
+      "type": "signed-integer",
+      "raw": "-1"
+    },
+    {
+      "key": "dclick_use",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "use_libsamplerate",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "libsamplerate_scale",
+      "value": 0.65,
+      "type": "float",
+      "raw": "0.650000"
+    },
+    {
+      "key": "timidity_cfg_path",
+      "value": "",
+      "type": "quoted-string",
+      "raw": "\"\""
+    },
+    {
+      "key": "gus_patch_path",
+      "value": "",
+      "type": "quoted-string",
+      "raw": "\"\""
+    },
+    {
+      "key": "gus_ram_kb",
+      "value": 1024,
+      "type": "integer",
+      "raw": "1024"
+    },
+    {
+      "key": "key_pause",
+      "value": 69,
+      "type": "integer",
+      "raw": "69"
+    },
+    {
+      "key": "key_menu_activate",
+      "value": 1,
+      "type": "integer",
+      "raw": "1"
+    },
+    {
+      "key": "key_menu_up",
+      "value": 72,
+      "type": "integer",
+      "raw": "72"
+    },
+    {
+      "key": "key_menu_down",
+      "value": 80,
+      "type": "integer",
+      "raw": "80"
+    },
+    {
+      "key": "key_menu_left",
+      "value": 75,
+      "type": "integer",
+      "raw": "75"
+    },
+    {
+      "key": "key_menu_right",
+      "value": 77,
+      "type": "integer",
+      "raw": "77"
+    },
+    {
+      "key": "key_menu_back",
+      "value": 14,
+      "type": "integer",
+      "raw": "14"
+    },
+    {
+      "key": "key_menu_forward",
+      "value": 28,
+      "type": "integer",
+      "raw": "28"
+    },
+    {
+      "key": "key_menu_confirm",
+      "value": 21,
+      "type": "integer",
+      "raw": "21"
+    },
+    {
+      "key": "key_menu_abort",
+      "value": 49,
+      "type": "integer",
+      "raw": "49"
+    },
+    {
+      "key": "key_menu_help",
+      "value": 59,
+      "type": "integer",
+      "raw": "59"
+    },
+    {
+      "key": "key_menu_save",
+      "value": 60,
+      "type": "integer",
+      "raw": "60"
+    },
+    {
+      "key": "key_menu_load",
+      "value": 61,
+      "type": "integer",
+      "raw": "61"
+    },
+    {
+      "key": "key_menu_volume",
+      "value": 62,
+      "type": "integer",
+      "raw": "62"
+    },
+    {
+      "key": "key_menu_detail",
+      "value": 63,
+      "type": "integer",
+      "raw": "63"
+    },
+    {
+      "key": "key_menu_qsave",
+      "value": 64,
+      "type": "integer",
+      "raw": "64"
+    },
+    {
+      "key": "key_menu_endgame",
+      "value": 65,
+      "type": "integer",
+      "raw": "65"
+    },
+    {
+      "key": "key_menu_messages",
+      "value": 66,
+      "type": "integer",
+      "raw": "66"
+    },
+    {
+      "key": "key_menu_qload",
+      "value": 67,
+      "type": "integer",
+      "raw": "67"
+    },
+    {
+      "key": "key_menu_quit",
+      "value": 68,
+      "type": "integer",
+      "raw": "68"
+    },
+    {
+      "key": "key_menu_gamma",
+      "value": 87,
+      "type": "integer",
+      "raw": "87"
+    },
+    {
+      "key": "key_spy",
+      "value": 88,
+      "type": "integer",
+      "raw": "88"
+    },
+    {
+      "key": "key_menu_incscreen",
+      "value": 13,
+      "type": "integer",
+      "raw": "13"
+    },
+    {
+      "key": "key_menu_decscreen",
+      "value": 12,
+      "type": "integer",
+      "raw": "12"
+    },
+    {
+      "key": "key_menu_screenshot",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "key_map_toggle",
+      "value": 15,
+      "type": "integer",
+      "raw": "15"
+    },
+    {
+      "key": "key_map_north",
+      "value": 72,
+      "type": "integer",
+      "raw": "72"
+    },
+    {
+      "key": "key_map_south",
+      "value": 80,
+      "type": "integer",
+      "raw": "80"
+    },
+    {
+      "key": "key_map_east",
+      "value": 77,
+      "type": "integer",
+      "raw": "77"
+    },
+    {
+      "key": "key_map_west",
+      "value": 75,
+      "type": "integer",
+      "raw": "75"
+    },
+    {
+      "key": "key_map_zoomin",
+      "value": 13,
+      "type": "integer",
+      "raw": "13"
+    },
+    {
+      "key": "key_map_zoomout",
+      "value": 12,
+      "type": "integer",
+      "raw": "12"
+    },
+    {
+      "key": "key_map_maxzoom",
+      "value": 11,
+      "type": "integer",
+      "raw": "11"
+    },
+    {
+      "key": "key_map_follow",
+      "value": 33,
+      "type": "integer",
+      "raw": "33"
+    },
+    {
+      "key": "key_map_grid",
+      "value": 34,
+      "type": "integer",
+      "raw": "34"
+    },
+    {
+      "key": "key_map_mark",
+      "value": 50,
+      "type": "integer",
+      "raw": "50"
+    },
+    {
+      "key": "key_map_clearmark",
+      "value": 46,
+      "type": "integer",
+      "raw": "46"
+    },
+    {
+      "key": "key_weapon1",
+      "value": 2,
+      "type": "integer",
+      "raw": "2"
+    },
+    {
+      "key": "key_weapon2",
+      "value": 3,
+      "type": "integer",
+      "raw": "3"
+    },
+    {
+      "key": "key_weapon3",
+      "value": 4,
+      "type": "integer",
+      "raw": "4"
+    },
+    {
+      "key": "key_weapon4",
+      "value": 5,
+      "type": "integer",
+      "raw": "5"
+    },
+    {
+      "key": "key_weapon5",
+      "value": 6,
+      "type": "integer",
+      "raw": "6"
+    },
+    {
+      "key": "key_weapon6",
+      "value": 7,
+      "type": "integer",
+      "raw": "7"
+    },
+    {
+      "key": "key_weapon7",
+      "value": 8,
+      "type": "integer",
+      "raw": "8"
+    },
+    {
+      "key": "key_weapon8",
+      "value": 9,
+      "type": "integer",
+      "raw": "9"
+    },
+    {
+      "key": "key_prevweapon",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "key_nextweapon",
+      "value": 0,
+      "type": "integer",
+      "raw": "0"
+    },
+    {
+      "key": "key_message_refresh",
+      "value": 28,
+      "type": "integer",
+      "raw": "28"
+    },
+    {
+      "key": "key_demo_quit",
+      "value": 16,
+      "type": "integer",
+      "raw": "16"
+    },
+    {
+      "key": "key_multi_msg",
+      "value": 20,
+      "type": "integer",
+      "raw": "20"
+    },
+    {
+      "key": "key_multi_msgplayer1",
+      "value": 34,
+      "type": "integer",
+      "raw": "34"
+    },
+    {
+      "key": "key_multi_msgplayer2",
+      "value": 23,
+      "type": "integer",
+      "raw": "23"
+    },
+    {
+      "key": "key_multi_msgplayer3",
+      "value": 48,
+      "type": "integer",
+      "raw": "48"
+    },
+    {
+      "key": "key_multi_msgplayer4",
+      "value": 19,
+      "type": "integer",
+      "raw": "19"
+    }
+  ]
+}
