@@ -8640,3 +8640,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-020
 - summary: tickVanillaHudMessageQueue pins Chocolate Doom 2.2.1 hu_stuff.c HU_Ticker message lifecycle: HU_MSGTIMEOUT=140 tics (4*TICRATE), HU_MSGX=0/HU_MSGY=0 top-left position. Counter decrements per tick; reaching 0 clears messageOn and messageNotToBeReplaced. New message accepted when (showMessages || critical) and (!locked || critical); critical messages set lock; lock prevents non-critical replacement until timeout. Inventory: src/ui 28->29 (259733 bytes, 6809 lines, 520 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-034 gate-player-oracle-replay completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-034
+- summary: PLAYER_ORACLE_REPLAY_GATE aggregates scripted pickup oracle (07-030) + scripted combat oracle (07-031) and replays them against canonical implementations (applyVanillaPlayerDamage from 07-007, classifyVanillaPlayerUseAction from 07-029) so any drift surfaces in a single gate. Phase 07 (gameplay) lane fully closed — Phase 08 ai, Phase 09 render, and Phase 12 save lanes now unblocked. Inventory: src/player 41->42 (176279 bytes, 4916 lines, 417 exports); player_ai_specials group 59->60 src; totals 313->316.
+- tests: format pass; focused 5/0; full pass; tsc pass
