@@ -8036,3 +8036,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla REJECT bitmap indexing: byte = (s1*N+s2)>>3, bit = (s1*N+s2)&7; set bit = rejected (skip trace). Out-of-range fall back to requires-trace. Inventory: src/map 28->29 (112900 bytes, 3195 lines, 194 exports); map+world 39->40 src; totals 247->248.
 - tests: format pass; focused 5/0; full 13588/0; tsc pass
 
+
+## 2026-05-13 - 06-019 implement-line-of-sight-semantics completed
+
+- status: completed
+- lane: map
+- step_id: 06-019
+- summary: evaluateSightTrace: linear ray-Z interpolation, single-sided blocks unconditionally; two-sided blocks when interpolated rayZ falls outside [openBottom, openTop]. Inventory: src/map 29->30 (114006 bytes, 3231 lines, 197 exports); map+world 40->41 src; totals 248->249.
+- tests: format pass; focused 5/0; full 13593/0; tsc pass
+
