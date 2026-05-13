@@ -8415,3 +8415,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-004
 - summary: resolveVanillaNewGameRoute pins Chocolate Doom 2.2.1 m_menu.c M_NewGame routing: netgame without demo playback returns 'netgame-warning' (the NEWGAME message popup); commercial gamemode jumps directly to 'skill-menu' (NewDef); shareware/registered/retail route to 'episode-menu' (EpiDef). VANILLA_NEWGAME_NETGAME_MESSAGE_KEY pins the upstream DeHackEd key. Inventory: src/ui 12->13 (211594 bytes, 5480 lines, 366 exports).
 - tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-024 implement-bfg-actions completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-024
+- summary: A_FireBFG: BFGCELLS=40, MT_BFG projectile; A_BFGSpray: 40 rays in 90deg sweep, damage=sum((P_Random()&7)+1) over 15 rolls (range 15..120).
+- tests: format pass; focused 8/0; full pass; tsc pass
