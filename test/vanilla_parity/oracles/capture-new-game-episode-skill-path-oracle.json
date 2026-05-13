@@ -1,0 +1,37 @@
+{
+  "id": "OR-VP-NEW-GAME-019",
+  "stepId": "02-019",
+  "stepTitle": "Capture New Game Episode Skill Path Oracle",
+  "lane": "oracle",
+  "description": "Captures the reference DOOM 1.9 new-game menu navigation path from title screen to skill confirmation: ESCAPE to open main menu, ENTER on New Game, ENTER on Episode 1 (Knee-Deep In The Dead), DOWN twice and ENTER for Hurt Me Plenty (skill 2). State snapshots at the skill confirmation tic must match the canonical reference startup parameters in src/oracles/referenceRunManifest.ts (episode 1, map 1, skill 2, deathmatch 0, single player). Entries are empty pending external reference run.",
+  "captureMethod": "Launch DOOM.EXE via the 02-003 sandbox, wait for title stable, inject the scripted ESCAPE/ENTER/ENTER/DOWN/DOWN/ENTER sequence per the 02-010 injection oracle on consecutive tic boundaries, capture state snapshot per 02-012 at the final ENTER+1 tic boundary.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "targetRunMode": "title-loop",
+  "ticRateHz": 35,
+  "inputScript": [
+    { "kind": "key-down", "tic": 0, "scanCode": 1, "description": "ESCAPE open main menu" },
+    { "kind": "key-up", "tic": 1, "scanCode": 1, "description": "ESCAPE release" },
+    { "kind": "key-down", "tic": 4, "scanCode": 28, "description": "ENTER select New Game" },
+    { "kind": "key-up", "tic": 5, "scanCode": 28, "description": "ENTER release" },
+    { "kind": "key-down", "tic": 8, "scanCode": 28, "description": "ENTER select episode 1 Knee-Deep In The Dead" },
+    { "kind": "key-up", "tic": 9, "scanCode": 28, "description": "ENTER release" },
+    { "kind": "key-down", "tic": 12, "scanCode": 80, "description": "DOWN move to skill 2 Hurt Me Plenty (from default skill 1)" },
+    { "kind": "key-up", "tic": 13, "scanCode": 80, "description": "DOWN release" },
+    { "kind": "key-down", "tic": 14, "scanCode": 80, "description": "DOWN move to skill 3 Ultra-Violence then back via reset" },
+    { "kind": "key-up", "tic": 15, "scanCode": 80, "description": "DOWN release" },
+    { "kind": "key-down", "tic": 18, "scanCode": 28, "description": "ENTER confirm skill" },
+    { "kind": "key-up", "tic": 19, "scanCode": 28, "description": "ENTER release" }
+  ],
+  "expectedStartupParameters": {
+    "episode": 1,
+    "map": 1,
+    "skill": 2,
+    "deathmatch": 0,
+    "playerCount": 1
+  },
+  "stateCaptureTic": 20,
+  "stateEntries": [],
+  "downstreamFollowUps": ["build-reference-run-host-with-input-injector-and-state-snapshot-grabber"]
+}

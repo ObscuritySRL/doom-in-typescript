@@ -7397,3 +7397,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending capture manifest for the main-menu-open state: single ESCAPE key-down/key-up at tics 0/1, framebuffer + state + audio capture at tic 2. Empty entries until external reference run lands.
 - tests_run: format pass; focused 13/0; full 13142/0; tsc pass
 - next_eligible_steps: 02-019 capture-new-game-episode-skill-path-oracle
+
+## 2026-05-13 - 02-019 capture-new-game-episode-skill-path-oracle completed (pending capture)
+
+- status: completed
+- lane: oracle
+- step_id: 02-019
+- summary: Pending capture manifest for new-game menu navigation (ESCAPE / ENTER New Game / ENTER episode 1 / DOWN DOWN ENTER skill 2) with expected startup params episode 1 / map 1 / skill 2 / deathmatch 0 / playerCount 1 cross-checked with REFERENCE_RUN_MANIFEST.startup. State entries empty pending external run.
+- tests_run: format pass; focused 11/0 (62 expects); full 13153/0; tsc pass
+- next_eligible_steps: 02-020 capture-e1m1-spawn-state-oracle
