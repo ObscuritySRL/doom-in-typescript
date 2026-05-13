@@ -8451,3 +8451,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-025
 - summary: Pinned MISSILEHEIGHT=32 fixed, rocket blast damage=128, BFG direct damage base=100/mul=8, missile death tic random mask=3.
 - tests: format pass; focused 5/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-007 implement-options-menu completed
+
+- status: completed
+- lane: ui
+- step_id: 10-007
+- summary: VANILLA_OPTIONS_MENU_TREE pins Chocolate Doom 2.2.1 m_menu.c OptionsMenu: 8 entries in order endgame(M_ENDGAM)/messages(M_MESSG)/detail(M_DETAIL)/scrnsize(M_SCRNSZ slider)/separator/mousesens(M_MSENS slider)/separator/soundvol(M_SVOL). Status byte encoding: 1=selectable, 2=slider, -1=separator. Separators sit at indices 4 and 6, cursor skips them via vanillaOptionsItemIsCursorEligible. Hotkeys e/m/g/s/_/m/_/s. Inventory: src/ui 15->16 (222391 bytes, 5743 lines, 398 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass
