@@ -1,0 +1,22 @@
+{
+  "id": "OR-VP-FRAMEBUFFER-FORMAT-011",
+  "stepId": "02-011",
+  "stepTitle": "Define Framebuffer Capture Format",
+  "lane": "oracle",
+  "description": "Pins the framebuffer capture schema used by oracle visual-parity verification. Each capture entry holds a tic number, a SHA-256 hash of the raw 320x200 palette-indexed framebuffer byte array, and the active PLAYPAL palette index at capture time (0=normal, 1-8=damage red, 9-12=bonus pickup, 13=radiation suit). Entries are sorted ascending by tic; the default sampling interval is 35 tics (one second at the 35 Hz tic rate).",
+  "sourceModule": "src/oracles/framebufferHash.ts",
+  "framebufferWidth": 320,
+  "framebufferHeight": 200,
+  "framebufferSizeBytes": 64000,
+  "paletteCount": 14,
+  "paletteIndexMin": 0,
+  "paletteIndexMax": 13,
+  "ticRateHz": 35,
+  "defaultSamplingIntervalTics": 35,
+  "hashAlgorithm": "SHA-256",
+  "hashHexLength": 64,
+  "entryShape": ["tic", "hash", "paletteIndex"],
+  "payloadShape": ["description", "targetRunMode", "samplingIntervalTics", "ticRateHz", "width", "height", "entries"],
+  "entryOrderingRule": "ascending-by-tic-number-strict",
+  "downstreamFollowUps": ["create-runner-that-emits-this-format", "wire-into-bun-test-comparator-step"]
+}
