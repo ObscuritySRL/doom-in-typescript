@@ -9270,3 +9270,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-013
 - summary: src/save/serialize-player-state.ts pins p_saveg.c P_ArchivePlayers contract: 4 fixed player slots (MAXPLAYERS=4), 280 bytes per populated slot, absent slots contribute 0 bytes. Embedded ticcmd_t=8 / pspritedef_t=16x2 / NUMAMMO=4 / NUMWEAPONS=9 / NUMCARDS=6 / NUMPOWERS=6 / NUMFRAGS=4. Pointers (mo, attacker) are index-encoded on archive and reattached by P_RestoreTargets on load.
 - tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-018 implement-sprite-projection completed
+
+- status: completed
+- lane: render
+- step_id: 09-018
+- summary: VANILLA_SPRITE_MINZ_FIXED=4 fixed (=0x40000), BASEYCENTER=100, screen 320x200; reject sprites too close (depth < MINZ).
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
