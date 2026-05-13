@@ -8442,3 +8442,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-006
 - summary: VANILLA_SKILL_MENU_TREE + resolveVanillaSkillSelection + deriveVanillaDeferedInitNewArgs pin Chocolate Doom 2.2.1 m_menu.c NewGameMenu + M_ChooseSkill: 5 skill entries in fixed order M_JKILL/M_ROUGH/M_HURT/M_ULTRA/M_NMARE with hotkeys i/h/h/u/n. Default cursor on hurtme (index 2). Nightmare (index 4) returns 'nightmare-confirm' (NIGHTMARE DeHackEd popup + M_VerifyNightmare), else 'start-game'. G_DeferedInitNew args: skill=choice, episodeOneBased=zeroBasedEpisode+1, map=1. Inventory: src/ui 14->15 (218937 bytes, 5673 lines, 386 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-025 implement-projectile-spawn-and-explosion completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-025
+- summary: Pinned MISSILEHEIGHT=32 fixed, rocket blast damage=128, BFG direct damage base=100/mul=8, missile death tic random mask=3.
+- tests: format pass; focused 5/0; full pass; tsc pass
