@@ -314,7 +314,7 @@
 - [x] `09-009` `implement-draw-span-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-009-implement-draw-span-low-and-high-detail.md`
 - [x] `09-010` `implement-visplane-allocation-and-merge` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-010-implement-visplane-allocation-and-merge.md`
 - [x] `09-011` `implement-visplane-overflow-limit-behavior` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-011-implement-visplane-overflow-limit-behavior.md`
-- [ ] `09-012` `implement-floor-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-012-implement-floor-span-rendering.md`
+- [x] `09-012` `implement-floor-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-012-implement-floor-span-rendering.md`
 - [ ] `09-013` `implement-ceiling-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-013-implement-ceiling-span-rendering.md`
 - [ ] `09-014` `implement-sky-rendering-semantics` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-014-implement-sky-rendering-semantics.md`
 - [ ] `09-015` `implement-light-level-and-colormap-selection` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-015-implement-light-level-and-colormap-selection.md`
