@@ -10,11 +10,11 @@
     {
       "relative_path": "src/demo/",
       "exists": true,
-      "committed_file_count": 6,
-      "committed_filenames_sorted": ["compare-demo-one-ticcmd-stream.ts", "compare-demo-two-ticcmd-stream.ts", "demoFile.ts", "demoParse.ts", "demoPlayback.ts", "demoRecord.ts"],
-      "total_size_bytes": 40145,
-      "total_line_count": 1153,
-      "total_export_count": 48
+      "committed_file_count": 7,
+      "committed_filenames_sorted": ["compare-demo-one-ticcmd-stream.ts", "compare-demo-three-ticcmd-stream.ts", "compare-demo-two-ticcmd-stream.ts", "demoFile.ts", "demoParse.ts", "demoPlayback.ts", "demoRecord.ts"],
+      "total_size_bytes": 42297,
+      "total_line_count": 1211,
+      "total_export_count": 55
     }
   ],
   "modules": [

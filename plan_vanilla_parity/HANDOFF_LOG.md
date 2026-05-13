@@ -7784,3 +7784,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/demo/compare-demo-two-ticcmd-stream.ts (version 109, episode 1). Recovery: relaxed both compare-demo-one/two comparators to bail with header_parse_failed only when header is null (not when violations array is non-empty), so wrong_version/wrong_episode/wrong_map surface as their own violations. Inventory: src/demo committed 5->6, save_config_demo source_file_count 11->12; classify totals 219/263 -> 220/264; core test_file_count 35->36.
 - tests: format pass; focused 5/0 (7 expects); full 13447/0; tsc pass
 
+
+## 2026-05-13 - 04-026 compare-demo-three-ticcmd-stream completed
+
+- status: completed
+- lane: core
+- step_id: 04-026
+- summary: Added src/demo/compare-demo-three-ticcmd-stream.ts (version 109, episode 1). Inventory: src/demo committed 6->7, save_config_demo source 12->13, core test 36->37; totals 220/264 -> 221/265.
+- tests: format pass; focused 5/0; full 13452/0; tsc pass
+
