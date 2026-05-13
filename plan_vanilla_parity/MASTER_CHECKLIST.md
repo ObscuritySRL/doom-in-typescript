@@ -252,7 +252,7 @@
 - [x] `07-019` `implement-pistol-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-019-implement-pistol-actions.md`
 - [x] `07-020` `implement-shotgun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-020-implement-shotgun-actions.md`
 - [x] `07-021` `implement-chaingun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-021-implement-chaingun-actions.md`
-- [ ] `07-022` `implement-rocket-launcher-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-022-implement-rocket-launcher-actions.md`
+- [x] `07-022` `implement-rocket-launcher-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-022-implement-rocket-launcher-actions.md`
 - [ ] `07-023` `implement-plasma-rifle-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-023-implement-plasma-rifle-actions.md`
 - [ ] `07-024` `implement-bfg-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-024-implement-bfg-actions.md`
 - [ ] `07-025` `implement-projectile-spawn-and-explosion` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-025-implement-projectile-spawn-and-explosion.md`
@@ -346,7 +346,7 @@
 
 - [x] `10-001` `implement-title-loop-sequence` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-001-implement-title-loop-sequence.md`
 - [x] `10-002` `implement-page-ticker-and-advance-demo` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-002-implement-page-ticker-and-advance-demo.md`
-- [ ] `10-003` `implement-main-menu-tree` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-003-implement-main-menu-tree.md`
+- [x] `10-003` `implement-main-menu-tree` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-003-implement-main-menu-tree.md`
 - [ ] `10-004` `implement-new-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-004-implement-new-game-menu.md`
 - [ ] `10-005` `implement-episode-menu-shareware-restrictions` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-005-implement-episode-menu-shareware-restrictions.md`
 - [ ] `10-006` `implement-skill-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-006-implement-skill-menu.md`
