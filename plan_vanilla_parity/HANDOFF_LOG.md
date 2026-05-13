@@ -8288,3 +8288,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-014
 - summary: applyVanillaBackpackPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GiveBackpack: first pickup doubles maxammo [200,50,300,50]->[400,100,600,100] and grants [10,4,20,1] clips; subsequent pickups skip the max-ammo doubling but still grant clips. Inventory: src/player 21->22 (139688 bytes, 3917 lines, 305 exports); player_ai_specials group 39->40 src; totals 275->276.
 - tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-015 implement-berserk-partial-invisibility-radiation-suit completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-015
+- summary: applyVanillaPowerPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GivePower for the three timed pickups + berserk: strength heals to MAXHEALTH=100 (no overheal) and counts UP from 1 (permanent); invisibility = 60*TICRATE=2100 tics with MF_SHADOW=0x40000 OR'd into mobj flags; ironfeet = 60*TICRATE=2100 tics with no flag change. Corrected MF_SHADOW from spurious 0x400000 in auto-generated source (vanilla p_mobj.h MF_SHADOW = bit 18 = 0x40000, not 0x400000 which is MF_COUNTKILL). Inventory: src/player 22->23 (141814 bytes, 3982 lines, 312 exports); player_ai_specials group 40->41 src; totals 276->277.
+- tests: format pass; focused 9/0; full pass; tsc pass
