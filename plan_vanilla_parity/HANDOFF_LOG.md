@@ -9054,3 +9054,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-003
 - summary: src/config/persist-vanilla-key-bindings.ts pins the M_SaveDefaults serialization contract for the 10 vanilla key bindings (key_right=77, key_left=75, key_up=72, key_down=80, key_strafeleft=51, key_straferight=52, key_fire=29, key_use=57, key_strafe=56, key_speed=54 DOS BIOS scan codes): name padded to column 30 with ASCII space then single-space separator then decimal value then LF terminator (no CRLF, no 0x prefix, no zero padding).
 - tests: format pass; focused 7/0; full pass with 5 pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-015 implement-light-level-and-colormap-selection completed
+
+- status: completed
+- lane: render
+- step_id: 09-015
+- summary: computeVanillaWallLightLevel + computeVanillaScalelightIndex pin Chocolate Doom 2.2.1 r_main.c R_InitLightTables and r_segs.c R_StoreWallRange: LIGHTLEVELS=16, LIGHTSEGSHIFT=4 (256/16), MAXLIGHTSCALE=48, LIGHTSCALESHIFT=12, NUMCOLORMAPS=32, LIGHTBRIGHT=1. Horizontal walls -1, vertical walls +1; clamps to [0, LIGHTLEVELS-1]. Scalelight index clamps to [0, MAXLIGHTSCALE-1] using `>=` rule. Inventory: src/render 28->29 (238041 bytes, 6017 lines, 263 exports).
+- tests: format pass; focused 14/0; full pass; tsc pass
