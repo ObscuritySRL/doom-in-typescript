@@ -1,0 +1,29 @@
+{
+  "id": "OR-VP-E1M1-SPAWN-020",
+  "stepId": "02-020",
+  "stepTitle": "Capture E1M1 Spawn State Oracle",
+  "lane": "oracle",
+  "description": "Captures the reference DOOM 1.9 player spawn state at the start of E1M1 immediately after the new-game flow (02-019) completes. Records the player position, angle, health, armor, weapon, ammo, and the per-component state snapshot hashes (02-012) at the first stable in-game tic.",
+  "captureMethod": "Run the 02-019 scripted new-game flow to completion, advance one tic so the spawn finalizes (P_SpawnPlayer plus the first P_Ticker pass), then snapshot per 02-012; the player thinker hash should remain stable across an additional idle tic with no input.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "targetRunMode": "title-loop",
+  "ticRateHz": 35,
+  "expectedSpawnInvariants": {
+    "episode": 1,
+    "map": 1,
+    "playerCount": 1,
+    "playerHealth": 100,
+    "playerArmor": 0,
+    "playerStartingWeapon": "pistol",
+    "playerStartingBulletAmmo": 50,
+    "playerStartingFrags": 0,
+    "playerStartingKills": 0,
+    "playerStartingItems": 0,
+    "playerStartingSecrets": 0
+  },
+  "stateCaptureTic": 0,
+  "stateEntries": [],
+  "downstreamFollowUps": ["wire-state-snapshot-grabber-into-the-bun-comparator"]
+}

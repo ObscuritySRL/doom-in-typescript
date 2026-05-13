@@ -7406,3 +7406,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending capture manifest for new-game menu navigation (ESCAPE / ENTER New Game / ENTER episode 1 / DOWN DOWN ENTER skill 2) with expected startup params episode 1 / map 1 / skill 2 / deathmatch 0 / playerCount 1 cross-checked with REFERENCE_RUN_MANIFEST.startup. State entries empty pending external run.
 - tests_run: format pass; focused 11/0 (62 expects); full 13153/0; tsc pass
 - next_eligible_steps: 02-020 capture-e1m1-spawn-state-oracle
+
+## 2026-05-13 - 02-020 capture-e1m1-spawn-state-oracle completed (pending capture)
+
+- status: completed
+- lane: oracle
+- step_id: 02-020
+- summary: Pending capture manifest for E1M1 player spawn invariants (E1M1, single player, 100 HP, 0 armor, pistol, 50 bullets, zero frags/kills/items/secrets). State entries empty pending external run.
+- tests_run: format pass; focused 11/0 (33 expects); full 13164/0; tsc pass
+- next_eligible_steps: 02-021 capture-scripted-movement-oracle
