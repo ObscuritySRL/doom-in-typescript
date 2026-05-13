@@ -7306,3 +7306,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - oracle_changes: Pinned the chocolate-doom.cfg baseline values for downstream Win64 host-side oracle work.
 - next_eligible_steps: 02-009 define-deterministic-input-stream-format
 - open_risks: Some baseline values (player_name="stevp") are local to this workspace; future oracle captures must not assume these identify any particular human user.
+
+## 2026-05-13 - 02-009 define-deterministic-input-stream-format completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-009
+- summary: Pinned the oracle-lane deterministic input stream schema (event kinds key-down/key-up/mouse-button-down/mouse-button-up/mouse-move/quit, scan code range [0,255], mouse button range [0,4], 0-based tic anchor, non-decreasing-tic stable order). Focused test cross-checks with src/oracles/inputScript.ts INPUT_EVENT_KINDS, SCANCODE_MAX, and MOUSE_BUTTON_MAX.
+- tests_run: format pass; focused 13/0 (62 expects); full 13017/0 (2435875 expects, 34.11s); tsc pass
+- next_eligible_steps: 02-010 define-keyboard-and-mouse-injection-oracle

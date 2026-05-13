@@ -1,0 +1,23 @@
+{
+  "id": "OR-VP-INPUT-FORMAT-009",
+  "stepId": "02-009",
+  "stepTitle": "Define Deterministic Input Stream Format",
+  "lane": "oracle",
+  "description": "Pins the deterministic input-stream schema used by oracle reference runs: tic-anchored event records with discriminator-tagged payloads for key-down, key-up, mouse-button-down, mouse-button-up, mouse-move, and quit. Values for scanCode and mouse button index are bounded to match the Chocolate Doom 2.2.1 internal key code space (0-255) and SDL mouse button range (0-4).",
+  "sourceModule": "src/oracles/inputScript.ts",
+  "eventKinds": ["key-down", "key-up", "mouse-button-down", "mouse-button-up", "mouse-move", "quit"],
+  "scanCodeMin": 0,
+  "scanCodeMax": 255,
+  "mouseButtonMin": 0,
+  "mouseButtonMax": 4,
+  "ticAnchorOrigin": "0-based",
+  "eventOrderingRule": "non-decreasing-tic-then-stable-insertion-order",
+  "eventPayloads": {
+    "key-down": ["tic", "kind", "scanCode"],
+    "key-up": ["tic", "kind", "scanCode"],
+    "mouse-button-down": ["tic", "kind", "button"],
+    "mouse-button-up": ["tic", "kind", "button"],
+    "mouse-move": ["tic", "kind", "deltaX", "deltaY"],
+    "quit": ["tic", "kind"]
+  }
+}
