@@ -8252,3 +8252,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-010
 - summary: applyHealthPickup/applyArmorPickup/applyBonusPickup mirror Chocolate Doom 2.2.1 p_inter.c P_GiveBody/P_GiveArmor and bonus pickups: MAXHEALTH=100 (stim/medi cap), DEH_MAX_HEALTH=200 (soulsphere/bonus cap), green armor=100 type 1, blue armor=200 type 2, bonus pickups +1 with deh_max_armor=200 cap. Vanilla quirk: applyArmorPickup skips when current >= target points (no downgrade or refill). Inventory: src/player 17->18 (131360 bytes, 3677 lines, 254 exports); player_ai_specials group 35->36 src; totals 271->272.
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-011 implement-ammo-pickups completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-011
+- summary: applyAmmoPickup + getMaxAmmoFor mirror Chocolate Doom 2.2.1 p_inter.c P_GiveAmmo: NUMAMMO=4 (bullets/shells/cells/rockets), clipammo=[10,4,20,1], maxammo=[200,50,300,50], backpack doubles caps to [400,100,600,100]. sk_baby/sk_nightmare double pickup amount. Returns gave=false when already at cap (no consumption). Inventory: src/player 18->19 (133134 bytes, 3728 lines, 265 exports); player_ai_specials group 36->37 src; totals 272->273.
+- tests: format pass; focused 11/0; full pass; tsc pass

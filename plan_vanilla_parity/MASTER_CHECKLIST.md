@@ -241,7 +241,7 @@
 - [x] `07-008` `implement-death-and-reborn-flow` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-008-implement-death-and-reborn-flow.md`
 - [x] `07-009` `implement-god-mode-and-powerup-flags` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-009-implement-god-mode-and-powerup-flags.md`
 - [x] `07-010` `implement-health-and-armor-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-010-implement-health-and-armor-pickups.md`
-- [ ] `07-011` `implement-ammo-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-011-implement-ammo-pickups.md`
+- [x] `07-011` `implement-ammo-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-011-implement-ammo-pickups.md`
 - [ ] `07-012` `implement-weapon-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-012-implement-weapon-pickups.md`
 - [ ] `07-013` `implement-keycard-and-skull-key-pickups` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-013-implement-keycard-and-skull-key-pickups.md`
 - [ ] `07-014` `implement-backpack-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-014-implement-backpack-semantics.md`
