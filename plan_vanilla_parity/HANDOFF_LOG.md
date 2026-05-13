@@ -2,6 +2,25 @@
 
 Append-only Ralph-loop execution history for completed `plan_vanilla_parity` steps.
 
+## 2026-05-13 - 07-018 implement-fist-and-chainsaw-actions
+
+- status: completed
+- agent: Claude Code
+- model: claude-opus-4-7
+- effort: high
+- lane: gameplay
+- step_id: 07-018
+- step_title: implement-fist-and-chainsaw-actions
+- summary: Pinned the vanilla DOOM 1.9 A_Punch and A_Saw damage contracts in `src/player/implement-fist-and-chainsaw-actions.ts`: closed `computeVanillaPunchDamage` over the `((P_Random() % 10) + 1) << 1` base damage with the optional `pw_strength` 10x berserk multiplier, and `computeVanillaSawDamage` over `2 * ((P_Random() % 10) + 1)` without a berserk bonus; pinned `VANILLA_MELEERANGE = 64 * FRACUNIT` and `VANILLA_SAW_RANGE_DELTA = 1` for the chainsaw's boundary-inclusive `MELEERANGE + 1` line attack. Focused test `test/vanilla_parity/player/implement-fist-and-chainsaw-actions.test.ts` covers the constants, every modulo-10 random byte in the 2..20 punch range, the berserk 10x case, the matching saw damage curve, and the no-berserk-bonus invariant for the saw. The implementation and test were already committed in `b35e12e`; this completion turn ticks the master checklist box.
+- files_changed: D:/Projects/doom-in-typescript/plan_vanilla_parity/MASTER_CHECKLIST.md; D:/Projects/doom-in-typescript/plan_vanilla_parity/HANDOFF_LOG.md
+- recovery_edit: none
+- tests_run: bun run format (Formatted 1 file in 3ms, no fixes applied); bun test test/vanilla_parity/player/implement-fist-and-chainsaw-actions.test.ts (9 pass, 0 fail, 25 expects in 37ms); bun test (13856 pass, 0 fail, 2438097 expects across 617 files in 35.19s); bun x tsc --noEmit --project tsconfig.json (clean, exit 0)
+- reference_sources: plan_vanilla_parity/steps/07-018-implement-fist-and-chainsaw-actions.md (selected step file, lane, write lock, read-only scope, verification commands); Chocolate Doom 2.2.1 `src/doom/p_pspr.c` A_Punch (damage formula and berserk multiplier), A_Saw (damage formula, range = MELEERANGE + 1, miss vs hit branches); Chocolate Doom 2.2.1 `src/doom/p_local.h` MELEERANGE = 64 * FRACUNIT
+- decision_changes: none
+- oracle_changes: none
+- next_eligible_steps: 07-019 implement-pistol-actions (gameplay lane, prereqs 04-030,06-032 already satisfied)
+- open_risks: This step pins damage and range constants only; the full A_Punch / A_Saw side effects (P_LineAttack, sfx_sawhit / sfx_sawful sound effects, MF_JUSTATTACKED flag, face-snap angle adjustment) are pinned at the call-site level in the broader weapon state machine and will be wired in once `src/player/weaponStates.ts` integrates the line-attack and sound subsystems. The `Fixed` type alias is consumed from `src/core/fixed.ts` as a read-only import. No proprietary assets were modified or staged; `doom/`, `iwad/`, and `reference/` were strictly read-only.
+
 ## 2026-04-29 - 05-023 build-flat-cache
 
 - status: completed
