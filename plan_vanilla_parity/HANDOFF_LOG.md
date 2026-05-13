@@ -8054,3 +8054,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: evaluateSectorChange: fits if ceiling-floor >= height; crusher damage 10/hit at 4-tic interval, only to living + crush-enabled. Inventory: src/map 30->31 (115327 bytes, 3266 lines, 200 exports); map+world 41->42 src; totals 249->250.
 - tests: format pass; focused 6/0; full 13599/0; tsc pass
 
+
+## 2026-05-13 - 06-021 implement-thing-touch-special-resolution completed
+
+- status: completed
+- lane: map
+- step_id: 06-021
+- summary: Pinned vanilla pickup mobjtype -> category map (ammo/armor/health/key/powerup/weapon) covering CLIP, SHOTGUN, BFG, STIMPACK, MEDKIT, SOULSPHERE, all 3 keycards + 3 skull keys, INVULN, BERSERK, RAD suit, etc. Inventory: src/map 31->32 (117410 bytes, 3320 lines, 206 exports); map+world 42->43 src; totals 250->251.
+- tests: format pass; focused 8/0; full 13607/0; tsc pass
+
