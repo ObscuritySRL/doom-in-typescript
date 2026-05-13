@@ -192,7 +192,7 @@
 - [x] `05-025` `build-patch-font-cache` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-025-build-patch-font-cache.md`
 - [x] `05-026` `compare-local-doom1-wad-manifest` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-026-compare-local-doom1-wad-manifest.md`
 - [x] `05-027` `gate-wad-and-asset-loading` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-027-gate-wad-and-asset-loading.md`
-- [ ] `05-028` `gate-user-supplied-doom-wad-detection` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-028-gate-user-supplied-doom-wad-detection.md`
+- [x] `05-028` `gate-user-supplied-doom-wad-detection` | lane: `wad` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/05-028-gate-user-supplied-doom-wad-detection.md`
 
 ## Phase 06: Map / BSP / Blockmap / Collision
 

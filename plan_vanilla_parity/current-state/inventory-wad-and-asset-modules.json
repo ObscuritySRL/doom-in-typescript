@@ -10,7 +10,7 @@
     {
       "relative_path": "src/assets/",
       "exists": true,
-      "committed_file_count": 34,
+      "committed_file_count": 35,
       "committed_filenames_sorted": [
         "build-asset-cache-lifetime-policy.ts",
         "build-flat-cache.ts",
@@ -24,6 +24,7 @@
         "detect-ultimate-iwad-capabilities.ts",
         "enforce-no-asset-redistribution-in-tests.ts",
         "flats.ts",
+        "gate-user-supplied-doom-wad-detection.ts",
         "gate-wad-and-asset-loading.ts",
         "mus.ts",
         "parse-demo-lumps.ts",
@@ -47,9 +48,9 @@
         "verify-marker-range-semantics.ts",
         "verify-wad-header-and-directory-parsing.ts"
       ],
-      "total_size_bytes": 924486,
-      "total_line_count": 18702,
-      "total_export_count": 545
+      "total_size_bytes": 926392,
+      "total_line_count": 18758,
+      "total_export_count": 552
     },
     {
       "relative_path": "src/wad/",
@@ -322,7 +323,7 @@
     "test_roots": [
       {
         "relative_path": "test/vanilla_parity/wad/",
-        "test_file_count": 27,
+        "test_file_count": 28,
         "test_filenames_sorted": [
           "build-asset-cache-lifetime-policy.test.ts",
           "build-flat-cache.test.ts",
@@ -334,6 +335,7 @@
           "detect-shareware-iwad-capabilities.test.ts",
           "detect-ultimate-iwad-capabilities.test.ts",
           "enforce-no-asset-redistribution-in-tests.test.ts",
+          "gate-user-supplied-doom-wad-detection.test.ts",
           "gate-wad-and-asset-loading.test.ts",
           "parse-demo-lumps.test.ts",
           "parse-flat-namespace.test.ts",

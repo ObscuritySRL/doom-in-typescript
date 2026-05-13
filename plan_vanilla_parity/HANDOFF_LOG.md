@@ -7865,3 +7865,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Phase 05 wad+asset gate aggregates 22 required modules + canonical WAD constants (shareware total 1264 lumps, IWAD type, 8-byte patch header, 14 palettes, 64 flat dimension). evaluateWadGate flags missing_module/wrong_constants. Inventory: src/assets committed 33->34 src, wad+assets group 37->38 src / 49->50 test; totals 228/272 -> 229/273.
 - tests: format pass; focused 5/0; full 13492/0; tsc pass
 
+
+## 2026-05-13 - 05-028 gate-user-supplied-doom-wad-detection completed
+
+- status: completed
+- lane: wad
+- step_id: 05-028
+- summary: Added IWAD capability detection gate. detectIwadCapability routes shareware (E1 only) / registered (E1+E2+E3) / ultimate (E1+E2+E3+E4) / unknown. evaluateIwadDetectionGate flags inconsistent_episode_set and unknown_iwad. Inventory: src/assets committed 34->35 src, wad+assets 38->39 src / 50->51 test; totals 229/273 -> 230/274.
+- tests: format pass; focused 9/0; full 13501/0; tsc pass
+
