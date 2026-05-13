@@ -8667,3 +8667,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-022
 - summary: computeVanillaIntermissionPercent + computeVanillaIntermissionTimeSeconds + stepVanillaIntermissionPercent pin Chocolate Doom 2.2.1 wi_stuff.c WI_updateStats: 5 stats (kills/items/secret as %, time/par as seconds), percent step +2 per tick, sp_state machine values 2/4/6/8/10 (kills/items/secret/time/accelerated). Acceleration snaps to target immediately. Inventory: src/ui 30->31 (265453 bytes, 6969 lines, 539 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-001 implement-thinker-list-ordering completed
+
+- status: completed
+- lane: ai
+- step_id: 08-001
+- summary: VANILLA_THINKER_REMOVED_SENTINEL + iterateVanillaThinkers + compactRemovedThinkers pin Chocolate Doom 2.2.1 p_tick.c P_RunThinkers: doubly-linked circular sentinel list with thinkercap, forward-only traversal from thinkercap.next, deferred-remove via function.acv = -1 (unlinked AND freed in the same pass), new thinkers added at tail run on the NEXT tic (vanilla quirk). Inventory: src/ai 8->9 (156179 bytes, 3951 lines, 201 exports); player_ai_specials 60->61 src; renderer_and_ui 43->45 (parallel UI catch-up); totals 316->319.
+- tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-023 implement-intermission-map-graphics completed
+
+- status: completed
+- lane: ui
+- step_id: 10-023
+- summary: getVanillaIntermissionBackgroundLump + getVanillaYouAreHereLump pin Chocolate Doom 2.2.1 wi_stuff.c WI_loadData/WI_drawShowNextLoc: episode-1 WIMAP0, episode-2 WIMAP1, episode-3 WIMAP2, episode-4/commercial INTERPIC; you-are-here lumps WIURH0/WIURH1 toggle every 9 tics; splat WISPLAT marker. Inventory: src/ui 31->32 (267875 bytes, 7037 lines, 547 exports).
+- tests: format pass; focused 11/0; full pass; tsc pass

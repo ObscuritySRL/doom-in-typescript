@@ -10,11 +10,11 @@
     {
       "relative_path": "src/ai/",
       "exists": true,
-      "committed_file_count": 8,
-      "committed_filenames_sorted": ["attacks.ts", "bossSpecials.ts", "chase.ts", "meleeRange.ts", "missileRange.ts", "soundPropagation.ts", "stateTransitions.ts", "targeting.ts"],
-      "total_size_bytes": 154056,
-      "total_line_count": 3889,
-      "total_export_count": 194
+      "committed_file_count": 9,
+      "committed_filenames_sorted": ["attacks.ts", "bossSpecials.ts", "chase.ts", "implement-thinker-list-ordering.ts", "meleeRange.ts", "missileRange.ts", "soundPropagation.ts", "stateTransitions.ts", "targeting.ts"],
+      "total_size_bytes": 156179,
+      "total_line_count": 3951,
+      "total_export_count": 201
     },
     {
       "relative_path": "src/specials/",
