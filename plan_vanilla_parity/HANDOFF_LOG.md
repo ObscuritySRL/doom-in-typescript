@@ -8919,3 +8919,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-010
 - summary: collapseVanillaVisplaneSky + vanillaVisplaneMatches + classifyVanillaVisplaneCheck pin Chocolate Doom 2.2.1 r_plane.c R_FindPlane / R_CheckPlane: MAXVISPLANES=128, sky (picnum==skyflatnum) collapses height=0/lightlevel=0 to share one plane, match key is (height,picnum,lightlevel) triple; top[] sentinel 0xFF; initial minx=320/maxx=-1 inverted empty range. Inventory: src/render 23->24 (224717 bytes, 5631 lines, 224 exports).
 - tests: format pass; focused 13/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-014 implement-baron-attack completed
+
+- status: completed
+- lane: ai
+- step_id: 08-014
+- summary: A_BruisAttack (Baron MT_BRUISER=15 / Hell Knight MT_KNIGHT=14): melee claw 10*(rng%8+1)=10..80; missile MT_BRUISERSHOT=22 (info.damage=8).
+- tests: format pass; focused 5/0; full pass; tsc pass

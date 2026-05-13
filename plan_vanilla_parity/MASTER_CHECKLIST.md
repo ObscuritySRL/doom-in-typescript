@@ -281,7 +281,7 @@
 - [x] `08-011` `implement-demon-and-spectre-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-011-implement-demon-and-spectre-attacks.md`
 - [x] `08-012` `implement-lost-soul-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-012-implement-lost-soul-attack.md`
 - [x] `08-013` `implement-cacodemon-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-013-implement-cacodemon-attack.md`
-- [ ] `08-014` `implement-baron-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-014-implement-baron-attack.md`
+- [x] `08-014` `implement-baron-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-014-implement-baron-attack.md`
 - [ ] `08-015` `implement-cyberdemon-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-015-implement-cyberdemon-attack-for-registered-iwad.md`
 - [ ] `08-016` `implement-spider-mastermind-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-016-implement-spider-mastermind-attack-for-registered-iwad.md`
 - [ ] `08-017` `implement-pain-elemental-and-doom-two-guarded-path` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-017-implement-pain-elemental-and-doom-two-guarded-path.md`
