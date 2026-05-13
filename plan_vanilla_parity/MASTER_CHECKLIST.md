@@ -200,7 +200,7 @@
 - [x] `06-002` `parse-seg-ssector-node-reject-blockmap-lumps` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-002-parse-seg-ssector-node-reject-blockmap-lumps.md`
 - [x] `06-003` `parse-things-with-skill-and-game-mode-filters` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-003-parse-things-with-skill-and-game-mode-filters.md`
 - [x] `06-004` `implement-map-setup-init-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-004-implement-map-setup-init-ordering.md`
-- [ ] `06-005` `implement-subsector-point-query` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-005-implement-subsector-point-query.md`
+- [x] `06-005` `implement-subsector-point-query` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-005-implement-subsector-point-query.md`
 - [ ] `06-006` `implement-bsp-node-traversal-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-006-implement-bsp-node-traversal-semantics.md`
 - [ ] `06-007` `implement-blockmap-coordinate-conversion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-007-implement-blockmap-coordinate-conversion.md`
 - [ ] `06-008` `implement-block-things-linking` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-008-implement-block-things-linking.md`

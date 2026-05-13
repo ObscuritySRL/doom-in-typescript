@@ -7910,3 +7910,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned 12-phase P_SetupLevel order: P_LoadBlockMap, Vertexes, Sectors, SideDefs, LineDefs, Subsectors, Nodes, Segs, Reject, P_GroupLines, P_LoadThings, P_SpawnSpecials. evaluateMapSetupOrder flags missing_phase/wrong_order/duplicate_phase. Inventory: src/map 14->15 (92105 bytes, 2634 lines, 134 exports); map+world 25->26 src; totals 233->234.
 - tests: format pass; focused 6/0; full 13528/0; tsc pass
 
+
+## 2026-05-13 - 06-005 implement-subsector-point-query completed
+
+- status: completed
+- lane: map
+- step_id: 06-005
+- summary: Added src/map/implement-subsector-point-query.ts: queryPointSubsector descends from the last node, picking front/back via partition-line side per P_PointOnSide and stops on the subsector flag 0x8000. isPointOnFrontOfPartition handles the vertical/horizontal axis-aligned shortcuts plus the cross-product test. Recovery: corrected vertical/horizontal side semantics to match vanilla P_PointOnSide (returns 1=back when dy>0 left of x; returns 1=back when dx>0 above y). Inventory: src/map 15->16 (93983 bytes, 2689 lines, 137 exports); map+world 26->27 src; totals 234->235.
+- tests: format pass; focused 4/0; full 13532/0; tsc pass
+
