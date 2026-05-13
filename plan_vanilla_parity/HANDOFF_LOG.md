@@ -8721,3 +8721,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-026
 - summary: VANILLA_MENU_NAVIGATION_ORACLES + getVanillaMenuNavigationOracle define 8 scripted menu-navigation scenarios cross-validating the per-event sfx mapping from 10-017 (cursor-up/down -> sfx_pstop, select -> sfx_pistol, submenu -> sfx_swtchn, escape -> sfx_swtchx, slider left/right -> sfx_stnmov, guarded-invalid -> sfx_oof). Each oracle pins (input, expectedSfx, description) and cross-checks against getVanillaMenuSfx(). Inventory: src/ui 34->35 (277038 bytes, 7282 lines, 567 exports).
 - tests: format pass; focused 12/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-027 gate-menu-and-hud-parity completed
+
+- status: completed
+- lane: ui
+- step_id: 10-027
+- summary: VANILLA_MENU_AND_HUD_GATE_INVARIANTS + assertVanillaMenuAndHudGateInvariants gate-wraps the 26 contracts pinned by 10-001..10-026 (title loop, menu trees, sliders, save/load gates, skull cursor, sound events, repeat timing, pause overlay, hud message queue, chat macros, intermission, finale, navigation oracles) into a single import surface. The gate asserts title cycle length 6, non-commercial main menu 6 items, commercial main menu 5 items. Inventory: src/ui 35->36 (281392 bytes, 7341 lines, 570 exports).
+- tests: format pass; focused 6/0; full pass; tsc pass
