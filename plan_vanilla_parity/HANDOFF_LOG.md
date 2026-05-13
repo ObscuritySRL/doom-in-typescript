@@ -8775,3 +8775,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-004
 - summary: Pinned vanilla P_LookForPlayers cooperative-look invariants per Chocolate Doom 2.2.1 p_enemy.c: round-robin lastlook over 4 player slots (& 3), at most 2 players inspected per call (c++ == 2 gate — vanilla limitation in 3-4 player games), front-half-arc check vs ANG90/ANG270 (rear players ignored unless within MELEERANGE when allaround=false), lastlook mutated even on success. Inventory: src/ai 11->12 (162552 bytes, 4138 lines, 225 exports); player_ai_specials 63->64 src; totals 328->329.
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-003 implement-bsp-front-to-back-render-walk completed
+
+- status: completed
+- lane: render
+- step_id: 09-003
+- summary: vanillaBspChildIsSubsector + decodeVanillaBspSubsectorIndex + getVanillaBspRenderOrder pin Chocolate Doom 2.2.1 r_bsp.c R_RenderBSPNode: NF_SUBSECTOR=0x8000 child-tag bit, special -1 sentinel maps to subsector 0, front-to-back render order recurses children[side] first then children[side^1] after R_CheckBBox. side 0 = front of partition, 1 = back. Inventory: src/render 16->17 (203089 bytes, 5016 lines, 163 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
