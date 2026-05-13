@@ -1,0 +1,16 @@
+{
+  "id": "OR-VP-INTERMISSION-026",
+  "stepId": "02-026",
+  "stepTitle": "Capture Intermission Transition Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic transition from end-of-E1M1 (exit-switch trigger) to the intermission screen (WI_loadData / WI_Start / WI_initStats), including the IDM_TIMER_FRAMES counter, stats animation length, KILLS/ITEMS/SECRETS bar fill durations, and the framebuffer + state snapshots at intermission entry and exit tics. Entries empty pending external reference run.",
+  "captureMethod": "Run scripted path from 02-019 spawn through E1M1 to the exit switch (use-line 11 or 52), capture state + framebuffer at the WI_INITIAL_PAUSE end tic, the per-stat-bar fill end tics, and the WI_NEXTLOC end tic before E1M2 starts loading.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "expectedIntermissionAnimationFrames": 6,
+  "stateEntries": [],
+  "framebufferEntries": [],
+  "downstreamFollowUps": ["wire-state-snapshotter-and-framebuffer-grabber-into-bun-comparator"]
+}

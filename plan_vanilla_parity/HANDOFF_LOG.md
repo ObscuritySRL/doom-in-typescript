@@ -7447,3 +7447,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: death anim S_PLAY_DIE 7 frames, S_PLAY_XDIE 9 frames, reborn health 100.
 - tests: focused 6/0; full 13201/0; tsc pass
 - next: 02-026
+
+## 2026-05-13 - 02-026 capture-intermission-transition-oracle (pending)
+- summary: Pending manifest: intermission animation 6 frames, state/framebuffer captures at WI_INITIAL_PAUSE end, bar fill end, WI_NEXTLOC end.
+- tests: focused 5/0; full 13206/0; tsc pass
+- next: 02-027
