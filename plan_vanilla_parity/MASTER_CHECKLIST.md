@@ -376,7 +376,7 @@
 ## Phase 11: Audio / SFX / MUS / OPL / Mixer
 
 - [x] `11-001` `implement-sound-effect-lump-loader` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-001-implement-sound-effect-lump-loader.md`
-- [ ] `11-002` `implement-sound-priority-table` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-002-implement-sound-priority-table.md`
+- [x] `11-002` `implement-sound-priority-table` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-002-implement-sound-priority-table.md`
 - [ ] `11-003` `implement-eight-channel-allocation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-003-implement-eight-channel-allocation.md`
 - [ ] `11-004` `implement-sound-origin-tracking` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-004-implement-sound-origin-tracking.md`
 - [ ] `11-005` `implement-sound-start-stop-update-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-005-implement-sound-start-stop-update-ordering.md`

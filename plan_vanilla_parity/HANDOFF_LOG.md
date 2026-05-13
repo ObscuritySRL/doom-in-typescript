@@ -9342,3 +9342,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-021
 - summary: FUZZTABLE=50, fuzz colormap index=6, 50-entry ±1 offset pattern from r_draw.c.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-002 implement-sound-priority-table completed
+
+- status: completed
+- lane: audio
+- step_id: 11-002
+- summary: src/audio/implement-sound-priority-table.ts pins s_sound.c S_getChannel arbitration: lower-numeric priority is more important; iterate channels and evict the first slot whose priority >= incoming; if every slot is strictly more important, drop the incoming sound. NORM_PRIORITY=64 baseline matches sounds.c pistol/shotgun/sawup/punch entries.
+- tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
