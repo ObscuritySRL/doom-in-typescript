@@ -409,7 +409,7 @@
 
 ## Phase 12: Save / Load / Config
 
-- [ ] `12-001` `parse-default-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-001-parse-default-cfg.md`
+- [x] `12-001` `parse-default-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-001-parse-default-cfg.md`
 - [ ] `12-002` `parse-chocolate-doom-cfg` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-002-parse-chocolate-doom-cfg.md`
 - [ ] `12-003` `persist-vanilla-key-bindings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-003-persist-vanilla-key-bindings.md`
 - [ ] `12-004` `persist-mouse-settings` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-004-persist-mouse-settings.md`

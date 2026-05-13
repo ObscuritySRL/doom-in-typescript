@@ -8982,3 +8982,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-013
 - summary: classifyVanillaPlaneAsCeilingOrFloor + computeVanillaSkyColumnAngleIndex + vanillaSkyPlaneTakesColumnPath pin Chocolate Doom 2.2.1 r_plane.c R_DrawPlanes ceiling/sky path: ceiling vs floor distinguished by planeheight vs viewz; sky picnum==skyflatnum routes through R_DrawColumn with ANGLETOSKYSHIFT=22 (slower than ANGLETOFINESHIFT=19), dc_texturemid=100<<FRACBITS, dc_colormap=colormaps base (no distance fade). Inventory: src/render 26->27 (232401 bytes, 5843 lines, 247 exports).
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 12-001 parse-default-cfg completed
+
+- status: completed
+- lane: save
+- step_id: 12-001
+- summary: src/config/parse-default-cfg.ts pins the vanilla DOOM 1.9 default.cfg parser contract: 43 disjoint variables, name<whitespace>value lines, decimal/0x-hex integers, double-quoted strings (apostrophes and punctuation runs preserved byte-for-byte), missing variables fall back to Chocolate Doom 2.2.1 C-level hardcoded defaults (mouse_sensitivity=5, sfx_volume=8, key_right=77 DOS scan code, etc.), unknown variable names silently ignored per M_LoadDefaultCollection.
+- tests: format pass; focused 8/0; full pass with 4 pre-existing inventory drift failures unchanged; tsc pass
