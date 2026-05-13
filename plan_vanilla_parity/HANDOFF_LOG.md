@@ -8126,3 +8126,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-028
 - summary: Pinned E1M9 (Military Base secret map) oracle: vertexes=581, sectors=147, sidedefs=902, linedefs=653, segs=978, subsectors=288, nodes=287, things=237, blockmap 27x26. Inventory: src/map 38->39 (124119 bytes, 3536 lines, 239 exports); map+world 49->50 src; totals 257->258.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-029 gate-blockmap-collision completed
+
+- status: completed
+- lane: map
+- step_id: 06-029
+- summary: BLOCKMAP_COLLISION_GATE pins vanilla blockmap collision constants: MAPBLOCKSIZE=128, MAPBLOCKSHIFT=23 (FRACBITS+7), MAPBTOFRAC=7, MAXRADIUS=32 fixed. Inventory: src/world 11->12 (271031 bytes, 8569 lines, 110 exports); map+world 50->51 src; totals 258->259.
+- tests: format pass; focused 4/0; full pass; tsc pass

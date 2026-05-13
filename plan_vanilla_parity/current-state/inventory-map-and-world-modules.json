@@ -59,11 +59,24 @@
     {
       "relative_path": "src/world/",
       "exists": true,
-      "committed_file_count": 11,
-      "committed_filenames_sorted": ["checkPosition.ts", "mobj.ts", "radiusAttack.ts", "sectorChange.ts", "slideMove.ts", "teleport.ts", "thinkers.ts", "tryMove.ts", "useLines.ts", "xyMovement.ts", "zMovement.ts"],
-      "total_size_bytes": 269836,
-      "total_line_count": 8542,
-      "total_export_count": 108
+      "committed_file_count": 12,
+      "committed_filenames_sorted": [
+        "checkPosition.ts",
+        "gate-blockmap-collision.ts",
+        "mobj.ts",
+        "radiusAttack.ts",
+        "sectorChange.ts",
+        "slideMove.ts",
+        "teleport.ts",
+        "thinkers.ts",
+        "tryMove.ts",
+        "useLines.ts",
+        "xyMovement.ts",
+        "zMovement.ts"
+      ],
+      "total_size_bytes": 271031,
+      "total_line_count": 8569,
+      "total_export_count": 110
     }
   ],
   "modules": [
@@ -82,7 +95,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts", "src/core/fixed.ts", "src/core/fixed.ts"],
-      "src_importer_count": 7,
+      "src_importer_count": 8,
       "test_importer_count": 17
     },
     {
@@ -229,7 +242,7 @@
         "src/map/things.ts",
         "src/map/things.ts"
       ],
-      "src_importer_count": 13,
+      "src_importer_count": 14,
       "test_importer_count": 20
     },
     {
