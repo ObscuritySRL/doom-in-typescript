@@ -9234,3 +9234,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-031
 - summary: SECTOR_LINE_SPECIALS_GATE bundles door/floor/ceiling/platform/switch speeds, crush damage 10, BUTTONTIME 35, sector damage interval 32, key door specials 26/33.
 - tests: format pass; focused 7/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-012 implement-save-header-version completed
+
+- status: completed
+- lane: save
+- step_id: 12-012
+- summary: src/save/implement-save-header-version.ts pins g_game.c VERSION=109 / VERSIONSIZE=16 magic field contract: "version 109" 11-char ASCII string NUL-padded to 16 bytes at offset SAVESTRINGSIZE=24 in the header. Case-sensitive exact match required; DOOM 1.0-1.8 saves (versions 100..108) and DOOM 1.9 demos with whitespace variations are rejected via "Savegame from different version" error.
+- tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
