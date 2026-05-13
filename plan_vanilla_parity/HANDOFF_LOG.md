@@ -7603,3 +7603,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned key repeat preservation: auto-repeat preserved as-is, no per-tic coalescing, no duplicate-keydown suppression. Pure `evaluateKeyRepeatPreservation` flags dropped/coalesced/suppressed violations. Inventory: 32 src / 34 test.
 - tests: format pass; focused 5/0; full 13323/0; tsc pass
 
+
+## 2026-05-13 - 03-027 preserve-key-down-up-event-ordering completed
+
+- status: completed
+- lane: launch
+- step_id: 03-027
+- summary: Pinned per-scancode down-then-up event ordering with auto-repeat tolerance. `evaluateKeyOrdering` flags keyup-without-keydown, multiple-keydown-without-keyup (when auto-repeat disallowed), and multiple-keyup-per-keydown. Recovery: tightened multiple_keyup_per_keydown guard to also respect allowAutoRepeat. Inventory: 33 src / 35 test.
+- tests: format pass; focused 5/0 (8 expects); full 13328/0; tsc pass
+
