@@ -8946,3 +8946,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-015
 - summary: A_CyberAttack always fires MT_ROCKET=10; explosion damage=128. MT_CYBORG=18, registered/retail IWAD only.
 - tests: format pass; focused 4/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-016 implement-spider-mastermind-attack-for-registered-iwad completed
+
+- status: completed
+- lane: ai
+- step_id: 08-016
+- summary: Spider mastermind chaingun: damage=(rng%5+1)*3, spread shift=21, MT_SPIDER=20, registered/retail only.
+- tests: format pass; focused 6/0; full pass; tsc pass

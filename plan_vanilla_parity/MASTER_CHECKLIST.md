@@ -283,7 +283,7 @@
 - [x] `08-013` `implement-cacodemon-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-013-implement-cacodemon-attack.md`
 - [x] `08-014` `implement-baron-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-014-implement-baron-attack.md`
 - [x] `08-015` `implement-cyberdemon-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-015-implement-cyberdemon-attack-for-registered-iwad.md`
-- [ ] `08-016` `implement-spider-mastermind-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-016-implement-spider-mastermind-attack-for-registered-iwad.md`
+- [x] `08-016` `implement-spider-mastermind-attack-for-registered-iwad` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-016-implement-spider-mastermind-attack-for-registered-iwad.md`
 - [ ] `08-017` `implement-pain-elemental-and-doom-two-guarded-path` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-017-implement-pain-elemental-and-doom-two-guarded-path.md`
 - [ ] `08-018` `implement-boss-death-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-018-implement-boss-death-specials.md`
 - [ ] `08-019` `implement-keen-and-icon-paths-behind-doom-two-scope` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-019-implement-keen-and-icon-paths-behind-doom-two-scope.md`
