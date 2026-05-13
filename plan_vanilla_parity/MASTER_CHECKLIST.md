@@ -112,7 +112,7 @@
 - [x] `03-017` `implement-resize-and-focus-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-017-implement-resize-and-focus-policy.md`
 - [x] `03-018` `implement-message-pump-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-018-implement-message-pump-ordering.md`
 - [x] `03-019` `implement-close-button-and-alt-f4-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-019-implement-close-button-and-alt-f4-behavior.md`
-- [ ] `03-020` `implement-keyboard-scan-code-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-020-implement-keyboard-scan-code-mapping.md`
+- [x] `03-020` `implement-keyboard-scan-code-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-020-implement-keyboard-scan-code-mapping.md`
 - [ ] `03-021` `implement-menu-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-021-implement-menu-key-mapping-from-config.md`
 - [ ] `03-022` `implement-gameplay-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-022-implement-gameplay-key-mapping-from-config.md`
 - [ ] `03-023` `implement-mouse-button-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-023-implement-mouse-button-mapping.md`

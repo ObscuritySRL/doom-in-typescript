@@ -7535,3 +7535,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 8/0; full 13281/0; tsc pass
 - next_eligible_steps: 03-020 implement-keyboard-scan-code-mapping
 
+
+## 2026-05-13 - 03-020 implement-keyboard-scan-code-mapping completed
+
+- status: completed
+- lane: launch
+- step_id: 03-020
+- summary: Pinned vanilla keyboard scan-code mapping: vanilla_keyboard_mapping=1 routes Win32 scan codes directly without OS layout translation; pinned canonical DOOM scan codes from default.cfg (KEY_ESCAPE=1, KEY_FIRE=29, KEY_USE=57, KEY_UP=72, KEY_DOWN=80, KEY_LEFT=75, KEY_RIGHT=77, etc.); extended-key flag 0x80; range [1,127]. Refreshed inventory for bootstrap_runtime_contracts (26 src, 28 test).
+- tests: format pass; focused 8/0 (49 expects); full 13289/0; tsc pass
+- next_eligible_steps: 03-021 implement-menu-key-mapping-from-config
+
