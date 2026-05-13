@@ -9216,3 +9216,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-030
 - summary: MONSTER_AI_GATE bundles chase dirs (8), caco bite 10..60, baron claw 10..80, lost soul 3..24, direction BAM angles.
 - tests: format pass; focused 6/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-011 implement-save-slot-descriptions completed
+
+- status: completed
+- lane: save
+- step_id: 12-011
+- summary: src/save/implement-save-slot-descriptions.ts pins g_game.c G_DoSaveGame description field contract: SAVESTRINGSIZE=24 bytes on-disk NUL-padded, M_StringInput menu cap=23 user chars, printable ASCII 0x20..0x7E filter, NUL-byte truncation on decode, "EMPTY" menu label when byte[0]=0.
+- tests: format pass; focused 11/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
