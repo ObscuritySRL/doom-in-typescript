@@ -8712,3 +8712,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-002
 - summary: applyVanillaSetMobjState pins Chocolate Doom 2.2.1 p_mobj.c P_SetMobjState: do/while loops advancing through states with tics=0 (instant chain), terminates at tics>0; S_NULL=0 triggers P_RemoveMobj and returns false; chain into S_NULL also returns removal. Safety cap prevents infinite tics=0 self-loops. Inventory: src/ai 9->10 (158506 bytes, 4021 lines, 204 exports); player_ai_specials 61->62 src; totals 319->322.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-026 compare-menu-navigation-oracles completed
+
+- status: completed
+- lane: ui
+- step_id: 10-026
+- summary: VANILLA_MENU_NAVIGATION_ORACLES + getVanillaMenuNavigationOracle define 8 scripted menu-navigation scenarios cross-validating the per-event sfx mapping from 10-017 (cursor-up/down -> sfx_pstop, select -> sfx_pistol, submenu -> sfx_swtchn, escape -> sfx_swtchx, slider left/right -> sfx_stnmov, guarded-invalid -> sfx_oof). Each oracle pins (input, expectedSfx, description) and cross-checks against getVanillaMenuSfx(). Inventory: src/ui 34->35 (277038 bytes, 7282 lines, 567 exports).
+- tests: format pass; focused 12/0; full pass; tsc pass
