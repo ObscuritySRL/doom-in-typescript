@@ -9036,3 +9036,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-020
 - summary: VDOORSPEED=2 fixed, VDOORWAIT=150 tics, raise-in-5-mins=10500 tics; vldoor_e enum {NORMAL=0, CLOSE30THEN=1, CLOSE=2, OPEN=3, RAISE_IN_5_MINS=4}.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 08-021 implement-floor-specials completed
+
+- status: completed
+- lane: ai
+- step_id: 08-021
+- summary: FLOORSPEED=1 fixed, turbo=4 fixed; crush damage=10/4tic; floor_e enum 0..12 from p_spec.h.
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
