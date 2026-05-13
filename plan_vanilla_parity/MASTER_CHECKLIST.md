@@ -247,7 +247,7 @@
 - [x] `07-014` `implement-backpack-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-014-implement-backpack-semantics.md`
 - [x] `07-015` `implement-berserk-partial-invisibility-radiation-suit` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-015-implement-berserk-partial-invisibility-radiation-suit.md`
 - [x] `07-016` `implement-invulnerability-and-infrared` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-016-implement-invulnerability-and-infrared.md`
-- [ ] `07-017` `implement-weapon-ownership-and-selection` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-017-implement-weapon-ownership-and-selection.md`
+- [x] `07-017` `implement-weapon-ownership-and-selection` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-017-implement-weapon-ownership-and-selection.md`
 - [ ] `07-018` `implement-fist-and-chainsaw-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-018-implement-fist-and-chainsaw-actions.md`
 - [ ] `07-019` `implement-pistol-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-019-implement-pistol-actions.md`
 - [ ] `07-020` `implement-shotgun-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-020-implement-shotgun-actions.md`
