@@ -8072,3 +8072,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-022
 - summary: Pinned vanilla MAPTHING layout (MAPTHING_SIZE=10) and option flag bits (MTF_EASY=1, MTF_NORMAL=2, MTF_HARD=4, MTF_AMBUSH=8, MTF_NETGAME=16). Single-player spawn filter: skill bit must match (1->EASY, 2/3->NORMAL, 4/5->HARD) AND not net-only. Player starts types 1..4, DM start type 11. Inventory: src/map 32->33 (119425 bytes, 3382 lines, 222 exports); map+world 43->44 src; totals 251->252.
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-023 implement-deathmatch-and-multiplayer-spawn-exclusion completed
+
+- status: completed
+- lane: map
+- step_id: 06-023
+- summary: classifySpawnOutcome routes mapthings: player start types 1..4 save as playerstart; type 11 saves as DM start; MTF_NETGAME skipped in single-player but spawned in coop/DM; normal pickups spawn. Inventory: src/map 33->34 (120879 bytes, 3417 lines, 226 exports); map+world 44->45 src; totals 252->253.
+- tests: format pass; focused 6/0; full pass; tsc pass

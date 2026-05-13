@@ -218,7 +218,7 @@
 - [x] `06-020` `implement-sector-floor-ceiling-change-checks` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-020-implement-sector-floor-ceiling-change-checks.md`
 - [x] `06-021` `implement-thing-touch-special-resolution` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-021-implement-thing-touch-special-resolution.md`
 - [x] `06-022` `implement-map-spawn-thing-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-022-implement-map-spawn-thing-ordering.md`
-- [ ] `06-023` `implement-deathmatch-and-multiplayer-spawn-exclusion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-023-implement-deathmatch-and-multiplayer-spawn-exclusion.md`
+- [x] `06-023` `implement-deathmatch-and-multiplayer-spawn-exclusion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-023-implement-deathmatch-and-multiplayer-spawn-exclusion.md`
 - [ ] `06-024` `implement-nightmare-respawn-map-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-024-implement-nightmare-respawn-map-state.md`
 - [ ] `06-025` `compare-e1m1-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-025-compare-e1m1-map-setup-state.md`
 - [ ] `06-026` `compare-e1m2-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-026-compare-e1m2-map-setup-state.md`
