@@ -7982,3 +7982,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: projectSlideOntoWall removes the wall-normal component of motion, leaving the tangent component to slide along. Max iterations 3 per vanilla P_SlideMove. Inventory: src/map 22->23 (104892 bytes, 2965 lines, 163 exports); map+world source 33->34; totals 241->242.
 - tests: format pass; focused 4/0; full 13562/0; tsc pass
 
+
+## 2026-05-13 - 06-013 implement-teleport-move-semantics completed
+
+- status: completed
+- lane: map
+- step_id: 06-013
+- summary: evaluateTeleportMove: telefrag damage 10000; out-of-range destination rejects; in-range commits and telefrags non-voodoo overlapping things. Inventory: src/map 23->24 (106019 bytes, 2996 lines, 167 exports); map+world 34->35 src; totals 242->243.
+- tests: format pass; focused 5/0; full 13567/0; tsc pass
+
