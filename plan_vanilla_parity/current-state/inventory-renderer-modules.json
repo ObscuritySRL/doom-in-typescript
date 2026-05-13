@@ -10,12 +10,13 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 22,
+      "committed_file_count": 23,
       "committed_filenames_sorted": [
         "drawPrimitives.ts",
         "fuzz.ts",
         "implement-bsp-front-to-back-render-walk.ts",
         "implement-draw-column-low-and-high-detail.ts",
+        "implement-draw-span-low-and-high-detail.ts",
         "implement-projection-and-clip-angle-tables.ts",
         "implement-solid-segment-clipping.ts",
         "implement-two-sided-wall-clipping.ts",
@@ -35,9 +36,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 218605,
-      "total_line_count": 5450,
-      "total_export_count": 200
+      "total_size_bytes": 220949,
+      "total_line_count": 5522,
+      "total_export_count": 212
     }
   ],
   "modules": [

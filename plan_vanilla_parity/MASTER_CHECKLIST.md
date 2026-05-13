@@ -311,7 +311,7 @@
 - [x] `09-006` `implement-wall-column-scale-math` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-006-implement-wall-column-scale-math.md`
 - [x] `09-007` `implement-wall-texture-column-fetch` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-007-implement-wall-texture-column-fetch.md`
 - [x] `09-008` `implement-draw-column-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-008-implement-draw-column-low-and-high-detail.md`
-- [ ] `09-009` `implement-draw-span-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-009-implement-draw-span-low-and-high-detail.md`
+- [x] `09-009` `implement-draw-span-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-009-implement-draw-span-low-and-high-detail.md`
 - [ ] `09-010` `implement-visplane-allocation-and-merge` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-010-implement-visplane-allocation-and-merge.md`
 - [ ] `09-011` `implement-visplane-overflow-limit-behavior` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-011-implement-visplane-overflow-limit-behavior.md`
 - [ ] `09-012` `implement-floor-span-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-012-implement-floor-span-rendering.md`
