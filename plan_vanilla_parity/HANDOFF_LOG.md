@@ -7639,3 +7639,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned recording-side mirror of 03-029 injection: appends events at current tic, flags tic regression, past-tic record, unknown event kinds. Inventory: 36 src / 38 test.
 - tests: format pass; focused 5/0; full 13343/0; tsc pass
 
+
+## 2026-05-13 - 03-031 implement-clean-launch-to-title-loop completed
+
+- status: completed
+- lane: launch
+- step_id: 03-031
+- summary: Pinned vanilla clean-launch -> title-loop contract: attract sequence titlepic/demo1/credit/demo2/titlepic/demo3, PAGETIME=200 tics. decideLaunchOutcome routes between title-loop, warped-into-map, loaded-game, played-demo. Inventory: 37 src / 39 test.
+- tests: format pass; focused 7/0; full 13350/0; tsc pass
+
