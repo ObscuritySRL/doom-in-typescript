@@ -8171,3 +8171,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-001
 - summary: buildVanillaRebornFreshState mirrors Chocolate Doom 2.2.1 g_game.c G_PlayerReborn fresh state: INITIAL_HEALTH=100, INITIAL_BULLETS=50, maxammo=[200,50,300,50], grants WP_FIST and WP_PISTOL, all other weapons/keys/powerups cleared, usedown/attackdown true so input must release before firing. Persisted-across-reborn fields (killcount, itemcount, secretcount, frags) modeled in RebornPreservedStats interface. Inventory: src/player 8->9 (115190 bytes, 3219 lines, 175 exports); player_ai_specials group 26->27 src; totals 262->263.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-002 implement-player-spawn-state completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-002
+- summary: computeSpawnedPlayerViewState mirrors Chocolate Doom 2.2.1 p_mobj.c P_SpawnPlayer view-state reset: viewz = mobj.z + VIEWHEIGHT (41*FRACUNIT), deltaviewheight = 0, bob = 0. VANILLA_PLAYER_VIEWHEIGHT re-exports world VIEWHEIGHT. Inventory: src/player 9->10 (116632 bytes, 3260 lines, 179 exports); player_ai_specials group 27->28 src; totals 263->264.
+- tests: format pass; focused 6/0; full pass; tsc pass

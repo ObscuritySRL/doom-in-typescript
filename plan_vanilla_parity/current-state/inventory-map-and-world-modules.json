@@ -618,7 +618,7 @@
       "exported_types": ["PlayerLandingFunction", "PlayerSmoothStepFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/rng.ts", "src/world/mobj.ts", "src/world/mobj.ts", "src/world/thinkers.ts", "src/world/xyMovement.ts"],
-      "src_importer_count": 6,
+      "src_importer_count": 7,
       "test_importer_count": 3
     }
   ],
