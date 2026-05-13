@@ -9360,3 +9360,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-022
 - summary: WEAPONTOP=32 fixed, WEAPONBOTTOM=128 fixed; NUMPSPRITES=2 (ps_weapon=0, ps_flash=1).
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-017 serialize-line-specials completed
+
+- status: completed
+- lane: save
+- step_id: 12-017
+- summary: src/save/serialize-line-specials.ts pins p_saveg.c P_ArchiveWorld per-line payload: 6 bytes base (flags 2 + special 2 + tag 2) plus SAVEGAME_SIDE_SIZE=10 per referenced sidedef (textureoffset, rowoffset, toptex, bottomtex, midtex). special=0 represents a cleared single-use trigger (P_CrossSpecialLine clears it at activation time); the repeat-rule bit is NOT carried — repeat semantics derive from the special-id table lookup, not a save-format flag.
+- tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
