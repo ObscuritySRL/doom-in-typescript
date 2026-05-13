@@ -10,10 +10,11 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 34,
+      "committed_file_count": 35,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-ammo-pickups.ts",
+        "implement-autoaim-semantics.ts",
         "implement-backpack-semantics.ts",
         "implement-berserk-partial-invisibility-radiation-suit.ts",
         "implement-bfg-actions.ts",
@@ -47,9 +48,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 158123,
-      "total_line_count": 4416,
-      "total_export_count": 386
+      "total_size_bytes": 159782,
+      "total_line_count": 4453,
+      "total_export_count": 390
     }
   ],
   "modules": [

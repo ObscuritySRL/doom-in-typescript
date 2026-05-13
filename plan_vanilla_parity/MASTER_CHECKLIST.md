@@ -257,7 +257,7 @@
 - [x] `07-024` `implement-bfg-actions` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-024-implement-bfg-actions.md`
 - [x] `07-025` `implement-projectile-spawn-and-explosion` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-025-implement-projectile-spawn-and-explosion.md`
 - [x] `07-026` `implement-hitscan-aim-and-damage` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-026-implement-hitscan-aim-and-damage.md`
-- [ ] `07-027` `implement-autoaim-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-027-implement-autoaim-semantics.md`
+- [x] `07-027` `implement-autoaim-semantics` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-027-implement-autoaim-semantics.md`
 - [ ] `07-028` `implement-weapon-sprite-state-machine` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-028-implement-weapon-sprite-state-machine.md`
 - [ ] `07-029` `implement-player-use-action` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-029-implement-player-use-action.md`
 - [ ] `07-030` `compare-scripted-pickup-oracle` | lane: `gameplay` | prereqs: `04-030,06-032` | file: `plan_vanilla_parity/steps/07-030-compare-scripted-pickup-oracle.md`
