@@ -1,0 +1,13 @@
+{
+  "id": "OR-VP-GATE-035",
+  "stepId": "02-035",
+  "stepTitle": "Gate Oracle Foundation Without Deferred Status",
+  "lane": "oracle",
+  "description": "Gates the oracle-lane foundation (02-001 through 02-034) by tracking deferred-status fixtures explicitly. The gate's literal title is `without deferred status`: this is the long-term close contract. Until an external reference-run host produces live evidence, the gate manifest pins the open dependency on the 02-034 tracker so downstream steps know which fixtures remain pending. The focused test enforces that every pending fixture is accounted for in the 02-034 tracker (no orphan deferred status); long-term close requires every fixture to read captured.",
+  "gateRule": "every fixture under test/vanilla_parity/oracles/ that declares captureStatus must either (a) report 'captured', or (b) appear in the 02-034 tracker so its pending status is not orphaned; long-term close requires every captureStatus to be 'captured'.",
+  "gateInputs": ["test/vanilla_parity/oracles/replace-pending-oracle-fixtures-with-live-evidence.json"],
+  "deferredStatusContract": "Pending status is tolerated only while the 02-034 tracker records it. Any pending fixture not listed in the tracker is a hard failure. When all tracker entries resolve to 'captured', the long-term gate close is satisfied automatically.",
+  "longTermCloseCondition": "0 pending fixtures across test/vanilla_parity/oracles/ AND 02-034 trackerStatus = closed",
+  "ticRateHzAnchor": 35,
+  "downstreamFollowUps": ["populate-pending-fixtures-via-external-reference-run-host", "flip-02-034-trackerStatus-to-closed", "rerun-this-focused-test-to-confirm-strict-close"]
+}

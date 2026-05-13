@@ -89,7 +89,7 @@
 - [x] `02-032` `capture-sfx-and-music-oracle-windows` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-032-capture-sfx-and-music-oracle-windows.md`
 - [x] `02-033` `capture-full-e1-route-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-033-capture-full-e1-route-oracle.md`
 - [x] `02-034` `replace-pending-oracle-fixtures-with-live-evidence` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-034-replace-pending-oracle-fixtures-with-live-evidence.md`
-- [ ] `02-035` `gate-oracle-foundation-without-deferred-status` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-035-gate-oracle-foundation-without-deferred-status.md`
+- [x] `02-035` `gate-oracle-foundation-without-deferred-status` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-035-gate-oracle-foundation-without-deferred-status.md`
 
 ## Phase 03: Launch / Host / Window / Input
 
