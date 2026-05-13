@@ -83,7 +83,7 @@
 - [x] `02-026` `capture-intermission-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-026-capture-intermission-transition-oracle.md`
 - [x] `02-027` `capture-finale-transition-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-027-capture-finale-transition-oracle.md`
 - [x] `02-028` `capture-demo-one-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-028-capture-demo-one-playback-oracle.md`
-- [ ] `02-029` `capture-demo-two-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-029-capture-demo-two-playback-oracle.md`
+- [x] `02-029` `capture-demo-two-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-029-capture-demo-two-playback-oracle.md`
 - [ ] `02-030` `capture-demo-three-playback-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-030-capture-demo-three-playback-oracle.md`
 - [ ] `02-031` `capture-save-load-roundtrip-oracle` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-031-capture-save-load-roundtrip-oracle.md`
 - [ ] `02-032` `capture-sfx-and-music-oracle-windows` | lane: `oracle` | prereqs: `01-024` | file: `plan_vanilla_parity/steps/02-032-capture-sfx-and-music-oracle-windows.md`
