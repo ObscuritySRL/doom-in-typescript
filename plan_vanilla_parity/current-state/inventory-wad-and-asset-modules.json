@@ -10,10 +10,11 @@
     {
       "relative_path": "src/assets/",
       "exists": true,
-      "committed_file_count": 31,
+      "committed_file_count": 32,
       "committed_filenames_sorted": [
         "build-asset-cache-lifetime-policy.ts",
         "build-flat-cache.ts",
+        "build-patch-font-cache.ts",
         "build-sprite-frame-cache.ts",
         "build-texture-composition-cache.ts",
         "colormap.ts",
@@ -44,9 +45,9 @@
         "verify-marker-range-semantics.ts",
         "verify-wad-header-and-directory-parsing.ts"
       ],
-      "total_size_bytes": 917035,
-      "total_line_count": 18497,
-      "total_export_count": 522
+      "total_size_bytes": 919371,
+      "total_line_count": 18562,
+      "total_export_count": 531
     },
     {
       "relative_path": "src/wad/",
@@ -260,8 +261,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 20,
-      "test_importer_count": 56
+      "src_importer_count": 21,
+      "test_importer_count": 57
     },
     {
       "relative_path": "src/wad/header.ts",
@@ -319,10 +320,11 @@
     "test_roots": [
       {
         "relative_path": "test/vanilla_parity/wad/",
-        "test_file_count": 24,
+        "test_file_count": 25,
         "test_filenames_sorted": [
           "build-asset-cache-lifetime-policy.test.ts",
           "build-flat-cache.test.ts",
+          "build-patch-font-cache.test.ts",
           "build-sprite-frame-cache.test.ts",
           "build-texture-composition-cache.test.ts",
           "detect-registered-iwad-capabilities.test.ts",

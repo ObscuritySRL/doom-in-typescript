@@ -7838,3 +7838,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Adopted the prior-iteration uncommitted sprite-frame cache test addition (loadSpriteFramePatch rejects out-of-range sprite numbers). Focused test 4/45, full 13476/0. No new src file; existing src/assets/build-sprite-frame-cache.ts was already tracked.
 - tests: format pass; focused 4/0; full 13476/0; tsc pass
 
+
+## 2026-05-13 - 05-025 build-patch-font-cache completed
+
+- status: completed
+- lane: wad
+- step_id: 05-025
+- summary: Added src/assets/build-patch-font-cache.ts: indexes STCFN033 through STCFN095 (63-glyph HUD font, char codes 33-95) from a parsed WAD directory by character code. Skips non-STCFN and out-of-range lumps. Inventory: wad_and_assets group source 35->36 / test 47->48; src/assets directory committed 31->32, total_size 917035->919371, total_line 18497->18562, total_export 522->531; src/wad/directory.ts importer counts 20->21 src, 56->57 test; totals 226/270 -> 227/271.
+- tests: format pass; focused 5/0 (13 expects); full 13481/0; tsc pass
+
