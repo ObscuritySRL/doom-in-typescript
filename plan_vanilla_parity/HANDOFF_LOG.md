@@ -8955,3 +8955,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-016
 - summary: Spider mastermind chaingun: damage=(rng%5+1)*3, spread shift=21, MT_SPIDER=20, registered/retail only.
 - tests: format pass; focused 6/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-012 implement-floor-span-rendering completed
+
+- status: completed
+- lane: render
+- step_id: 09-012
+- summary: vanillaPlaneDistanceLightIndex + computeVanillaSpanYfrac + selectVanillaSpanColormap pin Chocolate Doom 2.2.1 r_plane.c R_MapPlane: LIGHTZSHIFT=20 shifts distance to z-light index, MAXLIGHTZ=128 caps to index 127 (`>=` clamp); ds_yfrac uses NEGATIVE viewy; fixedcolormap (invuln/infrared) precedes planezlight[index]. Inventory: src/render 25->26 (229441 bytes, 5764 lines, 238 exports).
+- tests: format pass; focused 14/0; full pass; tsc pass
