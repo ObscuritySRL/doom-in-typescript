@@ -7964,3 +7964,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added evaluateCheckPosition: pure model of vanilla P_CheckPosition decision (canFit = !blocker && verticalSpace >= height); records tmFloorZ/tmCeilingZ/tmDropoffZ. Inventory: src/map 20->21 (102057 bytes, 2888 lines, 155 exports); map+world source 31->32; totals 239->240.
 - tests: format pass; focused 4/0; full 13552/0; tsc pass
 
+
+## 2026-05-13 - 06-011 implement-try-move-semantics completed
+
+- status: completed
+- lane: map
+- step_id: 06-011
+- summary: Added evaluateTryMove model of vanilla P_TryMove: chains to P_CheckPosition, then enforces 24-unit monster dropoff limit (skipped if non-monster or MF_DROPOFF set). Inventory: src/map 21->22 (103489 bytes, 2928 lines, 159 exports); map+world source 32->33; totals 240->241.
+- tests: format pass; focused 6/0; full 13558/0; tsc pass
+
