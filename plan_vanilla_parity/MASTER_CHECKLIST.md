@@ -277,7 +277,7 @@
 - [x] `08-007` `implement-monster-melee-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-007-implement-monster-melee-range.md`
 - [x] `08-008` `implement-monster-missile-range` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-008-implement-monster-missile-range.md`
 - [x] `08-009` `implement-zombie-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-009-implement-zombie-attacks.md`
-- [ ] `08-010` `implement-imp-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-010-implement-imp-attacks.md`
+- [x] `08-010` `implement-imp-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-010-implement-imp-attacks.md`
 - [ ] `08-011` `implement-demon-and-spectre-attacks` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-011-implement-demon-and-spectre-attacks.md`
 - [ ] `08-012` `implement-lost-soul-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-012-implement-lost-soul-attack.md`
 - [ ] `08-013` `implement-cacodemon-attack` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-013-implement-cacodemon-attack.md`
@@ -308,7 +308,7 @@
 - [x] `09-003` `implement-bsp-front-to-back-render-walk` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-003-implement-bsp-front-to-back-render-walk.md`
 - [x] `09-004` `implement-solid-segment-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-004-implement-solid-segment-clipping.md`
 - [x] `09-005` `implement-two-sided-wall-clipping` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-005-implement-two-sided-wall-clipping.md`
-- [ ] `09-006` `implement-wall-column-scale-math` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-006-implement-wall-column-scale-math.md`
+- [x] `09-006` `implement-wall-column-scale-math` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-006-implement-wall-column-scale-math.md`
 - [ ] `09-007` `implement-wall-texture-column-fetch` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-007-implement-wall-texture-column-fetch.md`
 - [ ] `09-008` `implement-draw-column-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-008-implement-draw-column-low-and-high-detail.md`
 - [ ] `09-009` `implement-draw-span-low-and-high-detail` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-009-implement-draw-span-low-and-high-detail.md`
