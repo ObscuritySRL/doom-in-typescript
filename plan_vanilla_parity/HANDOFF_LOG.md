@@ -7901,3 +7901,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/map/parse-things-with-skill-and-game-mode-filters.ts: 10-byte THING records (x, y, angle, type, flags); MTF flag constants (EASY=0x01, NORMAL=0x02, HARD=0x04, AMBUSH=0x08, NOT_SINGLE=0x10); shouldThingSpawn implements vanilla P_SpawnMapThing skill bracketing (skill<=1 EASY, ==2 NORMAL, >=3 HARD) + NOT_SINGLE suppression. Inventory: src/map 13->14, 90148 bytes, 2563 lines, 129 exports; map+world source 24->25; totals 232->233.
 - tests: format pass; focused 8/0; full 13522/0; tsc pass
 
+
+## 2026-05-13 - 06-004 implement-map-setup-init-ordering completed
+
+- status: completed
+- lane: map
+- step_id: 06-004
+- summary: Pinned 12-phase P_SetupLevel order: P_LoadBlockMap, Vertexes, Sectors, SideDefs, LineDefs, Subsectors, Nodes, Segs, Reject, P_GroupLines, P_LoadThings, P_SpawnSpecials. evaluateMapSetupOrder flags missing_phase/wrong_order/duplicate_phase. Inventory: src/map 14->15 (92105 bytes, 2634 lines, 134 exports); map+world 25->26 src; totals 233->234.
+- tests: format pass; focused 6/0; full 13528/0; tsc pass
+

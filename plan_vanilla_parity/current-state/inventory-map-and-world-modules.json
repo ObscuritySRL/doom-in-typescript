@@ -10,11 +10,11 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 14,
-      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-seg-ssector-node-reject-blockmap-lumps.ts", "parse-things-with-skill-and-game-mode-filters.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
-      "total_size_bytes": 90148,
-      "total_line_count": 2563,
-      "total_export_count": 129
+      "committed_file_count": 15,
+      "committed_filenames_sorted": ["blockmap.ts", "blockmapIter.ts", "bspStructs.ts", "implement-map-setup-init-ordering.ts", "intercepts.ts", "lineSectorGeometry.ts", "mapBundle.ts", "mapSetup.ts", "nodeTraversal.ts", "parse-seg-ssector-node-reject-blockmap-lumps.ts", "parse-things-with-skill-and-game-mode-filters.ts", "parse-vertex-linedef-sidedef-sector-lumps.ts", "reject.ts", "subsectorQuery.ts", "things.ts"],
+      "total_size_bytes": 92105,
+      "total_line_count": 2634,
+      "total_export_count": 134
     },
     {
       "relative_path": "src/world/",
