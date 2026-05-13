@@ -7675,3 +7675,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned screenshot hook: unbound by default (scancode 0), PCX default (png_screenshots=0), DOOM00.PCX through DOOM99.PCX naming, 320x200 raw framebuffer. Pure decideScreenshotFormat + buildScreenshotFilename. Inventory: 40 src / 42 test.
 - tests: format pass; focused 8/0; full 13373/0; tsc pass
 
+
+## 2026-05-13 - 03-035 implement-launch-smoke-test-against-doom-ts completed
+
+- status: completed
+- lane: launch
+- step_id: 03-035
+- summary: Pinned launch smoke contract: 19 pre-loop phases (parse_cmdline through i_init_stretch_tables) plus enter doom_loop plus per-tic order from 03-018. evaluateLaunchSmoke flags missing/out-of-order/no-loop-entry/per-tic violations. Inventory: 41 src / 43 test.
+- tests: format pass; focused 6/0; full 13379/0; tsc pass
+
