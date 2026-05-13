@@ -7712,3 +7712,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned no-visible-interpolation invariants: simulation advances on integer tic boundaries only, no render-time-driven mobj/view interpolation, no fractional-tic visible state. crossCheckInterpolationCandidate routes violations per axis. Inventory: core 27 src / 29 test.
 - tests: format pass; focused 6/0; full 13392/0; tsc pass
 
+
+## 2026-05-13 - 04-018 implement-pause-timing-semantics completed
+
+- status: completed
+- lane: core
+- step_id: 04-018
+- summary: Pinned vanilla pause semantics: PAUSE scancode 69 toggles; pause mutes sfx + music, blocks thinkers, does not block automap animation, permits save/load. decidePauseToggle + evaluatePausedTic. Inventory: core 28 src / 30 test.
+- tests: format pass; focused 7/0; full 13399/0; tsc pass
+
