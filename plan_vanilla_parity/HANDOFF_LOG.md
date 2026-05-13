@@ -7585,3 +7585,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 6/0 (11 expects); full 13311/0; tsc pass
 - next_eligible_steps: 03-025 (next launch lane unchecked)
 
+
+## 2026-05-13 - 03-025 implement-mouse-grab-and-release-policy completed
+
+- status: completed
+- lane: launch
+- step_id: 03-025
+- summary: Pinned mouse grab/release contract: grabmouse=1 default; grab requires enabled+focused+visible+!nomouse; unfocused releases cursor; -nomouse force-disables. Pure `decideMouseGrab` covers all 5 release paths. Inventory: 31 src / 33 test, totals 200/244.
+- tests: format pass; focused 7/0 (10 expects); full 13318/0; tsc pass
+

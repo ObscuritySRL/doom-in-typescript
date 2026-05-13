@@ -117,7 +117,7 @@
 - [x] `03-022` `implement-gameplay-key-mapping-from-config` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-022-implement-gameplay-key-mapping-from-config.md`
 - [x] `03-023` `implement-mouse-button-mapping` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-023-implement-mouse-button-mapping.md`
 - [x] `03-024` `implement-mouse-motion-accumulation` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-024-implement-mouse-motion-accumulation.md`
-- [ ] `03-025` `implement-mouse-grab-and-release-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-025-implement-mouse-grab-and-release-policy.md`
+- [x] `03-025` `implement-mouse-grab-and-release-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-025-implement-mouse-grab-and-release-policy.md`
 - [ ] `03-026` `preserve-key-repeat-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-026-preserve-key-repeat-behavior.md`
 - [ ] `03-027` `preserve-key-down-up-event-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-027-preserve-key-down-up-event-ordering.md`
 - [ ] `03-028` `route-input-through-responder-chain` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-028-route-input-through-responder-chain.md`
