@@ -9389,3 +9389,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-003
 - summary: src/audio/implement-eight-channel-allocation.ts pins s_sound.c S_GetChannel two-pass slot picker: pass 1 scans 0..snd_channels-1 picking first free slot OR first same-origin slot (origin=null skips dedup); pass 2 evicts first slot with priority >= incoming. snd_channels defaults to 8 and matches channels.ts NUM_CHANNELS. Drop sentinel -1 when every active slot is strictly more important.
 - tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-023 implement-screen-size-blocks completed
+
+- status: completed
+- lane: render
+- step_id: 09-023
+- summary: Screen blocks 3..11; default 10, fullscreen 11; isValidScreenBlock and isFullscreenScreenBlock helpers.
+- tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352

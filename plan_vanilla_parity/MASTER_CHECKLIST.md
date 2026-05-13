@@ -325,7 +325,7 @@
 - [x] `09-020` `implement-sprite-clipping-against-drawsegs` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-020-implement-sprite-clipping-against-drawsegs.md`
 - [x] `09-021` `implement-fuzz-invisibility-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-021-implement-fuzz-invisibility-rendering.md`
 - [x] `09-022` `implement-player-weapon-sprite-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-022-implement-player-weapon-sprite-rendering.md`
-- [ ] `09-023` `implement-screen-size-blocks` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-023-implement-screen-size-blocks.md`
+- [x] `09-023` `implement-screen-size-blocks` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-023-implement-screen-size-blocks.md`
 - [ ] `09-024` `implement-detail-level-toggle` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-024-implement-detail-level-toggle.md`
 - [ ] `09-025` `implement-view-border-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-025-implement-view-border-rendering.md`
 - [ ] `09-026` `implement-status-bar-background` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-026-implement-status-bar-background.md`
