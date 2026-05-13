@@ -7847,3 +7847,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/assets/build-patch-font-cache.ts: indexes STCFN033 through STCFN095 (63-glyph HUD font, char codes 33-95) from a parsed WAD directory by character code. Skips non-STCFN and out-of-range lumps. Inventory: wad_and_assets group source 35->36 / test 47->48; src/assets directory committed 31->32, total_size 917035->919371, total_line 18497->18562, total_export 522->531; src/wad/directory.ts importer counts 20->21 src, 56->57 test; totals 226/270 -> 227/271.
 - tests: format pass; focused 5/0 (13 expects); full 13481/0; tsc pass
 
+
+## 2026-05-13 - 05-026 compare-local-doom1-wad-manifest completed
+
+- status: completed
+- lane: wad
+- step_id: 05-026
+- summary: Added src/assets/compare-local-doom1-wad-manifest.ts comparator validating a parsed WAD directory against wad-map-summary.json: total lump count (1264 shareware), per-map entry index, lump offsets and sizes. Violations: wrong_total_lump_count, missing_map, lump_offset_mismatch, lump_size_mismatch, wrong_directory_index. Inventory: src/assets committed 32->33, wad+assets 36->37 src / 48->49 test, totals 227/271 -> 228/272, src/wad/directory.ts importers 21->22 src / 57->58 test, total_size_bytes 919371->921942, total_line_count 18562->18631, total_export_count 531->539.
+- tests: format pass; focused 6/0 (8 expects); full 13487/0; tsc pass
+

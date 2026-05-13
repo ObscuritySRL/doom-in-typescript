@@ -24,8 +24,8 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 227,
-    "classified_test_file_count": 271,
+    "classified_source_file_count": 228,
+    "classified_test_file_count": 272,
     "real_group_count": 9,
     "representative_module_count": 47,
     "source_only_metadata": true
@@ -186,9 +186,9 @@
         "test/wad/header-directory.test.ts",
         "test/wad/lump-lookup.test.ts"
       ],
-      "source_file_count": 36,
+      "source_file_count": 37,
       "source_roots": ["src/assets/", "src/wad/"],
-      "test_file_count": 48,
+      "test_file_count": 49,
       "test_roots": ["test/reference/", "test/vanilla_parity/wad/", "test/wad/"]
     }
   ]
