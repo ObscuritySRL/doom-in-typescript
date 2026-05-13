@@ -9369,3 +9369,23 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-017
 - summary: src/save/serialize-line-specials.ts pins p_saveg.c P_ArchiveWorld per-line payload: 6 bytes base (flags 2 + special 2 + tag 2) plus SAVEGAME_SIDE_SIZE=10 per referenced sidedef (textureoffset, rowoffset, toptex, bottomtex, midtex). special=0 represents a cleared single-use trigger (P_CrossSpecialLine clears it at activation time); the repeat-rule bit is NOT carried — repeat semantics derive from the special-id table lookup, not a save-format flag.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-005 implement-sound-start-stop-update-ordering completed
+
+- status: completed
+- lane: audio
+- step_id: 11-005
+- summary: src/audio/implement-sound-start-stop-update-ordering.ts pins s_sound.c per-tic ordering: S_UpdateSounds(listener) runs once before the tic's S_StartSound / S_StopSound thinker calls, preserving issue order on the start/stop pass. sfx_id==0 (sfx_None) is the early-return guard. Same-origin restart rule: matching sfx → drop, different sfx → stop existing then start, idle origin → start fresh.
+- reference sources: s_sound.c (S_StartSound, S_StopSound, S_UpdateSounds), i_sound.c, sounds.c
+- tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+- downstream risks: real S_StartSound calls in src/audio/ (channels.ts, mixer.ts) must follow this ordering when wired into the per-tic loop; same-origin-same-sfx requests must drop rather than restart so the singularity behavior of weapons-fire/pickup sounds remains vanilla.
+
+
+## 2026-05-13 - 11-003 implement-eight-channel-allocation completed
+
+- status: completed
+- lane: audio
+- step_id: 11-003
+- summary: src/audio/implement-eight-channel-allocation.ts pins s_sound.c S_GetChannel two-pass slot picker: pass 1 scans 0..snd_channels-1 picking first free slot OR first same-origin slot (origin=null skips dedup); pass 2 evicts first slot with priority >= incoming. snd_channels defaults to 8 and matches channels.ts NUM_CHANNELS. Drop sentinel -1 when every active slot is strictly more important.
+- tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

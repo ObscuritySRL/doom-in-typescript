@@ -377,9 +377,9 @@
 
 - [x] `11-001` `implement-sound-effect-lump-loader` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-001-implement-sound-effect-lump-loader.md`
 - [x] `11-002` `implement-sound-priority-table` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-002-implement-sound-priority-table.md`
-- [ ] `11-003` `implement-eight-channel-allocation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-003-implement-eight-channel-allocation.md`
+- [x] `11-003` `implement-eight-channel-allocation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-003-implement-eight-channel-allocation.md`
 - [ ] `11-004` `implement-sound-origin-tracking` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-004-implement-sound-origin-tracking.md`
-- [ ] `11-005` `implement-sound-start-stop-update-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-005-implement-sound-start-stop-update-ordering.md`
+- [x] `11-005` `implement-sound-start-stop-update-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-005-implement-sound-start-stop-update-ordering.md`
 - [ ] `11-006` `implement-attenuation-and-stereo-separation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-006-implement-attenuation-and-stereo-separation.md`
 - [ ] `11-007` `implement-pitch-and-volume-semantics` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-007-implement-pitch-and-volume-semantics.md`
 - [ ] `11-008` `implement-mixer-sample-stepping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-008-implement-mixer-sample-stepping.md`
