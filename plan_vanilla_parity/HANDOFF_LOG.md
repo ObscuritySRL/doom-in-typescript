@@ -9225,3 +9225,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-011
 - summary: src/save/implement-save-slot-descriptions.ts pins g_game.c G_DoSaveGame description field contract: SAVESTRINGSIZE=24 bytes on-disk NUL-padded, M_StringInput menu cap=23 user chars, printable ASCII 0x20..0x7E filter, NUL-byte truncation on decode, "EMPTY" menu label when byte[0]=0.
 - tests: format pass; focused 11/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-031 gate-sector-and-line-specials completed
+
+- status: completed
+- lane: ai
+- step_id: 08-031
+- summary: SECTOR_LINE_SPECIALS_GATE bundles door/floor/ceiling/platform/switch speeds, crush damage 10, BUTTONTIME 35, sector damage interval 32, key door specials 26/33.
+- tests: format pass; focused 7/0; full pass; tsc pre-existing save lane TS2352

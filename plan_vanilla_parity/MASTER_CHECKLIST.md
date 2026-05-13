@@ -298,7 +298,7 @@
 - [x] `08-028` `implement-line-trigger-repeat-rules` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-028-implement-line-trigger-repeat-rules.md`
 - [x] `08-029` `compare-e1m8-boss-death-oracle` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-029-compare-e1m8-boss-death-oracle.md`
 - [x] `08-030` `gate-monster-ai-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-030-gate-monster-ai-semantics.md`
-- [ ] `08-031` `gate-sector-and-line-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-031-gate-sector-and-line-specials.md`
+- [x] `08-031` `gate-sector-and-line-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-031-gate-sector-and-line-specials.md`
 - [ ] `08-032` `gate-boss-and-episode-exit-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-032-gate-boss-and-episode-exit-semantics.md`
 
 ## Phase 09: Renderer / World / Sprites / Status Bar / Automap
