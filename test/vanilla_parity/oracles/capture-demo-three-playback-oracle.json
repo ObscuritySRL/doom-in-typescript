@@ -1,0 +1,20 @@
+{
+  "id": "OR-VP-DEMO3-030",
+  "stepId": "02-030",
+  "stepTitle": "Capture Demo Three Playback Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic state evolution while the reference DOOM 1.9 plays back the DEMO3 lump from doom/DOOM1.WAD. DEMO3 is the third attract-loop demo. State hashes per 02-012 and framebuffer hashes per 02-011 are captured at tic 0, every 35 tics, and at the demo end. Entries empty pending external reference run.",
+  "captureMethod": "Launch DOOM.EXE; after DEMO2 finishes, allow DEMO3 to auto-play; capture state + framebuffer at tic 0, every 35 tics, and at demo end.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "demoLumpName": "DEMO3",
+  "targetRunMode": "demo-playback",
+  "ticRateHz": 35,
+  "demoHeaderBytes": 13,
+  "demoTiccmdBytes": 4,
+  "demoTerminatorByte": 128,
+  "stateEntries": [],
+  "framebufferEntries": [],
+  "downstreamFollowUps": ["wire-demo-playback-runner-into-bun-comparator"]
+}

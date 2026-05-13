@@ -7467,3 +7467,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: DEMO2 playback, vanilla demo binary format.
 - tests: focused 5/0; full 13223/0; tsc pass
 - next: 02-030
+
+## 2026-05-13 - 02-030 capture-demo-three-playback-oracle (pending)
+- summary: Pending manifest: DEMO3 playback, vanilla demo binary format.
+- tests: focused 5/0; full 13228/0; tsc pass
+- next: 02-031
