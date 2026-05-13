@@ -7545,3 +7545,13 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 8/0 (49 expects); full 13289/0; tsc pass
 - next_eligible_steps: 03-021 implement-menu-key-mapping-from-config
 
+
+## 2026-05-13 - 03-021 implement-menu-key-mapping-from-config completed
+
+- status: completed
+- lane: launch
+- step_id: 03-021
+- summary: Pinned vanilla menu key scan codes from chocolate-doom.cfg key_menu_* defaults (KEY_MENU_ACTIVATE=1, KEY_MENU_BACK=14, KEY_MENU_FORWARD=28, KEY_MENU_LEFT=75, KEY_MENU_RIGHT=77, KEY_MENU_UP=72, KEY_MENU_DOWN=80, KEY_MENU_QUIT=68, etc.); vanilla does not re-read on menu open and keys are rebindable at runtime. Focused test verifies every pinned value matches the chocolate-doom.cfg line-by-line. Refreshed inventory bootstrap counts (27 src, 29 test) and src/bootstrap/config.ts test_importer_count 1->2 (my test file's `-from-config.ts` suffix triggered the inventory test importer regex against the `config.ts` basename via the word-boundary match, so the count is now legitimately 2).
+- tests: format pass; focused 5/0 (53 expects); full 13294/0; tsc pass
+- next_eligible_steps: 03-022 implement-mouse-input-policy
+
