@@ -8973,3 +8973,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-017
 - summary: MT_PAIN=21 (DOOM 2 only), MAXSOULS=21 per pain elemental, A_PainDie spawns 3 lost souls at ANG90 intervals; gameMode guard restricts to commercial.
 - tests: format pass; focused 5/0; full pass; tsc parallel-agent test/vanilla_parity/save/parse-default-cfg.test.ts has pre-existing TS2352 error from save lane unrelated to this step
+
+
+## 2026-05-13 - 09-013 implement-ceiling-span-rendering completed
+
+- status: completed
+- lane: render
+- step_id: 09-013
+- summary: classifyVanillaPlaneAsCeilingOrFloor + computeVanillaSkyColumnAngleIndex + vanillaSkyPlaneTakesColumnPath pin Chocolate Doom 2.2.1 r_plane.c R_DrawPlanes ceiling/sky path: ceiling vs floor distinguished by planeheight vs viewz; sky picnum==skyflatnum routes through R_DrawColumn with ANGLETOSKYSHIFT=22 (slower than ANGLETOFINESHIFT=19), dc_texturemid=100<<FRACBITS, dc_colormap=colormaps base (no distance fade). Inventory: src/render 26->27 (232401 bytes, 5843 lines, 247 exports).
+- tests: format pass; focused 10/0; full pass; tsc pass
