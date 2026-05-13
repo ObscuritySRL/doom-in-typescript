@@ -8703,3 +8703,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-025
 - summary: resolveVanillaFinalePostTextScope + vanillaFinaleBunnyScrollIsAvailable + vanillaFinaleCastCallIsAvailable pin Chocolate Doom 2.2.1 f_finale.c F_Ticker post-text branch: commercial -> 'cast-call' (Doom II cast); non-commercial episode 1 -> 'bunny-scroll' (Daisy); non-commercial episodes 2/3/4 -> 'static-art'. Cast call exclusive to commercial; bunny scroll exclusive to non-commercial episode 1. Inventory: src/ui 33->34 (273305 bytes, 7193 lines, 563 exports).
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-002 implement-mobj-state-transitions completed
+
+- status: completed
+- lane: ai
+- step_id: 08-002
+- summary: applyVanillaSetMobjState pins Chocolate Doom 2.2.1 p_mobj.c P_SetMobjState: do/while loops advancing through states with tics=0 (instant chain), terminates at tics>0; S_NULL=0 triggers P_RemoveMobj and returns false; chain into S_NULL also returns removal. Safety cap prevents infinite tics=0 self-loops. Inventory: src/ai 9->10 (158506 bytes, 4021 lines, 204 exports); player_ai_specials 61->62 src; totals 319->322.
+- tests: format pass; focused 6/0; full pass; tsc pass
