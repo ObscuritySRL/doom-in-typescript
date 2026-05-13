@@ -8279,3 +8279,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-013
 - summary: applyVanillaKeyPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GiveCard: 6 card slots (bluecard=0, yellowcard=1, redcard=2, blueskull=3, yellowskull=4, redskull=5, NUMCARDS=6). First pickup sets card[index]=1 and adds BONUSADD=6 to player.bonuscount for screen tint; duplicate pickup is a no-op. Inventory: src/player 20->21 (137525 bytes, 3864 lines, 298 exports); player_ai_specials group 38->39 src; totals 274->275.
 - tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-014 implement-backpack-semantics completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-014
+- summary: applyVanillaBackpackPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GiveBackpack: first pickup doubles maxammo [200,50,300,50]->[400,100,600,100] and grants [10,4,20,1] clips; subsequent pickups skip the max-ammo doubling but still grant clips. Inventory: src/player 21->22 (139688 bytes, 3917 lines, 305 exports); player_ai_specials group 39->40 src; totals 275->276.
+- tests: format pass; focused 7/0; full pass; tsc pass

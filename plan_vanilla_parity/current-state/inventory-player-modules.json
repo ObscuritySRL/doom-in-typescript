@@ -10,10 +10,11 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 21,
+      "committed_file_count": 22,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-ammo-pickups.ts",
+        "implement-backpack-semantics.ts",
         "implement-bob-and-viewheight-semantics.ts",
         "implement-death-and-reborn-flow.ts",
         "implement-forward-side-and-turn-movement.ts",
@@ -34,9 +35,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 137525,
-      "total_line_count": 3864,
-      "total_export_count": 298
+      "total_size_bytes": 139688,
+      "total_line_count": 3917,
+      "total_export_count": 305
     }
   ],
   "modules": [
