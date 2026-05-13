@@ -292,7 +292,7 @@
 - [x] `08-022` `implement-ceiling-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-022-implement-ceiling-specials.md`
 - [x] `08-023` `implement-platform-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-023-implement-platform-specials.md`
 - [x] `08-024` `implement-stairs-donut-and-crusher-specials` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-024-implement-stairs-donut-and-crusher-specials.md`
-- [ ] `08-025` `implement-switch-texture-and-sound-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-025-implement-switch-texture-and-sound-semantics.md`
+- [x] `08-025` `implement-switch-texture-and-sound-semantics` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-025-implement-switch-texture-and-sound-semantics.md`
 - [ ] `08-026` `implement-animated-flats-and-textures` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-026-implement-animated-flats-and-textures.md`
 - [ ] `08-027` `implement-sector-special-effects` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-027-implement-sector-special-effects.md`
 - [ ] `08-028` `implement-line-trigger-repeat-rules` | lane: `ai` | prereqs: `07-034` | file: `plan_vanilla_parity/steps/08-028-implement-line-trigger-repeat-rules.md`

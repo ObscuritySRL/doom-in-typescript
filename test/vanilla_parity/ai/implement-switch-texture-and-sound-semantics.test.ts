@@ -1,6 +1,13 @@
 import { describe, expect, test } from 'bun:test';
 
-import { VANILLA_BUTTONTIME_TICS, VANILLA_SFX_SWTCHN, VANILLA_SFX_SWTCHX, VANILLA_SWITCH_NAME_PREFIX_OFF, VANILLA_SWITCH_NAME_PREFIX_ON, classifyVanillaSwitchActivation } from '../../../src/ai/implement-switch-texture-and-sound-semantics.ts';
+import {
+  VANILLA_BUTTONTIME_TICS,
+  VANILLA_SFX_SWTCHN,
+  VANILLA_SFX_SWTCHX,
+  VANILLA_SWITCH_NAME_PREFIX_OFF,
+  VANILLA_SWITCH_NAME_PREFIX_ON,
+  classifyVanillaSwitchActivation,
+} from '../../../src/ai/implement-switch-texture-and-sound-semantics.ts';
 
 describe('vanilla switch sound and timing constants', () => {
   test('SFX_SWTCHN (press) is 60 and SFX_SWTCHX (revert) is 61', () => {

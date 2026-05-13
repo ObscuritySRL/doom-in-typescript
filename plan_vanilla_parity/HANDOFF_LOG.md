@@ -9126,3 +9126,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-006
 - summary: src/config/persist-screen-settings.ts pins the 4 vanilla screen-presentation variables (show_messages=1 HUD toggle, screenblocks=9 in 3..11 range with 11=fullscreen-no-HUD, detaillevel=0 high/1 low, usegamma=0 in 0..4 5-step gamma table). Modern resolution variables (screen_width/height/bpp, fullscreen, aspect_ratio_correct, grabmouse, video_driver, window_position) explicitly excluded — those live in chocolate-doom.cfg only since DOS DOOM was fixed at 320x200 mode 13h.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-025 implement-switch-texture-and-sound-semantics completed
+
+- status: completed
+- lane: ai
+- step_id: 08-025
+- summary: BUTTONTIME=35 tics, SFX_SWTCHN=60, SFX_SWTCHX=61; SW1/SW2 texture naming; classifyVanillaSwitchActivation flips paired indices, schedules revert for repeatable switches.
+- tests: format pass; focused 7/0; full pass; tsc pre-existing save lane TS2352
