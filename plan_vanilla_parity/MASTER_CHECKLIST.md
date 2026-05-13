@@ -207,7 +207,7 @@
 - [x] `06-009` `implement-line-opening-calculations` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-009-implement-line-opening-calculations.md`
 - [x] `06-010` `implement-check-position-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-010-implement-check-position-semantics.md`
 - [x] `06-011` `implement-try-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-011-implement-try-move-semantics.md`
-- [ ] `06-012` `implement-slide-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-012-implement-slide-move-semantics.md`
+- [x] `06-012` `implement-slide-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-012-implement-slide-move-semantics.md`
 - [ ] `06-013` `implement-teleport-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-013-implement-teleport-move-semantics.md`
 - [ ] `06-014` `implement-radius-attack-block-traversal` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-014-implement-radius-attack-block-traversal.md`
 - [ ] `06-015` `implement-use-line-traversal` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-015-implement-use-line-traversal.md`
