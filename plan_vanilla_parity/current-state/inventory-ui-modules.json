@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 23,
+      "committed_file_count": 24,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
@@ -25,6 +25,7 @@
         "implement-new-game-menu.ts",
         "implement-options-menu.ts",
         "implement-page-ticker-and-advance-demo.ts",
+        "implement-quick-save-and-quick-load-prompts.ts",
         "implement-quit-confirmation.ts",
         "implement-read-this-help-pages.ts",
         "implement-save-game-menu.ts",
@@ -36,9 +37,9 @@
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 243063,
-      "total_line_count": 6334,
-      "total_export_count": 470
+      "total_size_bytes": 246352,
+      "total_line_count": 6425,
+      "total_export_count": 480
     }
   ],
   "modules": [
