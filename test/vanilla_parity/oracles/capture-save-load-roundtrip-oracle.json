@@ -1,0 +1,18 @@
+{
+  "id": "OR-VP-SAVE-LOAD-031",
+  "stepId": "02-031",
+  "stepTitle": "Capture Save Load Roundtrip Oracle",
+  "lane": "oracle",
+  "description": "Captures a save/load roundtrip starting from a scripted E1M1 state: save to slot 0, restart the engine, load slot 0, and assert the per-component state snapshot hashes (02-012) are identical pre-save and post-load. Save byte capture format (02-015) records the byte content and SHA-256. Entries empty pending external reference run.",
+  "captureMethod": "From 02-020 spawn, advance a deterministic ~140 tics, save to slot 0 via menu (key_menu_save = 60); kill DOOM.EXE; restart with -loadgame 0 or via menu (key_menu_load = 61); capture state before save, save bytes, and state after load.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "saveSlotUnderTest": 0,
+  "saveHeaderSizeBytes": 24,
+  "vanillaSaveBytesLimit": 180224,
+  "stateEntries": [],
+  "saveEntries": [],
+  "downstreamFollowUps": ["wire-save-and-state-snapshotter-into-bun-comparator"]
+}

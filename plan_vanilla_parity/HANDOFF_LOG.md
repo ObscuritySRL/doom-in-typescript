@@ -7472,3 +7472,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: DEMO3 playback, vanilla demo binary format.
 - tests: focused 5/0; full 13228/0; tsc pass
 - next: 02-031
+
+## 2026-05-13 - 02-031 capture-save-load-roundtrip-oracle (pending)
+- summary: Pending manifest: slot 0 save+load roundtrip; 24-byte header, 180224-byte limit per 02-015.
+- tests: focused 5/0; full 13233/0; tsc pass
+- next: 02-032
