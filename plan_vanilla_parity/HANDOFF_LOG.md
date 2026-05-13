@@ -8658,3 +8658,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 10-021
 - summary: VANILLA_CHAT_MACRO_DEFAULTS + getVanillaChatMacroConfigKey + getVanillaChatMacroDefault + listVanillaChatMacroConfigKeys pin Chocolate Doom 2.2.1 m_config.c chat-macro config compatibility: 10 macros indexed 0..9 with upstream HUSTR_CHATMACRO* defaults ('No', "I'm ready to kick butt!", ..., 'Yes'); config keys are chatmacro0..chatmacro9 (lowercase, no underscore). Inventory: src/ui 29->30 (262201 bytes, 6880 lines, 525 exports).
 - tests: format pass; focused 11/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-022 implement-intermission-stats-counting completed
+
+- status: completed
+- lane: ui
+- step_id: 10-022
+- summary: computeVanillaIntermissionPercent + computeVanillaIntermissionTimeSeconds + stepVanillaIntermissionPercent pin Chocolate Doom 2.2.1 wi_stuff.c WI_updateStats: 5 stats (kills/items/secret as %, time/par as seconds), percent step +2 per tick, sp_state machine values 2/4/6/8/10 (kills/items/secret/time/accelerated). Acceleration snaps to target immediately. Inventory: src/ui 30->31 (265453 bytes, 6969 lines, 539 exports).
+- tests: format pass; focused 14/0; full pass; tsc pass
