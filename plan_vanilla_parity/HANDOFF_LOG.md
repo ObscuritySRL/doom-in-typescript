@@ -9153,3 +9153,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-007
 - summary: src/config/persist-chat-macros.ts pins the 10 vanilla chat macros (chatmacro0..chatmacro9) and the DOOM 1.9 default strings byte-for-byte ("No", "I am ready to kick butt!", "I am OK.", "I am not looking too good!", "Help!", "You suck!", "Next time, scumbag...", "Come here!", "I will take care of it.", "Yes"). Each macro serializes as name padded to column 30 then double-quoted value then LF terminator; no escape processing — apostrophes and ellipses are preserved verbatim. All 10 keys are written unconditionally to match M_SaveDefaults full doom_defaults_list walk.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 08-027 implement-sector-special-effects completed
+
+- status: completed
+- lane: ai
+- step_id: 08-027
+- summary: Sector special damage tic interval=32; damage rates: nukage=10, slime=5, strobe=20, end=20, super=20; enum 0..17 covering light effects, damage, secret, door, exit specials.
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
