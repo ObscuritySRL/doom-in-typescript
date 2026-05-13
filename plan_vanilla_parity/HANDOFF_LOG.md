@@ -8099,3 +8099,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-025
 - summary: Pinned E1M1 map setup oracle from local DOOM1.WAD: vertexes=467, sectors=85, sidedefs=648, linedefs=475, segs=732, subsectors=237, nodes=236, things=138, blockmap 36x23. Inventory: src/map 35->36 (122901 bytes, 3479 lines, 233 exports); map+world 46->47 src; totals 254->255.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-026 compare-e1m2-map-setup-state completed
+
+- status: completed
+- lane: map
+- step_id: 06-026
+- summary: Pinned E1M2 oracle: vertexes=942, sectors=200, sidedefs=1323, linedefs=1033, segs=1463, subsectors=448, nodes=447, things=262, blockmap 42x31. Inventory: src/map 36->37 (123301 bytes, 3498 lines, 235 exports); map+world 47->48 src; totals 255->256.
+- tests: format pass; focused 10/0; full pass; tsc pass
