@@ -8306,3 +8306,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-016
 - summary: applyInvulnerabilityOrInfraredPickup mirrors Chocolate Doom 2.2.1 p_inter.c P_GivePower for invulnerability (INVULNTICS=30*TICRATE=1050) using inverse colormap index 32 and infrared (INFRATICS=120*TICRATE=4200) using fullbright colormap index 1. isPowerupBlinkingNearExpiry threshold 4*TICRATE=140 tics (p_user.c blink window). Inventory: src/player 23->24 (143388 bytes, 4018 lines, 321 exports); player_ai_specials group 41->42 src; totals 277->278.
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-017 implement-weapon-ownership-and-selection completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-017
+- summary: isWeaponSelectable mirrors Chocolate Doom 2.2.1 p_user.c BT_CHANGE validation (weaponowned + ammo>=1 from weaponinfo[].ammo table); pickBestAutoSwitchWeapon follows P_DropWeapon priority plasma > chaingun > shotgun > pistol > chainsaw > fist for vanilla auto-switch. Re-exports VANILLA_WEAPONS_RE_EXPORT enum mirror. Inventory: src/player 24->25 (146626 bytes, 4112 lines, 326 exports); player_ai_specials group 42->43 src; totals 278->279.
+- tests: format pass; focused 13/0; full pass; tsc pass
