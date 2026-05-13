@@ -7928,3 +7928,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/map/implement-bsp-node-traversal-semantics.ts: traverseBspFrontToBack walks the BSP recursively starting from the last node, visits the front subtree first then the back (matches vanilla R_RenderBSPNode front-to-back painter's-algorithm). Emits node-enter, subsector, node-leave visit events. Inventory: src/map 16->17 (96022 bytes, 2736 lines, 140 exports); map+world 27->28 src; totals 235->236.
 - tests: format pass; focused 3/0; full 13535/0; tsc pass
 
+
+## 2026-05-13 - 06-007 implement-blockmap-coordinate-conversion completed
+
+- status: completed
+- lane: map
+- step_id: 06-007
+- summary: Added src/map/implement-blockmap-coordinate-conversion.ts. 128 map unit cells (MAPBLOCKUNITS), pointToBlockmapCell + blockmapCellLinearIndex with out-of-range -1 sentinel. Inventory: src/map 17->18 (97403 bytes, 2769 lines, 146 exports); map+world source 28->29; totals 236->237.
+- tests: format pass; focused 6/0; full 13541/0; tsc pass
+
