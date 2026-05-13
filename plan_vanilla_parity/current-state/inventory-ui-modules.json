@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 32,
+      "committed_file_count": 33,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
@@ -21,6 +21,7 @@
         "implement-chat-macro-storage-for-config-compatibility.ts",
         "implement-end-game-confirmation.ts",
         "implement-episode-menu-shareware-restrictions.ts",
+        "implement-finale-text-timing.ts",
         "implement-hud-message-queue.ts",
         "implement-intermission-map-graphics.ts",
         "implement-intermission-stats-counting.ts",
@@ -45,9 +46,9 @@
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 267875,
-      "total_line_count": 7037,
-      "total_export_count": 547
+      "total_size_bytes": 270854,
+      "total_line_count": 7122,
+      "total_export_count": 556
     }
   ],
   "modules": [
