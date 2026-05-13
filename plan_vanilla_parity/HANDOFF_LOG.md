@@ -8478,3 +8478,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-026
 - summary: MISSILERANGE=2048 fixed, MELEERANGE=64 fixed, bullet damage formula 5*(rng%3+1) pinned.
 - tests: format pass; focused 4/0; full pass; tsc pass
+
+
+## 2026-05-13 - 07-027 implement-autoaim-semantics completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-027
+- summary: VANILLA_AUTOAIM_ANGLE_SEQUENCE pins Chocolate Doom 2.2.1 p_pspr.c P_BulletSlope cascade: try center angle, then +1<<26 BAM offset (left cone), then -1<<26 BAM offset (right cone) with 16*64*FRACUNIT bullet aim range. P_AimLineAttack walks the cone selecting highest-priority shootable target. Inventory: src/player 34->35 (159782 bytes, 4453 lines, 390 exports); player_ai_specials group 52->53 src; totals 296->297.
+- tests: format pass; focused 4/0; full pass; tsc pass
