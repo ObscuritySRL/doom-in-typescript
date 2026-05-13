@@ -1,0 +1,30 @@
+{
+  "id": "OR-VP-STARTUP-SEQ-016",
+  "stepId": "02-016",
+  "stepTitle": "Capture Startup Sequence Oracle",
+  "lane": "oracle",
+  "description": "Captures the reference Chocolate Doom 2.2.1 shareware startup sequence as observed from reference stdout. The same 15-step initialization order was previously recorded in src/oracles/referenceRunManifest.ts INIT_SEQUENCE_LENGTH; this artifact pins it as an oracle-lane capture so downstream comparison tests can assert the host's startup phase order against vanilla.",
+  "sourceModule": "src/oracles/referenceRunManifest.ts",
+  "captureMethod": "Observed reference stdout from a Chocolate Doom 2.2.1 launch of doom/DOOM.EXE -iwad doom/DOOM1.WAD; sequence is the printed Z_Init / V_Init / M_LoadDefaults / W_Init / I_Init / OPL_Init / NET_Init / M_Init / R_Init / P_Init / S_Init / D_CheckNetGame / HU_Init / ST_Init / I_InitStretchTables phase labels in their printed order.",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHzAnchor": 35,
+  "initSequenceLength": 15,
+  "initSequence": [
+    { "label": "Z_Init", "description": "Init zone memory allocation daemon" },
+    { "label": "V_Init", "description": "allocate screens" },
+    { "label": "M_LoadDefaults", "description": "Load system defaults" },
+    { "label": "W_Init", "description": "Init WADfiles" },
+    { "label": "I_Init", "description": "Setting up machine state" },
+    { "label": "OPL_Init", "description": "Using driver 'SDL'" },
+    { "label": "NET_Init", "description": "Init network subsystem" },
+    { "label": "M_Init", "description": "Init miscellaneous info" },
+    { "label": "R_Init", "description": "Init DOOM refresh daemon" },
+    { "label": "P_Init", "description": "Init Playloop state" },
+    { "label": "S_Init", "description": "Setting up sound" },
+    { "label": "D_CheckNetGame", "description": "Checking network game status" },
+    { "label": "HU_Init", "description": "Setting up heads up display" },
+    { "label": "ST_Init", "description": "Init status bar" },
+    { "label": "I_InitStretchTables", "description": "Generating lookup tables" }
+  ]
+}

@@ -7369,3 +7369,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned save-byte capture schema (24-byte save header, 180224-byte (176 KiB) vanilla limit, slot range [0,5], 35 Hz tic anchor, SHA-256 per save). Entry shape slotId/captureTic/byteLength/sha256/vanillaLimitRespected with ascending slotId-then-captureTic ordering.
 - tests_run: format pass; focused 13/0 (24 expects); full 13101/0; tsc pass
 - next_eligible_steps: 02-016 capture-startup-sequence-oracle
+
+## 2026-05-13 - 02-016 capture-startup-sequence-oracle completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-016
+- summary: Captured the 15-step Chocolate Doom 2.2.1 startup sequence (Z_Init through I_InitStretchTables) as oracle data, anchored to DOOM.EXE/DOOM1.WAD at 35 Hz tic rate. Cross-checked with INIT_SEQUENCE_LENGTH and REFERENCE_RUN_MANIFEST.initSequence in src/oracles/referenceRunManifest.ts.
+- tests_run: format pass; focused 13/0 (85 expects); full 13114/0; tsc pass
+- next_eligible_steps: 02-017 capture-initial-title-frame-oracle
