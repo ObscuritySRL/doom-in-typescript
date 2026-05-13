@@ -7919,3 +7919,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/map/implement-subsector-point-query.ts: queryPointSubsector descends from the last node, picking front/back via partition-line side per P_PointOnSide and stops on the subsector flag 0x8000. isPointOnFrontOfPartition handles the vertical/horizontal axis-aligned shortcuts plus the cross-product test. Recovery: corrected vertical/horizontal side semantics to match vanilla P_PointOnSide (returns 1=back when dy>0 left of x; returns 1=back when dx>0 above y). Inventory: src/map 15->16 (93983 bytes, 2689 lines, 137 exports); map+world 26->27 src; totals 234->235.
 - tests: format pass; focused 4/0; full 13532/0; tsc pass
 
+
+## 2026-05-13 - 06-006 implement-bsp-node-traversal-semantics completed
+
+- status: completed
+- lane: map
+- step_id: 06-006
+- summary: Added src/map/implement-bsp-node-traversal-semantics.ts: traverseBspFrontToBack walks the BSP recursively starting from the last node, visits the front subtree first then the back (matches vanilla R_RenderBSPNode front-to-back painter's-algorithm). Emits node-enter, subsector, node-leave visit events. Inventory: src/map 16->17 (96022 bytes, 2736 lines, 140 exports); map+world 27->28 src; totals 235->236.
+- tests: format pass; focused 3/0; full 13535/0; tsc pass
+
