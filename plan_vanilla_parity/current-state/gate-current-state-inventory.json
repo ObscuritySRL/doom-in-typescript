@@ -1,0 +1,227 @@
+{
+  "id": "01-024",
+  "title": "Gate Current State Inventory",
+  "lane": "inventory",
+  "summary": "Gates the 23 prior current-state inventory artifacts and their focused Bun tests as source-only metadata before downstream oracle work depends on 01-024.",
+  "captured_at_utc": "2026-04-30T05:34:09Z",
+  "evidence_method": "Local repository audit of the inventory lane current-state artifact/test pairs, step files, and MASTER_CHECKLIST.md completion state. AUDIT_LOG files are not used.",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "implications": [
+    "01-024 closes the inventory lane gate for downstream steps that depend on current-state metadata.",
+    "The gate is source-only metadata and does not claim vanilla DOOM 1.9 runtime parity.",
+    "Pending oracle captures, runtime parity comparisons, and implementation gates remain delegated to later lanes."
+  ],
+  "follow_up_steps": ["02-002 verify-local-reference-file-hashes", "02-003 define-read-only-reference-sandbox-copy-policy", "02-035 gate-oracle-foundation-without-deferred-status"],
+  "gate_definition": {
+    "checked_prior_step_count": 23,
+    "not_end_to_end_gate": true,
+    "prior_inventory_step_range_end": "01-023",
+    "prior_inventory_step_range_start": "01-001",
+    "scope_note": "This gate covers source-only current-state inventory artifacts and focused Bun tests; it is not a vanilla DOOM 1.9 runtime parity claim."
+  },
+  "gate_summary": {
+    "artifact_count": 23,
+    "checked_step_count": 23,
+    "focused_test_count": 23,
+    "source_only_metadata": true,
+    "step_file_count": 23
+  },
+  "prior_inventory_steps": [
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-root-scripts-and-missing-doom-ts.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-root-scripts-and-missing-doom-ts.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-001-inventory-root-scripts-and-missing-doom-ts.md",
+      "step_id": "01-001",
+      "step_title": "Inventory Root Scripts And Missing Doom Ts",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-simplified-launcher-surface.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-simplified-launcher-surface.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-002-inventory-simplified-launcher-surface.md",
+      "step_id": "01-002",
+      "step_title": "Inventory Simplified Launcher Surface",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-src-bootstrap-surface.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-src-bootstrap-surface.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-003-inventory-src-bootstrap-surface.md",
+      "step_id": "01-003",
+      "step_title": "Inventory Src Bootstrap Surface",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-src-playable-contract-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-src-playable-contract-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-004-inventory-src-playable-contract-modules.md",
+      "step_id": "01-004",
+      "step_title": "Inventory Src Playable Contract Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-005-inventory-core-math-and-timing-modules.md",
+      "step_id": "01-005",
+      "step_title": "Inventory Core Math And Timing Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-wad-and-asset-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-006-inventory-wad-and-asset-modules.md",
+      "step_id": "01-006",
+      "step_title": "Inventory WAD And Asset Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-map-and-world-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-007-inventory-map-and-world-modules.md",
+      "step_id": "01-007",
+      "step_title": "Inventory Map And World Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-player-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-player-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-008-inventory-player-modules.md",
+      "step_id": "01-008",
+      "step_title": "Inventory Player Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-ai-and-specials-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-009-inventory-ai-and-specials-modules.md",
+      "step_id": "01-009",
+      "step_title": "Inventory AI And Specials Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-renderer-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-renderer-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-010-inventory-renderer-modules.md",
+      "step_id": "01-010",
+      "step_title": "Inventory Renderer Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-ui-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-011-inventory-ui-modules.md",
+      "step_id": "01-011",
+      "step_title": "Inventory UI Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-audio-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-012-inventory-audio-modules.md",
+      "step_id": "01-012",
+      "step_title": "Inventory Audio Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-save-and-config-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-save-and-config-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-013-inventory-save-and-config-modules.md",
+      "step_id": "01-013",
+      "step_title": "Inventory Save And Config Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-demo-and-replay-modules.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-demo-and-replay-modules.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-014-inventory-demo-and-replay-modules.md",
+      "step_id": "01-014",
+      "step_title": "Inventory Demo And Replay Modules",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-oracle-fixtures-with-pending-status.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-oracle-fixtures-with-pending-status.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-015-inventory-oracle-fixtures-with-pending-status.md",
+      "step_id": "01-015",
+      "step_title": "Inventory Oracle Fixtures With Pending Status",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-parity-tests-that-lock-fixtures.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-parity-tests-that-lock-fixtures.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-016-inventory-parity-tests-that-lock-fixtures.md",
+      "step_id": "01-016",
+      "step_title": "Inventory Parity Tests That Lock Fixtures",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-plan-fps-manifest-only-gates.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-plan-fps-manifest-only-gates.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-017-inventory-plan-fps-manifest-only-gates.md",
+      "step_id": "01-017",
+      "step_title": "Inventory Plan Fps Manifest Only Gates",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-018-inventory-tools-reference-capture-surface.md",
+      "step_id": "01-018",
+      "step_title": "Inventory Tools Reference Capture Surface",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-local-doom-reference-files.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-local-doom-reference-files.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-019-inventory-local-doom-reference-files.md",
+      "step_id": "01-019",
+      "step_title": "Inventory Local Doom Reference Files",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/inventory-iwad-search-and-hash-evidence.json",
+      "focused_test_path": "test/vanilla_parity/current-state/inventory-iwad-search-and-hash-evidence.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-020-inventory-iwad-search-and-hash-evidence.md",
+      "step_id": "01-020",
+      "step_title": "Inventory Iwad Search And Hash Evidence",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/classify-real-implementations.json",
+      "focused_test_path": "test/vanilla_parity/current-state/classify-real-implementations.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-021-classify-real-implementations.md",
+      "step_id": "01-021",
+      "step_title": "Classify Real Implementations",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/classify-simplified-implementations.json",
+      "focused_test_path": "test/vanilla_parity/current-state/classify-simplified-implementations.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-022-classify-simplified-implementations.md",
+      "step_id": "01-022",
+      "step_title": "Classify Simplified Implementations",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    },
+    {
+      "artifact_path": "plan_vanilla_parity/current-state/classify-stubbed-or-manifest-only-surfaces.json",
+      "focused_test_path": "test/vanilla_parity/current-state/classify-stubbed-or-manifest-only-surfaces.test.ts",
+      "step_file_path": "plan_vanilla_parity/steps/01-023-classify-stubbed-or-manifest-only-surfaces.md",
+      "step_id": "01-023",
+      "step_title": "Classify Stubbed Or Manifest Only Surfaces",
+      "verification_status": "completed_focused_inventory_artifact_test"
+    }
+  ],
+  "risk_register": [
+    {
+      "mitigation": "Downstream oracle capture and comparison steps must replace pending status markers with live evidence before final acceptance gates.",
+      "risk_id": "pending_oracle_capture_evidence",
+      "status": "deferred_to_oracle_lane"
+    },
+    {
+      "mitigation": "The gate records inventory artifacts only and leaves implementation behavior claims to later launch, core, WAD, gameplay, render, UI, audio, and save gates.",
+      "risk_id": "source_only_inventory_metadata",
+      "status": "accepted_for_inventory_gate"
+    }
+  ]
+}
