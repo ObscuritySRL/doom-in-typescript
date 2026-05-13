@@ -8027,3 +8027,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned P_PathTraverse 64-block cap and PT_ADDLINES=1 / PT_ADDTHINGS=2 / PT_EARLYOUT=4 flag bits. Inventory: src/map 27->28 (111074 bytes, 3153 lines, 189 exports); map+world source 38->39; totals 246->247.
 - tests: format pass; focused 3/0; full 13583/0; tsc pass
 
+
+## 2026-05-13 - 06-018 implement-reject-sight-fast-path completed
+
+- status: completed
+- lane: map
+- step_id: 06-018
+- summary: Pinned vanilla REJECT bitmap indexing: byte = (s1*N+s2)>>3, bit = (s1*N+s2)&7; set bit = rejected (skip trace). Out-of-range fall back to requires-trace. Inventory: src/map 28->29 (112900 bytes, 3195 lines, 194 exports); map+world 39->40 src; totals 247->248.
+- tests: format pass; focused 5/0; full 13588/0; tsc pass
+

@@ -10,7 +10,7 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 28,
+      "committed_file_count": 29,
       "committed_filenames_sorted": [
         "blockmap.ts",
         "blockmapIter.ts",
@@ -24,6 +24,7 @@
         "implement-map-setup-init-ordering.ts",
         "implement-path-traverse-limits.ts",
         "implement-radius-attack-block-traversal.ts",
+        "implement-reject-sight-fast-path.ts",
         "implement-slide-move-semantics.ts",
         "implement-subsector-point-query.ts",
         "implement-teleport-move-semantics.ts",
@@ -41,9 +42,9 @@
         "subsectorQuery.ts",
         "things.ts"
       ],
-      "total_size_bytes": 111074,
-      "total_line_count": 3153,
-      "total_export_count": 189
+      "total_size_bytes": 112900,
+      "total_line_count": 3195,
+      "total_export_count": 194
     },
     {
       "relative_path": "src/world/",
