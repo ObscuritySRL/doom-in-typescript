@@ -24,8 +24,8 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 223,
-    "classified_test_file_count": 267,
+    "classified_source_file_count": 224,
+    "classified_test_file_count": 268,
     "real_group_count": 9,
     "representative_module_count": 47,
     "source_only_metadata": true
@@ -94,9 +94,9 @@
         "test/host/tic-accumulator.test.ts",
         "test/vanilla_parity/core/implement-tic-accumulator-at-thirty-five-hertz.test.ts"
       ],
-      "source_file_count": 34,
+      "source_file_count": 35,
       "source_roots": ["src/core/", "src/host/", "src/mainLoop.ts"],
-      "test_file_count": 39,
+      "test_file_count": 40,
       "test_roots": ["test/core/", "test/host/", "test/vanilla_parity/core/"]
     },
     {

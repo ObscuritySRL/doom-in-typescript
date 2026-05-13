@@ -7802,3 +7802,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/core/detect-long-run-drift.ts. Compares observed vs expected per-tic state hash sequences; flags first_divergence at the earliest mismatch tic, length_mismatch when sequences differ in length, empty_streams when both are empty. Inventory: core 33->34 src / 38->39 test; save_config_demo source 13->14 (caught additional drift from prior 04-026 commit); totals 222/266 -> 223/267.
 - tests: format pass; focused 5/0; full 13457/0; tsc pass
 
+
+## 2026-05-13 - 04-028 add-determinism-state-hash-hook completed
+
+- status: completed
+- lane: core
+- step_id: 04-028
+- summary: Added per-tic state-hash hook contract (insertion after P_Ticker before D_Display; components automap/player/rng/sectors/thinkers + combined; SHA-256 64-hex). validatePerTicStateHashCollection flags invalid_tic, missing_component_hash, malformed_hash. Inventory: core 34->35 src / 39->40 test; totals 223/267 -> 224/268.
+- tests: format pass; focused 7/0; full 13464/0; tsc pass
+
