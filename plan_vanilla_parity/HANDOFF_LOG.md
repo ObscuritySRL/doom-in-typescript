@@ -8892,3 +8892,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-009
 - summary: vanillaDrawSpanPixelCount + vanillaDrawSpanFlatIndex + vanillaDrawSpanPixelStride pin Chocolate Doom 2.2.1 r_draw.c R_DrawSpan/R_DrawSpanLow: 64x64 flat textures (4096 bytes), flat index = ((yfrac>>10) & 4032) | ((xfrac>>16) & 0x3F) selecting 6 y-bits and 6 x-bits, span pixel count = x2-x1+1 (do/while runs count+1); high-detail stride 1, low-detail stride 2. Inventory: src/render 22->23 (220949 bytes, 5522 lines, 212 exports).
 - tests: format pass; focused 14/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-012 implement-lost-soul-attack completed
+
+- status: completed
+- lane: ai
+- step_id: 08-012
+- summary: A_SkullAttack: SKULLSPEED=20 fixed, info.damage=3, collision damage=(rng%8+1)*3, MT_SKULL=19, SFX_SKLATK=71.
+- tests: format pass; focused 7/0; full pass; tsc pass
