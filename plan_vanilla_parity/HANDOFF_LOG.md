@@ -9315,3 +9315,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-015
 - summary: src/save/serialize-thinker-state.ts pins p_saveg.c P_ArchiveThinkers traversal contract: forward iteration of doubly-linked thinkercap ring; only P_MobjThinker functions archived here (other functions handled by P_ArchiveSpecials); PADSAVEP() 4-byte alignment after each class byte and before record body; tc_end=0 terminator with no pad between it and the next section.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-020 implement-sprite-clipping-against-drawsegs completed
+
+- status: completed
+- lane: render
+- step_id: 09-020
+- summary: MAXDRAWSEGS=256; silhouette mask bits SIL_NONE=0, SIL_BOTTOM=1, SIL_TOP=2, SIL_BOTH=3; hasBottomSilhouette/hasTopSilhouette bit-check helpers.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
