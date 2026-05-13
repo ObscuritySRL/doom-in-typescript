@@ -7442,3 +7442,8 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pending manifest: scripted FIRE (LCTRL scancode 29) at idle zombieman; expect pistol 5-15 damage, zombieman 20 HP. Pending external run.
 - tests: focused 8/0; full 13195/0; tsc pass
 - next: 02-025
+
+## 2026-05-13 - 02-025 capture-damage-death-reborn-oracle (pending)
+- summary: Pending manifest: death anim S_PLAY_DIE 7 frames, S_PLAY_XDIE 9 frames, reborn health 100.
+- tests: focused 6/0; full 13201/0; tsc pass
+- next: 02-026

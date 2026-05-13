@@ -1,0 +1,17 @@
+{
+  "id": "OR-VP-DEATH-REBORN-025",
+  "stepId": "02-025",
+  "stepTitle": "Capture Damage Death Reborn Oracle",
+  "lane": "oracle",
+  "description": "Captures the deterministic vanilla DOOM 1.9 damage-death-reborn cycle from E1M1 spawn: scripted self-damage path (idclip into a damage sector or scripted projectile hit) reducing player health to <= 0, the S_PLAY_DIE death animation chain (S_PLAY_DIE1 through S_PLAY_DIE7 and S_PLAY_XDIE1 through S_PLAY_XDIE9), USE-key reborn timer, and the player respawning at the deathmatch start with full single-player health.",
+  "captureMethod": "From 02-020 spawn, force damage via deterministic projectile or scripted route into a -10/tic damage sector, capture state at health-zero tic, death-animation end tic, and the post-USE reborn tic.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "expectedDeathAnimationFrames": 7,
+  "expectedExtremeDeathAnimationFrames": 9,
+  "expectedRebornHealth": 100,
+  "stateEntries": [],
+  "downstreamFollowUps": ["wire-state-snapshotter-into-bun-comparator"]
+}
