@@ -8063,3 +8063,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla pickup mobjtype -> category map (ammo/armor/health/key/powerup/weapon) covering CLIP, SHOTGUN, BFG, STIMPACK, MEDKIT, SOULSPHERE, all 3 keycards + 3 skull keys, INVULN, BERSERK, RAD suit, etc. Inventory: src/map 31->32 (117410 bytes, 3320 lines, 206 exports); map+world 42->43 src; totals 250->251.
 - tests: format pass; focused 8/0; full 13607/0; tsc pass
 
+
+
+## 2026-05-13 - 06-022 implement-map-spawn-thing-ordering completed
+
+- status: completed
+- lane: map
+- step_id: 06-022
+- summary: Pinned vanilla MAPTHING layout (MAPTHING_SIZE=10) and option flag bits (MTF_EASY=1, MTF_NORMAL=2, MTF_HARD=4, MTF_AMBUSH=8, MTF_NETGAME=16). Single-player spawn filter: skill bit must match (1->EASY, 2/3->NORMAL, 4/5->HARD) AND not net-only. Player starts types 1..4, DM start type 11. Inventory: src/map 32->33 (119425 bytes, 3382 lines, 222 exports); map+world 43->44 src; totals 251->252.
+- tests: format pass; focused 11/0; full pass; tsc pass

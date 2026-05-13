@@ -24,7 +24,7 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 251,
+    "classified_source_file_count": 252,
     "classified_test_file_count": 274,
     "real_group_count": 9,
     "representative_module_count": 47,
@@ -125,7 +125,7 @@
       "notes": "This classification is backed by local source and tests plus reference manifest anchors for map lump order and vanilla limits.",
       "representative_modules": ["src/map/mapSetup.ts", "src/map/nodeTraversal.ts", "src/world/checkPosition.ts", "src/world/mobj.ts", "src/world/xyMovement.ts"],
       "representative_tests": ["test/map/map-setup-parity.test.ts", "test/map/node-traversal.test.ts", "test/world/check-position.test.ts", "test/world/mobj-spawn.test.ts", "test/world/xy-movement.test.ts"],
-      "source_file_count": 43,
+      "source_file_count": 44,
       "source_roots": ["src/map/", "src/world/"],
       "test_file_count": 21,
       "test_roots": ["test/map/", "test/world/"]
