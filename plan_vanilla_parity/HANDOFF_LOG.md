@@ -7721,3 +7721,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned vanilla pause semantics: PAUSE scancode 69 toggles; pause mutes sfx + music, blocks thinkers, does not block automap animation, permits save/load. decidePauseToggle + evaluatePausedTic. Inventory: core 28 src / 30 test.
 - tests: format pass; focused 7/0; full 13399/0; tsc pass
 
+
+## 2026-05-13 - 04-019 implement-demo-lump-header-parser completed
+
+- status: completed
+- lane: core
+- step_id: 04-019
+- summary: Pinned vanilla 13-byte demo header parser (version 109, skill, episode 1-4, map 1-9, deathmatch, respawn/fast/nomonsters parms, console player 0-3, 4 player-in-game flags). Violations: insufficient_bytes, unsupported_version, skill_out_of_range, invalid_episode, invalid_map, invalid_console_player. Inventory: core 29 src / 31 test.
+- tests: format pass; focused 8/0; full 13407/0; tsc pass
+
