@@ -203,7 +203,7 @@
 - [x] `06-005` `implement-subsector-point-query` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-005-implement-subsector-point-query.md`
 - [x] `06-006` `implement-bsp-node-traversal-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-006-implement-bsp-node-traversal-semantics.md`
 - [x] `06-007` `implement-blockmap-coordinate-conversion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-007-implement-blockmap-coordinate-conversion.md`
-- [ ] `06-008` `implement-block-things-linking` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-008-implement-block-things-linking.md`
+- [x] `06-008` `implement-block-things-linking` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-008-implement-block-things-linking.md`
 - [ ] `06-009` `implement-line-opening-calculations` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-009-implement-line-opening-calculations.md`
 - [ ] `06-010` `implement-check-position-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-010-implement-check-position-semantics.md`
 - [ ] `06-011` `implement-try-move-semantics` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-011-implement-try-move-semantics.md`

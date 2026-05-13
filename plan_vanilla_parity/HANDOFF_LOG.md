@@ -7937,3 +7937,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Added src/map/implement-blockmap-coordinate-conversion.ts. 128 map unit cells (MAPBLOCKUNITS), pointToBlockmapCell + blockmapCellLinearIndex with out-of-range -1 sentinel. Inventory: src/map 17->18 (97403 bytes, 2769 lines, 146 exports); map+world source 28->29; totals 236->237.
 - tests: format pass; focused 6/0; full 13541/0; tsc pass
 
+
+## 2026-05-13 - 06-008 implement-block-things-linking completed
+
+- status: completed
+- lane: map
+- step_id: 06-008
+- summary: computeBlockLinkSet groups things by their blockmap cell linear index, skipping out-of-range positions. Inventory: src/map 18->19, 99174 bytes, 2810 lines, 149 exports; map+world source 29->30; totals 237->238.
+- tests: format pass; focused 3/0; full 13544/0; tsc pass
+
