@@ -120,7 +120,7 @@
 - [x] `03-025` `implement-mouse-grab-and-release-policy` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-025-implement-mouse-grab-and-release-policy.md`
 - [x] `03-026` `preserve-key-repeat-behavior` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-026-preserve-key-repeat-behavior.md`
 - [x] `03-027` `preserve-key-down-up-event-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-027-preserve-key-down-up-event-ordering.md`
-- [ ] `03-028` `route-input-through-responder-chain` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-028-route-input-through-responder-chain.md`
+- [x] `03-028` `route-input-through-responder-chain` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-028-route-input-through-responder-chain.md`
 - [ ] `03-029` `implement-deterministic-input-trace-injection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-029-implement-deterministic-input-trace-injection.md`
 - [ ] `03-030` `implement-deterministic-input-trace-recording` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-030-implement-deterministic-input-trace-recording.md`
 - [ ] `03-031` `implement-clean-launch-to-title-loop` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-031-implement-clean-launch-to-title-loop.md`
