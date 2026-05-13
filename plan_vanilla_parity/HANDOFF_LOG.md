@@ -8883,3 +8883,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-008
 - summary: vanillaDrawColumnPixelCount + computeVanillaDrawColumnInitialFrac + vanillaDrawColumnTextureIndex + vanillaDrawColumnPixelStride pin Chocolate Doom 2.2.1 r_draw.c R_DrawColumn/R_DrawColumnLow: pixel count = yh-yl+1 (0 when negative); initial frac = dc_texturemid + (dc_yl-centery)*dc_iscale; texture index = (frac>>FRACBITS) & 127 (128-tall texture wrap); high-detail stride 1, low-detail stride 2 (pixel doubling). Inventory: src/render 21->22 (218605 bytes, 5450 lines, 200 exports).
 - tests: format pass; focused 12/0; full pass; tsc pass
+
+
+## 2026-05-13 - 09-009 implement-draw-span-low-and-high-detail completed
+
+- status: completed
+- lane: render
+- step_id: 09-009
+- summary: vanillaDrawSpanPixelCount + vanillaDrawSpanFlatIndex + vanillaDrawSpanPixelStride pin Chocolate Doom 2.2.1 r_draw.c R_DrawSpan/R_DrawSpanLow: 64x64 flat textures (4096 bytes), flat index = ((yfrac>>10) & 4032) | ((xfrac>>16) & 0x3F) selecting 6 y-bits and 6 x-bits, span pixel count = x2-x1+1 (do/while runs count+1); high-detail stride 1, low-detail stride 2. Inventory: src/render 22->23 (220949 bytes, 5522 lines, 212 exports).
+- tests: format pass; focused 14/0; full pass; tsc pass
