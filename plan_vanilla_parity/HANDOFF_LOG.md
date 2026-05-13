@@ -8144,3 +8144,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-030
 - summary: Pinned vanilla USERANGE=64 fixed, MELEERANGE=64 fixed; trigger groups {walk,push,gun,switch}; repeat modes {once,repeatable}. Inventory: src/world 12->13 (272320 bytes, 8599 lines, 118 exports); map+world 51->52 src; totals 259->260.
 - tests: format pass; focused 5/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-031 gate-map-setup-across-shareware-episode completed
+
+- status: completed
+- lane: map
+- step_id: 06-031
+- summary: SHAREWARE_EPISODE_MAP_NAMES lists all 9 E1MX maps; gate test loads each from DOOM1.WAD via parseMapBundle/setupLevel and cross-checks vertexes/sectors/linedefs/things against pinned oracles. Inventory: src/map 39->40 (125153 bytes, 3558 lines, 242 exports); map+world 52->53 src; totals 260->261.
+- tests: format pass; focused 3/0; full pass; tsc pass

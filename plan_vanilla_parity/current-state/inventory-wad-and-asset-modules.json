@@ -265,7 +265,7 @@
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
       "src_importer_count": 22,
-      "test_importer_count": 62
+      "test_importer_count": 63
     },
     {
       "relative_path": "src/wad/header.ts",
@@ -282,7 +282,7 @@
       "exported_types": ["WadType"],
       "external_imports": [],
       "src_importer_count": 2,
-      "test_importer_count": 57
+      "test_importer_count": 58
     },
     {
       "relative_path": "src/wad/lumpLookup.ts",
