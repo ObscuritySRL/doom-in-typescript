@@ -8514,3 +8514,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 07-028
 - summary: VANILLA_PSPRITE_STATE_PHASES pins Chocolate Doom 2.2.1 p_pspr.c weapon sprite state machine: 4 phases per weapon (UP=raise, DOWN=lower, READY=idle/check fire, ATK=fire animation) with WEAPONTOP=32*FRACUNIT and WEAPONBOTTOM=128*FRACUNIT positions, LOWERSPEED=RAISESPEED=6*FRACUNIT per-tic delta. Inventory: src/player 35->36 (161635 bytes, 4505 lines, 401 exports); player_ai_specials group 53->54 src; totals 298->299.
 - tests: format pass; focused 9/0; full pass; tsc pass
+
+
+## 2026-05-13 - 10-011 implement-load-game-menu completed
+
+- status: completed
+- lane: ui
+- step_id: 10-011
+- summary: getVanillaLoadMenuSlots + resolveVanillaLoadMenuEntry pin Chocolate Doom 2.2.1 m_menu.c LoadMenu + M_LoadGame: 6 load slots with hotkeys '1'..'6' and routine M_LoadSelect (status byte 1), netgame yields 'load-net-warning' (LOADNET popup), otherwise 'load-menu'. Demo playback does NOT bypass the netgame guard for load (unlike M_NewGame). Inventory: src/ui 19->20 (234216 bytes, 6070 lines, 441 exports).
+- tests: format pass; focused 8/0; full pass; tsc pass
