@@ -9198,3 +9198,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-009
 - summary: src/config/isolate-tests-from-user-local-config.ts pins the test-isolation contract: forbid reading from %APPDATA%/Chocolate Doom/, ~/.local/share/, ~/.config/, ~/Library/Application Support/, %USERPROFILE%, or any home-relative path; allow only the committed doom/default.cfg and doom/chocolate-doom.cfg repository reference fixtures. Provides assertConfigPathIsTestSafe runtime gate and buildInMemoryDefaultCfgFixture for in-string fixture construction.
 - tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 12-010 define-save-directory-policy completed
+
+- status: completed
+- lane: save
+- step_id: 12-010
+- summary: src/save/define-save-directory-policy.ts pins the Chocolate Doom 2.2.1 g_game.c / m_misc.c savegamedir contract: 6 slots (doomsav0..doomsav5.dsg), temp.dsg staging filename for atomic write-then-rename, SAVEGAMENAMESIZE=24, M_MakeDirectory mode 0o755. Per-platform configDirectory paths: Windows %APPDATA%/Chocolate Doom, Linux ~/.local/share/chocolate-doom, macOS ~/Library/Application Support/Chocolate Doom. -savedir overrides at command line per d_main.c.
+- tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
