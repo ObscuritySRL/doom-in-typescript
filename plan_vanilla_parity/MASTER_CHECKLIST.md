@@ -350,7 +350,7 @@
 - [x] `10-004` `implement-new-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-004-implement-new-game-menu.md`
 - [x] `10-005` `implement-episode-menu-shareware-restrictions` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-005-implement-episode-menu-shareware-restrictions.md`
 - [x] `10-006` `implement-skill-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-006-implement-skill-menu.md`
-- [ ] `10-007` `implement-options-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-007-implement-options-menu.md`
+- [x] `10-007` `implement-options-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-007-implement-options-menu.md`
 - [ ] `10-008` `implement-sound-volume-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-008-implement-sound-volume-menu.md`
 - [ ] `10-009` `implement-screen-size-detail-gamma-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-009-implement-screen-size-detail-gamma-menu.md`
 - [ ] `10-010` `implement-save-game-menu` | lane: `ui` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/10-010-implement-save-game-menu.md`
