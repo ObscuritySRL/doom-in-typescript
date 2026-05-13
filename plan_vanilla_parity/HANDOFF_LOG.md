@@ -8901,3 +8901,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-012
 - summary: A_SkullAttack: SKULLSPEED=20 fixed, info.damage=3, collision damage=(rng%8+1)*3, MT_SKULL=19, SFX_SKLATK=71.
 - tests: format pass; focused 7/0; full pass; tsc pass
+
+
+## 2026-05-13 - 08-013 implement-cacodemon-attack completed
+
+- status: completed
+- lane: ai
+- step_id: 08-013
+- summary: A_HeadAttack: melee bite damage = 10*(rng%6+1) = 10..60; missile fallback MT_HEADSHOT=24; MT_HEAD=26.
+- tests: format pass; focused 5/0; full pass; tsc pass
