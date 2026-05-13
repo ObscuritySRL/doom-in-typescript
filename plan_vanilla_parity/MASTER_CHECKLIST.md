@@ -147,7 +147,7 @@
 - [x] `04-013` `implement-netupdate-no-network-single-player-path` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-013-implement-netupdate-no-network-single-player-path.md`
 - [x] `04-014` `implement-main-loop-preloop-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-014-implement-main-loop-preloop-ordering.md`
 - [x] `04-015` `implement-main-loop-per-frame-ordering` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-015-implement-main-loop-per-frame-ordering.md`
-- [ ] `04-016` `reject-frame-rate-dependent-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-016-reject-frame-rate-dependent-simulation.md`
+- [x] `04-016` `reject-frame-rate-dependent-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-016-reject-frame-rate-dependent-simulation.md`
 - [ ] `04-017` `reject-visible-interpolation-in-simulation` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-017-reject-visible-interpolation-in-simulation.md`
 - [ ] `04-018` `implement-pause-timing-semantics` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-018-implement-pause-timing-semantics.md`
 - [ ] `04-019` `implement-demo-lump-header-parser` | lane: `core` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/04-019-implement-demo-lump-header-parser.md`

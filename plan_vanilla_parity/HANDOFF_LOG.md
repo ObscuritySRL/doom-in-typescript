@@ -7694,3 +7694,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 7/0 (47 expects); full 13386/0; tsc pass
 - next_eligible_steps: 04-016 reject-frame-rate-dependent-simulation (next first unchecked, core lane)
 
+
+## 2026-05-13 - 04-016 reject-frame-rate-dependent-simulation completed
+
+- status: completed
+- lane: core
+- step_id: 04-016
+- summary: Adopted the prior-iteration uncommitted frame-rate-independent simulation contract that was left in the working tree by an earlier blocked attempt. Focused test (9/22) and full suite (13386/0) pass; tsc clean. Inventory: core 26 src / 28 test, totals 212/256.
+- tests: format pass; focused 9/0; full 13386/0; tsc pass
+
