@@ -8009,3 +8009,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: selectUseLineCandidate models vanilla P_UseLines: USERANGE=64; activates first special within range; passes through two-sided non-special lines; blocks on single-sided non-special. Inventory: src/map 25->26 (108785 bytes, 3082 lines, 176 exports); map+world source 36->37; totals 244->245.
 - tests: format pass; focused 5/0; full 13577/0; tsc pass
 
+
+## 2026-05-13 - 06-016 implement-intercept-ordering completed
+
+- status: completed
+- lane: map
+- step_id: 06-016
+- summary: sortAndCapIntercepts: ascending frac with stable tie-break by insertion order; truncates at MAXINTERCEPTS=128. Inventory: src/map 26->27 (110083 bytes, 3120 lines, 180 exports); map+world source 37->38; totals 245->246.
+- tests: format pass; focused 3/0; full 13580/0; tsc pass
+
