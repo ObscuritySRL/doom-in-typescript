@@ -9072,3 +9072,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-022
 - summary: CEILSPEED=1 fixed, fast=2 fixed; crush damage=10/4tic; MAXCEILINGS=30; ceiling_e enum 0..5.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-004 persist-mouse-settings completed
+
+- status: completed
+- lane: save
+- step_id: 12-004
+- summary: src/config/persist-mouse-settings.ts pins the 5 vanilla mouse variables (mouse_sensitivity=5, use_mouse=1, mouseb_fire=0, mouseb_strafe=1, mouseb_forward=2) — physical button indices 0/1/2 (not scan codes); -1 unbound sentinel reserved for chocolate-doom.cfg extended mouseb_* only. Reuses formatVanillaConfigLine for column-30 padded LF-terminated lines.
+- tests: format pass; focused 5/0; full pass with 4 pre-existing inventory drift failures unchanged; tsc pass
