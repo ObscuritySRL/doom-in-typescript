@@ -10,11 +10,12 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 35,
+      "committed_file_count": 36,
       "committed_filenames_sorted": [
         "blockmap.ts",
         "blockmapIter.ts",
         "bspStructs.ts",
+        "compare-e1m1-map-setup-state.ts",
         "implement-block-things-linking.ts",
         "implement-blockmap-coordinate-conversion.ts",
         "implement-bsp-node-traversal-semantics.ts",
@@ -48,9 +49,9 @@
         "subsectorQuery.ts",
         "things.ts"
       ],
-      "total_size_bytes": 122013,
-      "total_line_count": 3447,
-      "total_export_count": 230
+      "total_size_bytes": 122901,
+      "total_line_count": 3479,
+      "total_export_count": 233
     },
     {
       "relative_path": "src/world/",
@@ -191,7 +192,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/wad/directory.ts"],
       "src_importer_count": 2,
-      "test_importer_count": 12
+      "test_importer_count": 13
     },
     {
       "relative_path": "src/map/mapSetup.ts",
@@ -226,7 +227,7 @@
         "src/map/things.ts"
       ],
       "src_importer_count": 13,
-      "test_importer_count": 16
+      "test_importer_count": 17
     },
     {
       "relative_path": "src/map/nodeTraversal.ts",

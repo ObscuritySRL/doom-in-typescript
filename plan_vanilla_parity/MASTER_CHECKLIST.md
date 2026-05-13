@@ -220,7 +220,7 @@
 - [x] `06-022` `implement-map-spawn-thing-ordering` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-022-implement-map-spawn-thing-ordering.md`
 - [x] `06-023` `implement-deathmatch-and-multiplayer-spawn-exclusion` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-023-implement-deathmatch-and-multiplayer-spawn-exclusion.md`
 - [x] `06-024` `implement-nightmare-respawn-map-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-024-implement-nightmare-respawn-map-state.md`
-- [ ] `06-025` `compare-e1m1-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-025-compare-e1m1-map-setup-state.md`
+- [x] `06-025` `compare-e1m1-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-025-compare-e1m1-map-setup-state.md`
 - [ ] `06-026` `compare-e1m2-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-026-compare-e1m2-map-setup-state.md`
 - [ ] `06-027` `compare-e1m8-boss-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-027-compare-e1m8-boss-map-setup-state.md`
 - [ ] `06-028` `compare-e1m9-secret-map-setup-state` | lane: `map` | prereqs: `04-030,05-028` | file: `plan_vanilla_parity/steps/06-028-compare-e1m9-secret-map-setup-state.md`

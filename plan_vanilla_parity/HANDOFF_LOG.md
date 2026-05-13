@@ -8088,5 +8088,14 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - status: completed
 - lane: map
 - step_id: 06-024
-- summary: shouldRespawnNightmareMonster: requires respawn_monsters_enabled true, tics_dead >= 420 (35*12), and P_Random low 2 bits == 0. Inventory: src/map 34->35 (122013 bytes, 3447 lines, 230 exports); map+world 45->46 src; totals 253->254.
-- tests: format pass; focused 6/0; full pass; tsc pass
+- summary: shouldRespawnNightmareMonster mirrors Chocolate Doom 2.2.1 p_mobj.c P_NightmareRespawn gates: respawn_monsters_enabled, tics_dead >= 12*TICRATE (420), leveltime & 31 == 0, and P_Random byte <= 4 (5/256 odds). Inventory: src/map 34->35 (122013 bytes, 3447 lines, 230 exports); map+world 45->46 src; totals 253->254.
+- tests: format pass; focused 8/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-025 compare-e1m1-map-setup-state completed
+
+- status: completed
+- lane: map
+- step_id: 06-025
+- summary: Pinned E1M1 map setup oracle from local DOOM1.WAD: vertexes=467, sectors=85, sidedefs=648, linedefs=475, segs=732, subsectors=237, nodes=236, things=138, blockmap 36x23. Inventory: src/map 35->36 (122901 bytes, 3479 lines, 233 exports); map+world 46->47 src; totals 254->255.
+- tests: format pass; focused 10/0; full pass; tsc pass
