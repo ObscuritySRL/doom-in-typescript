@@ -1,0 +1,18 @@
+{
+  "id": "OR-VP-SFX-MUSIC-032",
+  "stepId": "02-032",
+  "stepTitle": "Capture Sfx And Music Oracle Windows",
+  "lane": "oracle",
+  "description": "Captures the Win64 host-side audio output from Chocolate Doom 2.2.1 (DOOM.EXE) during a scripted E1M1 run: SFX hashes per 02-013 audio-window format and music events per 02-014 event log. Captures cover pistol fire, weapon switch, monster death, and the E1M1 music track (RUNNIN by Bobby Prince) at boundaries identified during the scripted route. Entries empty pending external reference run.",
+  "captureMethod": "Run scripted route through E1M1; capture mixed SFX PCM windows (44100 Hz signed 16-bit stereo, 1260 samples per tic) every 35 tics via WASAPI loopback, hash each window per 02-013; record music events (change-music/pause-music/resume-music/stop-music) as they occur, per 02-014.",
+  "captureStatus": "pending-external-reference-run",
+  "executableFilename": "DOOM.EXE",
+  "iwadFilename": "DOOM1.WAD",
+  "ticRateHz": 35,
+  "outputSampleRateHz": 44100,
+  "samplesPerTic": 1260,
+  "expectedMusicTrack": "D_E1M1",
+  "audioEntries": [],
+  "musicEventEntries": [],
+  "downstreamFollowUps": ["wire-wasapi-loopback-capture-into-bun-comparator"]
+}
