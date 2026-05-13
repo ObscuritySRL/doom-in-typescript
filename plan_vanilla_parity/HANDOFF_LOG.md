@@ -7342,3 +7342,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned state-snapshot schema (components automap/combined/player/rng/sectors/thinkers, 5 individual + combined derived from asciibetical hash concat, SHA-256, 64-hex per hash, 35 Hz tic rate, 35-tic default sampling, ascending-by-tic ordering). Focused test cross-checks STATE_HASH_COMPONENTS, INDIVIDUAL_COMPONENT_COUNT, DEFAULT_SAMPLING_INTERVAL_TICS.
 - tests_run: format pass; focused 13/0 (35 expects); full 13061/0; tsc pass
 - next_eligible_steps: 02-013 define-audio-window-capture-format
+
+## 2026-05-13 - 02-013 define-audio-window-capture-format completed
+
+- status: completed
+- lane: oracle
+- step_id: 02-013
+- summary: Pinned audio-window capture schema (SFX only): 44100 Hz output, 11025 Hz DMX native, max 8 channels, SAMPLES_PER_TIC = 1260 (44100/35), SHA-256 per tic window, signed 16-bit stereo LE PCM, 35-tic default sampling. Music handled by 02-014. Cross-checked AUDIO_SAMPLE_RATE/AUDIO_MAX_CHANNELS/DMX_NATIVE_SAMPLE_RATE/SAMPLES_PER_TIC/DEFAULT_AUDIO_SAMPLING_INTERVAL_TICS in src/oracles/audioHash.ts.
+- tests_run: format pass; focused 15/0 (31 expects); full 13076/0; tsc pass
+- next_eligible_steps: 02-014 define-music-event-capture-format

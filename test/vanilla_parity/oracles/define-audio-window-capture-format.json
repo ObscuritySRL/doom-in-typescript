@@ -1,0 +1,21 @@
+{
+  "id": "OR-VP-AUDIO-FORMAT-013",
+  "stepId": "02-013",
+  "stepTitle": "Define Audio Window Capture Format",
+  "lane": "oracle",
+  "description": "Pins the audio-window capture schema for SFX sound-parity verification. Each entry holds a tic number, a SHA-256 hash of the mixed SFX PCM output buffer for that tic period (SAMPLES_PER_TIC = 1260 samples of signed 16-bit stereo at 44100 Hz), and the active channel count (0-8). Music output is tracked separately by the music-event-log format (02-014). Default sampling interval is 35 tics (one second).",
+  "sourceModule": "src/oracles/audioHash.ts",
+  "outputSampleRateHz": 44100,
+  "dmxNativeSampleRateHz": 11025,
+  "audioMaxChannels": 8,
+  "samplesPerTic": 1260,
+  "ticRateHz": 35,
+  "defaultSamplingIntervalTics": 35,
+  "hashAlgorithm": "SHA-256",
+  "hashHexLength": 64,
+  "pcmFormat": "signed-16-bit-stereo-little-endian",
+  "entryShape": ["tic", "hash", "activeChannels"],
+  "entryOrderingRule": "ascending-by-tic-number-strict",
+  "scopeNote": "SFX output mix only; music events are captured separately by 02-014.",
+  "downstreamFollowUps": ["create-audio-window-runner", "wire-into-bun-test-audio-comparator"]
+}
