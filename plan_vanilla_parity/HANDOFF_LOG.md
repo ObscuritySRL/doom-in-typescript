@@ -9000,3 +9000,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 08-018
 - summary: A_BossDeath DOOM 1 triggers: E1M8 barons, E2M8 cyberdemons, E3M8 spider, E4M6 cyber tag-666, E4M8 spider. Pinned 5 episode boss trigger records.
 - tests: format pass; focused 6/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 08-019 implement-keen-and-icon-paths-behind-doom-two-scope completed
+
+- status: completed
+- lane: ai
+- step_id: 08-019
+- summary: MT_KEEN=72, MT_BOSSBRAIN=78, MT_BOSSSPIT=77, MT_BOSSTARGET=76, MT_SPAWNSHOT=74; brain spawn table 9 monster types; all gated to commercial gamemode.
+- tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
