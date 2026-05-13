@@ -8381,6 +8381,15 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 10/0; full pass; tsc pass
 
 
+## 2026-05-13 - 07-022 implement-rocket-launcher-actions completed
+
+- status: completed
+- lane: gameplay
+- step_id: 07-022
+- summary: getVanillaRocketContract pins Chocolate Doom 2.2.1 p_pspr.c A_FireMissile + p_inter.c A_Explode: 1 rocket ammo per shot, MT_ROCKET projectile via P_SpawnPlayerMissile (no spread), SFX_RLAUNC sound, A_Explode does P_RadiusAttack damage=128 radius=128 on impact. Inventory: src/player 29->30 (153957 bytes, 4307 lines, 362 exports); player_ai_specials group 47->48 src; totals 285->286.
+- tests: format pass; focused 5/0; full pass; tsc pass
+
+
 ## 2026-05-13 - 10-003 implement-main-menu-tree completed
 
 - status: completed

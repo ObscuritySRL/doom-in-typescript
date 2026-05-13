@@ -10,11 +10,25 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 12,
-      "committed_filenames_sorted": ["assets.ts", "automap.ts", "endoom.ts", "finale.ts", "frontEndSequence.ts", "hudMessages.ts", "implement-main-menu-tree.ts", "implement-page-ticker-and-advance-demo.ts", "implement-title-loop-sequence.ts", "intermission.ts", "menus.ts", "statusBar.ts"],
-      "total_size_bytes": 209662,
-      "total_line_count": 5427,
-      "total_export_count": 361
+      "committed_file_count": 13,
+      "committed_filenames_sorted": [
+        "assets.ts",
+        "automap.ts",
+        "endoom.ts",
+        "finale.ts",
+        "frontEndSequence.ts",
+        "hudMessages.ts",
+        "implement-main-menu-tree.ts",
+        "implement-new-game-menu.ts",
+        "implement-page-ticker-and-advance-demo.ts",
+        "implement-title-loop-sequence.ts",
+        "intermission.ts",
+        "menus.ts",
+        "statusBar.ts"
+      ],
+      "total_size_bytes": 211594,
+      "total_line_count": 5480,
+      "total_export_count": 366
     }
   ],
   "modules": [
