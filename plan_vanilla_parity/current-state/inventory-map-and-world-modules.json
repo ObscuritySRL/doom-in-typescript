@@ -10,7 +10,7 @@
     {
       "relative_path": "src/map/",
       "exists": true,
-      "committed_file_count": 38,
+      "committed_file_count": 39,
       "committed_filenames_sorted": [
         "blockmap.ts",
         "blockmapIter.ts",
@@ -18,6 +18,7 @@
         "compare-e1m1-map-setup-state.ts",
         "compare-e1m2-map-setup-state.ts",
         "compare-e1m8-boss-map-setup-state.ts",
+        "compare-e1m9-secret-map-setup-state.ts",
         "implement-block-things-linking.ts",
         "implement-blockmap-coordinate-conversion.ts",
         "implement-bsp-node-traversal-semantics.ts",
@@ -51,9 +52,9 @@
         "subsectorQuery.ts",
         "things.ts"
       ],
-      "total_size_bytes": 123709,
-      "total_line_count": 3517,
-      "total_export_count": 237
+      "total_size_bytes": 124119,
+      "total_line_count": 3536,
+      "total_export_count": 239
     },
     {
       "relative_path": "src/world/",
@@ -194,7 +195,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/wad/directory.ts"],
       "src_importer_count": 2,
-      "test_importer_count": 15
+      "test_importer_count": 16
     },
     {
       "relative_path": "src/map/mapSetup.ts",
@@ -229,7 +230,7 @@
         "src/map/things.ts"
       ],
       "src_importer_count": 13,
-      "test_importer_count": 19
+      "test_importer_count": 20
     },
     {
       "relative_path": "src/map/nodeTraversal.ts",

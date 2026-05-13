@@ -8117,3 +8117,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 06-027
 - summary: Pinned E1M8 (Phobos Anomaly boss map) oracle: vertexes=328, sectors=74, sidedefs=511, linedefs=333, segs=586, subsectors=177, nodes=176, things=126, blockmap 52x56. Inventory: src/map 37->38 (123709 bytes, 3517 lines, 237 exports); map+world 48->49 src; totals 256->257.
 - tests: format pass; focused 10/0; full pass; tsc pass
+
+
+## 2026-05-13 - 06-028 compare-e1m9-secret-map-setup-state completed
+
+- status: completed
+- lane: map
+- step_id: 06-028
+- summary: Pinned E1M9 (Military Base secret map) oracle: vertexes=581, sectors=147, sidedefs=902, linedefs=653, segs=978, subsectors=288, nodes=287, things=237, blockmap 27x26. Inventory: src/map 38->39 (124119 bytes, 3536 lines, 239 exports); map+world 49->50 src; totals 257->258.
+- tests: format pass; focused 10/0; full pass; tsc pass
