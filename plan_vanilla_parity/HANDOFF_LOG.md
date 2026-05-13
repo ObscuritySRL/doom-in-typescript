@@ -7630,3 +7630,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Pinned deterministic input trace injection: per-tic dispatch matching 02-009 schema, future events stay queued, past events flagged, unsorted trace flagged, unknown kinds flagged. Pure injectTraceForTic with frozen output. Inventory: 35 src / 37 test.
 - tests: format pass; focused 5/0; full 13338/0; tsc pass
 
+
+## 2026-05-13 - 03-030 implement-deterministic-input-trace-recording completed
+
+- status: completed
+- lane: launch
+- step_id: 03-030
+- summary: Pinned recording-side mirror of 03-029 injection: appends events at current tic, flags tic regression, past-tic record, unknown event kinds. Inventory: 36 src / 38 test.
+- tests: format pass; focused 5/0; full 13343/0; tsc pass
+

@@ -122,7 +122,7 @@
 - [x] `03-027` `preserve-key-down-up-event-ordering` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-027-preserve-key-down-up-event-ordering.md`
 - [x] `03-028` `route-input-through-responder-chain` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-028-route-input-through-responder-chain.md`
 - [x] `03-029` `implement-deterministic-input-trace-injection` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-029-implement-deterministic-input-trace-injection.md`
-- [ ] `03-030` `implement-deterministic-input-trace-recording` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-030-implement-deterministic-input-trace-recording.md`
+- [x] `03-030` `implement-deterministic-input-trace-recording` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-030-implement-deterministic-input-trace-recording.md`
 - [ ] `03-031` `implement-clean-launch-to-title-loop` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-031-implement-clean-launch-to-title-loop.md`
 - [ ] `03-032` `implement-escape-to-main-menu-from-title` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-032-implement-escape-to-main-menu-from-title.md`
 - [ ] `03-033` `implement-menu-route-to-e1m1` | lane: `launch` | prereqs: `00-018` | file: `plan_vanilla_parity/steps/03-033-implement-menu-route-to-e1m1.md`
