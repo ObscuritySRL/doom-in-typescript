@@ -57,6 +57,21 @@ describe('buildSpriteFrameCache', () => {
     expect(() => buildSpriteFrameCache({ directory, wadBuffer })).toThrow(RangeError);
   });
 
+  test('rejects loading sprite patches outside the cached namespace', () => {
+    const wadBuffer = buildSingleColumnPatchBuffer({
+      height: 1,
+      leftOffset: 0,
+      pixels: [99],
+      topOffset: 0,
+      width: 1,
+    });
+    const directory = makeSingleSpriteDirectory('MISSA0', wadBuffer.length);
+    const cache = buildSpriteFrameCache({ directory, wadBuffer });
+
+    expect(() => loadSpriteFramePatch(cache, wadBuffer, -1)).toThrow(RangeError);
+    expect(() => loadSpriteFramePatch(cache, wadBuffer, 1)).toThrow(RangeError);
+  });
+
   test('matches the live shareware DOOM1.WAD sprite metadata oracle', async () => {
     const wadBuffer = await readSharewareWad();
     const directory = parseWadDirectory(wadBuffer, parseWadHeader(wadBuffer));

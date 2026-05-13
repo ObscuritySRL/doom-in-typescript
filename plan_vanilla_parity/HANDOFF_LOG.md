@@ -7829,3 +7829,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - summary: Aggregates 8 required demo sync primitive modules + canonical constants (13-byte header, 4-byte ticcmd, 0x80 terminator, version 109, max 4 players, 0x20000 byte limit, 5 playback phases, 4 recording phases). evaluateDemoSyncGate flags missing_module / wrong_constants. Recovery: extracted DemoSyncExpectations interface to widen the constant types for the typo failure test. Inventory: core 37 src / 42 test.
 - tests: format pass; focused 5/0 (22 expects); full 13476/0; tsc pass
 
+
+## 2026-05-13 - 05-024 build-sprite-frame-cache completed
+
+- status: completed
+- lane: wad
+- step_id: 05-024
+- summary: Adopted the prior-iteration uncommitted sprite-frame cache test addition (loadSpriteFramePatch rejects out-of-range sprite numbers). Focused test 4/45, full 13476/0. No new src file; existing src/assets/build-sprite-frame-cache.ts was already tracked.
+- tests: format pass; focused 4/0; full 13476/0; tsc pass
+
