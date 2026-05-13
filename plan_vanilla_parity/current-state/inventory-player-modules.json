@@ -10,7 +10,7 @@
     {
       "relative_path": "src/player/",
       "exists": true,
-      "committed_file_count": 23,
+      "committed_file_count": 24,
       "committed_filenames_sorted": [
         "hitscan.ts",
         "implement-ammo-pickups.ts",
@@ -21,6 +21,7 @@
         "implement-forward-side-and-turn-movement.ts",
         "implement-god-mode-and-powerup-flags.ts",
         "implement-health-and-armor-pickups.ts",
+        "implement-invulnerability-and-infrared.ts",
         "implement-keycard-and-skull-key-pickups.ts",
         "implement-player-damage-and-armor.ts",
         "implement-player-reborn-state.ts",
@@ -36,9 +37,9 @@
         "weaponStates.ts",
         "weapons.ts"
       ],
-      "total_size_bytes": 141814,
-      "total_line_count": 3982,
-      "total_export_count": 312
+      "total_size_bytes": 143388,
+      "total_line_count": 4018,
+      "total_export_count": 321
     }
   ],
   "modules": [
