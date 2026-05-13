@@ -424,7 +424,7 @@
 - [x] `12-013` `serialize-player-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-013-serialize-player-state.md`
 - [x] `12-014` `serialize-mobj-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-014-serialize-mobj-state.md`
 - [x] `12-015` `serialize-thinker-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-015-serialize-thinker-state.md`
-- [ ] `12-016` `serialize-sector-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-016-serialize-sector-specials.md`
+- [x] `12-016` `serialize-sector-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-016-serialize-sector-specials.md`
 - [ ] `12-017` `serialize-line-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-017-serialize-line-specials.md`
 - [ ] `12-018` `serialize-world-archive-terminators` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-018-serialize-world-archive-terminators.md`
 - [ ] `12-019` `enforce-vanilla-savegame-limit` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-019-enforce-vanilla-savegame-limit.md`
