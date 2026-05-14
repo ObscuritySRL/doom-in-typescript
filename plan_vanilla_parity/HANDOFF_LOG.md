@@ -9425,3 +9425,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-004
 - summary: src/audio/implement-sound-origin-tracking.ts pins the S_UpdateSounds(listener) per-tic contract: NORM_SEP=128 centre pan, link-volume floor=1 before stop, origin-case rules where anonymous (null) and self-listener origins skip S_AdjustSoundParams while only remote-mobj origins re-spatialize each tic.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-024 implement-detail-level-toggle completed
+
+- status: completed
+- lane: render
+- step_id: 09-024
+- summary: detailshift: 0=high (1 col/px), 1=low (2 col/px stride); isLowDetail helper.
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
