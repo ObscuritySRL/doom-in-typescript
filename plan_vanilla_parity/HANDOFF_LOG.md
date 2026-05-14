@@ -9533,3 +9533,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-007
 - summary: src/audio/implement-pitch-and-volume-semantics.ts pins s_sound.c S_StartSound pitch and volume init. NORM_PITCH=128. Saw band (sfx_sawup..sfx_sawhit ids 10..13) perturbed by 8 - (random & 15) for ±range [-7..+8]. sfx_itemup (32) and sfx_tink (87) skip perturbation entirely. All other sfx perturb by 16 - (random & 31) for ±range [-15..+16]. Clamp to 0..255. Volume from snd_SfxVolume + sfx->volume link delta; <1 drops the sound; >sfxVolume clamps back to sfxVolume.
 - tests: format pass; focused 19/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 12-022 reject-corrupted-save-bytes completed
+
+- status: completed
+- lane: save
+- step_id: 12-022
+- summary: src/save/reject-corrupted-save-bytes.ts pins two corruption-detection sites: (1) post-archive 0x1d terminator check ("Bad savegame" I_Error), (2) per-thinker class-byte validation in P_UnArchive* ("Unknown tclass %i in savegame" with decimal interpolation). No checksum/CRC; only structural validation. Recognized class bytes are 0..7 (tc_end/ceiling, tc_mobj/door, floor, plat, flash, strobe, glow, endspecials).
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

@@ -430,7 +430,7 @@
 - [x] `12-019` `enforce-vanilla-savegame-limit` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-019-enforce-vanilla-savegame-limit.md`
 - [x] `12-020` `load-compatible-save-header` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-020-load-compatible-save-header.md`
 - [x] `12-021` `reject-incompatible-save-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-021-reject-incompatible-save-version.md`
-- [ ] `12-022` `reject-corrupted-save-bytes` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-022-reject-corrupted-save-bytes.md`
+- [x] `12-022` `reject-corrupted-save-bytes` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-022-reject-corrupted-save-bytes.md`
 - [ ] `12-023` `restore-player-mobj-and-world-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-023-restore-player-mobj-and-world-state.md`
 - [ ] `12-024` `restore-post-load-render-audio-input-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-024-restore-post-load-render-audio-input-state.md`
 - [ ] `12-025` `compare-reference-save-byte-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-025-compare-reference-save-byte-oracle.md`
