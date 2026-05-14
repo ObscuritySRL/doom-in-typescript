@@ -1,0 +1,178 @@
+{
+  "step_id": "01-004",
+  "lane": "current-state",
+  "title": "inventory-runtime-implementation-modules",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "runtime_reachability_summary": {
+    "doom_ts_relative_path": "doom.ts",
+    "doom_ts_imports_count": 0,
+    "doom_ts_is_skeleton": true,
+    "subsystems_reachable_from_doom_ts": [],
+    "subsystems_not_reachable_from_doom_ts_count": 23,
+    "notes": "doom.ts is currently a `export {}` skeleton with zero imports. No src/ subsystem or root module is reachable from `bun run doom.ts`. The full implementation surface is wired only through the simplified `bun run src/main.ts` launcher path."
+  },
+  "subsystems": [
+    {
+      "relative_path": "src/ai/",
+      "classification": "real-implementation",
+      "tracked_file_count": 40,
+      "primary_role": "Monster targeting, chase, attacks, sound propagation, melee/missile range, and state transitions.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/assets/",
+      "classification": "real-implementation",
+      "tracked_file_count": 35,
+      "primary_role": "PLAYPAL/COLORMAP/PNAMES/TEXTURE1/flats/sprites/MUS/SFX/demo/map lump parsing and asset bundles.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/audio/",
+      "classification": "real-implementation",
+      "tracked_file_count": 43,
+      "primary_role": "SFX channels, OPL synth, MUS parser/scheduler, PCM mixer, spatial audio, Win32 audio binding.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/bootstrap/",
+      "classification": "real-implementation",
+      "tracked_file_count": 42,
+      "primary_role": "Command-line parsing, config, game-mode, init order, tryRunTics, title loop, quit, D_DoomMain/D_DoomLoop helpers.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/config/",
+      "classification": "real-implementation",
+      "tracked_file_count": 11,
+      "primary_role": "Default cfg parsing and host config persistence.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/core/",
+      "classification": "real-implementation",
+      "tracked_file_count": 32,
+      "primary_role": "Fixed-point math, angle wrapping, DOOM LCG RNG, trig lookups, binary reader; determinism boundary.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/demo/",
+      "classification": "real-implementation",
+      "tracked_file_count": 7,
+      "primary_role": "Demo record, playback, parse, and file format helpers.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/host/",
+      "classification": "real-implementation",
+      "tracked_file_count": 4,
+      "primary_role": "Window policy, tic accumulator, Win32 clock and message pump helpers.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/input/",
+      "classification": "real-implementation",
+      "tracked_file_count": 4,
+      "primary_role": "Keyboard, mouse, focus policy, ticcmd encoding.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/launcher/",
+      "classification": "simplified-launcher",
+      "tracked_file_count": 4,
+      "primary_role": "Current simplified launcher wiring (session, win32 window, gameplay assets, gameplay renderer). Not the vanilla D_DoomMain/D_DoomLoop path.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/main.ts",
+      "classification": "simplified-launcher",
+      "tracked_file_count": 1,
+      "primary_role": "Current `bun run start` entrypoint that drives the simplified launcher.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/mainLoop.ts",
+      "classification": "real-implementation",
+      "tracked_file_count": 1,
+      "primary_role": "D_DoomLoop-style frame orchestrator (initial run, tryRunTics, updateSounds, display).",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/map/",
+      "classification": "real-implementation",
+      "tracked_file_count": 40,
+      "primary_role": "Map lump bundles, BSP/subsector queries, blockmap, node traversal, reject, map setup.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/oracles/",
+      "classification": "real-implementation",
+      "tracked_file_count": 9,
+      "primary_role": "Framebuffer/state/audio/music-event hashing, input scripts, reference run manifests, schema, sandbox helpers.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/playable/",
+      "classification": "contract-surface",
+      "tracked_file_count": 153,
+      "primary_role": "Contract tree describing playable runtime boundaries; not invoked as runtime code.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/player/",
+      "classification": "real-implementation",
+      "tracked_file_count": 42,
+      "primary_role": "Player spawn, movement, pickups, powerups, weapons, hitscan, projectiles.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/reference/",
+      "classification": "real-implementation",
+      "tracked_file_count": 2,
+      "primary_role": "Reference asset policy boundaries and primary target constants.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/render/",
+      "classification": "real-implementation",
+      "tracked_file_count": 51,
+      "primary_role": "Software renderer: projection, walls, visplanes, sprites, masked textures, fuzz, sky, patches, primitives.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/save/",
+      "classification": "real-implementation",
+      "tracked_file_count": 24,
+      "primary_role": "Save/load, vanilla save limits, core + special serialization, headers.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/specials/",
+      "classification": "real-implementation",
+      "tracked_file_count": 10,
+      "primary_role": "Sector/line specials: doors, floors, ceilings, platforms, stairs/donut, switches, animations, scheduler, line triggers.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/ui/",
+      "classification": "real-implementation",
+      "tracked_file_count": 44,
+      "primary_role": "Menus, HUD/status bar, automap, intermission, finale, ENDOOM, title sequence, hud messages.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/wad/",
+      "classification": "real-implementation",
+      "tracked_file_count": 4,
+      "primary_role": "WAD header/directory/lump lookup primitives.",
+      "reachable_from_doom_ts": false
+    },
+    {
+      "relative_path": "src/world/",
+      "classification": "real-implementation",
+      "tracked_file_count": 14,
+      "primary_role": "Mobj/thinker simulation, xy/z movement, collision, slide, radius attack, sector change, teleport, use-lines.",
+      "reachable_from_doom_ts": false
+    }
+  ]
+}
