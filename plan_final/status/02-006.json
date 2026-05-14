@@ -3,5 +3,5 @@
   "lane": "oracle",
   "status": "COMPLETED",
   "evidence": "plan_final/evidence/02-006.json",
-  "commitSha": "PENDING"
+  "commitSha": "a2c908df804d0bba3f575f39736be81bb958524d"
 }
