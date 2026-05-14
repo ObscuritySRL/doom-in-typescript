@@ -1,0 +1,53 @@
+{
+  "stepId": "00-003",
+  "lane": "governance",
+  "title": "lock-completion-status-schema",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/validate-plan.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/validate-plan.ts",
+    "test/plan_final/validate-plan.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/validate-plan.test.ts",
+    "passed": 25,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15370,
+    "failed": 0,
+    "files": 801
+  },
+  "typecheck": "clean",
+  "schemaContract": {
+    "helpers": [
+      "findStatusSchemaViolations(status, evidence?) -> readonly StatusSchemaViolation[]",
+      "findEvidencePathMismatch(status, expectedEvidencePath) -> StatusSchemaViolation | null"
+    ],
+    "categories": [
+      "evidence-missing-focused-test-command",
+      "evidence-missing-format-command",
+      "evidence-missing-full-test-command",
+      "evidence-missing-required",
+      "evidence-missing-typecheck-command",
+      "evidence-path-mismatch",
+      "invalid-commit-sha-format",
+      "lane-missing",
+      "missing-commit-sha",
+      "step-id-missing"
+    ],
+    "commitShaFormat": "40 lowercase hex chars (matches git push output)",
+    "evidenceCommandRequirements": [
+      "bun run format",
+      "bun test <focused>",
+      "bun test (full)",
+      "bun x tsc --noEmit --project tsconfig.json"
+    ],
+    "evidenceCommandShapes": "accepts string entries or { command: string } object entries"
+  }
+}

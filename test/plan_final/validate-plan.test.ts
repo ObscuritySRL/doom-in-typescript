@@ -1,7 +1,13 @@
 import { describe, expect, test } from 'bun:test';
 
 import { FINAL_PLAN_LANES, FINAL_PLAN_STEP_COUNT, FINAL_PLAN_STEPS } from '../../plan_final/planData.ts';
-import { findFinalProofViolations, stepFilePath, validatePlan } from '../../plan_final/validate-plan.ts';
+import { findEvidencePathMismatch, findFinalProofViolations, findStatusSchemaViolations, stepFilePath, validatePlan } from '../../plan_final/validate-plan.ts';
+
+const FORTY_HEX = '0123456789abcdef0123456789abcdef01234567';
+
+function fullEvidenceCommands(focusedTestPath: string): readonly string[] {
+  return ['bun run format', `bun test ${focusedTestPath}`, 'bun test', 'bun x tsc --noEmit --project tsconfig.json'];
+}
 
 describe('plan_final control center', () => {
   test('validates the generated plan structure', async () => {
@@ -90,5 +96,137 @@ describe('plan_final control center', () => {
     const violations = findFinalProofViolations(replacedManifest);
 
     expect(violations.some((violation) => violation.category === 'manifest-only')).toBe(false);
+  });
+});
+
+describe('plan_final completion status schema', () => {
+  const focusedTestPath = 'test/plan_final/validate-plan.test.ts';
+  const evidencePath = 'plan_final/evidence/00-099.json';
+
+  test('accepts a fully attested completion record', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations).toEqual([]);
+  });
+
+  test('accepts a fully attested record whose evidence uses structured command entries', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = {
+      commands: fullEvidenceCommands(focusedTestPath).map((command) => ({ command, result: 'pass' })),
+    };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations).toEqual([]);
+  });
+
+  test('ignores non-COMPLETED records', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'IN_PROGRESS', evidence: evidencePath, commitSha: null };
+    const violations = findStatusSchemaViolations(status, null);
+
+    expect(violations).toEqual([]);
+  });
+
+  test('rejects a null commit SHA on a COMPLETED record', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: null };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'missing-commit-sha')).toBe(true);
+  });
+
+  test('rejects a commit SHA shorter than 40 hex characters', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: 'abc123' };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'invalid-commit-sha-format')).toBe(true);
+  });
+
+  test('rejects a commit SHA with uppercase hex characters', () => {
+    const uppercaseSha = FORTY_HEX.toUpperCase();
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: uppercaseSha };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'invalid-commit-sha-format')).toBe(true);
+  });
+
+  test('rejects an empty stepId on a COMPLETED record', () => {
+    const status = { stepId: '', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'step-id-missing')).toBe(true);
+  });
+
+  test('rejects an empty lane on a COMPLETED record', () => {
+    const status = { stepId: '00-099', lane: '', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'lane-missing')).toBe(true);
+  });
+
+  test('rejects a missing evidence reference', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', commitSha: FORTY_HEX };
+    const violations = findStatusSchemaViolations(status, null);
+
+    expect(violations.some((violation) => violation.category === 'evidence-missing-required')).toBe(true);
+  });
+
+  test('rejects a COMPLETED record whose evidence record was not supplied', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const violations = findStatusSchemaViolations(status, null);
+
+    expect(violations.some((violation) => violation.category === 'evidence-missing-required')).toBe(true);
+  });
+
+  test('rejects evidence missing bun run format', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath).filter((command) => command !== 'bun run format') };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'evidence-missing-format-command')).toBe(true);
+  });
+
+  test('rejects evidence missing the full bun test run', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath).filter((command) => command !== 'bun test') };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'evidence-missing-full-test-command')).toBe(true);
+  });
+
+  test('rejects evidence missing the focused bun test run', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath).filter((command) => !command.startsWith('bun test ')) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'evidence-missing-focused-test-command')).toBe(true);
+  });
+
+  test('rejects evidence missing the typecheck command', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath).filter((command) => !command.includes('tsc --noEmit')) };
+    const violations = findStatusSchemaViolations(status, evidence);
+
+    expect(violations.some((violation) => violation.category === 'evidence-missing-typecheck-command')).toBe(true);
+  });
+
+  test('flags an evidence path mismatch between status and the expected path', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: 'plan_final/evidence/wrong.json', commitSha: FORTY_HEX };
+    const mismatch = findEvidencePathMismatch(status, evidencePath);
+
+    expect(mismatch).not.toBeNull();
+    expect(mismatch?.category).toBe('evidence-path-mismatch');
+  });
+
+  test('returns no mismatch when the evidence path matches the expected path', () => {
+    const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
+    const mismatch = findEvidencePathMismatch(status, evidencePath);
+
+    expect(mismatch).toBeNull();
   });
 });

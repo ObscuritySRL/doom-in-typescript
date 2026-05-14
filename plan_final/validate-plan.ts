@@ -52,6 +52,37 @@ export interface FinalProofViolation {
   readonly detail: string;
 }
 
+export type StatusSchemaViolationCategory =
+  | 'evidence-missing-focused-test-command'
+  | 'evidence-missing-format-command'
+  | 'evidence-missing-full-test-command'
+  | 'evidence-missing-required'
+  | 'evidence-missing-typecheck-command'
+  | 'evidence-path-mismatch'
+  | 'invalid-commit-sha-format'
+  | 'lane-missing'
+  | 'missing-commit-sha'
+  | 'step-id-missing';
+
+export interface StatusSchemaViolation {
+  readonly category: StatusSchemaViolationCategory;
+  readonly detail: string;
+}
+
+export interface CompletionStatusRecord {
+  readonly commitSha?: unknown;
+  readonly evidence?: unknown;
+  readonly lane?: unknown;
+  readonly status?: unknown;
+  readonly stepId?: unknown;
+}
+
+export interface CompletionEvidenceRecord {
+  readonly commands?: unknown;
+}
+
+const COMMIT_SHA_FORMAT = /^[0-9a-f]{40}$/;
+
 export interface PlanValidationResult {
   readonly errors: readonly string[];
   readonly stepCount: number;
@@ -140,6 +171,95 @@ function validateLaneCoverage(parallelText: string, errors: string[]): void {
       errors.push(`PARALLEL_WORK.md is missing lane ${lane.lane}.`);
     }
   }
+}
+
+function extractEvidenceCommandStrings(commands: unknown): readonly string[] {
+  if (!Array.isArray(commands)) {
+    return [];
+  }
+
+  const result: string[] = [];
+  for (const entry of commands) {
+    if (typeof entry === 'string') {
+      result.push(entry);
+      continue;
+    }
+
+    if (typeof entry === 'object' && entry !== null && 'command' in entry) {
+      const command = (entry as { readonly command?: unknown }).command;
+      if (typeof command === 'string') {
+        result.push(command);
+      }
+    }
+  }
+
+  return result;
+}
+
+export function findStatusSchemaViolations(status: CompletionStatusRecord, evidence: CompletionEvidenceRecord | null = null): readonly StatusSchemaViolation[] {
+  const violations: StatusSchemaViolation[] = [];
+
+  if (status.status !== 'COMPLETED') {
+    return violations;
+  }
+
+  if (typeof status.stepId !== 'string' || status.stepId.trim() === '') {
+    violations.push({ category: 'step-id-missing', detail: 'Completed status must record a non-empty stepId.' });
+  }
+
+  if (typeof status.lane !== 'string' || status.lane.trim() === '') {
+    violations.push({ category: 'lane-missing', detail: 'Completed status must record a non-empty lane.' });
+  }
+
+  if (typeof status.commitSha !== 'string' || status.commitSha.trim() === '') {
+    violations.push({ category: 'missing-commit-sha', detail: 'Completed status must record the pushed commit SHA.' });
+  } else if (!COMMIT_SHA_FORMAT.test(status.commitSha)) {
+    violations.push({ category: 'invalid-commit-sha-format', detail: `commitSha "${status.commitSha}" is not a 40-character lowercase hex string.` });
+  }
+
+  if (typeof status.evidence !== 'string' || status.evidence.trim() === '') {
+    violations.push({ category: 'evidence-missing-required', detail: 'Completed status must reference an evidence file path.' });
+    return violations;
+  }
+
+  if (evidence === null) {
+    violations.push({ category: 'evidence-missing-required', detail: `Completed status references evidence file ${status.evidence} but no evidence record was provided.` });
+    return violations;
+  }
+
+  const commandStrings = extractEvidenceCommandStrings(evidence.commands);
+
+  if (!commandStrings.some((command) => command.includes('bun run format'))) {
+    violations.push({ category: 'evidence-missing-format-command', detail: 'Evidence commands must include `bun run format`.' });
+  }
+
+  const fullTestPattern = /^bun test\s*$/;
+  if (!commandStrings.some((command) => fullTestPattern.test(command.trim()))) {
+    violations.push({ category: 'evidence-missing-full-test-command', detail: 'Evidence commands must include the full `bun test` run.' });
+  }
+
+  const focusedTestPattern = /^bun test\s+\S/;
+  if (!commandStrings.some((command) => focusedTestPattern.test(command.trim()))) {
+    violations.push({ category: 'evidence-missing-focused-test-command', detail: 'Evidence commands must include a focused `bun test <path>` run.' });
+  }
+
+  if (!commandStrings.some((command) => command.includes('bun x tsc --noEmit --project tsconfig.json'))) {
+    violations.push({ category: 'evidence-missing-typecheck-command', detail: 'Evidence commands must include `bun x tsc --noEmit --project tsconfig.json`.' });
+  }
+
+  return violations;
+}
+
+export function findEvidencePathMismatch(status: CompletionStatusRecord, expectedEvidencePath: string): StatusSchemaViolation | null {
+  if (status.status !== 'COMPLETED') {
+    return null;
+  }
+
+  if (typeof status.evidence === 'string' && status.evidence === expectedEvidencePath) {
+    return null;
+  }
+
+  return { category: 'evidence-path-mismatch', detail: `Completed status evidence "${String(status.evidence)}" does not match expected path "${expectedEvidencePath}".` };
 }
 
 export function findFinalProofViolations(text: string): readonly FinalProofViolation[] {
