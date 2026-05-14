@@ -9830,3 +9830,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-021
 - summary: src/audio/implement-opl-synthesis-core.ts pins YM3812/YMF262 synth output contract: 44100 Hz 16-bit stereo. OPL2 = 9 channels x 2 ops = 18 operators; OPL3 doubles to 18 channels / 36 operators. Vanilla never uses OPL3 4-operator linked-channel mode.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-027 add-music-event-log-hook completed
+
+- status: completed
+- lane: audio
+- step_id: 11-027
+- summary: src/audio/add-music-event-log-hook.ts pins music event log entry shape (gameTic, quicktickWithinTic 0..3, channel 0..15, eventType 0..7, body bytes) and provides byte-exact comparison + entry validation for oracle parity replay. 4 quickticks/gametic = 140 Hz MUS over 35 Hz gameplay tic.
+- tests: format pass; focused 11/0; full pass with pre-existing inventory drift unchanged; tsc pass
