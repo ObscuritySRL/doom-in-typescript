@@ -9920,3 +9920,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 13-001
 - summary: Shareware E1 (9 maps) acceptance manifest; 5 skills (ITYTD/HNTR/HMP/UV/NM); composes 11 prerequisite gates; iwad SHA-256 marked pending-oracle-capture; 5 oracle streams + E1M8 boss + E1M9 secret exits.
 - tests: format pass; focused 8/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 13-003 gate-ultimate-doom-user-supplied-iwad-scope completed
+
+- status: completed
+- lane: acceptance
+- step_id: 13-003
+- summary: Verified existing test/vanilla_parity/acceptance/gate-ultimate-doom-user-supplied-iwad-scope.{json,test.ts}: Ultimate DOOM IWAD scope adds Episode 4 (Thy Flesh Consumed, 9 maps E4M1..E4M9) on top of the registered DOOM Episodes 1-3; user-supplied IWAD required (no bundled bytes); pending-oracle-capture for IWAD SHA-256; human-attestation required.
+- tests: focused 11/0; (pre-existing implementation verified)
