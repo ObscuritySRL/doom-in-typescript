@@ -9839,3 +9839,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-027
 - summary: src/audio/add-music-event-log-hook.ts pins music event log entry shape (gameTic, quicktickWithinTic 0..3, channel 0..15, eventType 0..7, body bytes) and provides byte-exact comparison + entry validation for oracle parity replay. 4 quickticks/gametic = 140 Hz MUS over 35 Hz gameplay tic.
 - tests: format pass; focused 11/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-022 implement-win32-audio-device-open-close completed
+
+- status: completed
+- lane: audio
+- step_id: 11-022
+- summary: SFX rate=11025 Hz, music=49716 Hz; 16-bit output; 2 buffers; 1024 SFX samples per buffer.
+- tests: format pass; focused 2/0; full pass; tsc pre-existing save lane TS2352
