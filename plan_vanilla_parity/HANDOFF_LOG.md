@@ -9902,3 +9902,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-031
 - summary: Verified existing src/audio/gate-music-opl-parity.ts: gate scope=mus-event-stream (NOT synthesized PCM due to host int precision); 5-of-8 gated MUS event types (NOTE_ON, NOTE_OFF, PITCH_BEND, CHANGE_CONTROLLER, SYSTEM_EVENT, SCORE_END); shareware lumps D_INTRO/D_INTROA/D_VICTOR/D_E1M1; zero allowable drift; composes 11-014..11-029 audio steps; blocks 13-001/13-002/13-003 Phase 13 acceptance gates.
 - tests: focused 13/0; (pre-existing implementation verified, just ticked)
+
+
+## 2026-05-13 - 11-031 gate-music-opl-parity completed
+
+- status: completed
+- lane: audio
+- step_id: 11-031
+- summary: Music OPL parity gate bundles MUS event log + GENMIDI instruments + OPL synth core constants.
+- tests: format pass; focused 13/0; full pass; tsc pre-existing save lane TS2352
