@@ -384,7 +384,7 @@
 - [ ] `11-007` `implement-pitch-and-volume-semantics` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-007-implement-pitch-and-volume-semantics.md`
 - [ ] `11-008` `implement-mixer-sample-stepping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-008-implement-mixer-sample-stepping.md`
 - [ ] `11-009` `implement-mixer-clipping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-009-implement-mixer-clipping.md`
-- [ ] `11-010` `implement-sound-channel-eviction` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-010-implement-sound-channel-eviction.md`
+- [x] `11-010` `implement-sound-channel-eviction` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-010-implement-sound-channel-eviction.md`
 - [ ] `11-011` `implement-menu-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-011-implement-menu-sound-routing.md`
 - [ ] `11-012` `implement-weapon-and-monster-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-012-implement-weapon-and-monster-sound-routing.md`
 - [ ] `11-013` `implement-sector-and-switch-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-013-implement-sector-and-switch-sound-routing.md`

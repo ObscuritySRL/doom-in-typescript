@@ -9470,3 +9470,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-020
 - summary: src/save/load-compatible-save-header.ts pins g_game.c G_DoLoadGame header byte layout: 24 description + 16 version + 1 skill + 1 episode + 1 map + 4 playeringame + 3 leveltime = 50 bytes total. Leveltime is 3 bytes big-endian (high<<16|mid<<8|low) capped at 2^24-1 tics (~5.3 hours). playeringame uses C-bool semantics — any non-zero byte means present.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-010 implement-sound-channel-eviction completed
+
+- status: completed
+- lane: audio
+- step_id: 11-010
+- summary: src/audio/implement-sound-channel-eviction.ts pins S_StopChannel eviction order: (1) I_StopSound(handle), (2) sfxinfo->usefulness--, (3) sfxinfo=NULL, (4) origin=NULL. Handle field is preserved (not zeroed). The `if (c->sfxinfo)` guard makes the eviction a no-op on already-free slots.
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift unchanged; tsc pass
