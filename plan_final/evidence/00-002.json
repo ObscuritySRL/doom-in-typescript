@@ -1,0 +1,37 @@
+{
+  "stepId": "00-002",
+  "lane": "governance",
+  "title": "reject-manifest-only-final-proof",
+  "date": "2026-05-14",
+  "commands": [
+    {
+      "command": "bun run format",
+      "result": "pass",
+      "notes": "Formatted 5 files. No fixes applied."
+    },
+    {
+      "command": "bun test test/plan_final/validate-plan.test.ts",
+      "result": "pass",
+      "notes": "9 pass, 0 fail, 543 expect() calls in 84.00ms."
+    },
+    {
+      "command": "bun test",
+      "result": "pass",
+      "notes": "15327 pass, 0 fail across 798 files in 25.47s."
+    },
+    {
+      "command": "bun x tsc --noEmit --project tsconfig.json",
+      "result": "pass",
+      "notes": "Clean exit, no diagnostics."
+    }
+  ],
+  "changedPaths": [
+    "plan_final/validate-plan.ts",
+    "test/plan_final/validate-plan.test.ts",
+    "plan_final/progress/governance/00-002.md",
+    "plan_final/evidence/00-002.json",
+    "plan_final/status/00-002.json"
+  ],
+  "knownFailures": [],
+  "summary": "Added findFinalProofViolations() pure helper plus validateFinalGates() scan of plan_final/final-gates/*.json, exposed three rejection categories (pending-fixture, manifest-only, human-attestation-alone), and added five focused tests covering each rejection plus two acceptance controls (paired oracle evidence and live-capture replacement). validatePlan() now calls validateFinalGates() after validateAcceptanceTests()."
+}

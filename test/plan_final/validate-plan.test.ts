@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { FINAL_PLAN_LANES, FINAL_PLAN_STEP_COUNT, FINAL_PLAN_STEPS } from '../../plan_final/planData.ts';
-import { stepFilePath, validatePlan } from '../../plan_final/validate-plan.ts';
+import { findFinalProofViolations, stepFilePath, validatePlan } from '../../plan_final/validate-plan.ts';
 
 describe('plan_final control center', () => {
   test('validates the generated plan structure', async () => {
@@ -51,5 +51,44 @@ describe('plan_final control center', () => {
     expect(finalStep?.goal).toContain('no pending evidence');
     expect(finalStep?.readOnlyPaths).toContain('doom.ts');
     expect(finalStep?.testFiles).toContain('test/plan_final/acceptance/gate-final-side-by-side-zero-diff.test.ts');
+  });
+
+  test('rejects pending-fixture proof for final gates', () => {
+    const pendingSample = JSON.stringify({ comparisonStatus: 'pending-live-capture', report: 'pending-unimplemented-surface' });
+    const violations = findFinalProofViolations(pendingSample);
+
+    expect(violations.some((violation) => violation.category === 'pending-fixture')).toBe(true);
+  });
+
+  test('rejects manifest-only proof for final gates', () => {
+    const manifestSample = JSON.stringify({ implementationStatus: 'manifest-only', inheritedSourceHashes: [{ path: 'package.json' }] });
+    const violations = findFinalProofViolations(manifestSample);
+
+    expect(violations.some((violation) => violation.category === 'manifest-only')).toBe(true);
+  });
+
+  test('rejects human attestation alone for final gates', () => {
+    const attestationOnly = JSON.stringify({ gate_id: '13-X', human_attestation_required: true, oracle_evidence_required: [] });
+    const violations = findFinalProofViolations(attestationOnly);
+
+    expect(violations.some((violation) => violation.category === 'human-attestation-alone')).toBe(true);
+  });
+
+  test('accepts human attestation when paired with non-empty oracle evidence', () => {
+    const pairedAttestation = JSON.stringify({
+      gate_id: '13-Y',
+      human_attestation_required: true,
+      oracle_evidence_required: ['framebuffer-hash-per-tic-window-across-three-iwad-scopes', 'audio-hash-per-tic-window-across-three-iwad-scopes'],
+    });
+    const violations = findFinalProofViolations(pairedAttestation);
+
+    expect(violations.some((violation) => violation.category === 'human-attestation-alone')).toBe(false);
+  });
+
+  test('treats manifest tokens as acceptable when paired with explicit live-capture evidence', () => {
+    const replacedManifest = JSON.stringify({ implementationStatus: 'manifest-only', replacement: 'live-capture confirmed' });
+    const violations = findFinalProofViolations(replacedManifest);
+
+    expect(violations.some((violation) => violation.category === 'manifest-only')).toBe(false);
   });
 });

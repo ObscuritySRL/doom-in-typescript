@@ -39,6 +39,19 @@ const REQUIRED_VERIFICATION_COMMANDS = Object.freeze(['`bun run format`', '`bun 
 
 const FINAL_GATE_FORBIDDEN_TOKENS = Object.freeze(['pending', 'contract-only', 'manifest-only', 'unimplemented', 'human attestation alone']);
 
+const PENDING_FIXTURE_MARKERS = Object.freeze(['pending-live-capture', 'pending-unimplemented-surface', 'pending-unimplemented-side-by-side-surface', 'pending-live-evidence', 'pending-replay', 'pending-oracle']);
+
+const MANIFEST_ONLY_MARKERS = Object.freeze(['manifest-only', 'contract-only', 'inheritedsourcehashes']);
+
+const LIVE_CAPTURE_MARKERS = Object.freeze(['live-capture', 'live-evidence', 'live-oracle', 'side-by-side-zero-diff']);
+
+export type FinalProofViolationCategory = 'human-attestation-alone' | 'manifest-only' | 'pending-fixture';
+
+export interface FinalProofViolation {
+  readonly category: FinalProofViolationCategory;
+  readonly detail: string;
+}
+
 export interface PlanValidationResult {
   readonly errors: readonly string[];
   readonly stepCount: number;
@@ -46,7 +59,10 @@ export interface PlanValidationResult {
 }
 
 function slugify(value: string): string {
-  return value.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-').replaceAll(/^-|-$/g, '');
+  return value
+    .toLowerCase()
+    .replaceAll(/[^a-z0-9]+/g, '-')
+    .replaceAll(/^-|-$/g, '');
 }
 
 export function stepFilePath(step: FinalPlanStep): string {
@@ -122,6 +138,56 @@ function validateLaneCoverage(parallelText: string, errors: string[]): void {
   for (const lane of FINAL_PLAN_LANES) {
     if (!parallelText.includes(`\`${lane.lane}\``)) {
       errors.push(`PARALLEL_WORK.md is missing lane ${lane.lane}.`);
+    }
+  }
+}
+
+export function findFinalProofViolations(text: string): readonly FinalProofViolation[] {
+  const violations: FinalProofViolation[] = [];
+  const lowerText = text.toLowerCase();
+  const hasLiveCapture = LIVE_CAPTURE_MARKERS.some((marker) => lowerText.includes(marker));
+
+  for (const marker of PENDING_FIXTURE_MARKERS) {
+    if (lowerText.includes(marker)) {
+      violations.push({ category: 'pending-fixture', detail: `Found pending marker: ${marker}` });
+      break;
+    }
+  }
+
+  for (const marker of MANIFEST_ONLY_MARKERS) {
+    if (lowerText.includes(marker) && !hasLiveCapture) {
+      violations.push({ category: 'manifest-only', detail: `Found manifest-only marker: ${marker} without live capture` });
+      break;
+    }
+  }
+
+  if (/"human_attestation_required"\s*:\s*true/i.test(text)) {
+    const oracleEvidenceMatch = /"oracle_evidence_required"\s*:\s*\[([^\]]*)\]/i.exec(text);
+    const oracleEvidenceBody = oracleEvidenceMatch?.[1]?.trim() ?? '';
+    if (oracleEvidenceBody === '') {
+      violations.push({ category: 'human-attestation-alone', detail: 'Final gate relies on human attestation alone without oracle evidence entries' });
+    }
+  }
+
+  return violations;
+}
+
+async function validateFinalGates(errors: string[]): Promise<void> {
+  const finalGatesDirectory = 'plan_final/final-gates';
+
+  if (!(await pathExists(finalGatesDirectory))) {
+    return;
+  }
+
+  for (const directoryEntry of await readdir(finalGatesDirectory)) {
+    if (!directoryEntry.endsWith('.json')) {
+      continue;
+    }
+
+    const path = `${finalGatesDirectory}/${directoryEntry}`;
+    const text = await readText(path);
+    for (const violation of findFinalProofViolations(text)) {
+      errors.push(`${path} rejects final proof: ${violation.category} - ${violation.detail}`);
     }
   }
 }
@@ -202,6 +268,7 @@ export async function validatePlan(): Promise<PlanValidationResult> {
   }
 
   await validateAcceptanceTests(errors);
+  await validateFinalGates(errors);
 
   return Object.freeze({
     errors,

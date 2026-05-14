@@ -1,0 +1,7 @@
+{
+  "stepId": "00-002",
+  "lane": "governance",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/00-002.json",
+  "commitSha": null
+}

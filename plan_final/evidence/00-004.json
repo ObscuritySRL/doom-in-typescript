@@ -1,0 +1,33 @@
+{
+  "stepId": "00-004",
+  "lane": "governance",
+  "title": "lock-step-selector-contract",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/select-step.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/select-step.ts",
+    "test/plan_final/select-step.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/select-step.test.ts",
+    "passed": 5,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15327,
+    "failed": 0,
+    "files": 798
+  },
+  "typecheck": "clean",
+  "contractAssertions": [
+    "selects 00-001 when no status files exist (no-lane and governance-lane)",
+    "skips a step whose status file reports COMPLETED",
+    "blocks a lane whose only step has an unmet prerequisite",
+    "reports a clear reason when a lane is exhausted"
+  ]
+}

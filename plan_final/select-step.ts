@@ -7,15 +7,21 @@ export interface StepSelection {
   readonly stepFile: string | null;
 }
 
+export interface SelectStepOptions {
+  readonly statusDirectory?: string;
+}
+
 interface StepStatus {
   readonly status?: string;
 }
 
-async function readCompletedStepIds(): Promise<ReadonlySet<string>> {
+const DEFAULT_STATUS_DIRECTORY = 'plan_final/status';
+
+async function readCompletedStepIds(statusDirectory: string): Promise<ReadonlySet<string>> {
   const completedStepIds = new Set<string>();
 
   for (const step of FINAL_PLAN_STEPS) {
-    const statusPath = `plan_final/status/${step.id}.json`;
+    const statusPath = `${statusDirectory}/${step.id}.json`;
 
     if (!(await Bun.file(statusPath).exists())) {
       continue;
@@ -40,8 +46,9 @@ function prerequisitesComplete(step: FinalPlanStep, completedStepIds: ReadonlySe
   return true;
 }
 
-export async function selectNextStep(lane: string | null = null): Promise<StepSelection> {
-  const completedStepIds = await readCompletedStepIds();
+export async function selectNextStep(lane: string | null = null, options: SelectStepOptions = {}): Promise<StepSelection> {
+  const statusDirectory = options.statusDirectory ?? DEFAULT_STATUS_DIRECTORY;
+  const completedStepIds = await readCompletedStepIds(statusDirectory);
 
   for (const step of FINAL_PLAN_STEPS) {
     if (lane !== null && step.lane !== lane) {
