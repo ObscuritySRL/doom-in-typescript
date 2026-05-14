@@ -1,0 +1,7 @@
+{
+  "stepId": "03-002",
+  "lane": "launch-host-input",
+  "status": "BLOCKED",
+  "blockerReason": "src/main.ts is SHA-pinned at 019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44 by test/plan_fps/01-013-audit-missing-save-load-ui.test.ts:171 and content-pinned by 01-013..01-015. Plan_final 03-002 cannot retire src/main.ts without weakening those tests, which session rules forbid. Resolution requires governance to either retire the plan_fps audit tests as part of plan supersession or update the SHA pin.",
+  "blockerCommit": "e1c9765"
+}

@@ -15,9 +15,15 @@ interface StepStatus {
   readonly status?: string;
 }
 
+interface StepStatusIndex {
+  readonly blockedStepIds: ReadonlySet<string>;
+  readonly completedStepIds: ReadonlySet<string>;
+}
+
 const DEFAULT_STATUS_DIRECTORY = 'plan_final/status';
 
-async function readCompletedStepIds(statusDirectory: string): Promise<ReadonlySet<string>> {
+async function readStepStatusIndex(statusDirectory: string): Promise<StepStatusIndex> {
+  const blockedStepIds = new Set<string>();
   const completedStepIds = new Set<string>();
 
   for (const step of FINAL_PLAN_STEPS) {
@@ -30,10 +36,12 @@ async function readCompletedStepIds(statusDirectory: string): Promise<ReadonlySe
     const status = (await Bun.file(statusPath).json()) as StepStatus;
     if (status.status === 'COMPLETED') {
       completedStepIds.add(step.id);
+    } else if (status.status === 'BLOCKED') {
+      blockedStepIds.add(step.id);
     }
   }
 
-  return completedStepIds;
+  return Object.freeze({ blockedStepIds, completedStepIds });
 }
 
 function prerequisitesComplete(step: FinalPlanStep, completedStepIds: ReadonlySet<string>): boolean {
@@ -48,7 +56,7 @@ function prerequisitesComplete(step: FinalPlanStep, completedStepIds: ReadonlySe
 
 export async function selectNextStep(lane: string | null = null, options: SelectStepOptions = {}): Promise<StepSelection> {
   const statusDirectory = options.statusDirectory ?? DEFAULT_STATUS_DIRECTORY;
-  const completedStepIds = await readCompletedStepIds(statusDirectory);
+  const { blockedStepIds, completedStepIds } = await readStepStatusIndex(statusDirectory);
 
   for (const step of FINAL_PLAN_STEPS) {
     if (lane !== null && step.lane !== lane) {
@@ -56,6 +64,10 @@ export async function selectNextStep(lane: string | null = null, options: Select
     }
 
     if (completedStepIds.has(step.id)) {
+      continue;
+    }
+
+    if (blockedStepIds.has(step.id)) {
       continue;
     }
 

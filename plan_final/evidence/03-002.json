@@ -1,0 +1,29 @@
+{
+  "stepId": "03-002",
+  "lane": "launch-host-input",
+  "title": "retire-or-redirect-src-main",
+  "status": "BLOCKED",
+  "blockerDetails": {
+    "summary": "Cross-plan write-lock conflict: src/main.ts is content-pinned by plan_fps audit tests outside the plan_final 03-002 write lock.",
+    "pinnedPath": "src/main.ts",
+    "currentSha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+    "pinningTests": [
+      "test/plan_fps/01-013-audit-missing-save-load-ui.test.ts:171",
+      "test/plan_fps/01-013-audit-missing-save-load-ui.test.ts:175-189",
+      "test/plan_fps/01-014-audit-missing-config-persistence.test.ts:336-372",
+      "test/plan_fps/01-015-audit-missing-side-by-side-replay.test.ts:317-356"
+    ],
+    "blockerCommit": "e1c9765",
+    "resolutionOptions": [
+      "Retire plan_fps as superseded prior art (mirror plan_engine treatment) under explicit governance approval.",
+      "Update plan_fps SHA / substring assertions to track a new thin-wrapper src/main.ts content (expands write lock beyond declared 03-002 scope).",
+      "Defer 03-002 to a future governance step that resolves the cross-plan write-lock conflict on src/main.ts."
+    ],
+    "downstreamImpact": "03-002 is not a prerequisite for any other FINAL_PLAN_STEPS entry. The final acceptance gate at 13-011 will correctly report 03-002 as not-COMPLETED until governance resolves the blocker."
+  },
+  "selectorBehavior": {
+    "rationale": "plan_final/select-step.ts now skips BLOCKED status JSONs at selection time. BLOCKED steps do NOT satisfy prerequisites, so downstream steps that list 03-002 as a prereq would remain blocked (none currently do).",
+    "selectorFile": "plan_final/select-step.ts",
+    "focusedTest": "test/plan_final/governance/selector-skips-blocked.test.ts"
+  }
+}
