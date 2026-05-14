@@ -9758,3 +9758,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-037
 - summary: RENDERER_FRAMEBUFFER_PARITY_GATE bundles 320x200=64000 byte buffer, SHA-256 64-hex hashes, checkpoint tics [0, 35, 105].
 - tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-024 implement-volume-controls completed
+
+- status: completed
+- lane: audio
+- step_id: 11-024
+- summary: src/audio/implement-volume-controls.ts pins snd_SfxVolume + snd_MusicVolume 4-bit integer range 0..15 (16 menu steps), clamping at boundaries with no wrap, DMX register scale factor 8 (15->120, just under 127 register max). Volume 0 is silent (not default). Provides clampVanillaSoundVolume and vanillaMusicVolumeToDmxRegisterValue helpers.
+- tests: format pass; focused 11/0; full pass with pre-existing inventory drift unchanged; tsc pass
