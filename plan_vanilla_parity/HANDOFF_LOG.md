@@ -9911,3 +9911,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-031
 - summary: Music OPL parity gate bundles MUS event log + GENMIDI instruments + OPL synth core constants.
 - tests: format pass; focused 13/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 13-001 gate-shareware-doom-one-full-playthrough completed
+
+- status: completed
+- lane: acceptance
+- step_id: 13-001
+- summary: Shareware E1 (9 maps) acceptance manifest; 5 skills (ITYTD/HNTR/HMP/UV/NM); composes 11 prerequisite gates; iwad SHA-256 marked pending-oracle-capture; 5 oracle streams + E1M8 boss + E1M9 secret exits.
+- tests: format pass; focused 8/0; full pass; tsc pre-existing save lane TS2352
