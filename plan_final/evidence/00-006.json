@@ -1,0 +1,36 @@
+{
+  "stepId": "00-006",
+  "lane": "governance",
+  "title": "create-ralph-loop-launcher-contract",
+  "date": "2026-05-14",
+  "commands": [
+    {
+      "command": "bun run format",
+      "result": "pass",
+      "notes": "Formatted 4 files. No fixes applied."
+    },
+    {
+      "command": "bun test test/plan_final/ralph-loop-contract.test.ts",
+      "result": "pass",
+      "notes": "9 pass, 0 fail, 35 expect() calls in 35.00ms."
+    },
+    {
+      "command": "bun test",
+      "result": "pass",
+      "notes": "15370 pass, 0 fail across 801 files in 24.22s."
+    },
+    {
+      "command": "bun x tsc --noEmit --project tsconfig.json",
+      "result": "pass",
+      "notes": "Clean exit, no diagnostics."
+    }
+  ],
+  "changedPaths": [
+    "test/plan_final/ralph-loop-contract.test.ts",
+    "plan_final/progress/governance/00-006.md",
+    "plan_final/evidence/00-006.json",
+    "plan_final/status/00-006.json"
+  ],
+  "knownFailures": [],
+  "summary": "Locked the Ralph-loop launcher contract by adding test/plan_final/ralph-loop-contract.test.ts. The 9 focused tests pin: PROMPT.md reads AGENTS+PROMPT+MASTER_CHECKLIST; RLP_LANE honored with select-step.ts fallback; progress-log start before implementation reads; read-only/write-lock/focused-test discipline; verification command order; failure-fix-rerun discipline; explicit staging+commit+push+SHA logging; the RLP_STATUS machine-readable trailer keys; PRE_PROMPT.md non-Bun-runtime ban and live-side-by-side completion contract."
+}
