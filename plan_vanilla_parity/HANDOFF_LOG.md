@@ -9695,3 +9695,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-018
 - summary: src/audio/implement-music-pause-resume.ts pins I_PauseSong/I_ResumeSong contract: pause halts quicktick advancement while preserving score pointer + channel state (no NoteOff emitted); resume continues from saved position (no NoteOn re-emit). Both calls are idempotent. Stop from any state returns to 'stopped'.
 - tests: format pass; focused 12/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-016 implement-mus-looping completed
+
+- status: completed
+- lane: audio
+- step_id: 11-016
+- summary: src/audio/implement-mus-looping.ts pins i_music.c / mus2mid.c looping contract: vanilla music loops by default until S_StopMusic. ScoreEnd in looping mode rewinds eventIndex to 0 with the ScoreEnd trailing delay preserved as the gap before re-fire. Per-channel velocity cache is NOT reset on loop wrap.
+- tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
