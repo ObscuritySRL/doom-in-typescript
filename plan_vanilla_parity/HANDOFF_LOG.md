@@ -9569,3 +9569,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-023
 - summary: src/save/restore-player-mobj-and-world-state.ts pins g_game.c G_DoLoadGame restoration order: P_UnArchivePlayers, P_UnArchiveWorld, P_UnArchiveThinkers, P_UnArchiveSpecials, verifySaveGameTerminator (0x1d), P_RestoreTargets (fixup index->pointer references), clearGameAction (ga_nothing=0). NULL mobj index is 0 reserved as no-target; first archived mobj gets index 1.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-012 implement-weapon-and-monster-sound-routing completed
+
+- status: completed
+- lane: audio
+- step_id: 11-012
+- summary: src/audio/implement-weapon-and-monster-sound-routing.ts pins three combat sfx routing profiles: weapon (origin=player.mo, listener-self short-circuits S_AdjustSoundParams), monster (origin=monster.mo, S_AdjustSoundParams every tic to attenuate/pan), and fullscreen-boss (origin=NULL, escapes spatialization for bossbrain cues). Only monster profile re-spatializes per tic.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift unchanged; tsc pass
