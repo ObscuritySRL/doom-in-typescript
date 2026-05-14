@@ -1,0 +1,98 @@
+{
+  "stepId": "02-007",
+  "lane": "oracle",
+  "title": "capture-reference-save-load",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-save-load.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/02-007.json",
+    "plan_final/progress/oracle/02-007.md",
+    "plan_final/status/02-007.json",
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-save-load.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceSaveLoad.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-save-load.test.ts",
+    "passed": 6,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15514,
+    "failed": 0,
+    "files": 816
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceSaveLoad.ts:captureReferenceSaveLoad",
+    "errorClasses": ["ReferenceBundleMissingError", "ReferenceSaveLoadSaveFileNotFoundError", "ReferenceSaveLoadWindowNotFoundError"],
+    "menuNavigationKeys": ["VK_ESCAPE", "VK_RETURN", "VK_RETURN", "VK_RETURN"],
+    "saveKeySequence": ["VK_F2", "VK_RETURN", "VK_RETURN"],
+    "loadKeySequence": ["VK_F3", "VK_RETURN"],
+    "mutationKey": "VK_UP",
+    "inputInjection": "PostMessageW(WM_KEYDOWN, vkCode, 0x00000001) + PostMessageW(WM_KEYUP, vkCode, 0xc0000001) to the PID-filtered Chocolate Doom window handle; SetForegroundWindow is called before each key burst so SDL 1.2's message pump processes the synthesized events.",
+    "saveDirectoryOverride": "-savedir <sandbox-absolute-path> command-line flag redirects DOOMSAV<N>.DSG into the sandbox cwd instead of the default %APPDATA% subtree.",
+    "configRewriteOnSandbox": [
+      "fullscreen=0",
+      "show_endoom=0",
+      "startup_delay=0"
+    ],
+    "ticDurationMs": 29,
+    "traceOrdinals": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    "traceNames": [
+      "clean-launch",
+      "open-main-menu",
+      "start-e1m1",
+      "open-save-menu",
+      "write-save-slot-zero",
+      "return-to-gameplay-after-save",
+      "mutate-live-state-after-save",
+      "open-load-menu",
+      "load-save-slot-zero",
+      "verify-restored-frame"
+    ],
+    "evidenceShape": [
+      "cleanShutdown",
+      "e1m1EntrySha256",
+      "executableFilename",
+      "exitCode",
+      "exitedAtElapsedMs",
+      "framebufferHeight",
+      "framebufferWidth",
+      "killedAtElapsedMs",
+      "mutatedAtElapsedMs",
+      "mutatedSha256",
+      "postLoadAtElapsedMs",
+      "postLoadSha256",
+      "postSaveSha256",
+      "preSaveSha256",
+      "roundtripSavedFileByteLength",
+      "roundtripSavedFileSha256",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "saveDescription",
+      "saveSlotIndex",
+      "savedAtElapsedMs",
+      "savedFileByteLength",
+      "savedFileSha256",
+      "spawnedAtElapsedMs",
+      "terminationCause",
+      "totalElapsedMs",
+      "verifyCapturedAtElapsedMs",
+      "verifySha256",
+      "windowFoundAtElapsedMs",
+      "windowTitle"
+    ],
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-save-load.test.ts pins the static surface (runner + buildSaveSlotFilename + SAVE_LOAD_DEFAULT_SLOT + SAVE_LOAD_TRACE_ORDINALS frozen 10-element list + SAVE_LOAD_TRACE_NAMES frozen 10-element list mirroring the plan_fps capture-live-save-load-roundtrip.json `expectedTrace[*].action` field + override key set + both error class shapes) and gates the live capture on `referenceBundleIsAvailable()`; when gated in, the live test spawns a fresh sandboxed DOOM.EXE with `-savedir <sandbox>`, navigates Main → Episode → Skill → E1M1, saves to slot 0 via F2/Enter/Enter, mutates state with a 50-tic VK_UP hold (asserting mutated frame hash diverges from pre-save baseline), loads slot 0 via F3/Enter, re-reads the .DSG bytes (asserting byte-identical roundtrip), captures verify-restored frame, kills DOOM, and asserts clean sandbox cleanup."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceSaveLoad.ts triggers the same cross-plan inventory updates mirroring the 02-001 / 02-002 / 02-003 / 02-004 / 02-005 / 02-006 precedent. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: tools_reference_file_count 8 → 9 with captureReferenceSaveLoad.ts inserted in the ASCII-sorted filename list, totals raised to match the new capture_modules row pinning the runner's on-disk size / line / sha plus its exported surface. test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 8 assertions both move to 9. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 21 → 22 and classification_summary.classified_source_file_count 465 → 466."
+  }
+}
