@@ -11,9 +11,10 @@
     "tools_reference_relative_path": "tools/reference/",
     "tools_root_file_count": 2,
     "tools_root_filenames_sorted": ["format-changed.ts", "verify.ts"],
-    "tools_reference_file_count": 9,
+    "tools_reference_file_count": 10,
     "tools_reference_filenames_sorted": [
       "captureReferenceAudioWindows.ts",
+      "captureReferenceDemoSync.ts",
       "captureReferenceE1M1Actions.ts",
       "captureReferenceMenuRoute.ts",
       "captureReferenceSaveLoad.ts",
@@ -23,8 +24,8 @@
       "launchReferenceCleanly.ts",
       "windowCaptureProbe.ts"
     ],
-    "total_tools_size_bytes": 162057,
-    "total_tools_line_count": 4062,
+    "total_tools_size_bytes": 181027,
+    "total_tools_line_count": 4523,
     "companion_test_file_count": 3,
     "companion_test_relative_paths_sorted": ["test/oracles/reference-run-isolation.test.ts", "test/oracles/window-capture-feasibility.test.ts", "test/scaffold/verify-commands.test.ts"],
     "total_companion_test_size_bytes": 34093,
@@ -48,6 +49,24 @@
       "src_importer_count": 0,
       "test_importer_count": 1,
       "companion_test_relative_path": "test/plan_final/oracle/capture-reference-audio-windows.test.ts"
+    },
+    {
+      "relative_path": "tools/reference/captureReferenceDemoSync.ts",
+      "group": "reference_window_capture",
+      "role": "Implements captureReferenceDemoSync(demoNumber, overrides) which captures per-checkpoint framebuffer hashes from the sandboxed Chocolate Doom 2.2.1 reference build playing DEMO1, DEMO2, or DEMO3 via the `-playdemo demo<N>` command-line flag: builds a fresh REFERENCE_SANDBOX_POLICY sandbox via createReferenceSandbox, rewrites the sandbox chocolate-doom.cfg (fullscreen=0, startup_delay=0, show_endoom=0), spawns DOOM.EXE with `-playdemo demo<N>` and stdio routed away from the test harness, dlopens user32.dll (USER32_WINDOW_DISCOVERY_SYMBOLS for window discovery + USER32_CAPTURE_SYMBOLS for GDI capture) plus gdi32.dll for the BitBlt/GetDIBits pipeline, polls EnumWindows for the visible top-level window whose owning process id equals subprocess.pid and whose title contains CHOCOLATE_DOOM_WINDOW_TITLE, then walks the per-demo checkpoint contract (DEMO_CHECKPOINT_CONTRACTS) sleeping until each checkpoint's elapsed-from-spawn target, capturing the live BGRA framebuffer via the canonical 12-step GDI capture sequence, normalizing to 320x200 with normalizeToInternalFramebuffer, and SHA-256 hashing both buffers. Returns a frozen ReferenceDemoSyncEvidence record (demoNumber, demoLump, sandboxId/Path, windowTitle, framebufferWidth/Height, spawnedAtElapsedMs, windowFoundAtElapsedMs, checkpoints array of DemoCheckpointEvidence rows with frame/tic/elapsed/sha256/normalizedSha256, killedAtElapsedMs, exitedAtElapsedMs, exitCode, terminationCause, totalElapsedMs, cleanShutdown). Exposes DEMO_LUMP_NAMES (frozen 1→'DEMO1' / 2→'DEMO2' / 3→'DEMO3' map), DEMO_PLAYBACK_NUMBERS (frozen [1,2,3] tuple), and DEMO_CHECKPOINT_CONTRACTS (frozen per-demo checkpoint trace mirroring the plan_fps capture-demoN-playback-checkpoints.json fixtures). Throws ReferenceBundleMissingError when the sandboxed executable is absent and ReferenceDemoSyncWindowNotFoundError when EnumWindows does not find the process-owned window within findWindowTimeoutMs.",
+      "size_bytes": 18970,
+      "line_count": 461,
+      "sha256": "f7f478835dbe8cd3cf5ef833f72182b505bc0b5c43b5f3df0e08e477f04a292d",
+      "exported_interfaces": ["CaptureReferenceDemoSyncOverrides", "DemoCheckpointContract", "DemoCheckpointEvidence", "ReferenceDemoSyncEvidence"],
+      "exported_functions": ["captureReferenceDemoSync", "normalizeToInternalFramebuffer"],
+      "exported_constants": ["DEMO_CHECKPOINT_CONTRACTS", "DEMO_LUMP_NAMES", "DEMO_PLAYBACK_NUMBERS"],
+      "exported_classes": ["ReferenceDemoSyncWindowNotFoundError"],
+      "exported_types": ["ReferenceDemoNumber", "ReferenceDemoSyncTerminationCause"],
+      "exported_const_enums": [],
+      "external_imports": ["bun:ffi", "node:crypto", "node:fs", "node:fs/promises", "node:path", "tools/reference/createReferenceSandbox.ts", "tools/reference/launchReferenceCleanly.ts", "tools/reference/windowCaptureProbe.ts"],
+      "src_importer_count": 0,
+      "test_importer_count": 1,
+      "companion_test_relative_path": "test/plan_final/oracle/capture-reference-demo-sync.test.ts"
     },
     {
       "relative_path": "tools/reference/captureReferenceE1M1Actions.ts",

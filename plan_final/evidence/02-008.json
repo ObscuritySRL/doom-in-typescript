@@ -1,0 +1,53 @@
+{
+  "stepId": "02-008",
+  "lane": "oracle",
+  "title": "capture-reference-demo-sync",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-demo-sync.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/02-008.json",
+    "plan_final/progress/oracle/02-008.md",
+    "plan_final/status/02-008.json",
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-demo-sync.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceDemoSync.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-demo-sync.test.ts",
+    "passed": 9,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15523,
+    "failed": 0,
+    "files": 817
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceDemoSync.ts:captureReferenceDemoSync",
+    "errorClasses": ["ReferenceBundleMissingError", "ReferenceDemoSyncWindowNotFoundError"],
+    "demoSequence": "Sandboxed Chocolate Doom 2.2.1 spawn with `-playdemo demoN` for each of N in {1, 2, 3}; the demo plays deterministically from its WAD lump (no input injection required); per checkpoint tic the runner schedules a frame capture via the canonical 12-step GDI BitBlt/GetDIBits pipeline (sourced from windowCaptureProbe.ts), waits for the elapsed-ms target (capturedAtElapsedMs = checkpointTic * (1000/35)) plus checkpointLeadMs override, captures the client area into a width*height*4 BGRA buffer, computes SHA-256 of the captured-native buffer and of the 320x200 nearest-neighbour normalized buffer; kills the subprocess after the last checkpoint, waits killWaitMs for clean exit, destroys the sandbox.",
+    "demos": [
+      { "demoNumber": 1, "demoLump": "DEMO1", "playdemoArgument": "demo1", "checkpointTics": [0, 35, 70, 175, 350, 700] },
+      { "demoNumber": 2, "demoLump": "DEMO2", "playdemoArgument": "demo2", "checkpointTics": [0, 35, 70, 140, 280, 560, 840, 1120] },
+      { "demoNumber": 3, "demoLump": "DEMO3", "playdemoArgument": "demo3", "checkpointTics": [0, 1, 35, 350, 700] }
+    ],
+    "configRewriteOnSandbox": [
+      "fullscreen=0",
+      "show_endoom=0",
+      "startup_delay=0"
+    ],
+    "ticDurationMs": "1000 / 35 (~28.5714)",
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-demo-sync.test.ts pins the static surface (DEMO_LUMP_NAMES + DEMO_PLAYBACK_NUMBERS + DEMO_CHECKPOINT_CONTRACTS + runner arity + error class shapes + frozen contract structure matching capture-demoN-playback-checkpoints.json fixtures) and gates the live three-demo capture on every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present; when gated in, spawns three sandboxed DOOM.EXE processes back-to-back with -playdemo demo1/2/3, captures per-checkpoint frames, and asserts non-decreasing per-checkpoint timestamps + SHA-256 hex shape + clean shutdown."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceDemoSync.ts triggers the same cross-plan inventory updates mirroring the 02-001 / 02-002 / 02-003 / 02-004 / 02-005 / 02-006 / 02-007 precedent. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: tools_reference_file_count 9 -> 10 with captureReferenceDemoSync.ts inserted in ASCII-sorted position between captureReferenceAudioWindows.ts and captureReferenceE1M1Actions.ts; totals raised to 181027 bytes / 4523 lines; new capture_modules row pins module metadata. test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 9 assertions both move to 10. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 22 -> 23 and classification_summary.classified_source_file_count 466 -> 467."
+  }
+}
