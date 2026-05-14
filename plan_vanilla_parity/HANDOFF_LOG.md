@@ -9416,3 +9416,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-004
 - summary: src/audio/implement-sound-origin-tracking.ts pins s_sound.c S_UpdateSounds origin guard: only remote-mobj origins (origin != null AND origin != listener) call S_AdjustSoundParams per tic; anonymous (origin == null) and self-listener (origin == listener) cases keep started-with volume/separation. NORM_SEP=128 centre pan, link-volume floor=1 before stop.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-004 implement-sound-origin-tracking completed
+
+- status: completed
+- lane: audio
+- step_id: 11-004
+- summary: src/audio/implement-sound-origin-tracking.ts pins the S_UpdateSounds(listener) per-tic contract: NORM_SEP=128 centre pan, link-volume floor=1 before stop, origin-case rules where anonymous (null) and self-listener origins skip S_AdjustSoundParams while only remote-mobj origins re-spatialize each tic.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
