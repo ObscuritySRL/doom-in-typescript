@@ -1,0 +1,49 @@
+{
+  "stepId": "05-001",
+  "lane": "wad-assets",
+  "title": "wire-iwad-resource-cache",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-iwad-resource-cache.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-001.json",
+    "plan_final/progress/wad-assets/05-001.md",
+    "plan_final/status/05-001.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/iwadResourceCache.ts",
+    "test/plan_final/wad/wire-iwad-resource-cache.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-iwad-resource-cache.test.ts",
+    "passed": 20,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15686,
+    "failed": 0,
+    "files": 827
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-001 wires the WAD header parse, directory parse, lump-name lookup, and game-mode identification into a single typed IwadResourceCache. The read-only refs (src/wad/ and src/assets/) supply the building blocks; the cache itself lives at src/vanilla/iwadResourceCache.ts and consumes a LaunchContext (from 03-004) plus a caller-supplied IwadFileLoader so the cache is deterministic under test. Failure modes (empty buffer, missing file, parse failure, non-IWAD header) surface as typed IwadResourceCacheError instances with a stable IwadResourceCacheErrorReason discriminator. The cache calls identifyGame against the resolved IWAD basename and the lump lookup, so the final GameIdentification reconciles the filename-derived gameMode with the actual lump contents (Ultimate vs Registered vs Shareware vs Commercial vs Chex).",
+    "publicSurface": [
+      "buildIwadResourceCache(launchContext: LaunchContext, loader: IwadFileLoader): IwadResourceCache",
+      "IwadResourceCache interface (gameIdentification, header, directory, lookup, findLump, getAllIndicesForName, hasLump)",
+      "IwadResourceCacheError extends Error (reason: IwadResourceCacheErrorReason, resolvedPath: string)",
+      "IwadResourceCacheErrorReason union ('empty-buffer' | 'not-an-iwad' | 'wad-directory-parse-failure' | 'wad-header-parse-failure' | 'wad-not-found')",
+      "IwadFileLoader interface (readFile: (resolvedPath: string) => Buffer | null)"
+    ],
+    "wadFilesModified": false,
+    "assetFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/wad/directory.ts: src_importer_count 22→23, test_importer_count 66→67 (src/vanilla/iwadResourceCache.ts and test/plan_final/wad/wire-iwad-resource-cache.test.ts now import it transitively)",
+      "src/wad/header.ts: src_importer_count 2→3, test_importer_count 62→63 (same wiring)",
+      "src/wad/lumpLookup.ts: src_importer_count 3→4 (iwadResourceCache.ts imports LumpLookup directly)"
+    ]
+  }
+}
