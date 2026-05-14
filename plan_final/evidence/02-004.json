@@ -1,0 +1,84 @@
+{
+  "stepId": "02-004",
+  "lane": "oracle",
+  "title": "capture-reference-menu-route",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-menu-route.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-menu-route.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceMenuRoute.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-menu-route.test.ts",
+    "passed": 9,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15485,
+    "failed": 0,
+    "files": 813
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceMenuRoute.ts:captureReferenceMenuRoute",
+    "errorClasses": ["ReferenceBundleMissingError", "ReferenceMenuRouteWindowNotFoundError"],
+    "menuRouteSteps": [
+      "VK_ESCAPE → main-menu (default selection: New Game)",
+      "VK_RETURN → episode-menu (default selection: Knee-Deep in the Dead)",
+      "VK_RETURN → skill-menu (default selection: Hurt Me Plenty)",
+      "VK_RETURN → gameplay-e1m1 (Hurt Me Plenty selected by default)"
+    ],
+    "inputInjection": "PostMessageW(WM_KEYDOWN, vkCode, 0x00000001) + PostMessageW(WM_KEYUP, vkCode, 0xc0000001) directly to the PID-filtered Chocolate Doom window handle; SetForegroundWindow is called before each key burst so the SDL 1.2 message pump processes the synthesized events.",
+    "captureMode": "GDI BitBlt against the live Chocolate Doom 2.2.1 SDL window after each input step settles for settleAfterKeyMs (default 400ms)",
+    "configRewriteOnSandbox": [
+      "fullscreen=0",
+      "startup_delay=0",
+      "show_endoom=0"
+    ],
+    "evidenceShape": [
+      "cleanShutdown",
+      "executableFilename",
+      "exitCode",
+      "exitedAtElapsedMs",
+      "framebufferHeight",
+      "framebufferWidth",
+      "killedAtElapsedMs",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "spawnedAtElapsedMs",
+      "steps",
+      "terminationCause",
+      "titleFrameCapturedAtElapsedMs",
+      "titleFrameNormalizedSha256",
+      "titleFrameSha256",
+      "totalElapsedMs",
+      "windowFoundAtElapsedMs",
+      "windowTitle"
+    ],
+    "stepEvidenceShape": [
+      "capturedAtElapsedMs",
+      "description",
+      "expectedMenuState",
+      "framebufferByteLength",
+      "framebufferSha256",
+      "normalizedByteLength",
+      "normalizedSha256",
+      "stepIndex",
+      "virtualKeyCode",
+      "virtualKeyName"
+    ],
+    "normalizedDimensions": { "width": 320, "height": 200, "byteLength": 256000, "bytesPerPixel": 4 },
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-menu-route.test.ts gates the live capture behind every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present and asserts the full live contract (4 menu-route step captures + title-attract frame capture + sandbox cleanup) when the bundle is present."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceMenuRoute.ts triggers two cross-plan inventory updates mirroring the 02-001 / 02-002 / 02-003 precedent. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: tools_reference_file_count 5 → 6 with captureReferenceMenuRoute.ts inserted at the head of the ASCII-sorted filename list (M < T so 'captureReferenceMenuRoute' < 'captureReferenceTitleFrame'), total_tools_size_bytes 58855 → 78385, total_tools_line_count 1577 → 2082, and a new capture_modules row pins the module's size_bytes=19530 / line_count=505 / sha256=f5c3...d1f5 / exported surface (MenuRouteKeyStep + MenuRouteStepEvidence + ReferenceMenuRouteEvidence + CaptureReferenceMenuRouteOverrides interfaces, captureReferenceMenuRoute + normalizeToInternalFramebuffer functions, MENU_ROUTE_KEY_STEPS constant, ReferenceMenuRouteWindowNotFoundError class, ReferenceMenuRouteTerminationCause type). test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 5 assertions both move to 6. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 18 → 19 and classification_summary.classified_source_file_count 462 → 463 (one new tools/reference/ .ts file)."
+  }
+}

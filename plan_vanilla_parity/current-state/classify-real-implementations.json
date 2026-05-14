@@ -24,7 +24,7 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 462,
+    "classified_source_file_count": 463,
     "classified_test_file_count": 274,
     "real_group_count": 9,
     "representative_module_count": 47,
@@ -113,7 +113,7 @@
         "test/oracles/input-script-format.test.ts",
         "test/oracles/window-capture-feasibility.test.ts"
       ],
-      "source_file_count": 18,
+      "source_file_count": 19,
       "source_roots": ["src/input/", "src/oracles/", "tools/reference/"],
       "test_file_count": 46,
       "test_roots": ["test/input/", "test/oracles/"]
