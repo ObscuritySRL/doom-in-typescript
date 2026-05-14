@@ -9659,3 +9659,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-026
 - summary: src/save/compare-save-load-roundtrip-oracle.ts pins three round-trip variants: write-read-write (catches non-deterministic serialization), read-write-read (catches lossy parsing), state-save-load-state (strongest encoder+decoder losslessness gate). PADSAVEP regions must be zero-filled for byte-stable round-trips; P_RestoreTargets is the pointer-to-index round-trip choke point; leveltime modulo 2^24 quirk applies.
 - tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-032 implement-automap-line-and-thing-colors completed
+
+- status: completed
+- lane: render
+- step_id: 09-032
+- summary: Automap palette indices: background=0, walls=23, two-sided=96, floor-diff=75, ceil-diff=76, things=112, secret=252, grid=104, xhair=4.
+- tests: format pass; focused 1/0; full pass; tsc pre-existing save lane TS2352

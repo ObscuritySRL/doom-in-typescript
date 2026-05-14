@@ -334,7 +334,7 @@
 - [x] `09-029` `implement-status-bar-key-and-ammo-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-029-implement-status-bar-key-and-ammo-widgets.md`
 - [x] `09-030` `implement-automap-start-stop-state` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-030-implement-automap-start-stop-state.md`
 - [x] `09-031` `implement-automap-pan-zoom-follow-grid` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-031-implement-automap-pan-zoom-follow-grid.md`
-- [ ] `09-032` `implement-automap-line-and-thing-colors` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-032-implement-automap-line-and-thing-colors.md`
+- [x] `09-032` `implement-automap-line-and-thing-colors` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-032-implement-automap-line-and-thing-colors.md`
 - [ ] `09-033` `implement-automap-markers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-033-implement-automap-markers.md`
 - [x] `09-034` `add-framebuffer-hash-hook` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-034-add-framebuffer-hash-hook.md`
 - [ ] `09-035` `compare-title-and-e1m1-framebuffers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-035-compare-title-and-e1m1-framebuffers.md`
