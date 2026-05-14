@@ -1,0 +1,48 @@
+{
+  "stepId": "01-010",
+  "lane": "current-state",
+  "title": "gate-current-state-inventory",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/gate-current-state-inventory.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/01-010.json",
+    "plan_final/status/01-010.json",
+    "test/plan_final/current-state/gate-current-state-inventory.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/current-state/gate-current-state-inventory.test.ts",
+    "passed": 10,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15459,
+    "failed": 0,
+    "files": 809
+  },
+  "typecheck": "clean",
+  "gateContract": {
+    "requiredGapCategories": [
+      "01-001 inventory-root-entrypoints -> plan_final/current-state/root-entrypoints.json",
+      "01-002 inventory-simplified-launcher-imports -> plan_final/current-state/simplified-launcher-imports.json",
+      "01-003 inventory-pending-oracle-fixtures -> plan_final/current-state/pending-oracle-fixtures.json",
+      "01-004 inventory-runtime-implementation-modules -> plan_final/current-state/runtime-implementation-modules.json",
+      "01-005 inventory-unwired-ui-systems -> plan_final/current-state/unwired-ui-systems.json",
+      "01-006 inventory-unwired-player-systems -> plan_final/current-state/unwired-player-systems.json",
+      "01-007 inventory-unwired-ai-specials -> plan_final/current-state/unwired-ai-specials.json",
+      "01-008 inventory-unwired-audio-systems -> plan_final/current-state/unwired-audio-systems.json",
+      "01-009 inventory-weak-acceptance-tests -> plan_final/current-state/weak-acceptance-tests.json"
+    ],
+    "checks": [
+      "every category inventory JSON exists, parses, pins canonical stepId, lane, title, parseable UTC captured_at",
+      "if a category records a repository_root field, it must equal D:/Projects/doom-in-typescript",
+      "every category has a progress log, evidence JSON, and status JSON committed",
+      "every category status JSON reports status: COMPLETED with the canonical stepId"
+    ],
+    "stepIdNormalization": "accepts stepId (camelCase), step_id (snake_case), or id, since 01-001/01-002/01-004/01-005/01-006/01-008 used step_id while 01-003/01-007/01-009 used id"
+  }
+}
