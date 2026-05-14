@@ -1,0 +1,36 @@
+{
+  "stepId": "00-007",
+  "lane": "governance",
+  "title": "gate-control-center",
+  "date": "2026-05-14",
+  "commands": [
+    {
+      "command": "bun run format",
+      "result": "pass",
+      "notes": "Formatted 2 files. No fixes applied."
+    },
+    {
+      "command": "bun test test/plan_final/gate-control-center.test.ts",
+      "result": "pass",
+      "notes": "7 pass, 0 fail, 178 expect() calls in 64.00ms."
+    },
+    {
+      "command": "bun test",
+      "result": "pass",
+      "notes": "15449 pass, 0 fail across 808 files in 24.36s."
+    },
+    {
+      "command": "bun x tsc --noEmit --project tsconfig.json",
+      "result": "pass",
+      "notes": "Clean exit, no diagnostics."
+    }
+  ],
+  "changedPaths": [
+    "test/plan_final/gate-control-center.test.ts",
+    "plan_final/progress/governance/00-007.md",
+    "plan_final/evidence/00-007.json",
+    "plan_final/status/00-007.json"
+  ],
+  "knownFailures": [],
+  "summary": "G0 control-center gate locked with test/plan_final/gate-control-center.test.ts. The 7 focused cases prove: validatePlan() is clean against the committed plan_final artifacts; every checklist step has a generated step file; every camelCase governance status references a real evidence file under plan_final/evidence/ with matching stepId; findStatusSchemaViolations clears a canonical record; findFinalProofViolations clears a paired-attestation shape; findLaneOwnershipViolations and findCrossLaneWriteLockOverlaps are clean for FINAL_PLAN_LANES and FINAL_PLAN_STEPS."
+}
