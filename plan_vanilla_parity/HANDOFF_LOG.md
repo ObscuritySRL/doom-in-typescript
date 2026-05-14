@@ -9794,3 +9794,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-038
 - summary: STATUS_AUTOMAP_PARITY_GATE bundles status bar widget X positions, face widget (143,168) with 42 states, 6 key sprites at x=239, automap 10 marks and state enum.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-025 implement-sound-shutdown-ordering completed
+
+- status: completed
+- lane: audio
+- step_id: 11-025
+- summary: src/audio/implement-sound-shutdown-ordering.ts pins the 6-step I_Quit teardown order: I_StopSong, I_UnRegisterSong, I_ShutdownMusic, then per-channel I_StopSound + S_StopChannel, then I_ShutdownSound. Music driver shuts down before sfx hardware because OPL timer callback must clear before waveOut device release.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift unchanged; tsc pass
