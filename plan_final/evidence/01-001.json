@@ -1,0 +1,38 @@
+{
+  "step_id": "01-001",
+  "lane": "current-state",
+  "title": "inventory-root-entrypoints",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "verification_commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/root-entrypoints.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changed_paths": [
+    "plan_final/current-state/root-entrypoints.json",
+    "plan_final/progress/current-state/01-001.md",
+    "test/plan_final/current-state/root-entrypoints.test.ts"
+  ],
+  "focused_test_result": {
+    "command": "bun test test/plan_final/current-state/root-entrypoints.test.ts",
+    "pass": 9,
+    "fail": 0
+  },
+  "full_test_result": {
+    "command": "bun test",
+    "pass": 15327,
+    "fail": 0
+  },
+  "typecheck_result": {
+    "command": "bun x tsc --noEmit --project tsconfig.json",
+    "exit_code": 0,
+    "errors": 0
+  },
+  "format_result": {
+    "command": "bun run format",
+    "fixed_files": 1,
+    "formatted_files": 5
+  },
+  "known_failures": []
+}
