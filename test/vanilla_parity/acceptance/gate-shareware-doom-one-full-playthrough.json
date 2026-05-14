@@ -1,0 +1,19 @@
+{
+  "$schema": "https://doom-in-typescript.local/schemas/acceptance-gate.json",
+  "gate_id": "13-001",
+  "gate_title": "Shareware DOOM 1 Full Playthrough",
+  "gate_lane": "acceptance",
+  "iwad_scope": "shareware-doom1",
+  "iwad_filename_expected": "DOOM1.WAD",
+  "iwad_known_sha256": "pending-oracle-capture",
+  "expected_episodes": [1],
+  "expected_episode_1_maps": ["E1M1", "E1M2", "E1M3", "E1M4", "E1M5", "E1M6", "E1M7", "E1M8", "E1M9"],
+  "expected_skills": ["ITYTD", "HNTR", "HMP", "UV", "NM"],
+  "gate_composes_step_ids": ["02-035", "03-036", "04-030", "05-028", "06-032", "07-034", "08-032", "09-038", "10-028", "11-031", "12-028"],
+  "gate_blocks_step_ids": ["13-004"],
+  "oracle_evidence_required": ["framebuffer-hash-per-tic-window", "audio-hash-per-tic-window", "music-event-log-per-tic-window", "savegame-byte-oracle", "demo-replay-sync"],
+  "exit_paths_required": ["E1M8-boss-death-tag-666", "E1M9-secret-exit-from-E1M3"],
+  "scope_notes": "Gate is satisfied only when a deterministic scripted playthrough of all nine E1 maps reproduces every oracle window byte-for-byte against a reference Chocolate Doom 2.2.1 run; the shareware IWAD scope excludes registered/retail/commercial content and gates 13-002/13-003 separately.",
+  "human_attestation_required": false,
+  "human_attestation_text": null
+}
