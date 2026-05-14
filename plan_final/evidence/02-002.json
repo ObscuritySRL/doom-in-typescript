@@ -1,0 +1,51 @@
+{
+  "stepId": "02-002",
+  "lane": "oracle",
+  "title": "launch-reference-cleanly",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/launch-reference-cleanly.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/launch-reference-cleanly.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/launchReferenceCleanly.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/launch-reference-cleanly.test.ts",
+    "passed": 4,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15468,
+    "failed": 0,
+    "files": 811
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/launchReferenceCleanly.ts:launchReferenceCleanly",
+    "errorClass": "ReferenceBundleMissingError",
+    "evidenceShape": [
+      "cleanShutdown",
+      "executableFilename",
+      "exitCode",
+      "exitSignal",
+      "exitedAtElapsedMs",
+      "killedAtElapsedMs",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "settleDurationMs",
+      "spawnedAtElapsedMs",
+      "terminationCause",
+      "totalElapsedMs"
+    ],
+    "terminationCauses": ["natural-exit", "sandbox-killed", "spawn-failed"],
+    "liveCaptureGate": "test/plan_final/oracle/launch-reference-cleanly.test.ts gates the live launch behind a check for every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present on disk; environments without the reference bundle run only the static contract test."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/launchReferenceCleanly.ts triggers the plan_vanilla_parity tools/reference capture-surface inventory (file count + hardcoded 3 → 4) the same way 02-001 added createReferenceSandbox.ts. The inventory JSON gains a new capture_modules row pinning the new module's size_bytes, line_count, sha256, exported surface, importer counts, and companion test path; the inventory test's hardcoded tools_reference_file_count and capture_modules.length assertions both move from 3 to 4. No proprietary id Software bytes were embedded — only on-disk metadata."
+}
