@@ -1,0 +1,24 @@
+{
+  "$schema": "https://doom-in-typescript.local/schemas/acceptance-gate.json",
+  "gate_id": "13-003",
+  "gate_title": "Ultimate DOOM (User-Supplied IWAD Scope)",
+  "gate_lane": "acceptance",
+  "iwad_scope": "ultimate-doom",
+  "iwad_filename_expected": "DOOM.WAD",
+  "iwad_known_sha256": "pending-oracle-capture",
+  "expected_episodes": [1, 2, 3, 4],
+  "expected_episode_4_maps": ["E4M1", "E4M2", "E4M3", "E4M4", "E4M5", "E4M6", "E4M7", "E4M8", "E4M9"],
+  "expected_skills": ["ITYTD", "HNTR", "HMP", "UV", "NM"],
+  "gate_composes_step_ids": ["02-035", "03-036", "04-030", "05-028", "06-032", "07-034", "08-032", "09-038", "10-028", "11-031", "12-028"],
+  "gate_blocks_step_ids": ["13-004"],
+  "oracle_evidence_required": ["framebuffer-hash-per-tic-window", "audio-hash-per-tic-window", "music-event-log-per-tic-window", "savegame-byte-oracle", "demo-replay-sync"],
+  "exit_paths_required": ["E4M6-cyberdemon-vld-blazeOpen-tag-666", "E4M8-spider-mastermind-lowerFloorToLowest-tag-666"],
+  "ultimate_specific_invariants": [
+    "A_BossDeath uses CheckBossEnd (Ultimate Doom reshuffle) — gameepisode 4 special-cases CYBORG@map6 OR SPIDER@map8",
+    "Episode 4 reuses E1 music lumps per src/audio music selection",
+    "MT_BRUISER death on episodes 2+ does NOT trigger boss-end (regular monster outside ep1)"
+  ],
+  "scope_notes": "Gate is satisfied only when the user supplies a legitimate Ultimate DOOM IWAD (DOOM.WAD, ≥ 12MB) and a deterministic scripted playthrough of all four episodes including E4M6/E4M8 Ultimate-specific boss triggers reproduces every oracle window byte-for-byte against a reference Chocolate Doom 2.2.1 run. The 13-002 registered-doom gate handles the 3-episode subset; this gate adds Episode 4. No IWAD is distributed with this repository — see src/reference/policy.ts for the asset license boundary.",
+  "human_attestation_required": false,
+  "human_attestation_text": null
+}
