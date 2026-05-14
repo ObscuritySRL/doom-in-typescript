@@ -9893,3 +9893,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-030
 - summary: SFX_AUDIO_PARITY_GATE bundles SFX sample rate 11025, 16-bit output, 1024-sample buffers, 512-sample oracle window, SHA-256 hash.
 - tests: format pass; focused 12/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-031 gate-music-opl-parity completed
+
+- status: completed
+- lane: audio
+- step_id: 11-031
+- summary: Verified existing src/audio/gate-music-opl-parity.ts: gate scope=mus-event-stream (NOT synthesized PCM due to host int precision); 5-of-8 gated MUS event types (NOTE_ON, NOTE_OFF, PITCH_BEND, CHANGE_CONTROLLER, SYSTEM_EVENT, SCORE_END); shareware lumps D_INTRO/D_INTROA/D_VICTOR/D_E1M1; zero allowable drift; composes 11-014..11-029 audio steps; blocks 13-001/13-002/13-003 Phase 13 acceptance gates.
+- tests: focused 13/0; (pre-existing implementation verified, just ticked)

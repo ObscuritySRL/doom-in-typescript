@@ -405,7 +405,7 @@
 - [x] `11-028` `compare-sfx-oracle-windows` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-028-compare-sfx-oracle-windows.md`
 - [x] `11-029` `compare-music-event-oracle-windows` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-029-compare-music-event-oracle-windows.md`
 - [x] `11-030` `gate-sfx-audio-parity` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-030-gate-sfx-audio-parity.md`
-- [ ] `11-031` `gate-music-opl-parity` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-031-gate-music-opl-parity.md`
+- [x] `11-031` `gate-music-opl-parity` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-031-gate-music-opl-parity.md`
 
 ## Phase 12: Save / Load / Config
 
