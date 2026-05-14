@@ -331,7 +331,7 @@
 - [x] `09-026` `implement-status-bar-background` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-026-implement-status-bar-background.md`
 - [x] `09-027` `implement-status-bar-numbers-and-percent-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-027-implement-status-bar-numbers-and-percent-widgets.md`
 - [x] `09-028` `implement-status-bar-face-widget` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-028-implement-status-bar-face-widget.md`
-- [ ] `09-029` `implement-status-bar-key-and-ammo-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-029-implement-status-bar-key-and-ammo-widgets.md`
+- [x] `09-029` `implement-status-bar-key-and-ammo-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-029-implement-status-bar-key-and-ammo-widgets.md`
 - [ ] `09-030` `implement-automap-start-stop-state` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-030-implement-automap-start-stop-state.md`
 - [ ] `09-031` `implement-automap-pan-zoom-follow-grid` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-031-implement-automap-pan-zoom-follow-grid.md`
 - [ ] `09-032` `implement-automap-line-and-thing-colors` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-032-implement-automap-line-and-thing-colors.md`

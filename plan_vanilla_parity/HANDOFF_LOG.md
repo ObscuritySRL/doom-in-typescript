@@ -9578,3 +9578,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-012
 - summary: src/audio/implement-weapon-and-monster-sound-routing.ts pins three combat sfx routing profiles: weapon (origin=player.mo, listener-self short-circuits S_AdjustSoundParams), monster (origin=monster.mo, S_AdjustSoundParams every tic to attenuate/pan), and fullscreen-boss (origin=NULL, escapes spatialization for bossbrain cues). Only monster profile re-spatializes per tic.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 09-029 implement-status-bar-key-and-ammo-widgets completed
+
+- status: completed
+- lane: render
+- step_id: 09-029
+- summary: Ammo column x=288, max ammo x=314; ammo Y rows 171/179/187/195 (bullets/shells/rockets/cells); keys at x=239 with Y 171/181/191 (blue/yellow/red); 6 STKEYS patches.
+- tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
