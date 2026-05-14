@@ -13,7 +13,9 @@ import {
   VANILLA_ST_PATCH_TALL_PERCENT,
   VANILLA_ST_SHORTNUM_WIDTH,
   VANILLA_ST_TALLNUM_WIDTH,
-} from '../../../src/render/implement-status-bar-numbers-and-percent-widgets.ts';
+  shortDigitPatchName,
+  tallDigitPatchName,
+} from '../../../src/ui/implement-status-bar-numbers-and-percent-widgets.ts';
 
 describe('vanilla status bar number widget positions', () => {
   test('widget X positions match st_stuff.c', () => {
@@ -35,5 +37,21 @@ describe('vanilla status bar number widget positions', () => {
     expect(VANILLA_ST_PATCH_SHORTNUM_PREFIX).toBe('STYSNUM');
     expect(VANILLA_ST_PATCH_TALL_PERCENT).toBe('STTPRCNT');
     expect(VANILLA_ST_PATCH_SHORT_PERCENT).toBe('STYSPRCNT');
+  });
+
+  test('tallDigitPatchName composes STTNUM0..STTNUM9', () => {
+    expect(tallDigitPatchName(0)).toBe('STTNUM0');
+    expect(tallDigitPatchName(9)).toBe('STTNUM9');
+  });
+
+  test('shortDigitPatchName composes STYSNUM0..STYSNUM9', () => {
+    expect(shortDigitPatchName(0)).toBe('STYSNUM0');
+    expect(shortDigitPatchName(9)).toBe('STYSNUM9');
+  });
+
+  test('digit helpers reject out-of-range values', () => {
+    expect(() => tallDigitPatchName(-1)).toThrow();
+    expect(() => tallDigitPatchName(10)).toThrow();
+    expect(() => shortDigitPatchName(1.5)).toThrow();
   });
 });
