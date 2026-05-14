@@ -10,7 +10,7 @@
     {
       "relative_path": "src/ui/",
       "exists": true,
-      "committed_file_count": 37,
+      "committed_file_count": 44,
       "committed_filenames_sorted": [
         "assets.ts",
         "automap.ts",
@@ -20,7 +20,11 @@
         "frontEndSequence.ts",
         "gate-intermission-and-finale-parity.ts",
         "gate-menu-and-hud-parity.ts",
+        "gate-status-bar-and-automap-parity.ts",
         "hudMessages.ts",
+        "implement-automap-line-and-thing-colors.ts",
+        "implement-automap-markers.ts",
+        "implement-automap-start-stop-state.ts",
         "implement-chat-macro-storage-for-config-compatibility.ts",
         "implement-end-game-confirmation.ts",
         "implement-episode-menu-shareware-restrictions.ts",
@@ -45,14 +49,17 @@
         "implement-screen-size-detail-gamma-menu.ts",
         "implement-skill-menu.ts",
         "implement-sound-volume-menu.ts",
+        "implement-status-bar-background.ts",
+        "implement-status-bar-key-and-ammo-widgets.ts",
+        "implement-status-bar-numbers-and-percent-widgets.ts",
         "implement-title-loop-sequence.ts",
         "intermission.ts",
         "menus.ts",
         "statusBar.ts"
       ],
-      "total_size_bytes": 284581,
-      "total_line_count": 7418,
-      "total_export_count": 573
+      "total_size_bytes": 301961,
+      "total_line_count": 7831,
+      "total_export_count": 636
     }
   ],
   "modules": [

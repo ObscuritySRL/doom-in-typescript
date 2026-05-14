@@ -10,19 +10,41 @@
     {
       "relative_path": "src/ai/",
       "exists": true,
-      "committed_file_count": 18,
+      "committed_file_count": 40,
       "committed_filenames_sorted": [
         "attacks.ts",
         "bossSpecials.ts",
         "chase.ts",
+        "compare-e1m8-boss-death-oracle.ts",
+        "gate-boss-and-episode-exit-semantics.ts",
+        "gate-monster-ai-semantics.ts",
+        "gate-sector-and-line-specials.ts",
+        "implement-animated-flats-and-textures.ts",
+        "implement-baron-attack.ts",
+        "implement-boss-death-specials.ts",
+        "implement-cacodemon-attack.ts",
+        "implement-ceiling-specials.ts",
         "implement-chase-direction-selection.ts",
+        "implement-cyberdemon-attack-for-registered-iwad.ts",
+        "implement-demon-and-spectre-attacks.ts",
+        "implement-door-specials.ts",
+        "implement-floor-specials.ts",
         "implement-imp-attacks.ts",
+        "implement-keen-and-icon-paths-behind-doom-two-scope.ts",
+        "implement-line-trigger-repeat-rules.ts",
         "implement-look-for-players.ts",
+        "implement-lost-soul-attack.ts",
         "implement-mobj-state-transitions.ts",
         "implement-monster-melee-range.ts",
         "implement-monster-missile-range.ts",
         "implement-monster-spawn-flags.ts",
+        "implement-pain-elemental-and-doom-two-guarded-path.ts",
+        "implement-platform-specials.ts",
+        "implement-sector-special-effects.ts",
         "implement-sound-target-propagation.ts",
+        "implement-spider-mastermind-attack-for-registered-iwad.ts",
+        "implement-stairs-donut-and-crusher-specials.ts",
+        "implement-switch-texture-and-sound-semantics.ts",
         "implement-thinker-list-ordering.ts",
         "implement-zombie-attacks.ts",
         "meleeRange.ts",
@@ -31,9 +53,9 @@
         "stateTransitions.ts",
         "targeting.ts"
       ],
-      "total_size_bytes": 173022,
-      "total_line_count": 4437,
-      "total_export_count": 270
+      "total_size_bytes": 205486,
+      "total_line_count": 5205,
+      "total_export_count": 431
     },
     {
       "relative_path": "src/specials/",
@@ -141,7 +163,7 @@
         "src/world/zMovement.ts"
       ],
       "src_importer_count": 0,
-      "test_importer_count": 3
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/ai/bossSpecials.ts",

@@ -78,7 +78,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 2,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/flats.ts",
@@ -95,7 +96,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts", "src/wad/markerRange.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/mus.ts",
@@ -112,7 +114,8 @@
       "exported_types": [],
       "external_imports": ["src/core/binaryReader.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 4
+      "test_importer_count": 4,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/patchCatalog.ts",
@@ -129,7 +132,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts", "src/wad/markerRange.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/playpal.ts",
@@ -146,7 +150,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 2,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/pnames.ts",
@@ -163,7 +168,8 @@
       "exported_types": [],
       "external_imports": ["src/core/binaryReader.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 2
+      "test_importer_count": 2,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/texture1.ts",
@@ -180,7 +186,8 @@
       "exported_types": [],
       "external_imports": ["src/core/binaryReader.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/verify-duplicate-lump-precedence.ts",
@@ -197,7 +204,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts"],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/verify-lump-name-lookup-semantics.ts",
@@ -214,7 +222,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/verify-marker-range-semantics.ts",
@@ -231,7 +240,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts"],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/assets/verify-wad-header-and-directory-parsing.ts",
@@ -248,7 +258,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/wad/directory.ts",
@@ -265,7 +276,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
       "src_importer_count": 22,
-      "test_importer_count": 63
+      "test_importer_count": 66,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/wad/header.ts",
@@ -282,7 +294,8 @@
       "exported_types": ["WadType"],
       "external_imports": [],
       "src_importer_count": 2,
-      "test_importer_count": 58
+      "test_importer_count": 62,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/wad/lumpLookup.ts",
@@ -299,7 +312,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts"],
       "src_importer_count": 3,
-      "test_importer_count": 19
+      "test_importer_count": 19,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/wad/markerRange.ts",
@@ -316,7 +330,8 @@
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts"],
       "src_importer_count": 2,
-      "test_importer_count": 2
+      "test_importer_count": 2,
+      "exported_const_enums": []
     }
   ],
   "test_coverage": {

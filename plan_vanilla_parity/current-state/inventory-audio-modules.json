@@ -10,11 +10,55 @@
     {
       "relative_path": "src/audio/",
       "exists": true,
-      "committed_file_count": 12,
-      "committed_filenames_sorted": ["audioParity.ts", "channels.ts", "musParser.ts", "musScheduler.ts", "musicSystem.ts", "oplRegisters.ts", "oplSynth.ts", "pcmMixer.ts", "sfxLumps.ts", "soundOrigins.ts", "soundSystem.ts", "spatial.ts"],
-      "total_size_bytes": 179372,
-      "total_line_count": 4489,
-      "total_export_count": 242
+      "committed_file_count": 43,
+      "committed_filenames_sorted": [
+        "add-audio-hash-hook.ts",
+        "add-music-event-log-hook.ts",
+        "audioParity.ts",
+        "channels.ts",
+        "compare-music-event-oracle-windows.ts",
+        "compare-sfx-oracle-windows.ts",
+        "gate-music-opl-parity.ts",
+        "gate-sfx-audio-parity.ts",
+        "implement-attenuation-and-stereo-separation.ts",
+        "implement-audio-buffer-timing.ts",
+        "implement-eight-channel-allocation.ts",
+        "implement-menu-sound-routing.ts",
+        "implement-mixer-clipping.ts",
+        "implement-mixer-sample-stepping.ts",
+        "implement-mus-looping.ts",
+        "implement-mus-scheduler.ts",
+        "implement-music-pause-resume.ts",
+        "implement-music-selection-by-map-and-game-mode.ts",
+        "implement-opl-instrument-mapping.ts",
+        "implement-opl-register-model.ts",
+        "implement-opl-synthesis-core.ts",
+        "implement-pitch-and-volume-semantics.ts",
+        "implement-sector-and-switch-sound-routing.ts",
+        "implement-sound-channel-eviction.ts",
+        "implement-sound-effect-lump-loader.ts",
+        "implement-sound-origin-tracking.ts",
+        "implement-sound-priority-table.ts",
+        "implement-sound-shutdown-ordering.ts",
+        "implement-sound-start-stop-update-ordering.ts",
+        "implement-volume-controls.ts",
+        "implement-weapon-and-monster-sound-routing.ts",
+        "implement-win32-audio-device-open-close.ts",
+        "musParser.ts",
+        "musScheduler.ts",
+        "musicSystem.ts",
+        "oplRegisters.ts",
+        "oplSynth.ts",
+        "parse-mus-event-stream.ts",
+        "pcmMixer.ts",
+        "sfxLumps.ts",
+        "soundOrigins.ts",
+        "soundSystem.ts",
+        "spatial.ts"
+      ],
+      "total_size_bytes": 276622,
+      "total_line_count": 6711,
+      "total_export_count": 509
     }
   ],
   "modules": [
@@ -64,7 +108,7 @@
         "src/oracles/audioHash.ts"
       ],
       "src_importer_count": 0,
-      "test_importer_count": 2
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/audio/channels.ts",
@@ -82,7 +126,7 @@
       "exported_const_enums": [],
       "external_imports": [],
       "src_importer_count": 4,
-      "test_importer_count": 5
+      "test_importer_count": 7
     },
     {
       "relative_path": "src/audio/musParser.ts",
@@ -132,7 +176,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/audio/musParser.ts", "src/audio/musParser.ts"],
       "src_importer_count": 2,
-      "test_importer_count": 3
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/audio/musicSystem.ts",
@@ -289,7 +333,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts"],
       "src_importer_count": 2,
-      "test_importer_count": 3
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/audio/soundOrigins.ts",
@@ -343,7 +387,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/core/angle.ts", "src/core/angle.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/trig.ts"],
       "src_importer_count": 3,
-      "test_importer_count": 5
+      "test_importer_count": 6
     }
   ],
   "test_coverage": {

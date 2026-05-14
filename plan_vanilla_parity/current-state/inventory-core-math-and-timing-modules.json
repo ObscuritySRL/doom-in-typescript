@@ -49,7 +49,8 @@
       "exported_types": ["Angle"],
       "external_imports": [],
       "src_importer_count": 15,
-      "test_importer_count": 19
+      "test_importer_count": 19,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/audit-angle-type-and-wrap-semantics.ts",
@@ -66,7 +67,8 @@
       "exported_types": ["AngleWrapFactId", "AngleWrapFunction", "AngleWrapInvariantId", "AngleWrapProbeId"],
       "external_imports": [],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/audit-fixed-divide-semantics.ts",
@@ -83,7 +85,8 @@
       "exported_types": ["FixedDivFactId", "FixedDivFunction", "FixedDivInvariantId", "FixedDivProbeId"],
       "external_imports": [],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/audit-fixed-multiply-overflow-semantics.ts",
@@ -100,7 +103,8 @@
       "exported_types": ["FixedMulFunction", "FixedMulOverflowFactId", "FixedMulOverflowInvariantId", "FixedMulProbeId"],
       "external_imports": [],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/audit-fixed-point-constants.ts",
@@ -117,7 +121,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/binaryReader.ts",
@@ -134,7 +139,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 16,
-      "test_importer_count": 1
+      "test_importer_count": 1,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/fixed.ts",
@@ -150,8 +156,9 @@
       "exported_classes": [],
       "exported_types": ["Fixed"],
       "external_imports": [],
-      "src_importer_count": 61,
-      "test_importer_count": 80
+      "src_importer_count": 73,
+      "test_importer_count": 92,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/rng.ts",
@@ -168,7 +175,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 17,
-      "test_importer_count": 23
+      "test_importer_count": 23,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/core/trig.ts",
@@ -185,7 +193,8 @@
       "exported_types": [],
       "external_imports": ["src/core/fixed.ts"],
       "src_importer_count": 12,
-      "test_importer_count": 9
+      "test_importer_count": 9,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/host/ticAccumulator.ts",
@@ -202,7 +211,8 @@
       "exported_types": [],
       "external_imports": [],
       "src_importer_count": 8,
-      "test_importer_count": 6
+      "test_importer_count": 6,
+      "exported_const_enums": []
     },
     {
       "relative_path": "src/mainLoop.ts",
@@ -219,7 +229,8 @@
       "exported_types": ["MainLoopPhase", "PreLoopStep"],
       "external_imports": [],
       "src_importer_count": 21,
-      "test_importer_count": 12
+      "test_importer_count": 12,
+      "exported_const_enums": []
     }
   ],
   "determinism_boundary_status": {

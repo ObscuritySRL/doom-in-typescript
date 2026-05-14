@@ -10,11 +10,36 @@
     {
       "relative_path": "src/save/",
       "exists": true,
-      "committed_file_count": 5,
-      "committed_filenames_sorted": ["coreSerialization.ts", "loadgame.ts", "saveHeader.ts", "specialSerialization.ts", "vanillaLimits.ts"],
-      "total_size_bytes": 80288,
-      "total_line_count": 2395,
-      "total_export_count": 95
+      "committed_file_count": 24,
+      "committed_filenames_sorted": [
+        "compare-reference-save-byte-oracle.ts",
+        "compare-save-load-roundtrip-oracle.ts",
+        "coreSerialization.ts",
+        "define-save-directory-policy.ts",
+        "enforce-vanilla-savegame-limit.ts",
+        "gate-config-compatibility.ts",
+        "gate-save-load-byte-parity.ts",
+        "implement-save-header-version.ts",
+        "implement-save-slot-descriptions.ts",
+        "load-compatible-save-header.ts",
+        "loadgame.ts",
+        "reject-corrupted-save-bytes.ts",
+        "reject-incompatible-save-version.ts",
+        "restore-player-mobj-and-world-state.ts",
+        "restore-post-load-render-audio-input-state.ts",
+        "saveHeader.ts",
+        "serialize-line-specials.ts",
+        "serialize-mobj-state.ts",
+        "serialize-player-state.ts",
+        "serialize-sector-specials.ts",
+        "serialize-thinker-state.ts",
+        "serialize-world-archive-terminators.ts",
+        "specialSerialization.ts",
+        "vanillaLimits.ts"
+      ],
+      "total_size_bytes": 133521,
+      "total_line_count": 3651,
+      "total_export_count": 240
     }
   ],
   "modules": [
@@ -34,7 +59,7 @@
       "exported_const_enums": [],
       "external_imports": ["node:path", "src/bootstrap/cmdline.ts"],
       "src_importer_count": 4,
-      "test_importer_count": 3
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/save/coreSerialization.ts",

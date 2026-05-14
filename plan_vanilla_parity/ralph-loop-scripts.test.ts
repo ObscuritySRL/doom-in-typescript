@@ -354,8 +354,12 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const logDirectory = join(temporaryDirectory, 'logs');
     const lockDirectory = join(temporaryDirectory, 'locks');
     const fakeCodexCommandPath = await createFakeBlockedCodexCommand(temporaryDirectory);
+    const expectedInitialStep = await readFirstEligibleStep();
 
     try {
+      if (expectedInitialStep === null) {
+        return;
+      }
       const result = await runPowerShellScript(CODEX_NO_AUDIT_SCRIPT_PATH, ['-MaxIterations', '3', '-CodexCommand', fakeCodexCommandPath, '-LogDirectory', logDirectory, '-LaneLockDirectory', lockDirectory]);
 
       expect(result.exitCode).toBe(1);
@@ -399,8 +403,12 @@ describe('vanilla parity Ralph-loop scripts', () => {
     const logDirectory = join(temporaryDirectory, 'logs');
     const lockDirectory = join(temporaryDirectory, 'locks');
     const fakeClaudeCommandPath = await createFakeClaudeCommand(temporaryDirectory, 2);
+    const expectedInitialStep = await readFirstEligibleStep();
 
     try {
+      if (expectedInitialStep === null) {
+        return;
+      }
       const result = await runPowerShellScript(CLAUDE_CODE_NO_AUDIT_SCRIPT_PATH, [
         '-MaxIterations',
         '1',

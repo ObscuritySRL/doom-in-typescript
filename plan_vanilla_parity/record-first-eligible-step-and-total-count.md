@@ -76,7 +76,7 @@ plan_vanilla_parity/steps/13-004-gate-full-final-side-by-side-proof.md
 
 ## final gate step checklist row
 
-- [ ] `13-004` `gate-full-final-side-by-side-proof` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-004-gate-full-final-side-by-side-proof.md`
+- [x] `13-004` `gate-full-final-side-by-side-proof` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-004-gate-full-final-side-by-side-proof.md`
 
 ## runtime target
 

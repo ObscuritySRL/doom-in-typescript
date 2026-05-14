@@ -10,21 +10,42 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 30,
+      "committed_file_count": 51,
       "committed_filenames_sorted": [
+        "add-framebuffer-hash-hook.ts",
+        "compare-scripted-renderer-path.ts",
+        "compare-title-and-e1m1-framebuffers.ts",
         "drawPrimitives.ts",
         "fuzz.ts",
+        "gate-renderer-framebuffer-parity.ts",
+        "gate-status-bar-and-automap-parity.ts",
+        "implement-automap-line-and-thing-colors.ts",
+        "implement-automap-markers.ts",
+        "implement-automap-pan-zoom-follow-grid.ts",
+        "implement-automap-start-stop-state.ts",
         "implement-bsp-front-to-back-render-walk.ts",
         "implement-ceiling-span-rendering.ts",
+        "implement-detail-level-toggle.ts",
         "implement-draw-column-low-and-high-detail.ts",
         "implement-draw-span-low-and-high-detail.ts",
         "implement-extra-light-and-palette-effects.ts",
         "implement-floor-span-rendering.ts",
+        "implement-fuzz-invisibility-rendering.ts",
         "implement-light-level-and-colormap-selection.ts",
+        "implement-masked-midtexture-rendering.ts",
+        "implement-player-weapon-sprite-rendering.ts",
         "implement-projection-and-clip-angle-tables.ts",
+        "implement-screen-size-blocks.ts",
         "implement-sky-rendering-semantics.ts",
         "implement-solid-segment-clipping.ts",
+        "implement-sprite-clipping-against-drawsegs.ts",
+        "implement-sprite-projection.ts",
+        "implement-sprite-sorting.ts",
+        "implement-status-bar-face-widget.ts",
+        "implement-status-bar-key-and-ammo-widgets.ts",
+        "implement-status-bar-numbers-and-percent-widgets.ts",
         "implement-two-sided-wall-clipping.ts",
+        "implement-view-border-rendering.ts",
         "implement-view-setup-constants.ts",
         "implement-visplane-allocation-and-merge.ts",
         "implement-visplane-overflow-limit-behavior.ts",
@@ -43,9 +64,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 241449,
-      "total_line_count": 6120,
-      "total_export_count": 272
+      "total_size_bytes": 277363,
+      "total_line_count": 6973,
+      "total_export_count": 409
     }
   ],
   "modules": [
@@ -152,7 +173,7 @@
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
       "src_importer_count": 25,
-      "test_importer_count": 22
+      "test_importer_count": 23
     },
     {
       "relative_path": "src/render/renderLimits.ts",
