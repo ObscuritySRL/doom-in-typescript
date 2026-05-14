@@ -1,0 +1,22 @@
+{
+  "$schema": "https://doom-in-typescript.local/schemas/acceptance-gate.json",
+  "gate_id": "13-004",
+  "gate_title": "Full Final Side-By-Side Proof",
+  "gate_lane": "acceptance",
+  "is_final_gate": true,
+  "iwad_scope": "all-three",
+  "iwad_scopes_required": ["shareware-doom1", "registered-doom1", "ultimate-doom1"],
+  "gate_composes_step_ids": ["13-001", "13-002", "13-003"],
+  "gate_blocks_step_ids": [],
+  "oracle_evidence_required": [
+    "framebuffer-hash-per-tic-window-across-three-iwad-scopes",
+    "audio-hash-per-tic-window-across-three-iwad-scopes",
+    "music-event-log-per-tic-window-across-three-iwad-scopes",
+    "savegame-byte-oracle-across-three-iwad-scopes",
+    "demo-replay-sync-across-three-iwad-scopes",
+    "side-by-side-screen-capture-comparison-with-chocolate-doom-2.2.1"
+  ],
+  "human_attestation_required": true,
+  "human_attestation_text": "User has run the TypeScript port AND Chocolate Doom 2.2.1 with the same scripted inputs on the same IWAD and confirmed visual and audio output matches frame-for-frame and sample-for-sample.",
+  "scope_notes": "Final acceptance gate that aggregates 13-001 (shareware), 13-002 (registered), and 13-003 (Ultimate Doom) IWAD-scope proofs into a single side-by-side comparison artifact. When this gate is green, the project's parity goal is satisfied per the README target: the TypeScript port reproduces vanilla DOOM 1.9 / Chocolate Doom 2.2.1 behavior byte-for-byte under the documented scenarios."
+}
