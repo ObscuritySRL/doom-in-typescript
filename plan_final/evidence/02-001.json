@@ -1,0 +1,29 @@
+{
+  "stepId": "02-001",
+  "lane": "oracle",
+  "title": "create-reference-sandbox-runner",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/reference-sandbox-runner.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "tools/reference/createReferenceSandbox.ts",
+    "test/plan_final/oracle/reference-sandbox-runner.test.ts",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/reference-sandbox-runner.test.ts",
+    "passed": 5,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15464,
+    "failed": 0,
+    "files": 810
+  },
+  "typecheck": "clean"
+}
