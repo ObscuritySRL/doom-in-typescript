@@ -1,0 +1,44 @@
+{
+  "stepId": "01-008",
+  "lane": "current-state",
+  "title": "inventory-unwired-audio-systems",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/unwired-audio-systems.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/current-state/unwired-audio-systems.json",
+    "test/plan_final/current-state/unwired-audio-systems.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/current-state/unwired-audio-systems.test.ts",
+    "passed": 13,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15421,
+    "failed": 0,
+    "files": 805
+  },
+  "typecheck": "clean",
+  "inventoryShape": {
+    "audioSurfacesCount": 9,
+    "audioModulesTrackedCount": 43,
+    "doomTsAudioImportCount": 0,
+    "launchPathAudioImportCount": 0,
+    "surfaceIds": [
+      "11-001-sfx-loader",
+      "11-002-channel-and-priority-runtime",
+      "11-003-spatial-sfx-runtime",
+      "11-004-sound-callback-bridge",
+      "11-005-pcm-mixer-win32-output",
+      "11-006-mus-opl-runtime",
+      "11-007-music-selection",
+      "11-008-audio-hash-windows",
+      "11-cross-volume-controls"
+    ]
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "step_id": "01-008",
+  "lane": "current-state",
+  "title": "inventory-unwired-audio-systems",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "launch_reachability_summary": {
+    "doom_ts_audio_import_count": 0,
+    "simplified_launcher_audio_import_count": 0,
+    "player_audio_import_count": 0,
+    "ai_audio_import_count": 0,
+    "specials_audio_import_count": 0,
+    "audio_modules_tracked_count": 43,
+    "notes": "doom.ts is a skeleton with zero imports. No file under src/launcher/, src/player/, src/ai/, src/specials/, or src/main.ts imports any module under src/audio/. Every audio surface (sfx loader, channel runtime, spatial sfx, sound callback bridge, pcm mixer, mus/opl runtime, music selection, audio hash windows) is implemented but unreachable from the live runtime."
+  },
+  "audio_surfaces": [
+    {
+      "surface_id": "11-001-sfx-loader",
+      "description": "SFX lump loader (S_LoadSounds / I_GetSfx) — DMX header parse, 8 kHz sample buffer staging, lump cache.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-sound-effect-lump-loader.ts",
+        "src/audio/sfxLumps.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-002-channel-and-priority-runtime",
+      "description": "Eight-channel allocator, priority table, channel eviction (S_StartSoundAtVolume / I_StartSound channel path).",
+      "canonical_implementation_modules": [
+        "src/audio/channels.ts",
+        "src/audio/implement-eight-channel-allocation.ts",
+        "src/audio/implement-sound-channel-eviction.ts",
+        "src/audio/implement-sound-priority-table.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-003-spatial-sfx-runtime",
+      "description": "S_AdjustSoundParams listener attenuation and stereo separation against player position/angle.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-attenuation-and-stereo-separation.ts",
+        "src/audio/spatial.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-004-sound-callback-bridge",
+      "description": "S_StartSound/S_StopSound/S_UpdateSounds composition, origin tracking, and weapon/monster/menu/sector/switch routing.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-menu-sound-routing.ts",
+        "src/audio/implement-sector-and-switch-sound-routing.ts",
+        "src/audio/implement-sound-origin-tracking.ts",
+        "src/audio/implement-sound-start-stop-update-ordering.ts",
+        "src/audio/implement-weapon-and-monster-sound-routing.ts",
+        "src/audio/soundOrigins.ts",
+        "src/audio/soundSystem.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-005-pcm-mixer-win32-output",
+      "description": "PCM mixer, sample stepping, clipping, buffer timing, win32 waveOut device open/close, pitch/volume semantics, shutdown ordering.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-audio-buffer-timing.ts",
+        "src/audio/implement-mixer-clipping.ts",
+        "src/audio/implement-mixer-sample-stepping.ts",
+        "src/audio/implement-pitch-and-volume-semantics.ts",
+        "src/audio/implement-sound-shutdown-ordering.ts",
+        "src/audio/implement-win32-audio-device-open-close.ts",
+        "src/audio/pcmMixer.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-006-mus-opl-runtime",
+      "description": "MUS parser, MUS scheduler, MUS looping, OPL synthesis core, OPL register model, OPL instrument mapping.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-mus-looping.ts",
+        "src/audio/implement-mus-scheduler.ts",
+        "src/audio/implement-opl-instrument-mapping.ts",
+        "src/audio/implement-opl-register-model.ts",
+        "src/audio/implement-opl-synthesis-core.ts",
+        "src/audio/musParser.ts",
+        "src/audio/musScheduler.ts",
+        "src/audio/oplRegisters.ts",
+        "src/audio/oplSynth.ts",
+        "src/audio/parse-mus-event-stream.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-007-music-selection",
+      "description": "Per-map and per-game-mode music selection and S_PauseSound / S_ResumeSound runtime control.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-music-pause-resume.ts",
+        "src/audio/implement-music-selection-by-map-and-game-mode.ts",
+        "src/audio/musicSystem.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-008-audio-hash-windows",
+      "description": "Audio hash hook, music-event log hook, SFX/music oracle window comparators, parity gates.",
+      "canonical_implementation_modules": [
+        "src/audio/add-audio-hash-hook.ts",
+        "src/audio/add-music-event-log-hook.ts",
+        "src/audio/audioParity.ts",
+        "src/audio/compare-music-event-oracle-windows.ts",
+        "src/audio/compare-sfx-oracle-windows.ts",
+        "src/audio/gate-music-opl-parity.ts",
+        "src/audio/gate-sfx-audio-parity.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    },
+    {
+      "surface_id": "11-cross-volume-controls",
+      "description": "Cross-cutting sfx/music volume controls (snd_SfxVolume, snd_MusicVolume) and saved-config persistence hooks.",
+      "canonical_implementation_modules": [
+        "src/audio/implement-volume-controls.ts"
+      ],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "external_callers_in_runtime_path": []
+    }
+  ]
+}
