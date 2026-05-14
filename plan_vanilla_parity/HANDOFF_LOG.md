@@ -9542,3 +9542,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-022
 - summary: src/save/reject-corrupted-save-bytes.ts pins two corruption-detection sites: (1) post-archive 0x1d terminator check ("Bad savegame" I_Error), (2) per-thinker class-byte validation in P_UnArchive* ("Unknown tclass %i in savegame" with decimal interpolation). No checksum/CRC; only structural validation. Recognized class bytes are 0..7 (tc_end/ceiling, tc_mobj/door, floor, plat, flash, strobe, glow, endspecials).
 - tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-008 implement-mixer-sample-stepping completed
+
+- status: completed
+- lane: audio
+- step_id: 11-008
+- summary: src/audio/implement-mixer-sample-stepping.ts pins the i_sdlsound.c ExpandSoundData_SDL upsample contract: expanded_length = (srcLength * mixerFreq) / srcRate using C integer truncation; expand_ratio = (srcLength << 8) / expandedLength is an 8.8 fixed-point step; src = (i * expand_ratio) >> 8 truncates toward zero (floor); 11025→44100 produces 4x output, 22050→44100 (DSITMBK) produces 2x; zero expandedLength returns 0 to mirror C divide-by-zero.
+- tests: format pass; focused 14/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-028 implement-status-bar-face-widget completed
+
+- status: completed
+- lane: render
+- step_id: 09-028
+- summary: Face position (143,168); face states: 5 pain × 8 stride + 2 extra = 42 total. Offsets: TURN=3, OUCH=5, EVILGRIN=6, RAMPAGE=7, GOD=40, DEAD=41.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352

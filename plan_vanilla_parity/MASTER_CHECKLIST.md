@@ -330,7 +330,7 @@
 - [x] `09-025` `implement-view-border-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-025-implement-view-border-rendering.md`
 - [x] `09-026` `implement-status-bar-background` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-026-implement-status-bar-background.md`
 - [x] `09-027` `implement-status-bar-numbers-and-percent-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-027-implement-status-bar-numbers-and-percent-widgets.md`
-- [ ] `09-028` `implement-status-bar-face-widget` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-028-implement-status-bar-face-widget.md`
+- [x] `09-028` `implement-status-bar-face-widget` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-028-implement-status-bar-face-widget.md`
 - [ ] `09-029` `implement-status-bar-key-and-ammo-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-029-implement-status-bar-key-and-ammo-widgets.md`
 - [ ] `09-030` `implement-automap-start-stop-state` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-030-implement-automap-start-stop-state.md`
 - [ ] `09-031` `implement-automap-pan-zoom-follow-grid` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-031-implement-automap-pan-zoom-follow-grid.md`
@@ -382,7 +382,7 @@
 - [x] `11-005` `implement-sound-start-stop-update-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-005-implement-sound-start-stop-update-ordering.md`
 - [x] `11-006` `implement-attenuation-and-stereo-separation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-006-implement-attenuation-and-stereo-separation.md`
 - [x] `11-007` `implement-pitch-and-volume-semantics` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-007-implement-pitch-and-volume-semantics.md`
-- [ ] `11-008` `implement-mixer-sample-stepping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-008-implement-mixer-sample-stepping.md`
+- [x] `11-008` `implement-mixer-sample-stepping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-008-implement-mixer-sample-stepping.md`
 - [x] `11-009` `implement-mixer-clipping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-009-implement-mixer-clipping.md`
 - [x] `11-010` `implement-sound-channel-eviction` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-010-implement-sound-channel-eviction.md`
 - [x] `11-011` `implement-menu-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-011-implement-menu-sound-routing.md`
