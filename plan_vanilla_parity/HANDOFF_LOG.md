@@ -9560,3 +9560,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-028
 - summary: Face position (143,168); face states: 5 pain × 8 stride + 2 extra = 42 total. Offsets: TURN=3, OUCH=5, EVILGRIN=6, RAMPAGE=7, GOD=40, DEAD=41.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-023 restore-player-mobj-and-world-state completed
+
+- status: completed
+- lane: save
+- step_id: 12-023
+- summary: src/save/restore-player-mobj-and-world-state.ts pins g_game.c G_DoLoadGame restoration order: P_UnArchivePlayers, P_UnArchiveWorld, P_UnArchiveThinkers, P_UnArchiveSpecials, verifySaveGameTerminator (0x1d), P_RestoreTargets (fixup index->pointer references), clearGameAction (ga_nothing=0). NULL mobj index is 0 reserved as no-target; first archived mobj gets index 1.
+- tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
