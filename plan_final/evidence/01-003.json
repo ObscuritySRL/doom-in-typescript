@@ -1,0 +1,33 @@
+{
+  "stepId": "01-003",
+  "lane": "current-state",
+  "title": "inventory-pending-oracle-fixtures",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/pending-oracle-fixtures.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/current-state/pending-oracle-fixtures.json",
+    "test/plan_final/current-state/pending-oracle-fixtures.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/current-state/pending-oracle-fixtures.test.ts",
+    "passed": 11,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15338,
+    "failed": 0,
+    "files": 799
+  },
+  "typecheck": "clean",
+  "inventory_summary": {
+    "total_fixture_file_count": 31,
+    "total_fixture_files_with_markers": 28,
+    "distinct_quoted_pending_string_count": 32,
+    "total_pending_marker_occurrences_across_all_fixtures": 107
+  }
+}

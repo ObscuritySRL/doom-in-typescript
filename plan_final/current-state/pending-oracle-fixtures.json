@@ -1,0 +1,293 @@
+{
+  "id": "01-003",
+  "title": "inventory-pending-oracle-fixtures",
+  "lane": "current-state",
+  "captured_at_utc": "2026-05-14T14:00:00Z",
+  "fixtures_directory_relative_path": "test/oracles/fixtures/",
+  "evidence_method": "Bun.file readdir over test/oracles/fixtures/*.json plus quoted-string regex `/\"([^\"\\\\]|\\\\.)*\"/g` over each fixture body, retaining any quoted string that contains any of the substrings \"contract-only\", \"pending\", \"Pending\", \"unimplemented\", or \"Unimplemented\".",
+  "pending_marker_substrings_searched": [
+    "contract-only",
+    "pending",
+    "Pending",
+    "unimplemented",
+    "Unimplemented"
+  ],
+  "total_fixture_file_count": 31,
+  "total_fixture_files_with_markers": 28,
+  "total_pending_marker_occurrences_across_all_fixtures": 107,
+  "distinct_quoted_pending_string_count": 32,
+  "distinct_quoted_pending_string_frequencies_sorted": {
+    "\"The selected read scope exposes local binary/IWAD authority and the 01-015 launch-surface audit, but no runnable reference capture bridge or framebuffer hash comparison surface. This fixture therefore locks the exact pending framebuffer hash trace and the command contract that later implementation steps must satisfy.\"": 1,
+    "\"This fixture records the scripted damage and death replay contract from local DOS binary and IWAD authority plus the allowed 01-015 launch-surface manifest. Live framebuffer, audio, and state hashes remain pending for a later capture step with reference execution in scope.\"": 1,
+    "\"This oracle locks the full attract loop capture contract, source authority, tick/frame start point, and exact abstract trace hash while leaving live framebuffer, audio, and state hashes pending for a later step that may execute the reference capture path.\"": 1,
+    "\"abstract-contract-pending-live-reference-run\"": 1,
+    "\"contract-only\"": 1,
+    "\"contract-only-not-executed-by-this-step\"": 1,
+    "\"demo2-live-hashes-pending\"": 1,
+    "\"live hashes remain pending until reference capture tooling exists\"": 1,
+    "\"live-hashes-pending\"": 1,
+    "\"pending because the selected step read scope does not permit opening or executing reference binaries\"": 3,
+    "\"pending future replay and reference-capture surface\"": 1,
+    "\"pending\"": 15,
+    "\"pending-clean-launch-music-event-hash\"": 1,
+    "\"pending-e1m1-start-music-event-hash\"": 1,
+    "\"pending-implementation\"": 1,
+    "\"pending-live-capture\"": 9,
+    "\"pending-live-framebuffer-capture\"": 1,
+    "\"pending-live-reference-capture\"": 23,
+    "\"pending-menu-navigation-music-event-hash\"": 1,
+    "\"pending-reference-capture\"": 15,
+    "\"pending-reference-capture-surface\"": 9,
+    "\"pending-reference-execution\"": 1,
+    "\"pending-reference-oracle-replay-capture-surface\"": 1,
+    "\"pending-sfx-audio-hash\"": 4,
+    "\"pending-unimplemented-side-by-side-surface\"": 1,
+    "\"pending-unimplemented-surface\"": 1,
+    "\"pendingCaptureReason\"": 1,
+    "\"pendingLiveCapture\"": 1,
+    "\"pendingLiveHashes\"": 5,
+    "\"pendingReferenceArtifacts\"": 1,
+    "\"state-hash-values-pending\"": 1,
+    "\"static-contract-pending-live-reference-capture\"": 1
+  },
+  "fixtures_with_markers_sorted": [
+    {
+      "relative_path": "test/oracles/fixtures/capture-demo1-playback-checkpoints.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"contract-only-not-executed-by-this-step\"",
+        "\"live-hashes-pending\"",
+        "\"pendingLiveHashes\""
+      ],
+      "total_pending_marker_occurrence_count": 3
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-demo2-playback-checkpoints.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"demo2-live-hashes-pending\""
+      ],
+      "total_pending_marker_occurrence_count": 1
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-demo3-playback-checkpoints.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-live-reference-capture\"",
+        "\"pendingLiveHashes\""
+      ],
+      "total_pending_marker_occurrence_count": 4
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending\""
+      ],
+      "total_pending_marker_occurrence_count": 3
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-episode-menu-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending\""
+      ],
+      "total_pending_marker_occurrence_count": 3
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-final-side-by-side-replay.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-live-capture\"",
+        "\"pending-unimplemented-side-by-side-surface\"",
+        "\"pending-unimplemented-surface\""
+      ],
+      "total_pending_marker_occurrence_count": 10
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-first-menu-frame.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-live-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 1
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-framebuffer-hash-windows.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"The selected read scope exposes local binary/IWAD authority and the 01-015 launch-surface audit, but no runnable reference capture bridge or framebuffer hash comparison surface. This fixture therefore locks the exact pending framebuffer hash trace and the command contract that later implementation steps must satisfy.\"",
+        "\"pending-implementation\"",
+        "\"pending-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 9
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-full-attract-loop-cycle.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"This oracle locks the full attract loop capture contract, source authority, tick/frame start point, and exact abstract trace hash while leaving live framebuffer, audio, and state hashes pending for a later step that may execute the reference capture path.\"",
+        "\"pending-live-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 6
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-initial-title-frame.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-live-framebuffer-capture\"",
+        "\"pending-live-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 2
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-live-save-load-roundtrip.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"abstract-contract-pending-live-reference-run\"",
+        "\"live hashes remain pending until reference capture tooling exists\"",
+        "\"pending-live-reference-capture\"",
+        "\"pendingReferenceArtifacts\""
+      ],
+      "total_pending_marker_occurrence_count": 11
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-menu-open-close-behavior.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pendingLiveCapture\"",
+        "\"static-contract-pending-live-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 2
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-music-event-hash-windows.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-clean-launch-music-event-hash\"",
+        "\"pending-e1m1-start-music-event-hash\"",
+        "\"pending-menu-navigation-music-event-hash\"",
+        "\"pending-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 7
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-new-game-menu-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pendingLiveHashes\""
+      ],
+      "total_pending_marker_occurrence_count": 1
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-options-menu-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending\""
+      ],
+      "total_pending_marker_occurrence_count": 1
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-quit-confirmation-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-reference-capture-surface\"",
+        "\"pendingCaptureReason\""
+      ],
+      "total_pending_marker_occurrence_count": 2
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-save-load-menu-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"contract-only\"",
+        "\"pending-live-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 4
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-screen-size-detail-gamma-paths.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-reference-capture-surface\"",
+        "\"pendingLiveHashes\""
+      ],
+      "total_pending_marker_occurrence_count": 4
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-scripted-combat-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending because the selected step read scope does not permit opening or executing reference binaries\"",
+        "\"pending\""
+      ],
+      "total_pending_marker_occurrence_count": 6
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-scripted-damage-death-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"This fixture records the scripted damage and death replay contract from local DOS binary and IWAD authority plus the allowed 01-015 launch-surface manifest. Live framebuffer, audio, and state hashes remain pending for a later capture step with reference execution in scope.\"",
+        "\"pending-reference-execution\""
+      ],
+      "total_pending_marker_occurrence_count": 2
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-scripted-door-use-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending future replay and reference-capture surface\"",
+        "\"pending-reference-oracle-replay-capture-surface\""
+      ],
+      "total_pending_marker_occurrence_count": 2
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-scripted-intermission-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending\""
+      ],
+      "total_pending_marker_occurrence_count": 1
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-scripted-movement-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 3
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-scripted-pickup-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending\"",
+        "\"pendingLiveHashes\""
+      ],
+      "total_pending_marker_occurrence_count": 4
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-sfx-hash-windows.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-reference-capture-surface\"",
+        "\"pending-sfx-audio-hash\""
+      ],
+      "total_pending_marker_occurrence_count": 9
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-skill-menu-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending\""
+      ],
+      "total_pending_marker_occurrence_count": 1
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-sound-volume-menu-path.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-live-reference-capture\""
+      ],
+      "total_pending_marker_occurrence_count": 3
+    },
+    {
+      "relative_path": "test/oracles/fixtures/capture-state-hash-windows.json",
+      "distinct_quoted_pending_strings_in_file": [
+        "\"pending-reference-capture\"",
+        "\"state-hash-values-pending\""
+      ],
+      "total_pending_marker_occurrence_count": 2
+    }
+  ],
+  "implications": [
+    "Every pending or contract marker listed here represents either a missing live reference-capture or a missing live port-side capture that the final acceptance gate must drain.",
+    "A future oracle-capture lane step will replace each pending marker by running the local DOOM reference binary and the TypeScript port and writing the captured byte hashes into the same fixture file.",
+    "No marker may be hand-edited to a real-looking hash without a corresponding live capture run."
+  ],
+  "follow_up_steps": [
+    "02-001",
+    "02-002",
+    "02-003",
+    "02-004",
+    "02-005",
+    "02-006",
+    "02-007",
+    "02-008",
+    "02-009",
+    "02-010"
+  ]
+}
