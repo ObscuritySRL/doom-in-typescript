@@ -9814,6 +9814,15 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
 
 
+## 2026-05-13 - 11-026 add-audio-hash-hook completed
+
+- status: completed
+- lane: audio
+- step_id: 11-026
+- summary: src/audio/add-audio-hash-hook.ts pins the oracle audio-hash hook contract: SFX-mix-only scope (music goes through music-event-log per 11-027); 44100 Hz output sample rate; 1260 samples per tic; 5040 bytes per tic stereo int16 buffer (1260 × 4); AUDIO_MAX_CHANNELS=8 active-channel count captured alongside hash; default sampling interval=35 tics (1 second at 35 Hz); hook fires AFTER per-tic mix completes, BEFORE host audio device enqueue.
+- tests: format pass; focused 14/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
 ## 2026-05-13 - 11-021 implement-opl-synthesis-core completed
 
 - status: completed
