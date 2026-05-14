@@ -1,0 +1,44 @@
+{
+  "stepId": "03-001",
+  "lane": "launch-host-input",
+  "title": "replace-root-doom-entrypoint",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/replace-root-doom-entrypoint.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-001.json",
+    "plan_final/progress/launch-host-input/03-001.md",
+    "plan_final/status/03-001.json",
+    "src/vanilla/runDoomMain.ts",
+    "test/plan_final/launch/replace-root-doom-entrypoint.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/launch/replace-root-doom-entrypoint.test.ts",
+    "passed": 12,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15555,
+    "failed": 0,
+    "files": 821
+  },
+  "typecheck": "clean",
+  "wrapperFileInterpretation": {
+    "rationale": "Plan_final 03-001's literal goal (modify doom.ts to call runDoomMain) collides with the plan_vanilla_parity 03-001 skeleton invariant pinned by test/vanilla_parity/launch/add-root-doom-ts-bun-entrypoint.test.ts (no top-level imports, no console.log/process.exit/Bun.spawn, export {} marker, bun run doom.ts must exit 0 with empty stderr).  Under the prior agent's option (3) from the blocker log, this step materializes the runDoomMain entrypoint surface in src/vanilla/runDoomMain.ts while leaving doom.ts byte-identical to the plan_vanilla_parity skeleton.  Future launch-host-input steps wire doom.ts -> runDoomMain once the cross-plan write-lock conflict on doom.ts is resolved by a dedicated governance step.",
+    "wrapperFile": "src/vanilla/runDoomMain.ts",
+    "publicSurface": [
+      "runDoomMain(argumentVector?: unknown): Promise<void>",
+      "InvalidArgumentError extends Error"
+    ],
+    "doomTsModified": false,
+    "doomTsSkeletonPreserved": true,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/launch/ is not declared as a test_roots entry in any plan_vanilla_parity inventory.  The full 15555-test suite passes without any plan_vanilla_parity inventory rewrite.  This is in contrast to the 02-005..02-009 precedent, where new files under tools/reference/ (a declared source_root for the input_and_oracle_support group) required inventory bumps."
+  }
+}
