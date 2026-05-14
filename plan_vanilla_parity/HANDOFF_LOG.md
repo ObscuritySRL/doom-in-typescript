@@ -9623,3 +9623,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-025
 - summary: src/save/compare-reference-save-byte-oracle.ts pins the byte-level oracle comparator contract: byte-by-byte === comparison; first-divergent-offset reporting; explicit length-mismatch detection; header[+offset] section labeling for offsets < 50, body[+offset] otherwise. Reference savegame fixtures must live under test/oracles/fixtures/savegames/ per CLAUDE.md oracle policy.
 - tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-034 add-framebuffer-hash-hook completed
+
+- status: completed
+- lane: render
+- step_id: 09-034
+- summary: src/render/add-framebuffer-hash-hook.ts pins the oracle framebuffer-hash hook contract: framebuffer is exactly 320×200 = 64000 bytes palette-indexed; PALETTE_COUNT=14 (PLAYPAL: normal/damage 1-8/bonus 9-12/rad-suit 13); default sampling interval = 35 tics (= 1 second at vanilla 35 Hz, F-010); hook fires AFTER all per-tic rendering (walls, planes, masked, sprites, weapons, view-border, status bar, automap) completes; mirrors src/oracles/framebufferHash.ts canonical constants.
+- tests: format pass; focused 13/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-014 parse-mus-event-stream completed
+
+- status: completed
+- lane: audio
+- step_id: 11-014
+- summary: src/audio/parse-mus-event-stream.ts pins mus2mid.c MUS score grammar: descriptor byte bit 7 = last-event-of-group, bits 4..6 = event type, bits 0..3 = channel. 8 event types (0..7) with bodyByteCounts; types 5 and 7 reserved/invalid; type 6 = ScoreEnd. Percussion channel 15. Quicktick rate 140 Hz = 4x DOOM 35 Hz gameplay tick.
+- tests: format pass; focused 14/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

@@ -333,10 +333,10 @@
 - [x] `09-028` `implement-status-bar-face-widget` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-028-implement-status-bar-face-widget.md`
 - [x] `09-029` `implement-status-bar-key-and-ammo-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-029-implement-status-bar-key-and-ammo-widgets.md`
 - [x] `09-030` `implement-automap-start-stop-state` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-030-implement-automap-start-stop-state.md`
-- [ ] `09-031` `implement-automap-pan-zoom-follow-grid` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-031-implement-automap-pan-zoom-follow-grid.md`
+- [x] `09-031` `implement-automap-pan-zoom-follow-grid` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-031-implement-automap-pan-zoom-follow-grid.md`
 - [ ] `09-032` `implement-automap-line-and-thing-colors` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-032-implement-automap-line-and-thing-colors.md`
 - [ ] `09-033` `implement-automap-markers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-033-implement-automap-markers.md`
-- [ ] `09-034` `add-framebuffer-hash-hook` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-034-add-framebuffer-hash-hook.md`
+- [x] `09-034` `add-framebuffer-hash-hook` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-034-add-framebuffer-hash-hook.md`
 - [ ] `09-035` `compare-title-and-e1m1-framebuffers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-035-compare-title-and-e1m1-framebuffers.md`
 - [ ] `09-036` `compare-scripted-renderer-path` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-036-compare-scripted-renderer-path.md`
 - [ ] `09-037` `gate-renderer-framebuffer-parity` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-037-gate-renderer-framebuffer-parity.md`
@@ -388,7 +388,7 @@
 - [x] `11-011` `implement-menu-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-011-implement-menu-sound-routing.md`
 - [x] `11-012` `implement-weapon-and-monster-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-012-implement-weapon-and-monster-sound-routing.md`
 - [x] `11-013` `implement-sector-and-switch-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-013-implement-sector-and-switch-sound-routing.md`
-- [ ] `11-014` `parse-mus-event-stream` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-014-parse-mus-event-stream.md`
+- [x] `11-014` `parse-mus-event-stream` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-014-parse-mus-event-stream.md`
 - [ ] `11-015` `implement-mus-scheduler` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-015-implement-mus-scheduler.md`
 - [ ] `11-016` `implement-mus-looping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-016-implement-mus-looping.md`
 - [ ] `11-017` `implement-music-selection-by-map-and-game-mode` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-017-implement-music-selection-by-map-and-game-mode.md`
