@@ -1,0 +1,71 @@
+{
+  "stepId": "02-010",
+  "lane": "oracle",
+  "title": "replace-pending-oracle-fixtures",
+  "commands": ["bun run format", "bun test test/plan_final/oracle/replace-pending-oracle-fixtures.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": ["plan_final/evidence/02-010.json", "plan_final/progress/oracle/02-010.md", "plan_final/status/02-010.json", "test/plan_final/oracle/replace-pending-oracle-fixtures.test.ts"],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/replace-pending-oracle-fixtures.test.ts",
+    "passed": 7,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15538,
+    "failed": 0,
+    "files": 819
+  },
+  "typecheck": "clean",
+  "fixtureContract": {
+    "ruleStatement": "Every fixture under test/oracles/fixtures/ is either 'live-evidence-bound' (contains no string value starting with 'pending-') or 'blocked-pending-future-step' (enumerated in the inline BLOCKED_FIXTURES_AUTHORITATIVE_REGISTRY constant inside test/plan_final/oracle/replace-pending-oracle-fixtures.test.ts with status='blocked-pending-future-step' and a followUpStepId referencing a real plan_final step). The focused test enforces this bidirectional invariant.",
+    "detectionPredicate": "JSON tree walk; any string value whose content starts with the literal substring 'pending-' classifies the containing fixture as pending and demands an inline registry entry.",
+    "structuredStatusLocation": "test/plan_final/oracle/replace-pending-oracle-fixtures.test.ts:BLOCKED_FIXTURES_AUTHORITATIVE_REGISTRY (inline TypeScript constant; relocated from a JSON fixture sibling to keep the inventory-oracle-fixtures-with-pending-status.test.ts contract stable since that downstream test is outside this step's write lock).",
+    "blockedStatusLiteral": "blocked-pending-future-step",
+    "followUpStepIdRegex": "^\\d{2}-\\d{3}$",
+    "followUpStepIdValueUsed": "02-011",
+    "followUpStepResolves": "plan_final/steps/02-011-gate-oracle-foundation.md"
+  },
+  "fixturesAuditedCount": 31,
+  "fixturesLiveBoundCount": 14,
+  "fixturesBlockedCount": 17,
+  "fixturesBlocked": [
+    "test/oracles/fixtures/capture-demo3-playback-checkpoints.json",
+    "test/oracles/fixtures/capture-final-side-by-side-replay.json",
+    "test/oracles/fixtures/capture-first-menu-frame.json",
+    "test/oracles/fixtures/capture-framebuffer-hash-windows.json",
+    "test/oracles/fixtures/capture-full-attract-loop-cycle.json",
+    "test/oracles/fixtures/capture-initial-title-frame.json",
+    "test/oracles/fixtures/capture-live-save-load-roundtrip.json",
+    "test/oracles/fixtures/capture-music-event-hash-windows.json",
+    "test/oracles/fixtures/capture-quit-confirmation-path.json",
+    "test/oracles/fixtures/capture-save-load-menu-path.json",
+    "test/oracles/fixtures/capture-screen-size-detail-gamma-paths.json",
+    "test/oracles/fixtures/capture-scripted-damage-death-path.json",
+    "test/oracles/fixtures/capture-scripted-door-use-path.json",
+    "test/oracles/fixtures/capture-scripted-movement-path.json",
+    "test/oracles/fixtures/capture-sfx-hash-windows.json",
+    "test/oracles/fixtures/capture-sound-volume-menu-path.json",
+    "test/oracles/fixtures/capture-state-hash-windows.json"
+  ],
+  "fixturesLiveBound": [
+    "test/oracles/fixtures/capture-demo1-playback-checkpoints.json",
+    "test/oracles/fixtures/capture-demo2-playback-checkpoints.json",
+    "test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json",
+    "test/oracles/fixtures/capture-episode-menu-path.json",
+    "test/oracles/fixtures/capture-implementation-clean-launch-expectations.json",
+    "test/oracles/fixtures/capture-menu-open-close-behavior.json",
+    "test/oracles/fixtures/capture-new-game-menu-path.json",
+    "test/oracles/fixtures/capture-options-menu-path.json",
+    "test/oracles/fixtures/capture-reference-clean-launch.json",
+    "test/oracles/fixtures/capture-scripted-combat-path.json",
+    "test/oracles/fixtures/capture-scripted-intermission-path.json",
+    "test/oracles/fixtures/capture-scripted-pickup-path.json",
+    "test/oracles/fixtures/capture-skill-menu-path.json",
+    "test/oracles/fixtures/capture-startup-sequence.json"
+  ],
+  "scopeNote": "Per the brief's exact rule, 'live-evidence-bound' fixtures are those that contain no string value starting with 'pending-'. The 14 live-bound fixtures still carry `null` hash placeholders, suffix-only `*-pending` identifiers, or `pendingX`-style JSON keys that the cross-plan inventory at plan_vanilla_parity/current-state/inventory-oracle-fixtures-with-pending-status.json continues to classify as pending via separate signals (null-live-hash-field, string-token-contains-pending, top-level-pending-key); those are the responsibility of follow-up plan_vanilla_parity steps 02-034 (replace-pending-oracle-fixtures-with-live-evidence) and 02-035 (gate-oracle-foundation-without-deferred-status), and the plan_final gate step 02-011 should re-classify them once the underlying capture runners land. This step's contract is the narrower one specified in the brief: prevent the final acceptance gate from passing while any raw `pending-...` value placeholder remains without being explicitly enumerated as blocked.",
+  "deviations": [
+    "The brief contemplated a `pending-oracle-fixtures-blocklist.json` registry file under `test/oracles/fixtures/`; that location collides with the downstream `test/vanilla_parity/current-state/inventory-oracle-fixtures-with-pending-status.test.ts` lock test (outside this step's write lock) which enforces a closed-enum classification of every file in that directory. The registry was relocated into the focused test file as an inline TypeScript constant (`BLOCKED_FIXTURES_AUTHORITATIVE_REGISTRY`) so the test file remains the structured authority while not drifting the fixture directory inventory.",
+    "The brief also contemplated annotating each pending fixture inline with a `blockedPendingFutureStep` object; that path is blocked by per-fixture lock tests under `test/oracles/capture-*.test.ts` which assert byte-exact `expect(fixture).toEqual(expectedFixture)` against frozen literals. Those lock tests are outside this step's write lock. The inline-registry approach satisfies the brief's stated invariant (`No fixture may have a raw 'pending-...' placeholder without the blocked classification.`) without modifying fixture content."
+  ]
+}
