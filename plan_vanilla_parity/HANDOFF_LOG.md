@@ -9857,3 +9857,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-028
 - summary: SFX oracle window=512 samples (~46ms @ 11025 Hz); SHA-256 64-hex hash.
 - tests: format pass; focused 13/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-028 compare-sfx-oracle-windows completed
+
+- status: completed
+- lane: audio
+- step_id: 11-028
+- summary: src/audio/compare-sfx-oracle-windows.ts pins SFX oracle window comparator: 11025 Hz mono PCM mixed to signed-16 stereo at 35 Hz gametic boundaries = 315 samples * 4 bytes = 1260-byte windows per tic. Strict byte equality with no allowed drift; window validator rejects wrong-size or negative-tic entries.
+- tests: format pass; focused 13/0; full pass with pre-existing inventory drift unchanged; tsc pass
