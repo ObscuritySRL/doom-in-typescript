@@ -1,0 +1,79 @@
+{
+  "stepId": "02-005",
+  "lane": "oracle",
+  "title": "capture-reference-e1m1-actions",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-e1m1-actions.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-e1m1-actions.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceE1M1Actions.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-e1m1-actions.test.ts",
+    "passed": 8,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15493,
+    "failed": 0,
+    "files": 814
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceE1M1Actions.ts:captureReferenceE1M1Action",
+    "errorClasses": ["ReferenceBundleMissingError", "ReferenceE1M1ActionWindowNotFoundError"],
+    "scriptedActionKinds": ["combat", "damage", "death-reborn", "door-use", "movement", "pickup"],
+    "menuNavigationKeys": ["VK_ESCAPE", "VK_RETURN", "VK_RETURN", "VK_RETURN"],
+    "inputInjection": "PostMessageW(WM_KEYDOWN, vkCode, 0x00000001) + PostMessageW(WM_KEYUP, vkCode, 0xc0000001) to the PID-filtered Chocolate Doom window handle; SetForegroundWindow is called before each key burst so SDL 1.2's message pump processes the synthesized events.",
+    "captureMode": "GDI BitBlt against the live Chocolate Doom 2.2.1 SDL window after each scripted key hold settles for settleAfterKeyMs (default 400ms).",
+    "configRewriteOnSandbox": [
+      "fullscreen=0",
+      "startup_delay=0",
+      "show_endoom=0"
+    ],
+    "ticDurationMs": 29,
+    "evidenceShape": [
+      "action",
+      "cleanShutdown",
+      "description",
+      "e1m1EntrySha256",
+      "executableFilename",
+      "exitCode",
+      "exitedAtElapsedMs",
+      "framebufferHeight",
+      "framebufferWidth",
+      "holds",
+      "killedAtElapsedMs",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "spawnedAtElapsedMs",
+      "terminationCause",
+      "totalElapsedMs",
+      "windowFoundAtElapsedMs",
+      "windowTitle"
+    ],
+    "holdEvidenceShape": [
+      "capturedAtElapsedMs",
+      "description",
+      "durationMs",
+      "framebufferByteLength",
+      "framebufferSha256",
+      "holdIndex",
+      "normalizedByteLength",
+      "normalizedSha256",
+      "virtualKeyCodes"
+    ],
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-e1m1-actions.test.ts unconditionally pins the static surface (runner + normalizer + SCRIPTED_E1M1_ACTION_KINDS frozen 6-element list + SCRIPTED_E1M1_ACTION_SEQUENCES frozen 6-entry record with per-action keyHolds contracts + override key set + error class shape) and gates the live capture on every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present; when gated in, the live test runs the 'movement' sequence end-to-end (~56 scripted tics of forward + turn-right after reaching E1M1) and asserts the full evidence record including per-hold framebuffer hashes."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceE1M1Actions.ts triggers two cross-plan inventory updates mirroring the 02-001 / 02-002 / 02-003 / 02-004 precedent. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: tools_reference_file_count 6 → 7 with captureReferenceE1M1Actions.ts inserted at the head of the ASCII-sorted filename list, total_tools_size_bytes 78385 → 101794, total_tools_line_count 2082 → 2599, and a new capture_modules row pins the module's size_bytes=23409 / line_count=517 / sha256=9b97...4a7e / exported surface (5 interfaces, 2 functions, 2 constants, 1 class, 2 types). test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 6 assertions both move to 7. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 19 → 20 and classification_summary.classified_source_file_count 463 → 464."
+  }
+}
