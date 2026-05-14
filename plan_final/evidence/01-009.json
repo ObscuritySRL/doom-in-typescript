@@ -1,0 +1,33 @@
+{
+  "stepId": "01-009",
+  "lane": "current-state",
+  "title": "inventory-weak-acceptance-tests",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/weak-acceptance-tests.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/current-state/weak-acceptance-tests.json",
+    "test/plan_final/current-state/weak-acceptance-tests.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/current-state/weak-acceptance-tests.test.ts",
+    "passed": 12,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15390,
+    "failed": 0,
+    "files": 803
+  },
+  "typecheck": "clean",
+  "inventory_summary": {
+    "total_acceptance_test_count": 56,
+    "weak_acceptance_test_count": 56,
+    "strong_acceptance_test_count": 0,
+    "acceptance_test_roots_audited": ["test/playable/acceptance/", "test/vanilla_parity/acceptance/", "test/oracles/"]
+  }
+}

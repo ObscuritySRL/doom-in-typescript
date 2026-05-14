@@ -1,0 +1,325 @@
+{
+  "id": "01-009",
+  "title": "inventory-weak-acceptance-tests",
+  "lane": "current-state",
+  "captured_at_utc": "2026-05-14T14:30:00Z",
+  "acceptance_test_root_paths_searched": [
+    "test/playable/acceptance/",
+    "test/vanilla_parity/acceptance/",
+    "test/oracles/"
+  ],
+  "live_runtime_launch_patterns_searched": [
+    "Bun.spawn",
+    "Bun.spawnSync",
+    "spawnSync",
+    "execSync",
+    "Bun.$",
+    "Bun.execSync"
+  ],
+  "evidence_method": "Bun.file readdir over each acceptance test root for *.test.ts files; literal substring search against `Bun.spawn`, `Bun.spawnSync`, `spawnSync`, `execSync`, `Bun.$`, `Bun.execSync` to classify whether the test launches a subprocess; also flag whether the test body contains the string `doom.ts`.",
+  "weakness_definition": "An acceptance test is weak when its file body contains none of the subprocess-launch substrings searched. Such tests cannot prove `bun run doom.ts` produces tick-perfect or pixel-perfect output because they never run the port. They typically validate fixture manifests, schema shapes, or evidence-hash strings instead.",
+  "total_acceptance_test_count": 56,
+  "weak_acceptance_test_count": 56,
+  "strong_acceptance_test_count": 0,
+  "weak_acceptance_tests_sorted": [
+    {
+      "relative_path": "test/oracles/audio-hash-format.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/capture-demo1-playback-checkpoints.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-demo2-playback-checkpoints.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-demo3-playback-checkpoints.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-e1m1-start-from-clean-launch.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-episode-menu-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-final-side-by-side-replay.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-first-menu-frame.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-framebuffer-hash-windows.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-full-attract-loop-cycle.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-implementation-clean-launch-expectations.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-initial-title-frame.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-live-save-load-roundtrip.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-menu-open-close-behavior.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-music-event-hash-windows.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-new-game-menu-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-options-menu-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-quit-confirmation-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-reference-clean-launch.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-save-load-menu-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-screen-size-detail-gamma-paths.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/capture-scripted-combat-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-scripted-damage-death-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-scripted-door-use-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-scripted-intermission-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-scripted-movement-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-scripted-pickup-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-sfx-hash-windows.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-skill-menu-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-sound-volume-menu-path.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-startup-sequence.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/capture-state-hash-windows.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/oracles/framebuffer-hash-format.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/input-script-format.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/manual-gates.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/music-event-log-format.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/oracle-schema.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/reference-run-isolation.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/reference-run-manifest.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/reference-sandbox-policy.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/state-hash-format.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/oracles/window-capture-feasibility.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-attract-loop-and-long-run.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-audio.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-bun-launch-smoke.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-e1m1-start.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-final-side-by-side.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-input-replay.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-menu-navigation.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-plan-structure.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-save-load.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/playable/acceptance/gate-title-frame.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": true
+    },
+    {
+      "relative_path": "test/vanilla_parity/acceptance/gate-full-final-side-by-side-proof.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/vanilla_parity/acceptance/gate-registered-doom-user-supplied-iwad-scope.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/vanilla_parity/acceptance/gate-shareware-doom-one-full-playthrough.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    },
+    {
+      "relative_path": "test/vanilla_parity/acceptance/gate-ultimate-doom-user-supplied-iwad-scope.test.ts",
+      "launches_subprocess": false,
+      "references_doom_ts_string": false
+    }
+  ],
+  "strong_acceptance_tests_sorted": [],
+  "implications": [
+    "No acceptance test in this repository currently launches `bun run doom.ts` or any subprocess; every acceptance gate today validates manifests, schemas, or hash-comparison records without executing the runtime.",
+    "The final side-by-side zero-diff acceptance gate must spawn the port as a subprocess and diff its byte output against captured reference oracle bytes; the manifest-only pattern documented here is insufficient evidence under the plan_final completion rules.",
+    "Every test path listed in weak_acceptance_tests_sorted is a candidate for replacement or augmentation in the acceptance lane (13-001 .. 13-011) once doom.ts is runnable."
+  ],
+  "follow_up_steps": [
+    "13-001",
+    "13-002",
+    "13-003",
+    "13-004",
+    "13-005",
+    "13-006",
+    "13-007",
+    "13-008",
+    "13-009",
+    "13-010",
+    "13-011"
+  ]
+}
