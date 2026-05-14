@@ -9515,3 +9515,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-027
 - summary: Widget X positions: health=90, armor=221, ammo=44, max ammo=314, frags=138; number Y=171; STTNUM/STYSNUM number prefixes, STTPRCNT/STYSPRCNT percent signs.
 - tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-011 implement-menu-sound-routing completed
+
+- status: completed
+- lane: audio
+- step_id: 11-011
+- summary: src/audio/implement-menu-sound-routing.ts pins menu sound routing via S_StartSound(NULL, sfx_id): origin field stays NULL so S_UpdateSounds origin guard `c->origin && listener != c->origin` skips S_AdjustSoundParams; menu sounds play at full snd_SfxVolume baseline with NORM_SEP centred separation regardless of player view; multiple menu sounds stack across free channels since anonymous origin defeats S_GetChannel same-origin reuse.
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-007 implement-pitch-and-volume-semantics completed
+
+- status: completed
+- lane: audio
+- step_id: 11-007
+- summary: src/audio/implement-pitch-and-volume-semantics.ts pins s_sound.c S_StartSound pitch and volume init. NORM_PITCH=128. Saw band (sfx_sawup..sfx_sawhit ids 10..13) perturbed by 8 - (random & 15) for ±range [-7..+8]. sfx_itemup (32) and sfx_tink (87) skip perturbation entirely. All other sfx perturb by 16 - (random & 31) for ±range [-15..+16]. Clamp to 0..255. Volume from snd_SfxVolume + sfx->volume link delta; <1 drops the sound; >sfxVolume clamps back to sfxVolume.
+- tests: format pass; focused 19/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

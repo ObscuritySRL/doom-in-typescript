@@ -381,7 +381,7 @@
 - [x] `11-004` `implement-sound-origin-tracking` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-004-implement-sound-origin-tracking.md`
 - [x] `11-005` `implement-sound-start-stop-update-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-005-implement-sound-start-stop-update-ordering.md`
 - [x] `11-006` `implement-attenuation-and-stereo-separation` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-006-implement-attenuation-and-stereo-separation.md`
-- [ ] `11-007` `implement-pitch-and-volume-semantics` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-007-implement-pitch-and-volume-semantics.md`
+- [x] `11-007` `implement-pitch-and-volume-semantics` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-007-implement-pitch-and-volume-semantics.md`
 - [ ] `11-008` `implement-mixer-sample-stepping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-008-implement-mixer-sample-stepping.md`
 - [x] `11-009` `implement-mixer-clipping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-009-implement-mixer-clipping.md`
 - [x] `11-010` `implement-sound-channel-eviction` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-010-implement-sound-channel-eviction.md`
