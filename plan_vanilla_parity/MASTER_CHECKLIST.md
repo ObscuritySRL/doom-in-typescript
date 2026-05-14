@@ -396,7 +396,7 @@
 - [x] `11-019` `implement-opl-register-model` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-019-implement-opl-register-model.md`
 - [x] `11-020` `implement-opl-instrument-mapping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-020-implement-opl-instrument-mapping.md`
 - [x] `11-021` `implement-opl-synthesis-core` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-021-implement-opl-synthesis-core.md`
-- [ ] `11-022` `implement-win32-audio-device-open-close` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-022-implement-win32-audio-device-open-close.md`
+- [x] `11-022` `implement-win32-audio-device-open-close` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-022-implement-win32-audio-device-open-close.md`
 - [x] `11-023` `implement-audio-buffer-timing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-023-implement-audio-buffer-timing.md`
 - [x] `11-024` `implement-volume-controls` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-024-implement-volume-controls.md`
 - [x] `11-025` `implement-sound-shutdown-ordering` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-025-implement-sound-shutdown-ordering.md`
