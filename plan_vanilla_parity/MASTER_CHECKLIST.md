@@ -389,7 +389,7 @@
 - [x] `11-012` `implement-weapon-and-monster-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-012-implement-weapon-and-monster-sound-routing.md`
 - [x] `11-013` `implement-sector-and-switch-sound-routing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-013-implement-sector-and-switch-sound-routing.md`
 - [x] `11-014` `parse-mus-event-stream` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-014-parse-mus-event-stream.md`
-- [ ] `11-015` `implement-mus-scheduler` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-015-implement-mus-scheduler.md`
+- [x] `11-015` `implement-mus-scheduler` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-015-implement-mus-scheduler.md`
 - [ ] `11-016` `implement-mus-looping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-016-implement-mus-looping.md`
 - [ ] `11-017` `implement-music-selection-by-map-and-game-mode` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-017-implement-music-selection-by-map-and-game-mode.md`
 - [ ] `11-018` `implement-music-pause-resume` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-018-implement-music-pause-resume.md`

@@ -9668,3 +9668,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-032
 - summary: Automap palette indices: background=0, walls=23, two-sided=96, floor-diff=75, ceil-diff=76, things=112, secret=252, grid=104, xhair=4.
 - tests: format pass; focused 1/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-015 implement-mus-scheduler completed
+
+- status: completed
+- lane: audio
+- step_id: 11-015
+- summary: src/audio/implement-mus-scheduler.ts pins mus2mid.c / i_music.c scheduler contract: MUS_TICK_HZ=140 / GAMEPLAY=35 = 4 quickticks per gametic. 16-channel velocity cache seeded with MUS_DEFAULT_VELOCITY=127. Play-note with bit 7 set updates the cache and dispatches the explicit byte; bit 7 clear reuses cached velocity without updating. Cache persists across map and loop boundaries.
+- tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
