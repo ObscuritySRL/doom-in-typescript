@@ -9650,3 +9650,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-031
 - summary: F_PANINC=8 screen units; zoom in 0x10570, out 0xfb00; grid uses MAPBLOCKSIZE=128; follow default true, grid default false.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-026 compare-save-load-roundtrip-oracle completed
+
+- status: completed
+- lane: save
+- step_id: 12-026
+- summary: src/save/compare-save-load-roundtrip-oracle.ts pins three round-trip variants: write-read-write (catches non-deterministic serialization), read-write-read (catches lossy parsing), state-save-load-state (strongest encoder+decoder losslessness gate). PADSAVEP regions must be zero-filled for byte-stable round-trips; P_RestoreTargets is the pointer-to-index round-trip choke point; leveltime modulo 2^24 quirk applies.
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
