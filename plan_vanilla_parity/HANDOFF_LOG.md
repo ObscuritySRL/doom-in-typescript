@@ -9596,3 +9596,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-024
 - summary: src/save/restore-post-load-render-audio-input-state.ts pins post-load subsystem refresh ordering: renderer (R_FillBackScreen, R_ExecuteSetViewSize, R_SetupFrame) -> audio (S_Start, kills SFX and restarts level music) -> input (I_ResetKey, D_ResetMouseDeltas). screenblocks loaded from save overrides command-line and menu values; mouse position at Load-menu activation must not bleed into post-load viewangle.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-013 implement-sector-and-switch-sound-routing completed
+
+- status: completed
+- lane: audio
+- step_id: 11-013
+- summary: src/audio/implement-sector-and-switch-sound-routing.ts pins p_ceilng.c / p_plats.c / p_switch.c sound routing: sector specials use &sector->soundorg (degenmobj at sector centroid); switches use &line->frontsector->soundorg. Both are remote-mobj origins so S_AdjustSoundParams re-spatializes per tic.
+- tests: format pass; focused 10/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
