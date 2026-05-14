@@ -1,0 +1,38 @@
+{
+  "stepId": "02-011",
+  "lane": "oracle",
+  "title": "gate-oracle-foundation",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/gate-oracle-foundation.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/02-011.json",
+    "plan_final/progress/oracle/02-011.md",
+    "plan_final/status/02-011.json",
+    "test/plan_final/oracle/gate-oracle-foundation.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/gate-oracle-foundation.test.ts",
+    "passed": 5,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15543,
+    "failed": 0,
+    "files": 820
+  },
+  "typecheck": "clean",
+  "gateContract": {
+    "ruleStatement": "The oracle-foundation gate verdict is the source of truth for whether the Phase 02 oracle foundation is ready for downstream parity work. The gate walks every JSON file under test/oracles/fixtures/, deeply searches for any string value whose content starts with the literal substring 'pending-', and reports both the list of blocked fixture paths and the per-occurrence JSON pointer + string value. The gate passes only when no fixture contains any pending-* value.",
+    "gateFunction": "runOracleFoundationGate()",
+    "gateVerdictShape": ["blockedFixtureRelativePaths", "passes", "pendingOccurrences", "totalFixturesAudited"],
+    "passingDefinition": "blockedFixtureRelativePaths.length === 0 AND pendingOccurrences.length === 0",
+    "currentVerdict": "blocked (17 of 31 fixtures still contain pending-* values pending live reference capture); the 02-010 BLOCKED_FIXTURES_AUTHORITATIVE_REGISTRY enumerates each blocked fixture with rationale + followUpStepId=02-011 explaining that this gate is the completion check for the oracle foundation",
+    "selfValidationStrategy": "The focused test does not assert the gate currently passes — it asserts the gate REPORTS state correctly. If passes=true, blockedCount must be 0; if passes=false, blockedCount must be >0. Internal consistency between blockedFixtureRelativePaths and pendingOccurrences is enforced. This lets the test ship today (verifying the gate function works) while remaining the canonical pass/fail oracle for downstream acceptance work that replaces pending-* values one fixture at a time."
+  },
+  "scopeNote": "This step ships the gate function and the focused-test contract. It does NOT replace the 17 currently-blocked fixtures with live evidence — that work is owned by the downstream capture-binding steps that 02-010's BLOCKED_FIXTURES_AUTHORITATIVE_REGISTRY enumerates via the followUpStepId field. The final side-by-side acceptance gate (plan_final 12-*) re-runs this same gate function and requires passes=true before signing off."
+}
