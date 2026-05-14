@@ -9506,3 +9506,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-021
 - summary: src/save/reject-incompatible-save-version.ts pins g_game.c G_DoLoadGame version-mismatch behavior: silent return (no I_Error, no menu confirmation, in-memory state unchanged) when version magic differs from "version 109". DOOM 1.0-1.8 saves (100..108) and post-1.9 saves (110+) all rejected. strcmp is byte-exact case-sensitive with no whitespace tolerance.
 - tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-027 implement-status-bar-numbers-and-percent-widgets completed
+
+- status: completed
+- lane: render
+- step_id: 09-027
+- summary: Widget X positions: health=90, armor=221, ammo=44, max ammo=314, frags=138; number Y=171; STTNUM/STYSNUM number prefixes, STTPRCNT/STYSPRCNT percent signs.
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
