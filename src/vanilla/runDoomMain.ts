@@ -11,6 +11,16 @@
  * IWAD discovery, host bring-up, the `D_DoomLoop` frame schedule, and
  * the clean quit semantics.
  *
+ * Plan_final step `03-003` (lane: launch-host-input) wires the existing
+ * vanilla command-line parser at `src/bootstrap/cmdline.ts` into this
+ * entrypoint via {@link parseCommandLineConfiguration}, so a real
+ * vanilla argv now flows through into a typed {@link CommandLineConfiguration}
+ * before the subsequent launch lane steps consume it.  Invalid trailing
+ * argument values for the wired flags (`-iwad`, `-config`, `-warp`,
+ * `-playdemo`, `-timedemo`, `-skill`, `-savedir`) cause runDoomMain to
+ * throw a typed {@link CommandLineParseError} that names both the
+ * offending parameter and the offending received value.
+ *
  * The root entrypoint at `doom.ts` is held byte-identical to the
  * plan_vanilla_parity 03-001 skeleton (no top-level imports, `export {}`
  * marker, no side effects) until the cross-plan write-lock conflict on
@@ -22,9 +32,11 @@
  * ```ts
  * import { runDoomMain } from './src/vanilla/runDoomMain.ts';
  * await runDoomMain([]);
- * await runDoomMain(['--iwad', 'doom/DOOM1.WAD']);
+ * await runDoomMain(['-iwad', 'doom/DOOM1.WAD', '-skill', '3']);
  * ```
  */
+
+import { parseCommandLineConfiguration } from './commandLineConfiguration.ts';
 
 /**
  * Thrown when {@link runDoomMain} is invoked with an argument shape it
@@ -139,5 +151,6 @@ function validateArgumentVector(argumentVector: unknown): readonly string[] {
  */
 export async function runDoomMain(argumentVector?: unknown): Promise<void> {
   const validatedArgumentVector = validateArgumentVector(argumentVector);
-  void validatedArgumentVector;
+  const commandLineConfiguration = parseCommandLineConfiguration(validatedArgumentVector);
+  void commandLineConfiguration;
 }

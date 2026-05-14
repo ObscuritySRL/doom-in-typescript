@@ -1,0 +1,48 @@
+{
+  "stepId": "03-003",
+  "lane": "launch-host-input",
+  "title": "wire-vanilla-command-line",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/wire-vanilla-command-line.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-003.json",
+    "plan_final/progress/launch-host-input/03-003.md",
+    "plan_final/status/03-003.json",
+    "src/vanilla/commandLineConfiguration.ts",
+    "src/vanilla/runDoomMain.ts",
+    "test/plan_final/launch/wire-vanilla-command-line.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/launch/wire-vanilla-command-line.test.ts",
+    "passed": 27,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15586,
+    "failed": 0,
+    "files": 823
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-003 wires the existing vanilla command-line parser at src/bootstrap/cmdline.ts into runDoomMain.  Both read-only refs (src/bootstrap/cmdline.ts and src/bootstrap/implement-vanilla-command-line-parsing.ts) are SHA-pinned by test/vanilla_parity/current-state/inventory-src-bootstrap-surface.test.ts:203 against the inventory-src-bootstrap-surface.json captured sha256 values; modifying either would break the plan_vanilla_parity 01-003 inventory test.  Wiring is therefore implemented as a new src/vanilla/commandLineConfiguration.ts that imports the CommandLine class without modifying the bootstrap surface, and runDoomMain calls parseCommandLineConfiguration on the validated argv.  The single-argument runDoomMain signature (Promise<void>) is preserved byte-stable from 03-001's pinned public surface; the typed CommandLineConfiguration is exported from the new wrapper module and consumed internally by runDoomMain.",
+    "wiredFlags": ["-config", "-iwad", "-playdemo", "-savedir", "-skill", "-timedemo", "-warp"],
+    "publicSurface": [
+      "parseCommandLineConfiguration(argumentVector: readonly string[]): CommandLineConfiguration",
+      "CommandLineParseError extends Error (parameterName: string, receivedValue: string | null)",
+      "CommandLineConfiguration interface",
+      "WarpTarget interface",
+      "runDoomMain(argumentVector?: unknown): Promise<void> (signature unchanged from 03-001)"
+    ],
+    "bootstrapFilesModified": false,
+    "bootstrapSkeletonPreserved": true,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/launch/ is not declared as a test_roots entry in any plan_vanilla_parity inventory.  The full 15586-test suite passes without any plan_vanilla_parity inventory rewrite, matching the 03-001 precedent for src/vanilla/ additions."
+  }
+}
