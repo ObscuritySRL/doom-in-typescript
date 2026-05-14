@@ -9713,3 +9713,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-033
 - summary: AM_NUMMARKPOINTS=10; AMMNUM0..AMMNUM9 patches (5px wide).
 - tests: format pass; focused 14/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-028 gate-save-load-byte-parity completed
+
+- status: completed
+- lane: save
+- step_id: 12-028
+- summary: src/save/gate-save-load-byte-parity.ts pins the Phase 12 save/load byte-parity acceptance gate as a union of 12 named checks (save-directory-policy, save-slot-descriptions, save-header-version-magic, player-mobj-thinker-record-sizes, sector-and-line-special-classes, archive-section-terminators, savegamesize-buffer-cap, load-header-layout-and-restoration-order, incompatible-version-silent-return, corruption-detection-error-strings, reference-byte-oracle-comparator, roundtrip-oracle-three-variants). Maps phase-12 save-side steps 12-010..12-026 to checks; gate-config-compatibility (12-027) and this gate together satisfy 12-028 prereq for the Phase 13 acceptance gates.
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
