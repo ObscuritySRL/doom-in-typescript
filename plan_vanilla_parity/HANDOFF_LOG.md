@@ -9785,3 +9785,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-023
 - summary: src/audio/implement-audio-buffer-timing.ts pins the audio-mixer per-tic chunk contract: TICRATE=35 Hz (doomdef.h F-010); default outputSampleRate=44100 Hz; samplesPerTic = outputSampleRate / ticRateHz with the divisibility invariant (44100/35=1260 frames); stereo frame = 4 bytes (2 channels x int16); default bytes per tic = 5040; output rate must be a multiple of 35 Hz for integer samplesPerTic.
 - tests: format pass; focused 14/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-038 gate-status-bar-and-automap-parity completed
+
+- status: completed
+- lane: render
+- step_id: 09-038
+- summary: STATUS_AUTOMAP_PARITY_GATE bundles status bar widget X positions, face widget (143,168) with 42 states, 6 key sprites at x=239, automap 10 marks and state enum.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
