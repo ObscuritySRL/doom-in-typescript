@@ -1,0 +1,44 @@
+/**
+ * Vanilla DOOM 1.9 status bar face widget contract.
+ *
+ * From Chocolate Doom 2.2.1 st_stuff.c ST_updateFaceWidget:
+ *   ST_FACEX = 143, ST_FACEY = 168 (face position on status bar).
+ *   Face has multiple state classes:
+ *     ST_NUMPAINFACES = 5 (health buckets: 100, 80, 60, 40, 20)
+ *     ST_NUMSTRAIGHTFACES = 3 (straight-ahead, blinking right, blinking left)
+ *     ST_NUMTURNFACES = 2 (turn right, turn left)
+ *     ST_NUMSPECIALFACES = 3 (ouch, evil grin, dead)
+ *     ST_NUMEXTRAFACES = 2 (god mode + invuln)
+ *
+ *   Total face frames = ST_NUMPAINFACES * ST_FACESTRIDE + ST_NUMEXTRAFACES = 5*8+2 = 42.
+ *   ST_FACESTRIDE = ST_NUMSTRAIGHTFACES + ST_NUMTURNFACES + ST_NUMSPECIALFACES = 3+2+3 = 8.
+ *
+ *   Face state change tics:
+ *     ST_TURNOFFSET = ST_NUMSTRAIGHTFACES = 3
+ *     ST_OUCHOFFSET = ST_TURNOFFSET + ST_NUMTURNFACES = 5
+ *     ST_EVILGRINOFFSET = ST_OUCHOFFSET + 1 = 6
+ *     ST_RAMPAGEOFFSET = ST_EVILGRINOFFSET + 1 = 7
+ *     ST_GODFACE = ST_NUMPAINFACES * ST_FACESTRIDE = 40
+ *     ST_DEADFACE = ST_GODFACE + 1 = 41
+ *
+ *   Face animation tics: ST_FACEPROBABILITY = 96 (random face change odds).
+ *   ST_STRAIGHTFACECOUNT = 8 = 0.23 sec at 35 Hz.
+ */
+
+export const VANILLA_ST_FACEX = 143;
+export const VANILLA_ST_FACEY = 168;
+
+export const VANILLA_ST_NUMPAINFACES = 5;
+export const VANILLA_ST_NUMSTRAIGHTFACES = 3;
+export const VANILLA_ST_NUMTURNFACES = 2;
+export const VANILLA_ST_NUMSPECIALFACES = 3;
+export const VANILLA_ST_NUMEXTRAFACES = 2;
+export const VANILLA_ST_FACESTRIDE = VANILLA_ST_NUMSTRAIGHTFACES + VANILLA_ST_NUMTURNFACES + VANILLA_ST_NUMSPECIALFACES;
+export const VANILLA_ST_TOTAL_FACES = VANILLA_ST_NUMPAINFACES * VANILLA_ST_FACESTRIDE + VANILLA_ST_NUMEXTRAFACES;
+
+export const VANILLA_ST_TURNOFFSET = VANILLA_ST_NUMSTRAIGHTFACES;
+export const VANILLA_ST_OUCHOFFSET = VANILLA_ST_TURNOFFSET + VANILLA_ST_NUMTURNFACES;
+export const VANILLA_ST_EVILGRINOFFSET = VANILLA_ST_OUCHOFFSET + 1;
+export const VANILLA_ST_RAMPAGEOFFSET = VANILLA_ST_EVILGRINOFFSET + 1;
+export const VANILLA_ST_GODFACE = VANILLA_ST_NUMPAINFACES * VANILLA_ST_FACESTRIDE;
+export const VANILLA_ST_DEADFACE = VANILLA_ST_GODFACE + 1;
