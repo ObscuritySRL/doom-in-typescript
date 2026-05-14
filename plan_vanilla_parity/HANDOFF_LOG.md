@@ -9452,3 +9452,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-025
 - summary: 8 border patches (BRDR_T/B/L/R + 4 corners); DOOM 1 background flat=FLOOR7_2, DOOM 2=GRNROCK.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-006 implement-attenuation-and-stereo-separation completed
+
+- status: completed
+- lane: audio
+- step_id: 11-006
+- summary: src/audio/implement-attenuation-and-stereo-separation.ts pins s_sound.c S_AdjustSoundParams: S_CLIPPING_DIST=1200 fixed, S_CLOSE_DIST=200 fixed, S_ATTENUATOR=1000, S_STEREO_SWING=96 fixed, NORM_SEP=128. Game Gems I "fast Euclidean" approx_dist = |dx|+|dy| - min/2. Non-boss maps cut at CLIPPING_DIST; gamemap==8 (E?M8) suppresses cutoff and floors volume at 15. Volume curve linear from CLOSE_DIST..CLIPPING_DIST.
+- tests: format pass; focused 12/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
