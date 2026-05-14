@@ -9866,3 +9866,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-028
 - summary: src/audio/compare-sfx-oracle-windows.ts pins SFX oracle window comparator: 11025 Hz mono PCM mixed to signed-16 stereo at 35 Hz gametic boundaries = 315 samples * 4 bytes = 1260-byte windows per tic. Strict byte equality with no allowed drift; window validator rejects wrong-size or negative-tic entries.
 - tests: format pass; focused 13/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-029 compare-music-event-oracle-windows completed
+
+- status: completed
+- lane: audio
+- step_id: 11-029
+- summary: MUS event log: 8 bytes/event, 1024 events/window; SHA-256 hash; MUS event codes (release=0..score_end=6).
+- tests: format pass; focused 2/0; full pass; tsc pre-existing save lane TS2352
