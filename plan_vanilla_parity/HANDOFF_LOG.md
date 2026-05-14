@@ -9461,3 +9461,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-006
 - summary: src/audio/implement-attenuation-and-stereo-separation.ts pins s_sound.c S_AdjustSoundParams: S_CLIPPING_DIST=1200 fixed, S_CLOSE_DIST=200 fixed, S_ATTENUATOR=1000, S_STEREO_SWING=96 fixed, NORM_SEP=128. Game Gems I "fast Euclidean" approx_dist = |dx|+|dy| - min/2. Non-boss maps cut at CLIPPING_DIST; gamemap==8 (E?M8) suppresses cutoff and floors volume at 15. Volume curve linear from CLOSE_DIST..CLIPPING_DIST.
 - tests: format pass; focused 12/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 12-020 load-compatible-save-header completed
+
+- status: completed
+- lane: save
+- step_id: 12-020
+- summary: src/save/load-compatible-save-header.ts pins g_game.c G_DoLoadGame header byte layout: 24 description + 16 version + 1 skill + 1 episode + 1 map + 4 playeringame + 3 leveltime = 50 bytes total. Leveltime is 3 bytes big-endian (high<<16|mid<<8|low) capped at 2^24-1 tics (~5.3 hours). playeringame uses C-bool semantics — any non-zero byte means present.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

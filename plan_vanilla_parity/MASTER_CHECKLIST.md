@@ -428,7 +428,7 @@
 - [x] `12-017` `serialize-line-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-017-serialize-line-specials.md`
 - [x] `12-018` `serialize-world-archive-terminators` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-018-serialize-world-archive-terminators.md`
 - [x] `12-019` `enforce-vanilla-savegame-limit` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-019-enforce-vanilla-savegame-limit.md`
-- [ ] `12-020` `load-compatible-save-header` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-020-load-compatible-save-header.md`
+- [x] `12-020` `load-compatible-save-header` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-020-load-compatible-save-header.md`
 - [ ] `12-021` `reject-incompatible-save-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-021-reject-incompatible-save-version.md`
 - [ ] `12-022` `reject-corrupted-save-bytes` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-022-reject-corrupted-save-bytes.md`
 - [ ] `12-023` `restore-player-mobj-and-world-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-023-restore-player-mobj-and-world-state.md`
