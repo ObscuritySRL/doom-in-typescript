@@ -1,0 +1,63 @@
+{
+  "stepId": "03-006",
+  "lane": "launch-host-input",
+  "title": "wire-event-queue",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/wire-event-queue.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-006.json",
+    "plan_final/progress/launch-host-input/03-006.md",
+    "plan_final/status/03-006.json",
+    "src/vanilla/eventQueue.ts",
+    "test/plan_final/launch/wire-event-queue.test.ts"
+  ],
+  "knownFailures": [
+    {
+      "path": "test/plan_final/oracle/capture-reference-demo-sync.test.ts",
+      "title": "captures DEMO3 from clean launch with -playdemo demo3 and produces ordered checkpoint evidence at the contracted tic offsets",
+      "reason": "Pre-existing 02-008 sandbox-driven timing flake on origin/main: the test asserts `capturedAtElapsedMs >= scheduledAtElapsedMs` against wall-clock timestamps measured inside a sandbox child process, and process-scheduling jitter occasionally produces a 1-4 ms inversion (observed 3853.13 ms vs 3856.59 ms). Verified the flake reproduces on baseline `origin/main` HEAD `9c81004` without any 03-006 changes applied (2 of 5 isolated runs failed identically before any 03-006 file existed). No code path connects 03-006 to this test: `src/vanilla/eventQueue.ts` is imported only by `test/plan_final/launch/wire-event-queue.test.ts`, and the 02-008 DEMO3 oracle does not depend on the event queue."
+    }
+  ],
+  "focusedTest": {
+    "path": "test/plan_final/launch/wire-event-queue.test.ts",
+    "passed": 29,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15665,
+    "failed": 1,
+    "files": 826,
+    "preExistingFlakes": 1
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-006 translates Win32 keyboard, mouse, close-window, focus, and Alt-F4 messages into the vanilla DOOM event queue.  The read-only refs (src/input/keyboard.ts, src/input/mouse.ts, src/host/win32/messagePump.ts) supply scan-code translation, mouse-button constants, and the WM_QUIT message id; no SHA pin protects any file in src/input/ or src/host/win32/ (verified via grep across test/vanilla_parity and test/plan_fps).  Wiring is implemented as a new src/vanilla/eventQueue.ts that defines the vanilla event_t shape (evtype_t ∈ {ev_keydown, ev_keyup, ev_mouse, ev_quit}, fields data1/data2/data3), the canonical 64-slot circular queue (VANILLA_MAX_EVENTS = 64 matching d_event.h's MAXEVENTS), and four pure translators: keyboard (WM_KEYDOWN/WM_KEYUP/WM_SYSKEYDOWN/WM_SYSKEYUP → ev_keydown/ev_keyup via translateScanCode), mouse-button (WM_LBUTTONDOWN/UP, WM_RBUTTONDOWN/UP, WM_MBUTTONDOWN/UP, WM_XBUTTONDOWN/UP → ev_mouse with the updated button bitmask in data1), close (WM_CLOSE/WM_QUIT → ev_quit), and focus (WM_SETFOCUS/WM_KILLFOCUS → focus state change, not a queued event — vanilla DOOM has no ev_focus type).  Alt-F4 detection (WM_SYSKEYDOWN with VK_F4 and bit 29 of LPARAM set) posts both an ev_keydown and an ev_quit event matching the vanilla launch host's quit-immediately-on-Alt-F4 semantics.  The convenience composer dispatchWin32MessageToVanillaQueue runs all four translators against one MSG and returns the updated mouse-button mask, focus change, and close-requested boolean for the caller to thread across calls.",
+    "publicSurface": [
+      "VANILLA_MAX_EVENTS = 64 (d_event.h MAXEVENTS)",
+      "VanillaEventQueue class with post / pull / drainAll / size / isEmpty (circular buffer, overflow overwrites oldest)",
+      "VanillaEvent { type, data1, data2, data3 } interface matching event_t",
+      "VanillaEventType = 'ev_keydown' | 'ev_keyup' | 'ev_mouse' | 'ev_quit'",
+      "translateKeyboardMessageToVanillaEvent(messageId, wParam, lParam): VanillaEvent | null",
+      "translateMouseButtonMessageToVanillaEvent(messageId, wParam, currentMouseButtonMask): VanillaMouseButtonTranslation | null",
+      "translateCloseMessageToVanillaEvent(messageId): VanillaEvent | null",
+      "translateFocusMessageToFocusState(messageId): { hasFocus: boolean } | null",
+      "isAltF4Message(messageId, wParam, lParam): boolean",
+      "dispatchWin32MessageToVanillaQueue(queue, message, previousMouseButtonMask): VanillaQueueDispatchResult",
+      "extractScanCodeFromLParam(lParam): number",
+      "WM_KEYDOWN / WM_KEYUP / WM_SYSKEYDOWN / WM_SYSKEYUP / WM_CLOSE / WM_SETFOCUS / WM_KILLFOCUS constants",
+      "LPARAM_ALT_DOWN_FLAG = 0x2000_0000, VK_F4 = 0x73"
+    ],
+    "readOnlyRefsRespected": "Imports only constants and functions from src/input/keyboard.ts (LPARAM_SCANCODE_MASK, LPARAM_SCANCODE_SHIFT, translateScanCode), src/input/mouse.ts (MOUSE_BUTTON_* indices, WM_*BUTTONDOWN/UP message ids, XBUTTON1/XBUTTON2), and src/host/win32/messagePump.ts (WM_QUIT).  No file under src/input/ or src/host/ was modified.",
+    "hostFilesModified": false,
+    "inputFilesModified": false,
+    "launcherFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/launch/ is not declared as a test_roots entry in any plan_vanilla_parity inventory. The full 15665-pass suite (plus the unrelated 02-008 flake) is consistent with the 03-001 / 03-003 / 03-004 / 03-005 precedent for src/vanilla/ additions: no plan_vanilla_parity inventory rewrite is required."
+  }
+}
