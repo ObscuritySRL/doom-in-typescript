@@ -1,0 +1,163 @@
+{
+  "step_id": "01-002",
+  "lane": "current-state",
+  "title": "inventory-simplified-launcher-imports",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "bypass_summary": {
+    "missing_vanilla_entrypoint_chain": [
+      "doom.ts is a skeleton export {} only — no D_DoomMain wiring",
+      "src/bootstrap/implement-d-doommain-init-order-skeleton.ts is not imported by doom.ts",
+      "src/bootstrap/implement-d-doomloop-entry-timing.ts is not imported by doom.ts",
+      "src/launcher/* is the current runtime path; it is not the vanilla D_DoomMain/D_DoomLoop sequence"
+    ],
+    "current_launch_runtime_path": "bun run src/main.ts → src/launcher/session.ts createLauncherSession → src/launcher/win32.ts runLauncherWindow",
+    "bypasses_vanilla_launch_path": true
+  },
+  "files": [
+    {
+      "relative_path": "src/main.ts",
+      "size_bytes": 3239,
+      "line_count": 103,
+      "sha256": "019ea4be868270e62d17d3557679dbecf0cbf838c10f07c393d1d9cd54300f44",
+      "imports": [
+        {
+          "kind": "value",
+          "module_path": "./bootstrap/cmdline.ts",
+          "names": ["CommandLine"]
+        },
+        {
+          "kind": "value",
+          "module_path": "./launcher/session.ts",
+          "names": ["createLauncherSession", "loadLauncherResources"]
+        },
+        {
+          "kind": "value",
+          "module_path": "./launcher/win32.ts",
+          "names": ["runLauncherWindow"]
+        },
+        {
+          "kind": "value",
+          "module_path": "./reference/policy.ts",
+          "names": ["REFERENCE_BUNDLE_PATH"]
+        },
+        {
+          "kind": "value",
+          "module_path": "./reference/target.ts",
+          "names": ["PRIMARY_TARGET"]
+        }
+      ]
+    },
+    {
+      "relative_path": "src/launcher/gameplayAssets.ts",
+      "size_bytes": 5741,
+      "line_count": 172,
+      "sha256": "a6e946f543f13bc6453df405b0fd289c6ac5856880480afcb9c4ca0b5205e772",
+      "imports": [
+        { "kind": "value", "module_path": "../assets/colormap.ts", "names": ["parseColormap"] },
+        { "kind": "value", "module_path": "../assets/flats.ts", "names": ["buildFlatCatalog"] },
+        { "kind": "value", "module_path": "../assets/patchCatalog.ts", "names": ["buildPatchCatalog"] },
+        { "kind": "value", "module_path": "../assets/pnames.ts", "names": ["parsePnames"] },
+        { "kind": "value", "module_path": "../assets/texture1.ts", "names": ["parseTextureLump"] },
+        { "kind": "value", "module_path": "../render/patchDraw.ts", "names": ["decodePatch"] },
+        { "kind": "type", "module_path": "../wad/directory.ts", "names": ["DirectoryEntry"] },
+        { "kind": "value", "module_path": "../wad/lumpLookup.ts", "names": ["LumpLookup"] }
+      ]
+    },
+    {
+      "relative_path": "src/launcher/gameplayRenderer.ts",
+      "size_bytes": 34075,
+      "line_count": 1034,
+      "sha256": "7162348d87d0162665b0924b622f5649b25b8335bbf90fe6936854107472f736",
+      "imports": [
+        { "kind": "type", "module_path": "../core/angle.ts", "names": ["Angle"] },
+        { "kind": "value", "module_path": "../core/fixed.ts", "names": ["FRACUNIT"] },
+        { "kind": "value", "module_path": "../map/lineSectorGeometry.ts", "names": ["ML_DONTPEGBOTTOM", "ML_DONTPEGTOP"] },
+        { "kind": "type", "module_path": "../map/mapSetup.ts", "names": ["MapData"] },
+        { "kind": "value", "module_path": "../map/nodeTraversal.ts", "names": ["pointOnSide"] },
+        { "kind": "type", "module_path": "../player/playerSpawn.ts", "names": ["Player"] },
+        { "kind": "value", "module_path": "../host/windowPolicy.ts", "names": ["SCREENHEIGHT", "SCREENWIDTH"] },
+        { "kind": "value", "module_path": "../map/bspStructs.ts", "names": ["NF_SUBSECTOR"] },
+        { "kind": "type", "module_path": "./gameplayAssets.ts", "names": ["GameplayRenderResources", "GameplayTexture"] }
+      ]
+    },
+    {
+      "relative_path": "src/launcher/session.ts",
+      "size_bytes": 16273,
+      "line_count": 508,
+      "sha256": "728f89c05621d67f778fe37ff635b93b9751cf50c0dc8656180d8b5d3207bdd9",
+      "imports": [
+        { "kind": "type", "module_path": "../core/angle.ts", "names": ["Angle"] },
+        { "kind": "type", "module_path": "../core/fixed.ts", "names": ["Fixed"] },
+        { "kind": "value", "module_path": "../core/fixed.ts", "names": ["FRACUNIT", "fixedMul"] },
+        { "kind": "value", "module_path": "../core/rng.ts", "names": ["DoomRandom"] },
+        { "kind": "value", "module_path": "../core/angle.ts", "names": ["ANG45"] },
+        { "kind": "value", "module_path": "../assets/playpal.ts", "names": ["parsePlaypal"] },
+        { "kind": "value", "module_path": "../map/blockmap.ts", "names": ["MAPBLOCKSHIFT"] },
+        { "kind": "value", "module_path": "../map/mapBundle.ts", "names": ["findMapNames", "parseMapBundle"] },
+        { "kind": "mixed", "module_path": "../map/mapSetup.ts", "names": ["MapData", "setupLevel"] },
+        { "kind": "value", "module_path": "../map/subsectorQuery.ts", "names": ["sectorIndexAt"] },
+        { "kind": "value", "module_path": "../map/things.ts", "names": ["MTF_AMBUSH", "MTF_EASY", "MTF_HARD", "MTF_NORMAL", "MTF_NOT_SINGLE"] },
+        { "kind": "value", "module_path": "../host/windowPolicy.ts", "names": ["SCREENHEIGHT", "SCREENWIDTH"] },
+        { "kind": "value", "module_path": "../input/ticcmd.ts", "names": ["ANGLE_TURN", "FORWARD_MOVE", "SIDE_MOVE", "packTicCommand"] },
+        { "kind": "value", "module_path": "../player/movement.ts", "names": ["calcHeight", "movePlayer"] },
+        { "kind": "type", "module_path": "../player/playerSpawn.ts", "names": ["Player"] },
+        { "kind": "value", "module_path": "../player/playerSpawn.ts", "names": ["createPlayer", "playerReborn"] },
+        {
+          "kind": "value",
+          "module_path": "../ui/automap.ts",
+          "names": [
+            "BACKGROUND",
+            "CDWALLCOLORS",
+            "FDWALLCOLORS",
+            "M_ZOOMIN",
+            "M_ZOOMOUT",
+            "PLAYER_ARROW_LINES",
+            "THINGCOLORS",
+            "THIN_TRIANGLE_GUY_LINES",
+            "TSWALLCOLORS",
+            "WALLCOLORS",
+            "YOURCOLORS",
+            "automapClipMline",
+            "automapDoFollowPlayer",
+            "automapDrawFline",
+            "automapRotate",
+            "automapStart",
+            "automapTicker",
+            "createAutomapState"
+          ]
+        },
+        { "kind": "type", "module_path": "../ui/automap.ts", "names": ["AutomapState", "Line2D"] },
+        { "kind": "type", "module_path": "../wad/directory.ts", "names": ["DirectoryEntry"] },
+        { "kind": "value", "module_path": "../wad/directory.ts", "names": ["parseWadDirectory"] },
+        { "kind": "value", "module_path": "../wad/header.ts", "names": ["parseWadHeader"] },
+        { "kind": "value", "module_path": "../wad/lumpLookup.ts", "names": ["LumpLookup"] },
+        { "kind": "value", "module_path": "../world/checkPosition.ts", "names": ["createBlockThingsGrid"] },
+        { "kind": "type", "module_path": "../world/checkPosition.ts", "names": ["BlockThingsGrid"] },
+        { "kind": "value", "module_path": "../world/mobj.ts", "names": ["MF_AMBUSH", "MF_SPAWNCEILING", "MOBJINFO", "Mobj", "MobjType", "ONCEILINGZ", "ONFLOORZ", "spawnMobj"] },
+        { "kind": "value", "module_path": "../world/thinkers.ts", "names": ["ThinkerList"] },
+        { "kind": "value", "module_path": "../world/xyMovement.ts", "names": ["xyMovement"] },
+        { "kind": "value", "module_path": "../world/zMovement.ts", "names": ["VIEWHEIGHT", "zMovement"] },
+        { "kind": "value", "module_path": "./gameplayAssets.ts", "names": ["loadGameplayRenderResources"] },
+        { "kind": "type", "module_path": "./gameplayAssets.ts", "names": ["GameplayRenderResources"] },
+        { "kind": "value", "module_path": "./gameplayRenderer.ts", "names": ["createGameplayRenderState", "renderGameplayFrame"] },
+        { "kind": "type", "module_path": "./gameplayRenderer.ts", "names": ["GameplayRenderState"] }
+      ]
+    },
+    {
+      "relative_path": "src/launcher/win32.ts",
+      "size_bytes": 12824,
+      "line_count": 368,
+      "sha256": "8515550c4bab8d35259c97e519081da5040b129f4b75a8caf8f0ee5ae400c37d",
+      "imports": [
+        { "kind": "value", "module_path": "bun:ffi", "names": ["FFIType", "dlopen"] },
+        { "kind": "value", "module_path": "../host/windowPolicy.ts", "names": ["computeClientDimensions", "computePresentationRect", "SCREENHEIGHT", "SCREENWIDTH"] },
+        { "kind": "value", "module_path": "../host/ticAccumulator.ts", "names": ["TicAccumulator"] },
+        { "kind": "value", "module_path": "../host/win32/clock.ts", "names": ["PerformanceClock"] },
+        { "kind": "value", "module_path": "../host/win32/messagePump.ts", "names": ["MSG_MESSAGE_OFFSET", "MSG_SIZE", "PM_REMOVE", "WM_QUIT"] },
+        { "kind": "value", "module_path": "./session.ts", "names": ["EMPTY_LAUNCHER_INPUT", "advanceLauncherSession", "renderLauncherFrame"] },
+        { "kind": "type", "module_path": "./session.ts", "names": ["LauncherInputState", "LauncherSession"] }
+      ]
+    }
+  ]
+}
