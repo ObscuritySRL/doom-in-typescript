@@ -9479,3 +9479,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-010
 - summary: src/audio/implement-sound-channel-eviction.ts pins S_StopChannel eviction order: (1) I_StopSound(handle), (2) sfxinfo->usefulness--, (3) sfxinfo=NULL, (4) origin=NULL. Handle field is preserved (not zeroed). The `if (c->sfxinfo)` guard makes the eviction a no-op on already-free slots.
 - tests: format pass; focused 6/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-009 implement-mixer-clipping completed
+
+- status: completed
+- lane: audio
+- step_id: 11-009
+- summary: src/audio/implement-mixer-clipping.ts pins the i_sdlsound.c PCM mixer saturation contract: per-channel clip at INT16_MIN=-32768 / INT16_MAX=+32767 (no wrap on overflow); intermediate accumulator is wider than int16 to avoid premature wrap; DMX byte → int16 via `(b | (b << 8)) - 32768` so byte 0x00→INT16_MIN, 0xFF→INT16_MAX, and 0x80→+128 (the silence quirk preserved by the audio-hash oracle); stereo saturation is per-channel with no joint normalization.
+- tests: format pass; focused 14/0; full pass with pre-existing inventory drift failures unchanged (new src/audio file adds audio source_directories drift); tsc pass
+
+
+## 2026-05-13 - 09-026 implement-status-bar-background completed
+
+- status: completed
+- lane: render
+- step_id: 09-026
+- summary: Status bar 320x32 at (0,168); STBAR background patch; STARMS overlay at (104,168) for single-player arms display.
+- tests: format pass; focused 2/0; full pass; tsc pre-existing save lane TS2352
