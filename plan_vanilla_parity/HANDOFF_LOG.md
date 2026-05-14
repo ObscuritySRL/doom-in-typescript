@@ -9641,3 +9641,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-014
 - summary: src/audio/parse-mus-event-stream.ts pins mus2mid.c MUS score grammar: descriptor byte bit 7 = last-event-of-group, bits 4..6 = event type, bits 0..3 = channel. 8 event types (0..7) with bodyByteCounts; types 5 and 7 reserved/invalid; type 6 = ScoreEnd. Percussion channel 15. Quicktick rate 140 Hz = 4x DOOM 35 Hz gameplay tick.
 - tests: format pass; focused 14/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-031 implement-automap-pan-zoom-follow-grid completed
+
+- status: completed
+- lane: render
+- step_id: 09-031
+- summary: F_PANINC=8 screen units; zoom in 0x10570, out 0xfb00; grid uses MAPBLOCKSIZE=128; follow default true, grid default false.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
