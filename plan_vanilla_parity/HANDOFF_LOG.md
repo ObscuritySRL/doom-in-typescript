@@ -9407,3 +9407,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-018
 - summary: src/save/serialize-world-archive-terminators.ts pins g_game.c G_DoSaveGame section sequence and three distinct terminator bytes: thinkers section ends with tc_end=0, specials section ends with tc_endspecials=7, file ends with SAVE_GAME_TERMINATOR=0x1d. Canonical order header -> players -> world -> thinkers -> specials -> file-end. G_DoLoadGame raises "Bad savegame" when 0x1d does not match.
 - tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 11-004 implement-sound-origin-tracking completed
+
+- status: completed
+- lane: audio
+- step_id: 11-004
+- summary: src/audio/implement-sound-origin-tracking.ts pins s_sound.c S_UpdateSounds origin guard: only remote-mobj origins (origin != null AND origin != listener) call S_AdjustSoundParams per tic; anonymous (origin == null) and self-listener (origin == listener) cases keep started-with volume/separation. NORM_SEP=128 centre pan, link-volume floor=1 before stop.
+- tests: format pass; focused 7/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
