@@ -1,0 +1,69 @@
+{
+  "stepId": "02-003",
+  "lane": "oracle",
+  "title": "capture-reference-title-frame",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-title-frame.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-title-frame.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceTitleFrame.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-title-frame.test.ts",
+    "passed": 8,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15476,
+    "failed": 0,
+    "files": 812
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceTitleFrame.ts:captureReferenceTitleFrame",
+    "errorClasses": ["ReferenceBundleMissingError", "ReferenceWindowNotFoundError"],
+    "evidenceShape": [
+      "capturedAtElapsedMs",
+      "capturedByteLength",
+      "capturedHeight",
+      "capturedSha256",
+      "capturedWidth",
+      "cleanShutdown",
+      "executableFilename",
+      "exitCode",
+      "exitedAtElapsedMs",
+      "killedAtElapsedMs",
+      "normalizedByteLength",
+      "normalizedHeight",
+      "normalizedSha256",
+      "normalizedWidth",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "spawnedAtElapsedMs",
+      "terminationCause",
+      "totalElapsedMs",
+      "windowFoundAtElapsedMs",
+      "windowTitle"
+    ],
+    "normalizedDimensions": { "width": 320, "height": 200, "byteLength": 256000, "bytesPerPixel": 4 },
+    "captureMode": "GDI BitBlt against the live Chocolate Doom 2.2.1 SDL window discovered via EnumWindows filtered to the spawned subprocess.pid",
+    "configRewriteOnSandbox": [
+      "fullscreen=0 (avoid stealing the desktop during capture)",
+      "startup_delay=0 (skip the 1-second startup splash)",
+      "show_endoom=0 (skip the ENDOOM text screen on quit)"
+    ],
+    "spawnArguments": ["-iwad", "DOOM1.WAD"],
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-title-frame.test.ts gates the live capture behind a check for every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present on disk; the live test then asserts the runner returns either a fully-shaped ReferenceTitleFrameEvidence record (window opened path) or throws ReferenceWindowNotFoundError after the configured timeout (window-never-opened path on hosts where the SDL 1.2 video init does not register a window in Win32). Both contract branches pass uniformly."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceTitleFrame.ts triggers two cross-plan inventory updates. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: file count 4 → 5, filenames_sorted gains 'captureReferenceTitleFrame.ts' at the head of the ASCII-sorted list, total_tools_size_bytes 43150 → 58855, total_tools_line_count 1164 → 1577, and a new capture_modules row pins the new module's size_bytes/line_count/sha256/exported surface/companion test path. Test file test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 4 assertions both move to 5. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 16 → 18 (covers both the prior-step launchReferenceCleanly.ts drift that 02-002 left unrecorded and the new captureReferenceTitleFrame.ts) and classification_summary.classified_source_file_count 460 → 462 to match. Same precedent as commit 608b43f's classify-real-implementations drift drain after createReferenceSandbox.ts landed."
+  }
+}
