@@ -1,0 +1,36 @@
+{
+  "stepId": "01-007",
+  "lane": "current-state",
+  "title": "inventory-unwired-ai-specials",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/unwired-ai-specials.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/current-state/unwired-ai-specials.json",
+    "test/plan_final/current-state/unwired-ai-specials.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/current-state/unwired-ai-specials.test.ts",
+    "passed": 11,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15442,
+    "failed": 0,
+    "files": 807
+  },
+  "typecheck": "clean",
+  "inventory_summary": {
+    "total_ai_module_count": 40,
+    "total_unwired_ai_module_count": 40,
+    "total_wired_ai_module_count": 0,
+    "total_specials_module_count": 10,
+    "total_unwired_specials_module_count": 10,
+    "total_wired_specials_module_count": 0,
+    "launcher_entry_files": ["src/launcher/gameplayAssets.ts", "src/launcher/gameplayRenderer.ts", "src/launcher/session.ts", "src/launcher/win32.ts"]
+  }
+}
