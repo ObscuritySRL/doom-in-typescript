@@ -9938,3 +9938,21 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 13-002
 - summary: Registered DOOM 27-map (E1/E2/E3) acceptance manifest; user-supplied DOOM.WAD with pending oracle hashes; E2M8 cyberdemon and E3M8 spider mastermind exits; human attestation required.
 - tests: format pass; focused 8/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 13-004 gate-full-final-side-by-side-proof completed
+
+- status: completed
+- lane: acceptance
+- step_id: 13-004
+- summary: test/vanilla_parity/acceptance/gate-full-final-side-by-side-proof.{json,test.ts} pins the final acceptance gate: aggregates 13-001 (shareware DOOM 1), 13-002 (registered DOOM), and 13-003 (Ultimate DOOM) IWAD-scope proofs into a single side-by-side comparison artifact spanning framebuffer, audio, music-event, save-byte, demo-replay, and screen-capture channels. Human attestation required confirming visual + audio parity with Chocolate Doom 2.2.1 frame-for-frame and sample-for-sample.
+- tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 13-004 gate-full-final-side-by-side-proof completed
+
+- status: completed
+- lane: acceptance
+- step_id: 13-004
+- summary: Final side-by-side proof acceptance manifest aggregating all 11 Phase 12 prerequisite gates plus 13-001/13-002/13-003 IWAD-scope gates.
+- tests: format pass; focused 6/0; full pass; tsc pre-existing save lane TS2352
