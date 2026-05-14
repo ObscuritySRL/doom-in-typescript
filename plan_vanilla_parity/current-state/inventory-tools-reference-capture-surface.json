@@ -11,8 +11,9 @@
     "tools_reference_relative_path": "tools/reference/",
     "tools_root_file_count": 2,
     "tools_root_filenames_sorted": ["format-changed.ts", "verify.ts"],
-    "tools_reference_file_count": 7,
+    "tools_reference_file_count": 8,
     "tools_reference_filenames_sorted": [
+      "captureReferenceAudioWindows.ts",
       "captureReferenceE1M1Actions.ts",
       "captureReferenceMenuRoute.ts",
       "captureReferenceTitleFrame.ts",
@@ -21,14 +22,32 @@
       "launchReferenceCleanly.ts",
       "windowCaptureProbe.ts"
     ],
-    "total_tools_size_bytes": 101794,
-    "total_tools_line_count": 2599,
+    "total_tools_size_bytes": 138655,
+    "total_tools_line_count": 3493,
     "companion_test_file_count": 3,
     "companion_test_relative_paths_sorted": ["test/oracles/reference-run-isolation.test.ts", "test/oracles/window-capture-feasibility.test.ts", "test/scaffold/verify-commands.test.ts"],
     "total_companion_test_size_bytes": 34093,
     "total_companion_test_line_count": 922
   },
   "capture_modules": [
+    {
+      "relative_path": "tools/reference/captureReferenceAudioWindows.ts",
+      "group": "reference_window_capture",
+      "role": "Implements captureReferenceAudioWindows(overrides) which captures the deterministic SFX + music-event audio hash windows from the sandboxed Chocolate Doom 2.2.1 reference build via Windows Audio Session API (WASAPI) loopback capture: builds a fresh REFERENCE_SANDBOX_POLICY sandbox via createReferenceSandbox, rewrites the sandbox chocolate-doom.cfg (fullscreen=0, startup_delay=0, show_endoom=0), dlopens ole32.dll for CoInitializeEx/CoCreateInstance/CoTaskMemFree/CoUninitialize and user32.dll twice (USER32_WINDOW_DISCOVERY_SYMBOLS for EnumWindows/GetWindowText/GetWindowThreadProcessId/IsWindowVisible filtered to subprocess.pid + USER32_INPUT_SYMBOLS for PostMessageW + SetForegroundWindow), activates an IMMDeviceEnumerator → IMMDevice → IAudioClient (AUDCLNT_SHAREMODE_SHARED + AUDCLNT_STREAMFLAGS_LOOPBACK) → IAudioCaptureClient COM vtable chain entirely via bun:ffi CFunction wrappers around each method pointer read from the object's vtable, spawns DOOM.EXE with cwd=sandbox, polls EnumWindows for the visible top-level window whose title contains CHOCOLATE_DOOM_WINDOW_TITLE, SetForegroundWindows the handle, starts the WASAPI loopback stream and drains the capture client every WASAPI_PULL_INTERVAL_MS, posts the four-key menu route (VK_ESCAPE → VK_RETURN → VK_RETURN → VK_RETURN) when capture-relative elapsed time reaches menuKeyFirstAtTic * 29ms to advance Main → Episode → Skill → E1M1 spawn, accumulates every captured PCM frame into a buffer, then for every REFERENCE_AUDIO_HASH_WINDOWS entry slices the buffer at framesPerTic = sampleRate/35, hashes the slice with SHA-256, and produces an audio + mixed + sfx + music-event triple per window (mixedSha256 is the authoritative byte-perfect WASAPI audio hash). Returns a frozen ReferenceAudioWindowsEvidence record (sandboxId/Path, windowTitle, capturedFormat, framesCapturedTotal, pcmByteLengthTotal, silentPacketCount, mixedSha256, musicEventSha256, sfxSha256, 7-entry windows array combining 4 SFX windows + 3 music-event windows aligned with the plan_fps capture-sfx-hash-windows.json + capture-music-event-hash-windows.json fixtures, spawned/windowFound/captureStart/captureEnd/killed/exitedAtElapsedMs, terminationCause, cleanShutdown, totalElapsedMs). Exposes SFX_HASH_WINDOWS (frozen 4-element list: clean-launch-menu-sfx-window 0..4, menu-navigation-sfx-window 5..8, gameplay-weapon-sfx-window 9..16, gameplay-world-interaction-sfx-window 17..24), MUSIC_EVENT_HASH_WINDOWS (frozen 3-element list: music-clean-launch-title-window 0..104, music-menu-navigation-window 140..244, music-e1m1-start-window 315..420), REFERENCE_AUDIO_HASH_WINDOWS (frozen 7-element SFX-then-music concat), AUDIO_HASH_WINDOW_KINDS (frozen ASCII-sorted ['music-event','sfx']), and the buildGuidBuffer(guid) helper that packs a 16-byte little-endian Win32 GUID buffer. Throws ReferenceBundleMissingError when the sandboxed executable is absent, ReferenceAudioWindowNotFoundError when EnumWindows does not find the process-owned window within findWindowTimeoutMs, and ReferenceAudioWindowsComError on any WASAPI HRESULT that is not S_OK or S_FALSE.",
+      "size_bytes": 36861,
+      "line_count": 894,
+      "sha256": "f7796ad35b63780b28c015fa225df7cdbd3f9e718a011690626c95425a6ca6d0",
+      "exported_interfaces": ["AudioHashWindow", "CaptureReferenceAudioWindowsOverrides", "CapturedAudioFormat", "ReferenceAudioWindowEvidence", "ReferenceAudioWindowsEvidence"],
+      "exported_functions": ["buildGuidBuffer", "captureReferenceAudioWindows"],
+      "exported_constants": ["AUDIO_HASH_WINDOW_KINDS", "MUSIC_EVENT_HASH_WINDOWS", "REFERENCE_AUDIO_HASH_WINDOWS", "SFX_HASH_WINDOWS"],
+      "exported_classes": ["ReferenceAudioWindowNotFoundError", "ReferenceAudioWindowsComError"],
+      "exported_types": ["AudioHashWindowKind", "AudioHashWindowPhase", "ReferenceAudioCaptureStatus", "ReferenceAudioWindowsTerminationCause"],
+      "exported_const_enums": [],
+      "external_imports": ["bun:ffi", "node:crypto", "node:fs", "node:fs/promises", "node:path", "tools/reference/createReferenceSandbox.ts", "tools/reference/launchReferenceCleanly.ts", "tools/reference/windowCaptureProbe.ts"],
+      "src_importer_count": 0,
+      "test_importer_count": 1,
+      "companion_test_relative_path": "test/plan_final/oracle/capture-reference-audio-windows.test.ts"
+    },
     {
       "relative_path": "tools/reference/captureReferenceE1M1Actions.ts",
       "group": "reference_window_capture",

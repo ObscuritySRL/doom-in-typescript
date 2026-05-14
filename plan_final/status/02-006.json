@@ -1,0 +1,7 @@
+{
+  "stepId": "02-006",
+  "lane": "oracle",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/02-006.json",
+  "commitSha": "PENDING"
+}

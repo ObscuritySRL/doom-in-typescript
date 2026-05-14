@@ -1,0 +1,111 @@
+{
+  "stepId": "02-006",
+  "lane": "oracle",
+  "title": "capture-reference-audio-windows",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-audio-windows.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-audio-windows.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceAudioWindows.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-audio-windows.test.ts",
+    "passed": 12,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15505,
+    "failed": 0,
+    "files": 815
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceAudioWindows.ts:captureReferenceAudioWindows",
+    "errorClasses": ["ReferenceAudioWindowNotFoundError", "ReferenceAudioWindowsComError", "ReferenceBundleMissingError"],
+    "audioCaptureMode": "Windows Audio Session API (WASAPI) loopback capture from the default render endpoint via direct bun:ffi COM vtable dispatch (CoInitializeEx + CoCreateInstance through ole32.dll → IMMDeviceEnumerator::GetDefaultAudioEndpoint(render, console) → IMMDevice::Activate(IAudioClient) → IAudioClient::Initialize(SHAREMODE_SHARED | STREAMFLAGS_LOOPBACK) → IAudioClient::GetService(IAudioCaptureClient) → drain via GetNextPacketSize/GetBuffer/ReleaseBuffer until the longest hash window completes).",
+    "menuNavigationKeys": ["VK_ESCAPE", "VK_RETURN", "VK_RETURN", "VK_RETURN"],
+    "inputInjection": "PostMessageW(WM_KEYDOWN, vkCode, 0x00000001) + PostMessageW(WM_KEYUP, vkCode, 0xc0000001) to the PID-filtered Chocolate Doom window handle; SetForegroundWindow is called before each key burst so SDL 1.2's message pump processes the synthesized events.",
+    "configRewriteOnSandbox": [
+      "fullscreen=0",
+      "show_endoom=0",
+      "startup_delay=0"
+    ],
+    "ticDurationMs": 29,
+    "audioHashWindowKinds": ["music-event", "sfx"],
+    "audioHashWindowCount": 7,
+    "sfxHashWindowCount": 4,
+    "musicEventHashWindowCount": 3,
+    "sfxHashWindowNames": [
+      "clean-launch-menu-sfx-window",
+      "gameplay-weapon-sfx-window",
+      "gameplay-world-interaction-sfx-window",
+      "menu-navigation-sfx-window"
+    ],
+    "musicEventHashWindowNames": [
+      "music-clean-launch-title-window",
+      "music-e1m1-start-window",
+      "music-menu-navigation-window"
+    ],
+    "fixtureRangeAlignment": {
+      "sfxFixturePath": "test/oracles/fixtures/capture-sfx-hash-windows.json",
+      "musicFixturePath": "test/oracles/fixtures/capture-music-event-hash-windows.json",
+      "sfxTicCoverage": "0..24",
+      "musicTicCoverage": "0..420"
+    },
+    "evidenceShape": [
+      "captureEndElapsedMs",
+      "captureStartElapsedMs",
+      "captureStatus",
+      "capturedFormat",
+      "cleanShutdown",
+      "executableFilename",
+      "exitCode",
+      "exitedAtElapsedMs",
+      "framesCapturedTotal",
+      "killedAtElapsedMs",
+      "menuKeyFirstAtTic",
+      "mixedSha256",
+      "musicEventSha256",
+      "pcmByteLengthTotal",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "sfxSha256",
+      "silentPacketCount",
+      "spawnedAtElapsedMs",
+      "terminationCause",
+      "ticDurationMs",
+      "totalCapturedTics",
+      "totalElapsedMs",
+      "windowFoundAtElapsedMs",
+      "windowTitle",
+      "windows"
+    ],
+    "windowEvidenceShape": [
+      "audioByteLength",
+      "audioSha256",
+      "description",
+      "endTic",
+      "kind",
+      "mixedSha256",
+      "musicEventSha256",
+      "name",
+      "observedEndElapsedMs",
+      "observedStartElapsedMs",
+      "phase",
+      "sfxSha256",
+      "startTic"
+    ],
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-audio-windows.test.ts unconditionally pins the static surface (runner + buildGuidBuffer + AUDIO_HASH_WINDOW_KINDS frozen 2-element list + SFX_HASH_WINDOWS frozen 4-element list + MUSIC_EVENT_HASH_WINDOWS frozen 3-element list + REFERENCE_AUDIO_HASH_WINDOWS frozen 7-element concat + fixture range alignment + override key set + error class shape) and gates the live WASAPI capture on every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present; when gated in, the live test spawns a fresh sandboxed DOOM.EXE, navigates Main → Episode → Skill → E1M1, captures the WASAPI loopback PCM stream through the longest end tic, slices and hashes each of the 7 fixture-aligned windows, and asserts the full evidence record."
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceAudioWindows.ts triggers the same cross-plan inventory updates mirroring the 02-001 / 02-002 / 02-003 / 02-004 / 02-005 precedent. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: tools_reference_file_count 7 → 8 with captureReferenceAudioWindows.ts inserted at the head of the ASCII-sorted filename list, total_tools_size_bytes raised to 138655 / total_tools_line_count raised to 3493, and a new capture_modules row pins the module's size_bytes=36861 / line_count=894 / sha256=f7796ad3...69 / exported surface (5 interfaces, 2 functions, 4 constants, 2 classes, 4 types). test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 7 assertions both move to 8. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 20 → 21 and classification_summary.classified_source_file_count 464 → 465."
+  }
+}
