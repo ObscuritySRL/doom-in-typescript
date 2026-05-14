@@ -427,7 +427,7 @@
 - [x] `12-016` `serialize-sector-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-016-serialize-sector-specials.md`
 - [x] `12-017` `serialize-line-specials` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-017-serialize-line-specials.md`
 - [x] `12-018` `serialize-world-archive-terminators` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-018-serialize-world-archive-terminators.md`
-- [ ] `12-019` `enforce-vanilla-savegame-limit` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-019-enforce-vanilla-savegame-limit.md`
+- [x] `12-019` `enforce-vanilla-savegame-limit` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-019-enforce-vanilla-savegame-limit.md`
 - [ ] `12-020` `load-compatible-save-header` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-020-load-compatible-save-header.md`
 - [ ] `12-021` `reject-incompatible-save-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-021-reject-incompatible-save-version.md`
 - [ ] `12-022` `reject-corrupted-save-bytes` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-022-reject-corrupted-save-bytes.md`
