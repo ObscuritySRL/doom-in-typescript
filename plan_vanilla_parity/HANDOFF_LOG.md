@@ -9587,3 +9587,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-029
 - summary: Ammo column x=288, max ammo x=314; ammo Y rows 171/179/187/195 (bullets/shells/rockets/cells); keys at x=239 with Y 171/181/191 (blue/yellow/red); 6 STKEYS patches.
 - tests: format pass; focused 5/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-024 restore-post-load-render-audio-input-state completed
+
+- status: completed
+- lane: save
+- step_id: 12-024
+- summary: src/save/restore-post-load-render-audio-input-state.ts pins post-load subsystem refresh ordering: renderer (R_FillBackScreen, R_ExecuteSetViewSize, R_SetupFrame) -> audio (S_Start, kills SFX and restarts level music) -> input (I_ResetKey, D_ResetMouseDeltas). screenblocks loaded from save overrides command-line and menu values; mouse position at Load-menu activation must not bleed into post-load viewangle.
+- tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

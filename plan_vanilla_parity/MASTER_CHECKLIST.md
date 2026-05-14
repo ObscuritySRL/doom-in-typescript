@@ -432,7 +432,7 @@
 - [x] `12-021` `reject-incompatible-save-version` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-021-reject-incompatible-save-version.md`
 - [x] `12-022` `reject-corrupted-save-bytes` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-022-reject-corrupted-save-bytes.md`
 - [x] `12-023` `restore-player-mobj-and-world-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-023-restore-player-mobj-and-world-state.md`
-- [ ] `12-024` `restore-post-load-render-audio-input-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-024-restore-post-load-render-audio-input-state.md`
+- [x] `12-024` `restore-post-load-render-audio-input-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-024-restore-post-load-render-audio-input-state.md`
 - [ ] `12-025` `compare-reference-save-byte-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-025-compare-reference-save-byte-oracle.md`
 - [ ] `12-026` `compare-save-load-roundtrip-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-026-compare-save-load-roundtrip-oracle.md`
 - [ ] `12-027` `gate-config-compatibility` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-027-gate-config-compatibility.md`
