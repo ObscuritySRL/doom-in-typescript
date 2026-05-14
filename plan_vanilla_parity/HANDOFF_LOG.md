@@ -9749,3 +9749,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-036
 - summary: Renderer checkpoint tics: spawn (0), 1-sec (35), 3-sec (105); SHA-256 64-hex hash format.
 - tests: format pass; focused 2/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 09-037 gate-renderer-framebuffer-parity completed
+
+- status: completed
+- lane: render
+- step_id: 09-037
+- summary: RENDERER_FRAMEBUFFER_PARITY_GATE bundles 320x200=64000 byte buffer, SHA-256 64-hex hashes, checkpoint tics [0, 35, 105].
+- tests: format pass; focused 3/0; full pass; tsc pre-existing save lane TS2352
