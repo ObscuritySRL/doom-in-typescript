@@ -1,0 +1,7 @@
+{
+  "stepId": "03-001",
+  "lane": "launch-host-input",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/03-001.json",
+  "commitSha": "df1882d0290f27d67ba02269e4ed7b8fe4872fb4"
+}
