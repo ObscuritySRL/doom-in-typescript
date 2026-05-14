@@ -9704,3 +9704,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-016
 - summary: src/audio/implement-mus-looping.ts pins i_music.c / mus2mid.c looping contract: vanilla music loops by default until S_StopMusic. ScoreEnd in looping mode rewinds eventIndex to 0 with the ScoreEnd trailing delay preserved as the gap before re-fire. Per-channel velocity cache is NOT reset on loop wrap.
 - tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-033 implement-automap-markers completed
+
+- status: completed
+- lane: render
+- step_id: 09-033
+- summary: AM_NUMMARKPOINTS=10; AMMNUM0..AMMNUM9 patches (5px wide).
+- tests: format pass; focused 14/0; full pass; tsc pre-existing save lane TS2352
