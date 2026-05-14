@@ -394,7 +394,7 @@
 - [x] `11-017` `implement-music-selection-by-map-and-game-mode` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-017-implement-music-selection-by-map-and-game-mode.md`
 - [x] `11-018` `implement-music-pause-resume` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-018-implement-music-pause-resume.md`
 - [x] `11-019` `implement-opl-register-model` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-019-implement-opl-register-model.md`
-- [ ] `11-020` `implement-opl-instrument-mapping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-020-implement-opl-instrument-mapping.md`
+- [x] `11-020` `implement-opl-instrument-mapping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-020-implement-opl-instrument-mapping.md`
 - [ ] `11-021` `implement-opl-synthesis-core` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-021-implement-opl-synthesis-core.md`
 - [ ] `11-022` `implement-win32-audio-device-open-close` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-022-implement-win32-audio-device-open-close.md`
 - [x] `11-023` `implement-audio-buffer-timing` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-023-implement-audio-buffer-timing.md`
