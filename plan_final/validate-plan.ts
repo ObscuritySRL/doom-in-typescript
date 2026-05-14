@@ -1,6 +1,6 @@
 import { readdir, stat } from 'node:fs/promises';
 
-import { FINAL_PLAN_LANES, FINAL_PLAN_STEP_COUNT, FINAL_PLAN_STEPS, type FinalPlanStep } from './planData.ts';
+import { FINAL_PLAN_LANES, FINAL_PLAN_STEP_COUNT, FINAL_PLAN_STEPS, type FinalPlanLane, type FinalPlanStep } from './planData.ts';
 
 const REQUIRED_ROOT_FILES = Object.freeze([
   'plan_final/README.md',
@@ -82,6 +82,48 @@ export interface CompletionEvidenceRecord {
 }
 
 const COMMIT_SHA_FORMAT = /^[0-9a-f]{40}$/;
+
+export type LaneOwnershipViolationCategory = 'duplicate-ownership-claim' | 'lane-owns-no-paths';
+
+export interface LaneOwnershipViolation {
+  readonly category: LaneOwnershipViolationCategory;
+  readonly detail: string;
+}
+
+export type WriteLockOverlapCategory = 'cross-lane-overlap';
+
+export interface WriteLockOverlap {
+  readonly category: WriteLockOverlapCategory;
+  readonly laneA: string;
+  readonly laneB: string;
+  readonly path: string;
+  readonly stepIdA: string;
+  readonly stepIdB: string;
+}
+
+const DEFAULT_DOCUMENTED_SHARED_OWNS = Object.freeze(['src/demo/', 'src/specials/']);
+
+const DEFAULT_SHARED_WRITE_LOCK_PATHS = Object.freeze([
+  'plan_final/MASTER_CHECKLIST.md',
+  'plan_final/evidence/',
+  'plan_final/lane_locks/',
+  'plan_final/status/',
+  'src/ai/',
+  'src/assets/',
+  'src/audio/',
+  'src/bootstrap/',
+  'src/config/',
+  'src/demo/',
+  'src/host/',
+  'src/map/',
+  'src/oracles/',
+  'src/player/',
+  'src/render/',
+  'src/specials/',
+  'src/ui/',
+  'src/vanilla/',
+  'src/world/',
+]);
 
 export interface PlanValidationResult {
   readonly errors: readonly string[];
@@ -171,6 +213,80 @@ function validateLaneCoverage(parallelText: string, errors: string[]): void {
       errors.push(`PARALLEL_WORK.md is missing lane ${lane.lane}.`);
     }
   }
+}
+
+export function findLaneOwnershipViolations(lanes: readonly FinalPlanLane[], documentedSharedOwns: readonly string[] = DEFAULT_DOCUMENTED_SHARED_OWNS): readonly LaneOwnershipViolation[] {
+  const violations: LaneOwnershipViolation[] = [];
+  const documentedSharedSet = new Set(documentedSharedOwns);
+  const ownerByPath = new Map<string, string>();
+
+  for (const lane of lanes) {
+    if (lane.owns.length === 0) {
+      violations.push({ category: 'lane-owns-no-paths', detail: `Lane "${lane.lane}" must claim at least one owned path.` });
+      continue;
+    }
+
+    for (const path of lane.owns) {
+      if (documentedSharedSet.has(path)) {
+        continue;
+      }
+
+      const existingLane = ownerByPath.get(path);
+      if (existingLane !== undefined && existingLane !== lane.lane) {
+        violations.push({
+          category: 'duplicate-ownership-claim',
+          detail: `Path "${path}" is claimed by both lane "${existingLane}" and lane "${lane.lane}" without being documented as shared.`,
+        });
+        continue;
+      }
+
+      ownerByPath.set(path, lane.lane);
+    }
+  }
+
+  return violations;
+}
+
+export function findCrossLaneWriteLockOverlaps(steps: readonly FinalPlanStep[], sharedPaths: readonly string[] = DEFAULT_SHARED_WRITE_LOCK_PATHS): readonly WriteLockOverlap[] {
+  const overlaps: WriteLockOverlap[] = [];
+  const sharedSet = new Set(sharedPaths);
+
+  for (let firstIndex = 0; firstIndex < steps.length; firstIndex += 1) {
+    const firstStep = steps[firstIndex];
+    if (firstStep === undefined) {
+      continue;
+    }
+
+    for (let secondIndex = firstIndex + 1; secondIndex < steps.length; secondIndex += 1) {
+      const secondStep = steps[secondIndex];
+      if (secondStep === undefined) {
+        continue;
+      }
+
+      if (firstStep.lane === secondStep.lane) {
+        continue;
+      }
+
+      for (const path of firstStep.writeLock) {
+        if (sharedSet.has(path)) {
+          continue;
+        }
+
+        if (secondStep.writeLock.includes(path)) {
+          overlaps.push({
+            category: 'cross-lane-overlap',
+            laneA: firstStep.lane,
+            laneB: secondStep.lane,
+            path,
+            stepIdA: firstStep.id,
+            stepIdB: secondStep.id,
+          });
+        }
+      }
+    }
+  }
+
+  return overlaps;
 }
 
 function extractEvidenceCommandStrings(commands: unknown): readonly string[] {
@@ -389,6 +505,14 @@ export async function validatePlan(): Promise<PlanValidationResult> {
 
   await validateAcceptanceTests(errors);
   await validateFinalGates(errors);
+
+  for (const violation of findLaneOwnershipViolations(FINAL_PLAN_LANES)) {
+    errors.push(`Lane ownership violation: ${violation.category} - ${violation.detail}`);
+  }
+
+  for (const overlap of findCrossLaneWriteLockOverlaps(FINAL_PLAN_STEPS)) {
+    errors.push(`Cross-lane write-lock overlap: path "${overlap.path}" written by both ${overlap.laneA}/${overlap.stepIdA} and ${overlap.laneB}/${overlap.stepIdB}.`);
+  }
 
   return Object.freeze({
     errors,

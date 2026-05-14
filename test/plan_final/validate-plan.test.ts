@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 
 import { FINAL_PLAN_LANES, FINAL_PLAN_STEP_COUNT, FINAL_PLAN_STEPS } from '../../plan_final/planData.ts';
-import { findEvidencePathMismatch, findFinalProofViolations, findStatusSchemaViolations, stepFilePath, validatePlan } from '../../plan_final/validate-plan.ts';
+import { findCrossLaneWriteLockOverlaps, findEvidencePathMismatch, findFinalProofViolations, findLaneOwnershipViolations, findStatusSchemaViolations, stepFilePath, validatePlan } from '../../plan_final/validate-plan.ts';
 
 const FORTY_HEX = '0123456789abcdef0123456789abcdef01234567';
 
@@ -228,5 +228,109 @@ describe('plan_final completion status schema', () => {
     const mismatch = findEvidencePathMismatch(status, evidencePath);
 
     expect(mismatch).toBeNull();
+  });
+});
+
+describe('plan_final parallel lane contract', () => {
+  test('passes the current FINAL_PLAN_LANES through findLaneOwnershipViolations with no violations', () => {
+    const violations = findLaneOwnershipViolations(FINAL_PLAN_LANES);
+
+    expect(violations).toEqual([]);
+  });
+
+  test('flags duplicate ownership claims across lanes when not documented as shared', () => {
+    const lanes = [
+      { description: 'first lane', lane: 'alpha', owns: ['src/shared-x/'] },
+      { description: 'second lane', lane: 'beta', owns: ['src/shared-x/'] },
+    ];
+    const violations = findLaneOwnershipViolations(lanes);
+
+    expect(violations.some((violation) => violation.category === 'duplicate-ownership-claim')).toBe(true);
+  });
+
+  test('accepts a duplicate ownership claim that appears in the documented shared list', () => {
+    const lanes = [
+      { description: 'first lane', lane: 'alpha', owns: ['src/specials/'] },
+      { description: 'second lane', lane: 'beta', owns: ['src/specials/'] },
+    ];
+    const violations = findLaneOwnershipViolations(lanes);
+
+    expect(violations.some((violation) => violation.category === 'duplicate-ownership-claim')).toBe(false);
+  });
+
+  test('flags a lane that claims no owned paths', () => {
+    const lanes = [
+      { description: 'empty lane', lane: 'alpha', owns: [] },
+      { description: 'second lane', lane: 'beta', owns: ['src/beta/'] },
+    ];
+    const violations = findLaneOwnershipViolations(lanes);
+
+    expect(violations.some((violation) => violation.category === 'lane-owns-no-paths')).toBe(true);
+  });
+
+  test('passes the current FINAL_PLAN_STEPS through findCrossLaneWriteLockOverlaps with no violations', () => {
+    const overlaps = findCrossLaneWriteLockOverlaps(FINAL_PLAN_STEPS);
+
+    expect(overlaps).toEqual([]);
+  });
+
+  test('flags a cross-lane write-lock overlap on a non-shared path', () => {
+    const stepA = {
+      expectedChanges: ['src/custom/foo.ts'],
+      goal: 'a',
+      id: '99-001',
+      lane: 'alpha',
+      parallelSafeWith: [],
+      prerequisites: [],
+      readOnlyPaths: [],
+      researchSources: [],
+      testFiles: [],
+      title: 't-a',
+      writeLock: ['src/custom/'],
+    };
+    const stepB = { ...stepA, id: '99-002', lane: 'beta', title: 't-b' };
+    const overlaps = findCrossLaneWriteLockOverlaps([stepA, stepB]);
+
+    expect(overlaps.some((overlap) => overlap.path === 'src/custom/')).toBe(true);
+  });
+
+  test('does not flag same-lane write-lock overlaps', () => {
+    const stepA = {
+      expectedChanges: ['src/custom/foo.ts'],
+      goal: 'a',
+      id: '99-001',
+      lane: 'alpha',
+      parallelSafeWith: [],
+      prerequisites: [],
+      readOnlyPaths: [],
+      researchSources: [],
+      testFiles: [],
+      title: 't-a',
+      writeLock: ['src/custom/'],
+    };
+    const stepB = { ...stepA, id: '99-002', title: 't-b' };
+    const overlaps = findCrossLaneWriteLockOverlaps([stepA, stepB]);
+
+    expect(overlaps).toEqual([]);
+  });
+
+  test('does not flag overlaps on shared control paths', () => {
+    const stepA = {
+      expectedChanges: [],
+      goal: 'a',
+      id: '99-001',
+      lane: 'alpha',
+      parallelSafeWith: [],
+      prerequisites: [],
+      readOnlyPaths: [],
+      researchSources: [],
+      testFiles: [],
+      title: 't-a',
+      writeLock: ['plan_final/evidence/', 'plan_final/status/'],
+    };
+    const stepB = { ...stepA, id: '99-002', lane: 'beta', title: 't-b' };
+    const overlaps = findCrossLaneWriteLockOverlaps([stepA, stepB]);
+
+    expect(overlaps).toEqual([]);
   });
 });

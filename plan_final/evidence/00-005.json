@@ -1,0 +1,37 @@
+{
+  "stepId": "00-005",
+  "lane": "governance",
+  "title": "lock-parallel-lane-contract",
+  "date": "2026-05-14",
+  "commands": [
+    {
+      "command": "bun run format",
+      "result": "pass",
+      "notes": "Formatted 2 files. No fixes applied."
+    },
+    {
+      "command": "bun test test/plan_final/validate-plan.test.ts",
+      "result": "pass",
+      "notes": "33 pass, 0 fail, 568 expect() calls in 72.00ms (8 new cases for findLaneOwnershipViolations + findCrossLaneWriteLockOverlaps)."
+    },
+    {
+      "command": "bun test",
+      "result": "pass",
+      "notes": "15408 pass, 0 fail across 804 files in 23.06s."
+    },
+    {
+      "command": "bun x tsc --noEmit --project tsconfig.json",
+      "result": "pass",
+      "notes": "Clean exit, no diagnostics."
+    }
+  ],
+  "changedPaths": [
+    "plan_final/validate-plan.ts",
+    "test/plan_final/validate-plan.test.ts",
+    "plan_final/progress/governance/00-005.md",
+    "plan_final/evidence/00-005.json",
+    "plan_final/status/00-005.json"
+  ],
+  "knownFailures": [],
+  "summary": "Exported findLaneOwnershipViolations() and findCrossLaneWriteLockOverlaps() pure helpers from plan_final/validate-plan.ts, wired both into validatePlan() against FINAL_PLAN_LANES and FINAL_PLAN_STEPS with a documented shared-ownership list (src/demo/, src/specials/) and a default shared write-lock list covering plan_final control surfaces plus the cross-lane src/<subsystem>/ directories. Added 8 focused tests covering: current data passes, duplicate ownership flagged, shared-ownership exempt, empty-owns flagged, current write-locks pass, cross-lane overlap flagged, same-lane overlap allowed, shared-control overlap allowed."
+}
