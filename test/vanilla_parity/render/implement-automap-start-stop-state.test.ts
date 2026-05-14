@@ -8,7 +8,8 @@ import {
   VANILLA_AM_MAX_SCALE_MTOF_FIXED,
   VANILLA_AM_MIN_SCALE_MTOF_FIXED,
   VANILLA_AM_PAN_INCREMENT_FIXED,
-} from '../../../src/render/implement-automap-start-stop-state.ts';
+  toggleAutomapState,
+} from '../../../src/ui/implement-automap-start-stop-state.ts';
 
 describe('vanilla automap state constants', () => {
   test('pan increment = 1 fixed', () => {
@@ -27,5 +28,10 @@ describe('vanilla automap state constants', () => {
   test('state enum: inactive=0, active=1', () => {
     expect(AM_STATE_INACTIVE).toBe(0);
     expect(AM_STATE_ACTIVE).toBe(1);
+  });
+
+  test('toggleAutomapState flips ACTIVE ↔ INACTIVE', () => {
+    expect(toggleAutomapState(AM_STATE_INACTIVE)).toBe(AM_STATE_ACTIVE);
+    expect(toggleAutomapState(AM_STATE_ACTIVE)).toBe(AM_STATE_INACTIVE);
   });
 });
