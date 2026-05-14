@@ -9605,3 +9605,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-013
 - summary: src/audio/implement-sector-and-switch-sound-routing.ts pins p_ceilng.c / p_plats.c / p_switch.c sound routing: sector specials use &sector->soundorg (degenmobj at sector centroid); switches use &line->frontsector->soundorg. Both are remote-mobj origins so S_AdjustSoundParams re-spatializes per tic.
 - tests: format pass; focused 10/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-030 implement-automap-start-stop-state completed
+
+- status: completed
+- lane: render
+- step_id: 09-030
+- summary: AM pan increment=1 fixed, init scale=0x33000, min=0x10000, max=0x800000; state enum inactive/active.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
