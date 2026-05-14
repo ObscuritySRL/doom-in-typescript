@@ -9614,3 +9614,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-030
 - summary: AM pan increment=1 fixed, init scale=0x33000, min=0x10000, max=0x800000; state enum inactive/active.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 12-025 compare-reference-save-byte-oracle completed
+
+- status: completed
+- lane: save
+- step_id: 12-025
+- summary: src/save/compare-reference-save-byte-oracle.ts pins the byte-level oracle comparator contract: byte-by-byte === comparison; first-divergent-offset reporting; explicit length-mismatch detection; header[+offset] section labeling for offsets < 50, body[+offset] otherwise. Reference savegame fixtures must live under test/oracles/fixtures/savegames/ per CLAUDE.md oracle policy.
+- tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
