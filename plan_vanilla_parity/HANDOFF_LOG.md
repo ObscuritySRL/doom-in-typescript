@@ -9740,3 +9740,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-017
 - summary: Verified existing src/audio/implement-music-selection-by-map-and-game-mode.ts: DOOM 1 maps use D_E0M0 lump names with Episode 4 reusing E1 tracks; DOOM 2 maps use D_RUNNIN-style flat names indexed 1..35 (35 lumps total); shared lumps D_INTRO/D_INTROA/D_INTER/D_VICTOR present in all IWAD tiers; D_BUNNY registered+ only; shareware only ships E1 episode music.
 - tests: focused 13/0; (no new source/test files this iteration — pre-existing implementation verified)
+
+
+## 2026-05-13 - 09-036 compare-scripted-renderer-path completed
+
+- status: completed
+- lane: render
+- step_id: 09-036
+- summary: Renderer checkpoint tics: spawn (0), 1-sec (35), 3-sec (105); SHA-256 64-hex hash format.
+- tests: format pass; focused 2/0; full pass; tsc pre-existing save lane TS2352

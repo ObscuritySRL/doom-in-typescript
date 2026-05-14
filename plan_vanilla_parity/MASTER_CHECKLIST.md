@@ -338,7 +338,7 @@
 - [x] `09-033` `implement-automap-markers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-033-implement-automap-markers.md`
 - [x] `09-034` `add-framebuffer-hash-hook` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-034-add-framebuffer-hash-hook.md`
 - [x] `09-035` `compare-title-and-e1m1-framebuffers` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-035-compare-title-and-e1m1-framebuffers.md`
-- [ ] `09-036` `compare-scripted-renderer-path` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-036-compare-scripted-renderer-path.md`
+- [x] `09-036` `compare-scripted-renderer-path` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-036-compare-scripted-renderer-path.md`
 - [ ] `09-037` `gate-renderer-framebuffer-parity` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-037-gate-renderer-framebuffer-parity.md`
 - [ ] `09-038` `gate-status-bar-and-automap-parity` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-038-gate-status-bar-and-automap-parity.md`
 
