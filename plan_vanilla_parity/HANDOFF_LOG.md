@@ -9848,3 +9848,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-022
 - summary: SFX rate=11025 Hz, music=49716 Hz; 16-bit output; 2 buffers; 1024 SFX samples per buffer.
 - tests: format pass; focused 2/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-028 compare-sfx-oracle-windows completed
+
+- status: completed
+- lane: audio
+- step_id: 11-028
+- summary: SFX oracle window=512 samples (~46ms @ 11025 Hz); SHA-256 64-hex hash.
+- tests: format pass; focused 13/0; full pass; tsc pre-existing save lane TS2352
