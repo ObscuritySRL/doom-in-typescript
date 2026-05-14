@@ -1,0 +1,58 @@
+{
+  "stepId": "03-004",
+  "lane": "launch-host-input",
+  "title": "wire-iwad-and-config-discovery",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/wire-iwad-and-config-discovery.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-004.json",
+    "plan_final/progress/launch-host-input/03-004.md",
+    "plan_final/status/03-004.json",
+    "src/vanilla/launchContext.ts",
+    "src/vanilla/runDoomMain.ts",
+    "test/plan_final/launch/wire-iwad-and-config-discovery.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/launch/wire-iwad-and-config-discovery.test.ts",
+    "passed": 27,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15613,
+    "failed": 0,
+    "files": 824
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-004 wires IWAD, default.cfg, chocolate-doom.cfg, and savedir discovery into a single typed LaunchContext consumed by the future engine init order. Both read-only refs (src/bootstrap/implement-iwad-discovery-order.ts and the entire src/config/ tree) are SHA-pinned by plan_vanilla_parity inventory tests (inventory-src-bootstrap-surface.test.ts pins every bootstrap module's sha256; inventory-save-and-config-modules.test.ts pins src/bootstrap/config.ts and the src/save/ surface). Modifying either would break those inventory tests. Wiring is therefore implemented as a new src/vanilla/launchContext.ts that imports VANILLA_IWAD_CANDIDATES, VANILLA_DEFAULT_SEARCH_DIRECTORY, and identifyMission from the existing read-only modules without modifying them. The wrapper consumes a CommandLineConfiguration and a caller-supplied LaunchContextEnvironment (DOOMWADDIR value + basename-existence predicate) so resolution is deterministic and free of direct filesystem I/O. A subsequent host bring-up step will adapt a Bun-backed environment.",
+    "publicSurface": [
+      "resolveLaunchContext(configuration: CommandLineConfiguration, environment: LaunchContextEnvironment): LaunchContext",
+      "LaunchContext interface (iwad, defaultConfigPath, hostConfigPath, saveDirectory)",
+      "ResolvedIwad interface (source, resolvedPath, searchDirectory, matchedFilename, probedSequence, gameMode, gameMission)",
+      "LaunchContextEnvironment interface (doomWadDirectoryEnvironmentValue, doesBasenameExistInWadDirectory)",
+      "VANILLA_DEFAULT_CONFIG_FILENAME constant pinned to 'default.cfg'",
+      "HOST_EXTRA_CONFIG_FILENAME constant pinned to 'chocolate-doom.cfg'"
+    ],
+    "iwadDiscoveryBranches": {
+      "iwadFlagMode": "explicit -iwad <path> honored verbatim; canonical basename match recognized case-insensitively; non-canonical basename yields gameMode=indetermined while identifyMission still recognizes mission via existing src/bootstrap/gameMode.ts table; Windows backslash separators accepted in path basename extraction",
+      "discoveryMode": "walks VANILLA_IWAD_CANDIDATES in canonical order; first-match-wins; DOOMWADDIR=null collapses to '.'; DOOMWADDIR=<path> prefixes every candidate; full seven-entry probe sequence walked when no match; iwad-flag short-circuits the probe (zero invocations of the existence predicate)"
+    },
+    "configResolutionBranches": {
+      "defaultConfigPath": "honors -config <path> override per Chocolate Doom 2.2.1 M_SetConfigFilenames main-config slot; falls back to literal 'default.cfg' when absent",
+      "hostConfigPath": "always 'chocolate-doom.cfg' — -extraconfig is not wired by 03-003 so no override branch exists yet",
+      "saveDirectory": "honors -savedir <path> override; falls back to literal '.' when absent"
+    },
+    "bootstrapFilesModified": false,
+    "bootstrapSkeletonPreserved": true,
+    "configFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/launch/ is not declared as a test_roots entry in any plan_vanilla_parity inventory. The full 15613-test suite passes without any plan_vanilla_parity inventory rewrite, matching the 03-001 and 03-003 precedent for src/vanilla/ additions."
+  }
+}

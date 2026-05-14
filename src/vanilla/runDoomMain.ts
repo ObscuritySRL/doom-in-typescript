@@ -21,6 +21,20 @@
  * throw a typed {@link CommandLineParseError} that names both the
  * offending parameter and the offending received value.
  *
+ * Plan_final step `03-004` (lane: launch-host-input) extends this
+ * entrypoint by feeding the parsed configuration into
+ * {@link resolveLaunchContext}, which derives the resolved IWAD path,
+ * the `default.cfg` and `chocolate-doom.cfg` paths, and the save
+ * directory.  The resolved {@link LaunchContext} is intentionally
+ * discarded here (no asset load or host bring-up happens yet); later
+ * launch-host-input steps will consume the context.  The discovery
+ * environment is injected via an optional second argument so that
+ * focused tests can exercise the resolution without touching the real
+ * filesystem; when omitted, a default environment is used that reports
+ * `DOOMWADDIR` as unset and every candidate basename as absent, which
+ * makes the call shape stable while no host bring-up has wired the
+ * real probes yet.
+ *
  * The root entrypoint at `doom.ts` is held byte-identical to the
  * plan_vanilla_parity 03-001 skeleton (no top-level imports, `export {}`
  * marker, no side effects) until the cross-plan write-lock conflict on
@@ -37,6 +51,8 @@
  */
 
 import { parseCommandLineConfiguration } from './commandLineConfiguration.ts';
+import { resolveLaunchContext } from './launchContext.ts';
+import type { LaunchContextEnvironment } from './launchContext.ts';
 
 /**
  * Thrown when {@link runDoomMain} is invoked with an argument shape it
@@ -64,6 +80,22 @@ interface ArgumentValidationFailure {
 }
 
 const MAXIMUM_ARGUMENT_VALUE_PREVIEW_LENGTH = 80;
+
+/**
+ * Default {@link LaunchContextEnvironment} used when {@link runDoomMain}
+ * is called without an explicit second argument.  Reports `DOOMWADDIR`
+ * as unset and every canonical IWAD candidate basename as absent, which
+ * matches the no-IWAD-on-disk fallback path through
+ * {@link resolveLaunchContext} (returns a discovery result with
+ * gameMode `'indetermined'` and the full seven-candidate probe sequence).
+ * Subsequent launch-host-input steps will replace this default with a
+ * Bun-backed probe that consults `Bun.env.DOOMWADDIR` and
+ * `Bun.file(path).exists()`.
+ */
+const DEFAULT_LAUNCH_CONTEXT_ENVIRONMENT: LaunchContextEnvironment = Object.freeze({
+  doesBasenameExistInWadDirectory: (): boolean => false,
+  doomWadDirectoryEnvironmentValue: null,
+});
 
 function describeArgumentValue(value: unknown): string {
   if (value === null) {
@@ -138,6 +170,11 @@ function validateArgumentVector(argumentVector: unknown): readonly string[] {
  * @param argumentVector Optional argv passed to the runtime.  When
  *   omitted, the empty-argv branch is taken.  When supplied, must be a
  *   readonly array of strings.
+ * @param launchContextEnvironment Optional environment probes consumed
+ *   by {@link resolveLaunchContext} (DOOMWADDIR value, canonical
+ *   candidate existence predicate).  When omitted the
+ *   {@link DEFAULT_LAUNCH_CONTEXT_ENVIRONMENT} is used, which reports
+ *   `DOOMWADDIR` as unset and every candidate as absent.
  * @returns A promise that resolves once the placeholder workflow
  *   completes.
  * @throws InvalidArgumentError When `argumentVector` is supplied as a
@@ -147,10 +184,15 @@ function validateArgumentVector(argumentVector: unknown): readonly string[] {
  * ```ts
  * await runDoomMain();
  * await runDoomMain(['--iwad', 'doom/DOOM1.WAD']);
+ * await runDoomMain(['-iwad', 'doom/DOOM1.WAD'], {
+ *   doomWadDirectoryEnvironmentValue: null,
+ *   doesBasenameExistInWadDirectory: () => false,
+ * });
  * ```
  */
-export async function runDoomMain(argumentVector?: unknown): Promise<void> {
+export async function runDoomMain(argumentVector?: unknown, launchContextEnvironment: LaunchContextEnvironment = DEFAULT_LAUNCH_CONTEXT_ENVIRONMENT): Promise<void> {
   const validatedArgumentVector = validateArgumentVector(argumentVector);
   const commandLineConfiguration = parseCommandLineConfiguration(validatedArgumentVector);
-  void commandLineConfiguration;
+  const launchContext = resolveLaunchContext(commandLineConfiguration, launchContextEnvironment);
+  void launchContext;
 }
