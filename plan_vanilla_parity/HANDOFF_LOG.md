@@ -9443,3 +9443,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 12-019
 - summary: src/save/enforce-vanilla-savegame-limit.ts pins g_game.c SAVEGAMESIZE=0x2c000 (180224 bytes) buffer cap with >= comparison (not >); on overrun raises the exact I_Error string "Savegame buffer overrun"; vanilla_savegame_limit cvar from chocolate-doom.cfg defaults to 1 (enabled).
 - tests: format pass; focused 6/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 09-025 implement-view-border-rendering completed
+
+- status: completed
+- lane: render
+- step_id: 09-025
+- summary: 8 border patches (BRDR_T/B/L/R + 4 corners); DOOM 1 background flat=FLOOR7_2, DOOM 2=GRNROCK.
+- tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352

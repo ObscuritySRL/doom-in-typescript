@@ -327,7 +327,7 @@
 - [x] `09-022` `implement-player-weapon-sprite-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-022-implement-player-weapon-sprite-rendering.md`
 - [x] `09-023` `implement-screen-size-blocks` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-023-implement-screen-size-blocks.md`
 - [x] `09-024` `implement-detail-level-toggle` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-024-implement-detail-level-toggle.md`
-- [ ] `09-025` `implement-view-border-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-025-implement-view-border-rendering.md`
+- [x] `09-025` `implement-view-border-rendering` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-025-implement-view-border-rendering.md`
 - [ ] `09-026` `implement-status-bar-background` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-026-implement-status-bar-background.md`
 - [ ] `09-027` `implement-status-bar-numbers-and-percent-widgets` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-027-implement-status-bar-numbers-and-percent-widgets.md`
 - [ ] `09-028` `implement-status-bar-face-widget` | lane: `render` | prereqs: `05-028,06-032,07-034` | file: `plan_vanilla_parity/steps/09-028-implement-status-bar-face-widget.md`
