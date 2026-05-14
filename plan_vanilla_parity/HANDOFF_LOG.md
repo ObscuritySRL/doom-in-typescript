@@ -9803,3 +9803,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-025
 - summary: src/audio/implement-sound-shutdown-ordering.ts pins the 6-step I_Quit teardown order: I_StopSong, I_UnRegisterSong, I_ShutdownMusic, then per-channel I_StopSound + S_StopChannel, then I_ShutdownSound. Music driver shuts down before sfx hardware because OPL timer callback must clear before waveOut device release.
 - tests: format pass; focused 7/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-020 implement-opl-instrument-mapping completed
+
+- status: completed
+- lane: audio
+- step_id: 11-020
+- summary: src/audio/implement-opl-instrument-mapping.ts pins GENMIDI bank contract: magic "#OPL_II#", 175 instruments (128 GM melodic + 47 percussion), 36-byte voice records + 32-byte name records. Percussion slots 0..46 map to GM notes 35..81. Instrument flags: 1=fixed-pitch, 2=delay, 4=two-voice.
+- tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
