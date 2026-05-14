@@ -1,0 +1,65 @@
+{
+  "step_id": "01-005",
+  "lane": "current-state",
+  "title": "inventory-unwired-ui-systems",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "wiring_summary": {
+    "doom_ts_imports_from_src_ui": [],
+    "simplified_launcher_imports_from_src_ui": ["src/ui/automap.ts"],
+    "ui_surfaces_wired_to_doom_ts_count": 0,
+    "ui_surfaces_total_count": 7,
+    "notes": "doom.ts is a `export {}` skeleton with zero imports, so no src/ui/ module is reachable from `bun run doom.ts`. Only src/launcher/session.ts imports src/ui/automap.ts, which feeds the simplified launcher but not the vanilla runtime."
+  },
+  "ui_surfaces": [
+    {
+      "surface": "menu",
+      "canonical_modules": ["src/ui/menus.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_path_prefixes": ["src/ui/implement-main-menu-tree.ts", "src/ui/implement-new-game-menu.ts", "src/ui/implement-options-menu.ts", "src/ui/implement-load-game-menu.ts", "src/ui/implement-save-game-menu.ts", "src/ui/implement-skill-menu.ts", "src/ui/implement-sound-volume-menu.ts", "src/ui/implement-screen-size-detail-gamma-menu.ts", "src/ui/implement-menu-repeat-timing.ts", "src/ui/implement-menu-skull-cursor-timing.ts", "src/ui/implement-menu-sound-events.ts", "src/ui/implement-episode-menu-shareware-restrictions.ts", "src/ui/implement-end-game-confirmation.ts", "src/ui/implement-quit-confirmation.ts", "src/ui/implement-quick-save-and-quick-load-prompts.ts", "src/ui/implement-pause-overlay.ts", "src/ui/implement-read-this-help-pages.ts", "src/ui/implement-chat-macro-storage-for-config-compatibility.ts"]
+    },
+    {
+      "surface": "title",
+      "canonical_modules": ["src/ui/frontEndSequence.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_path_prefixes": ["src/ui/implement-title-loop-sequence.ts", "src/ui/implement-page-ticker-and-advance-demo.ts"]
+    },
+    {
+      "surface": "status-bar",
+      "canonical_modules": ["src/ui/statusBar.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_path_prefixes": ["src/ui/implement-status-bar-background.ts", "src/ui/implement-status-bar-key-and-ammo-widgets.ts", "src/ui/implement-status-bar-numbers-and-percent-widgets.ts"]
+    },
+    {
+      "surface": "automap",
+      "canonical_modules": ["src/ui/automap.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": true,
+      "step_implementation_path_prefixes": ["src/ui/implement-automap-line-and-thing-colors.ts", "src/ui/implement-automap-markers.ts", "src/ui/implement-automap-start-stop-state.ts"]
+    },
+    {
+      "surface": "intermission",
+      "canonical_modules": ["src/ui/intermission.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_path_prefixes": ["src/ui/implement-intermission-map-graphics.ts", "src/ui/implement-intermission-stats-counting.ts"]
+    },
+    {
+      "surface": "finale",
+      "canonical_modules": ["src/ui/finale.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_path_prefixes": ["src/ui/implement-finale-cast-and-bunny-scroll-scope.ts", "src/ui/implement-finale-text-timing.ts"]
+    },
+    {
+      "surface": "endoom",
+      "canonical_modules": ["src/ui/endoom.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_path_prefixes": []
+    }
+  ]
+}
