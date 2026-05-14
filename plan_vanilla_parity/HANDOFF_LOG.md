@@ -9767,3 +9767,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-024
 - summary: src/audio/implement-volume-controls.ts pins snd_SfxVolume + snd_MusicVolume 4-bit integer range 0..15 (16 menu steps), clamping at boundaries with no wrap, DMX register scale factor 8 (15->120, just under 127 register max). Volume 0 is silent (not default). Provides clampVanillaSoundVolume and vanillaMusicVolumeToDmxRegisterValue helpers.
 - tests: format pass; focused 11/0; full pass with pre-existing inventory drift unchanged; tsc pass
+
+
+## 2026-05-13 - 11-019 implement-opl-register-model completed
+
+- status: completed
+- lane: audio
+- step_id: 11-019
+- summary: src/audio/implement-opl-register-model.ts pins YM3812 (OPL2) register file contract: 256-byte address space, default IO port 0x388, 9 channels x 2 ops = 18 operators on OPL2 (OPL3 doubles). Channel-to-operator non-sequential pin mapping [0,3] [1,4] [2,5] [6,9] [7,10] [8,11] [12,15] [13,16] [14,17]. Register bank bases: 0x20 TVibe/sustain/KSR/mult, 0x40 KSL/TL, 0x60 AD, 0x80 SR, 0xA0 freq lo, 0xB0 freq hi+keyon+block, 0xC0 fb/conn, 0xE0 waveform.
+- tests: format pass; focused 8/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
