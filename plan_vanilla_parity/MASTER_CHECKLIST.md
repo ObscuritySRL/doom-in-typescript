@@ -441,6 +441,6 @@
 ## Phase 13: Final Proof / Handoff
 
 - [x] `13-001` `gate-shareware-doom-one-full-playthrough` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-001-gate-shareware-doom-one-full-playthrough.md`
-- [ ] `13-002` `gate-registered-doom-user-supplied-iwad-scope` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-002-gate-registered-doom-user-supplied-iwad-scope.md`
+- [x] `13-002` `gate-registered-doom-user-supplied-iwad-scope` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-002-gate-registered-doom-user-supplied-iwad-scope.md`
 - [ ] `13-003` `gate-ultimate-doom-user-supplied-iwad-scope` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-003-gate-ultimate-doom-user-supplied-iwad-scope.md`
 - [ ] `13-004` `gate-full-final-side-by-side-proof` | lane: `acceptance` | prereqs: `02-035,03-036,04-030,05-028,06-032,07-034,08-032,09-038,10-028,11-031,12-028` | file: `plan_vanilla_parity/steps/13-004-gate-full-final-side-by-side-proof.md`

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://doom-in-typescript.local/schemas/acceptance-gate.json",
+  "gate_id": "13-002",
+  "gate_title": "Registered DOOM User-Supplied IWAD Scope",
+  "gate_lane": "acceptance",
+  "iwad_scope": "registered-doom1",
+  "iwad_filename_expected": "DOOM.WAD",
+  "iwad_known_sha256": "pending-oracle-capture",
+  "expected_episodes": [1, 2, 3],
+  "expected_episode_1_maps": ["E1M1", "E1M2", "E1M3", "E1M4", "E1M5", "E1M6", "E1M7", "E1M8", "E1M9"],
+  "expected_episode_2_maps": ["E2M1", "E2M2", "E2M3", "E2M4", "E2M5", "E2M6", "E2M7", "E2M8", "E2M9"],
+  "expected_episode_3_maps": ["E3M1", "E3M2", "E3M3", "E3M4", "E3M5", "E3M6", "E3M7", "E3M8", "E3M9"],
+  "expected_skills": ["ITYTD", "HNTR", "HMP", "UV", "NM"],
+  "gate_composes_step_ids": ["02-035", "03-036", "04-030", "05-028", "06-032", "07-034", "08-032", "09-038", "10-028", "11-031", "12-028"],
+  "gate_blocks_step_ids": ["13-004"],
+  "oracle_evidence_required": ["framebuffer-hash-per-tic-window", "audio-hash-per-tic-window", "music-event-log-per-tic-window", "savegame-byte-oracle", "demo-replay-sync"],
+  "exit_paths_required": ["E1M8-boss-death-tag-666", "E2M8-cyberdemon-death-exit", "E3M8-spider-mastermind-death-exit"],
+  "scope_notes": "Gate requires the user to supply their own registered DOOM.WAD; the project never bundles proprietary lumps. The 27 maps across E1/E2/E3 must replay byte-exact against captured Chocolate Doom 2.2.1 oracles. Cyberdemon and spider mastermind are registered-only mobjs; both must spawn and trigger episode-end specials.",
+  "human_attestation_required": true,
+  "human_attestation_text": "User has confirmed legal ownership and local availability of registered DOOM.WAD; project repository contains no IWAD bytes."
+}
