@@ -1,0 +1,77 @@
+{
+  "stepId": "02-009",
+  "lane": "oracle",
+  "title": "capture-reference-intermission-finale",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/oracle/capture-reference-intermission-finale.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json",
+    "test/plan_final/oracle/capture-reference-intermission-finale.test.ts",
+    "test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts",
+    "tools/reference/captureReferenceIntermissionFinale.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/oracle/capture-reference-intermission-finale.test.ts",
+    "passed": 8,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15531,
+    "failed": 0,
+    "files": 818
+  },
+  "typecheck": "clean",
+  "captureContract": {
+    "runner": "tools/reference/captureReferenceIntermissionFinale.ts:captureReferenceIntermissionFinale",
+    "errorClasses": ["ReferenceBundleMissingError", "ReferenceIntermissionFinaleWindowNotFoundError"],
+    "captureMode": "Passive attract-loop sampling via the canonical 12-step GDI BitBlt/GetDIBits pipeline against the sandboxed Chocolate Doom 2.2.1 SDL window with no user input; the runner spawns DOOM.EXE clean, waits for the visible window, then walks the ATTRACT_LOOP_CHECKPOINTS contract sleeping until each scheduledAtElapsedMs target before capturing the live BGRA framebuffer + 320x200 normalized buffer.",
+    "attractLoopCheckpoints": [
+      { "phase": "title", "scheduledAtElapsedMs": 3000 },
+      { "phase": "demo-one", "scheduledAtElapsedMs": 9000 },
+      { "phase": "demo-one", "scheduledAtElapsedMs": 18000 },
+      { "phase": "post-demo-one-interstitial", "scheduledAtElapsedMs": 30000 }
+    ],
+    "attractLoopPhases": ["demo-one", "demo-three", "demo-two", "post-demo-one-interstitial", "post-demo-three-interstitial", "post-demo-two-interstitial", "title"],
+    "evidenceShape": [
+      "attractCheckpoints",
+      "cleanShutdown",
+      "executableFilename",
+      "exitCode",
+      "exitedAtElapsedMs",
+      "framebufferHeight",
+      "framebufferWidth",
+      "killedAtElapsedMs",
+      "sandboxAbsolutePath",
+      "sandboxId",
+      "spawnedAtElapsedMs",
+      "terminationCause",
+      "ticDurationMs",
+      "totalElapsedMs",
+      "windowFoundAtElapsedMs",
+      "windowTitle"
+    ],
+    "checkpointEvidenceShape": [
+      "capturedAtElapsedMs",
+      "checkpointIndex",
+      "description",
+      "framebufferByteLength",
+      "framebufferSha256",
+      "normalizedByteLength",
+      "normalizedSha256",
+      "phase",
+      "scheduledAtElapsedMs",
+      "schedulingDriftMs"
+    ],
+    "liveCaptureGate": "test/plan_final/oracle/capture-reference-intermission-finale.test.ts unconditionally pins the static surface (runner + normalizer + ATTRACT_LOOP_PHASES + ATTRACT_LOOP_CHECKPOINTS + override key set + error class shape), and gates the live capture on every REFERENCE_SANDBOX_POLICY.requiredFiles entry being present; when gated in, the live test spawns a fresh sandboxed DOOM.EXE, walks the 4-checkpoint attract-loop schedule (3s → 9s → 18s → 30s), captures the BGRA + 320x200 framebuffers, and asserts ordered timestamps + valid sha256 hashes per checkpoint."
+  },
+  "scopeNote": "MVP runner samples the passive attract-loop only (title → DEMO1 → post-DEMO1 interstitial). Scripted intermission gameplay capture (E1M1 exit switch walk per capture-scripted-intermission-path.json) and finale capture (E1M8 boss exit per shareware episode end) remain deferred to follow-up oracle work that needs longer test budgets and more robust scripted-input timing.",
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding tools/reference/captureReferenceIntermissionFinale.ts triggers the cross-plan inventory updates mirroring the 02-006/7/8 precedent. (1) plan_vanilla_parity/current-state/inventory-tools-reference-capture-surface.json: tools_reference_file_count 10 → 11 with captureReferenceIntermissionFinale.ts inserted in ASCII order between captureReferenceE1M1Actions.ts and captureReferenceMenuRoute.ts, total_tools_size_bytes raised to 199844 / total_tools_line_count raised to 4953, and a new capture_modules row pins the module's size_bytes=18817 / line_count=430 / sha256=d8c7b305... / exported surface (4 interfaces, 2 functions, 2 constants, 1 class, 2 types). test/vanilla_parity/current-state/inventory-tools-reference-capture-surface.test.ts hardcoded 10 assertions both move to 11. (2) plan_vanilla_parity/current-state/classify-real-implementations.json: input_and_oracle_support group source_file_count 23 → 24 and classification_summary.classified_source_file_count 467 → 468."
+  }
+}

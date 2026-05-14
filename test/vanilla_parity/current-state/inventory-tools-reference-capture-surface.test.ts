@@ -256,7 +256,7 @@ describe('inventory: tools reference capture surface', () => {
     expect(groups.tools_root_file_count).toBe(onDiskRootFiles.length);
     expect(groups.tools_reference_file_count).toBe(onDiskReferenceFiles.length);
     expect(groups.tools_root_file_count).toBe(2);
-    expect(groups.tools_reference_file_count).toBe(10);
+    expect(groups.tools_reference_file_count).toBe(11);
 
     expectAsciiSorted(groups.tools_root_filenames_sorted);
     expectAsciiSorted(groups.tools_reference_filenames_sorted);
@@ -302,7 +302,7 @@ describe('inventory: tools reference capture surface', () => {
 
   test('inventory capture_modules entries match on-disk size, line count, sha256, and have allowed group values', async () => {
     const inventory = await loadInventoryDocument();
-    expect(inventory.capture_modules.length).toBe(10);
+    expect(inventory.capture_modules.length).toBe(11);
     for (const entry of inventory.capture_modules) {
       expect(existsSync(entry.relative_path)).toBe(true);
       expect(entry.size_bytes).toBe(statSync(entry.relative_path).size);
