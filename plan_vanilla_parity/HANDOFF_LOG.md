@@ -9677,3 +9677,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 11-015
 - summary: src/audio/implement-mus-scheduler.ts pins mus2mid.c / i_music.c scheduler contract: MUS_TICK_HZ=140 / GAMEPLAY=35 = 4 quickticks per gametic. 16-channel velocity cache seeded with MUS_DEFAULT_VELOCITY=127. Play-note with bit 7 set updates the cache and dispatches the explicit byte; bit 7 clear reuses cached velocity without updating. Cache persists across map and loop boundaries.
 - tests: format pass; focused 9/0; full pass with pre-existing inventory drift failures unchanged; tsc pass
+
+
+## 2026-05-13 - 12-027 gate-config-compatibility completed
+
+- status: completed
+- lane: save
+- step_id: 12-027
+- summary: src/save/gate-config-compatibility.ts pins the Phase 12 config-compatibility acceptance gate as a union of 8 named checks (default-cfg-43-variables, chocolate-doom-cfg-113-variables, namespaces-disjoint, hardcoded-defaults-match-globals, unknown-variables-silently-ignored, test-isolation-from-user-local-paths, mouse-key-sound-screen-chat-persisters-pinned, round-trip-writer-43-line-output). Maps each phase-12 config step (12-001..12-009) to the checks it satisfies; exposes vanillaConfigGateChecksSatisfied and vanillaConfigGateMissingChecks for downstream gate aggregation.
+- tests: format pass; focused 5/0; full pass with pre-existing inventory drift failures unchanged; tsc pass

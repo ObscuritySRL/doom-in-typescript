@@ -435,7 +435,7 @@
 - [x] `12-024` `restore-post-load-render-audio-input-state` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-024-restore-post-load-render-audio-input-state.md`
 - [x] `12-025` `compare-reference-save-byte-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-025-compare-reference-save-byte-oracle.md`
 - [x] `12-026` `compare-save-load-roundtrip-oracle` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-026-compare-save-load-roundtrip-oracle.md`
-- [ ] `12-027` `gate-config-compatibility` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-027-gate-config-compatibility.md`
+- [x] `12-027` `gate-config-compatibility` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-027-gate-config-compatibility.md`
 - [ ] `12-028` `gate-save-load-byte-parity` | lane: `save` | prereqs: `04-030,07-034` | file: `plan_vanilla_parity/steps/12-028-gate-save-load-byte-parity.md`
 
 ## Phase 13: Final Proof / Handoff
