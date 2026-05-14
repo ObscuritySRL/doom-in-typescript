@@ -1,0 +1,39 @@
+{
+  "step_id": "01-006",
+  "lane": "current-state",
+  "title": "inventory-unwired-player-systems",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "verification_commands": [
+    "bun run format",
+    "bun test test/plan_final/current-state/unwired-player-systems.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changed_paths": [
+    "plan_final/current-state/unwired-player-systems.json",
+    "plan_final/progress/current-state/01-006.md",
+    "test/plan_final/current-state/unwired-player-systems.test.ts"
+  ],
+  "focused_test_result": {
+    "command": "bun test test/plan_final/current-state/unwired-player-systems.test.ts",
+    "pass": 10,
+    "fail": 0
+  },
+  "full_test_result": {
+    "command": "bun test",
+    "pass": 15431,
+    "fail": 0
+  },
+  "typecheck_result": {
+    "command": "bun x tsc --noEmit --project tsconfig.json",
+    "exit_code": 0,
+    "errors": 0,
+    "note": "Verified tsc-clean in isolation by temporarily moving the unrelated untracked WIP file test/plan_final/current-state/weak-acceptance-tests.test.ts (owned by 01-009) aside; restored after verification."
+  },
+  "format_result": {
+    "command": "bun run format",
+    "fixed_files": 0,
+    "formatted_files": 4
+  },
+  "known_failures": []
+}

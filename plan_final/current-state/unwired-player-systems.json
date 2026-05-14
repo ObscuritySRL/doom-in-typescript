@@ -1,0 +1,66 @@
+{
+  "step_id": "01-006",
+  "lane": "current-state",
+  "title": "inventory-unwired-player-systems",
+  "captured_at_utc": "2026-05-14T00:00:00Z",
+  "repository_root": "D:/Projects/doom-in-typescript",
+  "wiring_summary": {
+    "doom_ts_imports_from_player_or_world": [],
+    "simplified_launcher_imports_from_player_or_world_sorted": [
+      "src/player/movement.ts",
+      "src/player/playerSpawn.ts",
+      "src/world/checkPosition.ts",
+      "src/world/mobj.ts",
+      "src/world/thinkers.ts",
+      "src/world/xyMovement.ts",
+      "src/world/zMovement.ts"
+    ],
+    "player_surfaces_wired_to_doom_ts_count": 0,
+    "player_surfaces_total_count": 6,
+    "notes": "doom.ts is a `export {}` skeleton with zero imports; no src/player/ or src/world/ module is reachable from `bun run doom.ts`. The simplified launcher wires basic movement, player spawn, mobj/thinker, blockmap, and xy/z movement, but does not wire any of the six player-system surfaces named in this step (weapon, pickup, powerup, use-line, hitscan, projectile)."
+  },
+  "player_surfaces": [
+    {
+      "surface": "weapon",
+      "canonical_modules": ["src/player/weapons.ts", "src/player/weaponStates.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_modules": ["src/player/implement-bfg-actions.ts", "src/player/implement-chaingun-actions.ts", "src/player/implement-fist-and-chainsaw-actions.ts", "src/player/implement-pistol-actions.ts", "src/player/implement-plasma-rifle-actions.ts", "src/player/implement-rocket-launcher-actions.ts", "src/player/implement-shotgun-actions.ts", "src/player/implement-weapon-ownership-and-selection.ts", "src/player/implement-weapon-sprite-state-machine.ts", "src/player/implement-autoaim-semantics.ts"]
+    },
+    {
+      "surface": "pickup",
+      "canonical_modules": ["src/player/pickups.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_modules": ["src/player/implement-ammo-pickups.ts", "src/player/implement-backpack-semantics.ts", "src/player/implement-health-and-armor-pickups.ts", "src/player/implement-keycard-and-skull-key-pickups.ts", "src/player/implement-weapon-pickups.ts"]
+    },
+    {
+      "surface": "powerup",
+      "canonical_modules": ["src/player/powerups.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_modules": ["src/player/implement-berserk-partial-invisibility-radiation-suit.ts", "src/player/implement-god-mode-and-powerup-flags.ts", "src/player/implement-invulnerability-and-infrared.ts"]
+    },
+    {
+      "surface": "use-line",
+      "canonical_modules": ["src/world/useLines.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_modules": ["src/player/implement-player-use-action.ts"]
+    },
+    {
+      "surface": "hitscan",
+      "canonical_modules": ["src/player/hitscan.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_modules": ["src/player/implement-hitscan-aim-and-damage.ts"]
+    },
+    {
+      "surface": "projectile",
+      "canonical_modules": ["src/player/projectiles.ts"],
+      "wired_to_doom_ts": false,
+      "wired_to_simplified_launcher": false,
+      "step_implementation_modules": ["src/player/implement-projectile-spawn-and-explosion.ts"]
+    }
+  ]
+}
