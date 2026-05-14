@@ -1,0 +1,51 @@
+{
+  "stepId": "03-005",
+  "lane": "launch-host-input",
+  "title": "wire-vanilla-window-host",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/wire-vanilla-window-host.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-005.json",
+    "plan_final/progress/launch-host-input/03-005.md",
+    "plan_final/status/03-005.json",
+    "src/vanilla/win32WindowHost.ts",
+    "test/plan_final/launch/wire-vanilla-window-host.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/launch/wire-vanilla-window-host.test.ts",
+    "passed": 23,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15637,
+    "failed": 0,
+    "files": 825
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-005 wires the vanilla 320x200 framebuffer pipeline to a Win32 host without depending on the LauncherSession glue. The read-only refs (src/host/windowPolicy.ts and src/launcher/win32.ts) document the existing aspect-correct presentation policy and a working end-to-end launcher loop; src/host/ticAccumulator.ts is SHA-pinned by test/vanilla_parity/current-state/inventory-core-math-and-timing-modules.test.ts:314 and was treated as strict read-only. src/host/windowPolicy.ts and the src/host/win32/ subtree are NOT pinned. Wiring is implemented as a new src/vanilla/win32WindowHost.ts that imports SCREENWIDTH, SCREENHEIGHT, and computePresentationRect from windowPolicy without modifying it and exposes the pure-arithmetic building blocks a later D_DoomLoop-driven host driver can compose: framebuffer allocator, palette-to-BGRA lookup builder, indexed-to-BGRA conversion routine, BITMAPINFOHEADER builder (negative biHeight for top-down DIB), and aspect-correct presentation-rect delegation. The actual Win32 / GDI FFI calls are intentionally not inlined — they are exercised end-to-end by the existing launcher implementation and cannot be unit-tested without a real window.",
+    "publicSurface": [
+      "createIndexedFramebuffer(): Uint8Array (length 64000, zero-filled)",
+      "buildBgraPaletteLookup(palette: Uint8Array): Uint32Array (length 256, packs 0xFF_RR_GG_BB)",
+      "convertIndexedFrameToBgra(source, destination, paletteLookup): void (hot-path pixel conversion)",
+      "buildVanillaBitmapInfoHeader(): Buffer (40 bytes, negative biHeight for top-down DIB)",
+      "computeVanillaPresentationRect(clientWidth, clientHeight): PresentationRect (aspect_ratio_correct=true delegation)",
+      "VANILLA_FRAMEBUFFER_BYTE_LENGTH constant pinned to 64000",
+      "VANILLA_PALETTE_ENTRY_COUNT constant pinned to 256",
+      "BITMAP_INFO_HEADER_BYTE_LENGTH constant pinned to 40"
+    ],
+    "launcherGlueAvoidance": "The new module imports only from '../host/windowPolicy.ts'. No 'from ../launcher/' imports; no LauncherSession or LauncherInputState type imports. The 'no-launcher-glue' invariant is enforced by the focused test.",
+    "hostFilesModified": false,
+    "launcherFilesModified": false,
+    "ticAccumulatorPreserved": true,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/launch/ is not declared as a test_roots entry in any plan_vanilla_parity inventory. The full 15637-test suite passes without any plan_vanilla_parity inventory rewrite, matching the 03-001 / 03-003 / 03-004 precedent for src/vanilla/ additions."
+  }
+}
