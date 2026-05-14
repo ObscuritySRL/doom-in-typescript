@@ -1,0 +1,28 @@
+{
+  "stepId": "00-001",
+  "lane": "governance",
+  "title": "create-final-control-center",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/validate-plan.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/",
+    "test/plan_final/select-step.test.ts",
+    "test/plan_final/validate-plan.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/validate-plan.test.ts",
+    "passed": 4,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15310,
+    "failed": 0,
+    "files": 797
+  },
+  "typecheck": "clean"
+}
