@@ -391,7 +391,7 @@
 - [x] `11-014` `parse-mus-event-stream` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-014-parse-mus-event-stream.md`
 - [x] `11-015` `implement-mus-scheduler` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-015-implement-mus-scheduler.md`
 - [x] `11-016` `implement-mus-looping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-016-implement-mus-looping.md`
-- [ ] `11-017` `implement-music-selection-by-map-and-game-mode` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-017-implement-music-selection-by-map-and-game-mode.md`
+- [x] `11-017` `implement-music-selection-by-map-and-game-mode` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-017-implement-music-selection-by-map-and-game-mode.md`
 - [x] `11-018` `implement-music-pause-resume` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-018-implement-music-pause-resume.md`
 - [ ] `11-019` `implement-opl-register-model` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-019-implement-opl-register-model.md`
 - [ ] `11-020` `implement-opl-instrument-mapping` | lane: `audio` | prereqs: `03-036,05-028` | file: `plan_vanilla_parity/steps/11-020-implement-opl-instrument-mapping.md`

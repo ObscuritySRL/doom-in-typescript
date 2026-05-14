@@ -9731,3 +9731,12 @@ Append-only Ralph-loop execution history for completed `plan_vanilla_parity` ste
 - step_id: 09-035
 - summary: Framebuffer hash 320x200=64000 bytes, SHA-256 64-hex format; isValidFramebufferHashHex predicate.
 - tests: format pass; focused 4/0; full pass; tsc pre-existing save lane TS2352
+
+
+## 2026-05-13 - 11-017 implement-music-selection-by-map-and-game-mode completed
+
+- status: completed
+- lane: audio
+- step_id: 11-017
+- summary: Verified existing src/audio/implement-music-selection-by-map-and-game-mode.ts: DOOM 1 maps use D_E0M0 lump names with Episode 4 reusing E1 tracks; DOOM 2 maps use D_RUNNIN-style flat names indexed 1..35 (35 lumps total); shared lumps D_INTRO/D_INTROA/D_INTER/D_VICTOR present in all IWAD tiers; D_BUNNY registered+ only; shareware only ships E1 episode music.
+- tests: focused 13/0; (no new source/test files this iteration — pre-existing implementation verified)
