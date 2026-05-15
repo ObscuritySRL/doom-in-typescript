@@ -126,7 +126,7 @@
 - [x] `09-002` `wire-player-ticcmd-application` | lane: `player-weapons-items` | prereqs: `04-004, 09-001` | file: `plan_final/steps/09-002-wire-player-ticcmd-application.md`
 - [x] `09-003` `wire-player-use-action` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-003-wire-player-use-action.md`
 - [x] `09-004` `wire-weapon-psprites` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-004-wire-weapon-psprites.md`
-- [ ] `09-005` `wire-hitscan-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-005-wire-hitscan-weapons.md`
+- [x] `09-005` `wire-hitscan-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-005-wire-hitscan-weapons.md`
 - [ ] `09-006` `wire-projectile-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-006-wire-projectile-weapons.md`
 - [x] `09-007` `wire-pickups` | lane: `player-weapons-items` | prereqs: `09-001, 08-003` | file: `plan_final/steps/09-007-wire-pickups.md`
 - [ ] `09-008` `wire-player-damage` | lane: `player-weapons-items` | prereqs: `09-001, 10-002` | file: `plan_final/steps/09-008-wire-player-damage.md`
