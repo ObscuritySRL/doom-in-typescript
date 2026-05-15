@@ -104,7 +104,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/render/projection.ts"],
       "src_importer_count": 0,
-      "test_importer_count": 1
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/render/maskedTextures.ts",
@@ -219,7 +219,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/render/drawPrimitives.ts", "src/render/projection.ts", "src/render/renderLimits.ts", "src/render/wallColumns.ts", "src/render/wallColumns.ts"],
       "src_importer_count": 0,
-      "test_importer_count": 2
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/render/solidWalls.ts",
@@ -255,7 +255,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/render/spriteProjection.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 2
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/render/spriteProjection.ts",
@@ -273,7 +273,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/core/angle.ts", "src/core/angle.ts", "src/core/fixed.ts", "src/core/trig.ts", "src/render/projection.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 3
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/render/twoSidedWalls.ts",

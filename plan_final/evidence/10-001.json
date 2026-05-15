@@ -1,0 +1,49 @@
+{
+  "stepId": "10-001",
+  "lane": "ai-specials",
+  "title": "wire-monster-spawn-flags",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/ai/wire-monster-spawn-flags.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/10-001.json",
+    "plan_final/progress/ai-specials/10-001.md",
+    "plan_final/status/10-001.json",
+    "plan_vanilla_parity/current-state/inventory-renderer-modules.json",
+    "src/vanilla/monsterSpawnFlags.ts",
+    "test/plan_final/ai/wire-monster-spawn-flags.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/ai/wire-monster-spawn-flags.test.ts",
+    "passed": 11,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 16008,
+    "failed": 0,
+    "files": 852
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-001 wires the monster spawn filtering (per-skill bits MTF_EASY/NORMAL/HARD), the netgame guard (MTF_NETGAME drops the thing in single-player), the ambush flag transfer (MTF_AMBUSH propagates to the runtime MF_AMBUSH=0x8000 bit), and the P_SpawnMobj initial-state defaults into a single pure function. The new wrapper at src/vanilla/monsterSpawnFlags.ts imports the read-only flag constants and initMonsterSpawnState from src/ai/implement-monster-spawn-flags.ts and exposes evaluateMonsterSpawn(options, skill, isNetGame) returning a frozen MonsterSpawnVerdict.",
+    "publicSurface": [
+      "evaluateMonsterSpawn(mapThingOptions: number, skill: VanillaSkillLevel, isNetGame: boolean): MonsterSpawnVerdict",
+      "MonsterSpawnVerdict interface (ambush, initialState, mobjFlagsToOr, shouldSpawn)",
+      "VanillaSkillLevel = 0 | 1 | 2 | 3 | 4",
+      "Re-exports VANILLA_MTF_EASY/NORMAL/HARD/AMBUSH/NETGAME, VANILLA_MF_AMBUSH_RUNTIME"
+    ],
+    "aiFilesModified": false,
+    "worldFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/render/fuzz.ts: test_importer_count 1→2 (parallel-agent drift reconciled)",
+      "src/render/spriteClip.ts: test_importer_count 2→3 (parallel-agent drift reconciled)",
+      "src/render/spriteProjection.ts: test_importer_count 3→4 (parallel-agent drift reconciled)",
+      "src/render/sky.ts: test_importer_count 2→3 (parallel-agent drift reconciled)"
+    ]
+  }
+}
