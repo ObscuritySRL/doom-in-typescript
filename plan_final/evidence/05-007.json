@@ -1,0 +1,49 @@
+{
+  "stepId": "05-007",
+  "lane": "wad-assets",
+  "title": "wire-demo-and-map-assets",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-demo-and-map-assets.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-007.json",
+    "plan_final/progress/wad-assets/05-007.md",
+    "plan_final/status/05-007.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/demoAndMapAssets.ts",
+    "test/plan_final/wad/wire-demo-and-map-assets.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-demo-and-map-assets.test.ts",
+    "passed": 13,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15895,
+    "failed": 0,
+    "files": 841
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-007 wires the DEMO<n>-named demo lumps and the per-map 10-lump bundles into a runtime catalog the attract-loop scheduler and the per-level setup pipeline consume. The new wrapper at src/vanilla/demoAndMapAssets.ts walks the IwadResourceCache directory partitioning every committed lump starting with DEMO into the demo bucket and delegates to the read-only findMapNames helper for map-marker detection. The catalog does not parse demo or map payloads at build time — that concern belongs to the demo player and mapSetup at level-load time. No proprietary IWAD bytes are embedded.",
+    "publicSurface": [
+      "buildDemoAndMapAssets(resourceCache: IwadResourceCache): DemoAndMapAssetCatalog",
+      "DemoAndMapAssetCatalog interface (demoLumps, mapNames)",
+      "DemoLumpEntry interface (directoryEntry, directoryIndex, name)",
+      "VANILLA_DEMO_LUMP_PREFIX = 'DEMO'"
+    ],
+    "assetFilesModified": false,
+    "demoFilesModified": false,
+    "mapFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/map/mapBundle.ts: src_importer_count 2→3, test_importer_count 18→19 (demoAndMapAssets.ts + its focused test import findMapNames)",
+      "src/wad/directory.ts: src_importer_count 26→27, test_importer_count 75→76 (the focused test imports DirectoryEntry type and the focused test indirectly via demoAndMapAssets)"
+    ]
+  }
+}

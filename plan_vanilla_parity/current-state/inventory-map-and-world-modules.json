@@ -210,8 +210,8 @@
       "exported_types": ["MapLumpName"],
       "exported_const_enums": [],
       "external_imports": ["src/wad/directory.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 18
+      "src_importer_count": 3,
+      "test_importer_count": 19
     },
     {
       "relative_path": "src/map/mapSetup.ts",
