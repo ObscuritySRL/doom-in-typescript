@@ -1,0 +1,48 @@
+{
+  "stepId": "03-007",
+  "lane": "launch-host-input",
+  "title": "wire-responder-chain-input",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/wire-responder-chain-input.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-007.json",
+    "plan_final/progress/launch-host-input/03-007.md",
+    "plan_final/status/03-007.json",
+    "src/vanilla/responderChain.ts",
+    "test/plan_final/launch/wire-responder-chain-input.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/launch/wire-responder-chain-input.test.ts",
+    "passed": 11,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15820,
+    "failed": 0,
+    "files": 836
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-007 wires the four-position responder chain D_ProcessEvents runs in Chocolate Doom 2.2.1 d_main.c (M_Responder → AM_Responder → F_Responder → G_Responder). The new src/vanilla/responderChain.ts exposes only the dispatch wiring; the individual responder bodies are plugged in by subsequent launch-host-input steps (menu, automap, finale, game). The chain stops at the first responder that returns true, matching vanilla's short-circuit semantics. The canonical order is pinned by VANILLA_RESPONDER_ORDER and VANILLA_RESPONDER_COUNT=4; routeEventThroughResponderChain validates the caller passes exactly four responders.",
+    "publicSurface": [
+      "VanillaResponderName = 'M_Responder' | 'AM_Responder' | 'F_Responder' | 'G_Responder'",
+      "VANILLA_RESPONDER_ORDER: readonly VanillaResponderName[] (length 4, frozen)",
+      "VANILLA_RESPONDER_COUNT = 4",
+      "VanillaResponder = (event: VanillaEvent) => boolean",
+      "VanillaResponderChainResult interface (consumedByIndex, consumedByName, callOrder)",
+      "routeEventThroughResponderChain(event, responders): VanillaResponderChainResult"
+    ],
+    "canonicalChain": ["M_Responder", "AM_Responder", "F_Responder", "G_Responder"],
+    "uiFilesModified": false,
+    "inputFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/launch/ is not declared as a test_roots entry. The new responderChain.ts imports only VanillaEvent (from src/vanilla/eventQueue.ts). No WAD/asset/render/core inventory counts shift. Full 15820-test suite passes without any plan_vanilla_parity inventory rewrite."
+  }
+}
