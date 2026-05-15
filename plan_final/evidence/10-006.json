@@ -1,0 +1,26 @@
+{
+  "stepId": "10-006",
+  "lane": "ai-specials",
+  "title": "wire-boss-specials",
+  "commands": ["bun run format", "bun test test/plan_final/ai/wire-boss-specials.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-006.json",
+    "plan_final/progress/ai-specials/10-006.md",
+    "plan_final/status/10-006.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireBossSpecials.ts",
+    "test/plan_final/ai/wire-boss-specials.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/wire-boss-specials.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16333, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-006 wires the boss-death specials via one src/vanilla facade (wireBossSpecials.ts) re-exporting the read-only src/ai/bossSpecials.ts (aBossDeath E1M8 tag-666 floor, aKeenDie tag-666 door, aPainDie tag-667, brain* commercial path, context + reset; tag/SFX constants). VANILLA_BOSS_SPECIALS_INVARIANTS pins five rules (E1M8 Baron death lowers tag-666 floor on last-boss-dead; KeenDie opens tag-666 door; PainDie tag-667 baby path; registered/Ultimate E2M8/E3M8 boss paths are tag-driven & IWAD-agnostic; brain caps at 32 targets, commercial-only). The focused test exercises the tag/SFX constants, the callable boss-death codepointers, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums (StateNum used in type sigs but imported, not re-exported). This step became eligible only after the 442975e cycle fix removed the spurious 08-008 back-edge.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ai/bossSpecials.ts src 0->1 (test unchanged at 1)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-006.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 10-006 paths from concurrent shared-index activity."
+  }
+}
