@@ -1,0 +1,28 @@
+{
+  "stepId": "08-006",
+  "lane": "map-world",
+  "title": "wire-floor-ceiling-platform-specials",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-floor-ceiling-platform-specials.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/08-006.json",
+    "plan_final/progress/map-world/08-006.md",
+    "plan_final/status/08-006.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireFloorCeilingPlatformSpecials.ts",
+    "test/plan_final/map/wire-floor-ceiling-platform-specials.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-floor-ceiling-platform-specials.test.ts", "passed": 8, "failed": 0 },
+  "fullSuite": { "passed": 16216, "failed": 0, "files": 881 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-006 wires the moving-plane specials into one src/vanilla facade (wireFloorCeilingPlatformSpecials.ts) re-exporting the read-only src/specials/floors.ts, ceilings.ts, platforms.ts, and stairsDonut.ts (EV_DoFloor/EV_DoCeiling/EV_DoPlat/EV_StopPlat/EV_BuildStairs/EV_DoDonut, the T_MoveFloor/T_MoveCeiling/T_PlatRaise movers, EV_CeilingCrushStop, and the ActivePlats/ActiveCeilings registries + P_ActivateInStasis/P_ActivateInStasisCeiling stasis-restore hooks), with a frozen VANILLA_FLOOR_CEILING_PLAT_INVARIANTS manifest pinning five parity rules: plane speeds = FRACUNIT/tic; CEILWAIT 150 / PLATWAIT 3s (105 tics) / MAXCEILINGS = MAXPLATS = 30; stair/donut speeds derive from FLOORSPEED (/4, x4, /2); EV_* return non-zero only when a mover spawned; active specials restorable via the stasis hooks. Re-export hygiene: shared SFX_STNMOV/SFX_PSTOP surfaced from floors only, SFX_PSTART from platforms, no duplicate names; the shared PlaneMoveResult re-export and all const enums (FloorType/CeilingType/PlatType/StairType/directions/status) are intentionally not re-exported (verbatimModuleSyntax cross-module const-enum hazard). The EV_* dispatchers need const-enum params plus heavy ThinkerList/sector fixtures, so the focused test proves behavior via the vanilla parity CONSTANTS (the parity-critical values), the frozen/sorted manifest, the line-anchored re-export specifier set, and dynamic same-reference identity for the EV_* functions + registries, consistent with the established barrel+manifest pattern and the 'behavior OR inventory result' acceptance. The full-suite rerun's lone failure each pass was the documented-flaky captureReferenceDemoSync oracle timing test, which passed on rerun (16216 pass / 0 fail); unrelated to this specials facade.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/specials/ceilings.ts src 3->4 (test unchanged at 5)",
+      "src/specials/floors.ts src 3->4 (test unchanged at 4)",
+      "src/specials/platforms.ts src 3->4 (test unchanged at 5)",
+      "src/specials/stairsDonut.ts src 1->2 (test unchanged at 1)"
+    ]
+  }
+}

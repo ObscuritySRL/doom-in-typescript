@@ -447,7 +447,7 @@
       "exported_types": [],
       "exported_const_enums": ["CeilingDirection", "CeilingType"],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/specials/doors.ts", "src/world/thinkers.ts", "src/world/thinkers.ts"],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 5
     },
     {
@@ -501,7 +501,7 @@
       "exported_types": [],
       "exported_const_enums": ["FloorDirection", "FloorType"],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/specials/doors.ts", "src/world/thinkers.ts", "src/world/thinkers.ts"],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 4
     },
     {
@@ -537,7 +537,7 @@
       "exported_types": [],
       "exported_const_enums": ["PlatStatus", "PlatType"],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/specials/doors.ts", "src/world/thinkers.ts", "src/world/thinkers.ts"],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 5
     },
     {
@@ -573,7 +573,7 @@
       "exported_types": [],
       "exported_const_enums": ["StairType"],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/map/lineSectorGeometry.ts", "src/specials/floors.ts", "src/specials/floors.ts", "src/specials/floors.ts", "src/world/thinkers.ts"],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 1
     },
     {
