@@ -1,0 +1,20 @@
+{
+  "stepId": "03-010",
+  "lane": "launch-host-input",
+  "title": "gate-clean-launch-to-title",
+  "commands": ["bun run format", "bun test test/plan_final/launch/gate-clean-launch-to-title.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/03-010.json",
+    "plan_final/progress/launch-host-input/03-010.md",
+    "plan_final/status/03-010.json",
+    "test/plan_final/launch/gate-clean-launch-to-title.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/launch/gate-clean-launch-to-title.test.ts", "passed": 9, "failed": 0 },
+  "fullSuite": { "passed": 16152, "failed": 0, "files": 872 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-010 gates the clean-launch->title chain. Because doom.ts is still the intentional plan_vanilla_parity 03-001 skeleton (held byte-identical until a dedicated cross-plan replace step), the gate cannot literally spawn doom.ts; instead it asserts (mirroring gate-wad-assets/gate-renderer-parity) that every launch->title prerequisite (03-004/03-005/04-003/05-004/07-001) is COMPLETED with a pushed commitSha + clean evidence, the composed launch->title src/vanilla surface exists (commandLineConfiguration, launchContext, win32WindowHost, runDoomMain, runDoomLoop, wireTitleLoopRendering), runDoomMain wires through resolveLaunchContext, the doom.ts skeleton invariant is preserved, and the reference initial-title-frame oracle fixture pins the canonical capture command. Gate-test-only, no source modification.",
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
