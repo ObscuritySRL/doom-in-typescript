@@ -1,0 +1,25 @@
+{
+  "stepId": "08-002",
+  "lane": "map-world",
+  "title": "wire-thinker-ticker",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-thinker-ticker.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/08-002.json",
+    "plan_final/progress/map-world/08-002.md",
+    "plan_final/status/08-002.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "src/vanilla/wireThinkerTicker.ts",
+    "test/plan_final/map/wire-thinker-ticker.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-thinker-ticker.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16033, "failed": 0, "files": 855 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-002 wires the read-only ThinkerList ring (src/world/thinkers.ts) into a P_Ticker-shaped driver. runVanillaPTicker(thinkerList) performs one P_RunThinkers pass, preserving the parity-critical deferred-removal, same-tic-insertion, and self-removal semantics the read-only ThinkerList already implements. No source under src/world/ or src/specials/ is modified.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/world/thinkers.ts: test_importer_count 21 -> 22 (new focused test imports thinkers.ts)"
+    ]
+  }
+}

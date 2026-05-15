@@ -535,8 +535,8 @@
       "exported_types": ["ThinkFunction"],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 20,
-      "test_importer_count": 21
+      "src_importer_count": 21,
+      "test_importer_count": 22
     },
     {
       "relative_path": "src/world/tryMove.ts",
