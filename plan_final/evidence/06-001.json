@@ -1,0 +1,52 @@
+{
+  "stepId": "06-001",
+  "lane": "render",
+  "title": "wire-view-setup",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/render/wire-view-setup.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/06-001.json",
+    "plan_final/progress/render/06-001.md",
+    "plan_final/status/06-001.json",
+    "plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json",
+    "plan_vanilla_parity/current-state/inventory-renderer-modules.json",
+    "src/vanilla/viewSetup.ts",
+    "test/plan_final/render/wire-view-setup.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/render/wire-view-setup.test.ts",
+    "passed": 17,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15763,
+    "failed": 0,
+    "files": 832
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-001 wires the vanilla R_ExecuteSetViewSize derivation, the status-bar rectangle, the active-view rectangle, and the canonical 90-degree clip-angle FOV into a single frozen VanillaViewSetup artifact. The new wrapper at src/vanilla/viewSetup.ts imports the read-only computeViewport helper from src/render/projection.ts plus the SCREENWIDTH/SCREENHEIGHT/SBARHEIGHT/FIELDOFVIEW/MIN_SETBLOCKS/MAX_SETBLOCKS constants without modifying them. The wrapper does not touch the filesystem or the FFI surface; every return value is frozen at the top level and inside each nested rectangle.",
+    "publicSurface": [
+      "resolveVanillaViewSetup(setBlocks: number, detailShift: DetailMode): VanillaViewSetup",
+      "VanillaViewSetup interface (viewport, statusBarRect, statusBarVisible, viewWindowRect, fieldOfViewInBamUnits)",
+      "ViewSetupRectangle interface (x, y, width, height)",
+      "VANILLA_VIEW_SIZE_RANGE constant pinned to {minimum: 3, maximum: 11}",
+      "VANILLA_DEFAULT_SET_BLOCKS constant pinned to 9 (Chocolate Doom 2.2.1 default)",
+      "VANILLA_FIELD_OF_VIEW_IN_BAM_UNITS constant pinned to 2048"
+    ],
+    "renderFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/render/projection.ts: test_importer_count 23→24 (test/plan_final/render/wire-view-setup.test.ts imports DetailMode/FIELDOFVIEW/SBARHEIGHT/SCREENHEIGHT/SCREENWIDTH)",
+      "src/core/fixed.ts: test_importer_count 92→93 (test/plan_final/render/wire-view-setup.test.ts imports FRACBITS for fixed-point assertions)"
+    ]
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding a focused test under test/plan_final/render/ that imports from src/render/projection.ts and src/core/fixed.ts increases their test_importer_count by exactly 1 each. The inventory JSON is updated to match on-disk reality, matching the 05-001 and 05-002 precedent for similar wad-assets cross-plan rewrites."
+  }
+}
