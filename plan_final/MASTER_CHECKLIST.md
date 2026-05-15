@@ -6,7 +6,7 @@
 - Runtime target: `bun run doom.ts`
 - Rule: choose the first unchecked step whose prerequisites are complete in the assigned lane.
 - Visual status: checklist boxes are synced from `plan_final/status/*.json` by `bun run plan_final/sync-master-checklist.ts`.
-- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` all pass.
+- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full headless `bun test`, any required serialized `bun run plan_final/test-live-reference.ts` command, and `bun x tsc --noEmit --project tsconfig.json` all pass.
 
 ## governance
 
@@ -181,4 +181,3 @@
 - [ ] `13-009` `gate-registered-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-009-gate-registered-iwad-when-present.md`
 - [ ] `13-010` `gate-ultimate-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-010-gate-ultimate-iwad-when-present.md`
 - [ ] `13-011` `gate-final-side-by-side-zero-diff` | lane: `acceptance` | prereqs: `13-008, 13-009, 13-010` | file: `plan_final/steps/13-011-gate-final-side-by-side-zero-diff.md`
-

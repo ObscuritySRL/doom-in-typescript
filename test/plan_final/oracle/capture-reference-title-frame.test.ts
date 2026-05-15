@@ -13,6 +13,7 @@ import {
   normalizeToInternalFramebuffer,
 } from '../../../tools/reference/captureReferenceTitleFrame.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceTitleFrameTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const NORMALIZED_INTERNAL_HEIGHT = 200;
@@ -139,62 +140,70 @@ describe('oracle: captureReferenceTitleFrame', () => {
       }
     }
 
-    test('captures a live title frame from a sandboxed Chocolate Doom 2.2.1 window or throws the documented timeout error', async () => {
-      const findWindowTimeoutMsForTest = 10_000;
-      const outcome = await attemptCaptureOrCollectError({ findWindowTimeoutMs: findWindowTimeoutMsForTest, killWaitMs: 8_000, settleAfterWindowFoundMs: 1_500 });
+    liveReferenceTest(
+      'captures a live title frame from a sandboxed Chocolate Doom 2.2.1 window or throws the documented timeout error',
+      async () => {
+        const findWindowTimeoutMsForTest = 10_000;
+        const outcome = await attemptCaptureOrCollectError({ findWindowTimeoutMs: findWindowTimeoutMsForTest, killWaitMs: 8_000, settleAfterWindowFoundMs: 1_500 });
 
-      if ('evidence' in outcome) {
-        const evidence = outcome.evidence;
-        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+        if ('evidence' in outcome) {
+          const evidence = outcome.evidence;
+          lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-        expect(evidence.executableFilename).toBe('DOOM.EXE');
-        expect(evidence.sandboxId.length).toBeGreaterThan(0);
-        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
-        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-        expect(evidence.capturedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.capturedAtElapsedMs);
-        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+          expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+          expect(evidence.executableFilename).toBe('DOOM.EXE');
+          expect(evidence.sandboxId.length).toBeGreaterThan(0);
+          expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+          expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+          expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+          expect(evidence.capturedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+          expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.capturedAtElapsedMs);
+          expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+          expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
 
-        expect(evidence.capturedWidth).toBeGreaterThan(0);
-        expect(evidence.capturedHeight).toBeGreaterThan(0);
-        expect(evidence.capturedByteLength).toBe(evidence.capturedWidth * evidence.capturedHeight * CAPTURE_BYTES_PER_PIXEL);
-        expect(SHA256_HEX_REGEX.test(evidence.capturedSha256)).toBe(true);
+          expect(evidence.capturedWidth).toBeGreaterThan(0);
+          expect(evidence.capturedHeight).toBeGreaterThan(0);
+          expect(evidence.capturedByteLength).toBe(evidence.capturedWidth * evidence.capturedHeight * CAPTURE_BYTES_PER_PIXEL);
+          expect(SHA256_HEX_REGEX.test(evidence.capturedSha256)).toBe(true);
 
-        expect(evidence.normalizedWidth).toBe(NORMALIZED_INTERNAL_WIDTH);
-        expect(evidence.normalizedHeight).toBe(NORMALIZED_INTERNAL_HEIGHT);
-        expect(evidence.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
-        expect(evidence.normalizedByteLength).toBe(256_000);
-        expect(SHA256_HEX_REGEX.test(evidence.normalizedSha256)).toBe(true);
+          expect(evidence.normalizedWidth).toBe(NORMALIZED_INTERNAL_WIDTH);
+          expect(evidence.normalizedHeight).toBe(NORMALIZED_INTERNAL_HEIGHT);
+          expect(evidence.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
+          expect(evidence.normalizedByteLength).toBe(256_000);
+          expect(SHA256_HEX_REGEX.test(evidence.normalizedSha256)).toBe(true);
 
-        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-        expect(evidence.cleanShutdown).toBe(true);
-      } else {
-        expect(outcome.error).toBeInstanceOf(ReferenceWindowNotFoundError);
-        expect(outcome.error.name).toBe('ReferenceWindowNotFoundError');
-        expect(outcome.error.message).toContain('Chocolate Doom 2.2.1');
-        expect(outcome.error.message).toContain(`${findWindowTimeoutMsForTest}ms`);
-      }
-    }, 60_000);
+          expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+          expect(evidence.cleanShutdown).toBe(true);
+        } else {
+          expect(outcome.error).toBeInstanceOf(ReferenceWindowNotFoundError);
+          expect(outcome.error.name).toBe('ReferenceWindowNotFoundError');
+          expect(outcome.error.message).toContain('Chocolate Doom 2.2.1');
+          expect(outcome.error.message).toContain(`${findWindowTimeoutMsForTest}ms`);
+        }
+      },
+      60_000,
+    );
 
-    test('cleans up the specific sandbox directory it created after the capture runner returns evidence or throws the documented timeout error', async () => {
-      const overrideSandboxId = `02-003-cleanup-${Date.now()}`;
-      const expectedSandboxAbsolutePath = path.join(REFERENCE_SANDBOX_POLICY.workspaceRoot, REFERENCE_SANDBOX_POLICY.sandboxParent, `${REFERENCE_SANDBOX_POLICY.sandboxPrefix}${overrideSandboxId}`);
-      const outcome = await attemptCaptureOrCollectError({ findWindowTimeoutMs: 8_000, killWaitMs: 8_000, sandboxIdOverride: overrideSandboxId, settleAfterWindowFoundMs: 1_000 });
+    liveReferenceTest(
+      'cleans up the specific sandbox directory it created after the capture runner returns evidence or throws the documented timeout error',
+      async () => {
+        const overrideSandboxId = `02-003-cleanup-${Date.now()}`;
+        const expectedSandboxAbsolutePath = path.join(REFERENCE_SANDBOX_POLICY.workspaceRoot, REFERENCE_SANDBOX_POLICY.sandboxParent, `${REFERENCE_SANDBOX_POLICY.sandboxPrefix}${overrideSandboxId}`);
+        const outcome = await attemptCaptureOrCollectError({ findWindowTimeoutMs: 8_000, killWaitMs: 8_000, sandboxIdOverride: overrideSandboxId, settleAfterWindowFoundMs: 1_000 });
 
-      if ('evidence' in outcome) {
-        lastCapturedSandboxPath = outcome.evidence.sandboxAbsolutePath;
-        expect(outcome.evidence.sandboxAbsolutePath).toBe(expectedSandboxAbsolutePath);
-        expect(existsSync(outcome.evidence.sandboxAbsolutePath)).toBe(false);
-      } else {
-        expect(outcome.error).toBeInstanceOf(ReferenceWindowNotFoundError);
-        // captureReferenceTitleFrame destroys its own sandbox in the finally block even when the
-        // ReferenceWindowNotFoundError propagates. Confirm the sandbox we asked it to create is gone.
-        expect(existsSync(expectedSandboxAbsolutePath)).toBe(false);
-      }
-    }, 60_000);
+        if ('evidence' in outcome) {
+          lastCapturedSandboxPath = outcome.evidence.sandboxAbsolutePath;
+          expect(outcome.evidence.sandboxAbsolutePath).toBe(expectedSandboxAbsolutePath);
+          expect(existsSync(outcome.evidence.sandboxAbsolutePath)).toBe(false);
+        } else {
+          expect(outcome.error).toBeInstanceOf(ReferenceWindowNotFoundError);
+          // captureReferenceTitleFrame destroys its own sandbox in the finally block even when the
+          // ReferenceWindowNotFoundError propagates. Confirm the sandbox we asked it to create is gone.
+          expect(existsSync(expectedSandboxAbsolutePath)).toBe(false);
+        }
+      },
+      60_000,
+    );
   } else {
     test.skip('skipped live title-frame capture because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);

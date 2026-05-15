@@ -10,8 +10,10 @@ const REQUIRED_ROOT_FILES = Object.freeze([
   'plan_final/PARALLEL_WORK.md',
   'plan_final/DEPENDENCY_GRAPH.md',
   'plan_final/MASTER_CHECKLIST.md',
+  'plan_final/liveReferenceTestConfig.ts',
   'plan_final/select-step.ts',
   'plan_final/sync-master-checklist.ts',
+  'plan_final/test-live-reference.ts',
   'plan_final/validate-plan.ts',
   'plan_final/validate-plan.test.ts',
 ]);

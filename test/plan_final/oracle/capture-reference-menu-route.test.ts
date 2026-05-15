@@ -16,6 +16,7 @@ import {
   normalizeToInternalFramebuffer,
 } from '../../../tools/reference/captureReferenceMenuRoute.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceMenuRouteTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const CAPTURE_BYTES_PER_PIXEL = 4;
@@ -139,51 +140,59 @@ describe('oracle: captureReferenceMenuRoute', () => {
       }
     });
 
-    test('captures a live menu route from a sandboxed Chocolate Doom 2.2.1 window', async () => {
-      const evidence: ReferenceMenuRouteEvidence = await captureReferenceMenuRoute({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 500, settleAfterWindowFoundMs: 1_500 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+    liveReferenceTest(
+      'captures a live menu route from a sandboxed Chocolate Doom 2.2.1 window',
+      async () => {
+        const evidence: ReferenceMenuRouteEvidence = await captureReferenceMenuRoute({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 500, settleAfterWindowFoundMs: 1_500 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-      expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-      expect(evidence.executableFilename).toBe('DOOM.EXE');
-      expect(evidence.sandboxId.length).toBeGreaterThan(0);
-      expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
-      expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-      expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-      expect(evidence.titleFrameCapturedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-      expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.titleFrameCapturedAtElapsedMs);
-      expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-      expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+        expect(evidence.executableFilename).toBe('DOOM.EXE');
+        expect(evidence.sandboxId.length).toBeGreaterThan(0);
+        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+        expect(evidence.titleFrameCapturedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.titleFrameCapturedAtElapsedMs);
+        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
 
-      expect(evidence.framebufferWidth).toBeGreaterThan(0);
-      expect(evidence.framebufferHeight).toBeGreaterThan(0);
-      expect(SHA256_HEX_REGEX.test(evidence.titleFrameSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.titleFrameNormalizedSha256)).toBe(true);
+        expect(evidence.framebufferWidth).toBeGreaterThan(0);
+        expect(evidence.framebufferHeight).toBeGreaterThan(0);
+        expect(SHA256_HEX_REGEX.test(evidence.titleFrameSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.titleFrameNormalizedSha256)).toBe(true);
 
-      expect(evidence.steps.length).toBe(EXPECTED_STEP_COUNT);
-      let previousCapturedAtElapsedMs = evidence.titleFrameCapturedAtElapsedMs;
-      for (let stepIndex = 0; stepIndex < evidence.steps.length; stepIndex += 1) {
-        const step: MenuRouteStepEvidence = evidence.steps[stepIndex]!;
-        expect(step.stepIndex).toBe(stepIndex);
-        expect(step.virtualKeyCode).toBe(MENU_ROUTE_KEY_STEPS[stepIndex]!.virtualKeyCode);
-        expect(step.virtualKeyName).toBe(MENU_ROUTE_KEY_STEPS[stepIndex]!.virtualKeyName);
-        expect(step.expectedMenuState).toBe(MENU_ROUTE_KEY_STEPS[stepIndex]!.expectedMenuState);
-        expect(step.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
-        expect(step.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
-        expect(SHA256_HEX_REGEX.test(step.framebufferSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(step.normalizedSha256)).toBe(true);
-        expect(step.capturedAtElapsedMs).toBeGreaterThanOrEqual(previousCapturedAtElapsedMs);
-        previousCapturedAtElapsedMs = step.capturedAtElapsedMs;
-      }
+        expect(evidence.steps.length).toBe(EXPECTED_STEP_COUNT);
+        let previousCapturedAtElapsedMs = evidence.titleFrameCapturedAtElapsedMs;
+        for (let stepIndex = 0; stepIndex < evidence.steps.length; stepIndex += 1) {
+          const step: MenuRouteStepEvidence = evidence.steps[stepIndex]!;
+          expect(step.stepIndex).toBe(stepIndex);
+          expect(step.virtualKeyCode).toBe(MENU_ROUTE_KEY_STEPS[stepIndex]!.virtualKeyCode);
+          expect(step.virtualKeyName).toBe(MENU_ROUTE_KEY_STEPS[stepIndex]!.virtualKeyName);
+          expect(step.expectedMenuState).toBe(MENU_ROUTE_KEY_STEPS[stepIndex]!.expectedMenuState);
+          expect(step.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
+          expect(step.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
+          expect(SHA256_HEX_REGEX.test(step.framebufferSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(step.normalizedSha256)).toBe(true);
+          expect(step.capturedAtElapsedMs).toBeGreaterThanOrEqual(previousCapturedAtElapsedMs);
+          previousCapturedAtElapsedMs = step.capturedAtElapsedMs;
+        }
 
-      expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-      expect(evidence.cleanShutdown).toBe(true);
-    }, 120_000);
+        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+        expect(evidence.cleanShutdown).toBe(true);
+      },
+      120_000,
+    );
 
-    test('removes the sandbox directory after the runner returns', async () => {
-      const evidence = await captureReferenceMenuRoute({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 400, settleAfterWindowFoundMs: 1_000 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
-      expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
-    }, 120_000);
+    liveReferenceTest(
+      'removes the sandbox directory after the runner returns',
+      async () => {
+        const evidence = await captureReferenceMenuRoute({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 400, settleAfterWindowFoundMs: 1_000 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+        expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
+      },
+      120_000,
+    );
   } else {
     test.skip('skipped live menu-route capture because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);

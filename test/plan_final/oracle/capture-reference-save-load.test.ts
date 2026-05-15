@@ -17,6 +17,7 @@ import {
   normalizeToInternalFramebuffer,
 } from '../../../tools/reference/captureReferenceSaveLoad.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceSaveLoadTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const CAPTURE_BYTES_PER_PIXEL = 4;
@@ -146,50 +147,54 @@ describe('oracle: captureReferenceSaveLoad', () => {
       }
     });
 
-    test('captures a live save/load roundtrip with non-decreasing timestamps, byte-identical .dsg roundtrip, mutation-driven frame divergence, and post-run sandbox cleanup', async () => {
-      const evidence: ReferenceSaveLoadEvidence = await captureReferenceSaveLoad({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 400, settleAfterWindowFoundMs: 1_500 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+    liveReferenceTest(
+      'captures a live save/load roundtrip with non-decreasing timestamps, byte-identical .dsg roundtrip, mutation-driven frame divergence, and post-run sandbox cleanup',
+      async () => {
+        const evidence: ReferenceSaveLoadEvidence = await captureReferenceSaveLoad({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 400, settleAfterWindowFoundMs: 1_500 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-      expect(evidence.executableFilename).toBe('DOOM.EXE');
-      expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-      expect(evidence.sandboxId.length).toBeGreaterThan(0);
-      expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
-      expect(evidence.saveSlotIndex).toBe(SAVE_LOAD_DEFAULT_SLOT);
+        expect(evidence.executableFilename).toBe('DOOM.EXE');
+        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+        expect(evidence.sandboxId.length).toBeGreaterThan(0);
+        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+        expect(evidence.saveSlotIndex).toBe(SAVE_LOAD_DEFAULT_SLOT);
 
-      expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-      expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-      expect(evidence.savedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-      expect(evidence.mutatedAtElapsedMs).toBeGreaterThanOrEqual(evidence.savedAtElapsedMs);
-      expect(evidence.postLoadAtElapsedMs).toBeGreaterThanOrEqual(evidence.mutatedAtElapsedMs);
-      expect(evidence.verifyCapturedAtElapsedMs).toBeGreaterThanOrEqual(evidence.postLoadAtElapsedMs);
-      expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.verifyCapturedAtElapsedMs);
-      expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-      expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+        expect(evidence.savedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+        expect(evidence.mutatedAtElapsedMs).toBeGreaterThanOrEqual(evidence.savedAtElapsedMs);
+        expect(evidence.postLoadAtElapsedMs).toBeGreaterThanOrEqual(evidence.mutatedAtElapsedMs);
+        expect(evidence.verifyCapturedAtElapsedMs).toBeGreaterThanOrEqual(evidence.postLoadAtElapsedMs);
+        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.verifyCapturedAtElapsedMs);
+        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
 
-      expect(SHA256_HEX_REGEX.test(evidence.e1m1EntrySha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.preSaveSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.postSaveSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.mutatedSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.postLoadSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.verifySha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.savedFileSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.roundtripSavedFileSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.e1m1EntrySha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.preSaveSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.postSaveSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.mutatedSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.postLoadSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.verifySha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.savedFileSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.roundtripSavedFileSha256)).toBe(true);
 
-      expect(evidence.savedFileByteLength).toBeGreaterThan(0);
-      expect(evidence.roundtripSavedFileByteLength).toBe(evidence.savedFileByteLength);
-      expect(evidence.roundtripSavedFileSha256).toBe(evidence.savedFileSha256);
+        expect(evidence.savedFileByteLength).toBeGreaterThan(0);
+        expect(evidence.roundtripSavedFileByteLength).toBe(evidence.savedFileByteLength);
+        expect(evidence.roundtripSavedFileSha256).toBe(evidence.savedFileSha256);
 
-      expect(evidence.mutatedSha256).not.toBe(evidence.preSaveSha256);
+        expect(evidence.mutatedSha256).not.toBe(evidence.preSaveSha256);
 
-      expect(evidence.framebufferWidth).toBeGreaterThan(0);
-      expect(evidence.framebufferHeight).toBeGreaterThan(0);
+        expect(evidence.framebufferWidth).toBeGreaterThan(0);
+        expect(evidence.framebufferHeight).toBeGreaterThan(0);
 
-      expect(typeof evidence.saveDescription).toBe('string');
+        expect(typeof evidence.saveDescription).toBe('string');
 
-      expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-      expect(evidence.cleanShutdown).toBe(true);
-      expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
-    }, 240_000);
+        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+        expect(evidence.cleanShutdown).toBe(true);
+        expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
+      },
+      240_000,
+    );
   } else {
     test.skip('skipped live save/load roundtrip because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);

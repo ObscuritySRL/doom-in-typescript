@@ -18,6 +18,7 @@ import {
   normalizeToInternalFramebuffer,
 } from '../../../tools/reference/captureReferenceIntermissionFinale.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceIntermissionFinaleTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const CAPTURE_BYTES_PER_PIXEL = 4;
@@ -116,47 +117,51 @@ describe('oracle: captureReferenceIntermissionFinale', () => {
       }
     });
 
-    test('captures the attract-loop checkpoint sequence from clean launch with ordered timestamps and 320x200 normalized framebuffer hashes', async () => {
-      const evidence: ReferenceIntermissionFinaleEvidence = await captureReferenceIntermissionFinale({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterWindowFoundMs: 1_500 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+    liveReferenceTest(
+      'captures the attract-loop checkpoint sequence from clean launch with ordered timestamps and 320x200 normalized framebuffer hashes',
+      async () => {
+        const evidence: ReferenceIntermissionFinaleEvidence = await captureReferenceIntermissionFinale({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterWindowFoundMs: 1_500 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-      expect(evidence.executableFilename).toBe('DOOM.EXE');
-      expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-      expect(evidence.sandboxId.length).toBeGreaterThan(0);
-      expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+        expect(evidence.executableFilename).toBe('DOOM.EXE');
+        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+        expect(evidence.sandboxId.length).toBeGreaterThan(0);
+        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
 
-      expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-      expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-      expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-      expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-      expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
-      expect(evidence.ticDurationMs).toBeGreaterThan(0);
+        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+        expect(evidence.ticDurationMs).toBeGreaterThan(0);
 
-      expect(evidence.framebufferWidth).toBeGreaterThan(0);
-      expect(evidence.framebufferHeight).toBeGreaterThan(0);
+        expect(evidence.framebufferWidth).toBeGreaterThan(0);
+        expect(evidence.framebufferHeight).toBeGreaterThan(0);
 
-      expect(evidence.attractCheckpoints.length).toBe(ATTRACT_LOOP_CHECKPOINTS.length);
-      let lastCapturedAtElapsedMs = 0;
-      for (let checkpointIndex = 0; checkpointIndex < evidence.attractCheckpoints.length; checkpointIndex += 1) {
-        const checkpoint: AttractLoopCheckpointEvidence = evidence.attractCheckpoints[checkpointIndex]!;
-        const contract = ATTRACT_LOOP_CHECKPOINTS[checkpointIndex]!;
-        expect(checkpoint.checkpointIndex).toBe(checkpointIndex);
-        expect(checkpoint.phase).toBe(contract.phase);
-        expect(checkpoint.description).toBe(contract.description);
-        expect(checkpoint.scheduledAtElapsedMs).toBe(contract.scheduledAtElapsedMs);
-        expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(checkpoint.scheduledAtElapsedMs);
-        expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(lastCapturedAtElapsedMs);
-        expect(checkpoint.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
-        expect(checkpoint.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
-        expect(SHA256_HEX_REGEX.test(checkpoint.framebufferSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(checkpoint.normalizedSha256)).toBe(true);
-        lastCapturedAtElapsedMs = checkpoint.capturedAtElapsedMs;
-      }
+        expect(evidence.attractCheckpoints.length).toBe(ATTRACT_LOOP_CHECKPOINTS.length);
+        let lastCapturedAtElapsedMs = 0;
+        for (let checkpointIndex = 0; checkpointIndex < evidence.attractCheckpoints.length; checkpointIndex += 1) {
+          const checkpoint: AttractLoopCheckpointEvidence = evidence.attractCheckpoints[checkpointIndex]!;
+          const contract = ATTRACT_LOOP_CHECKPOINTS[checkpointIndex]!;
+          expect(checkpoint.checkpointIndex).toBe(checkpointIndex);
+          expect(checkpoint.phase).toBe(contract.phase);
+          expect(checkpoint.description).toBe(contract.description);
+          expect(checkpoint.scheduledAtElapsedMs).toBe(contract.scheduledAtElapsedMs);
+          expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(checkpoint.scheduledAtElapsedMs);
+          expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(lastCapturedAtElapsedMs);
+          expect(checkpoint.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
+          expect(checkpoint.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
+          expect(SHA256_HEX_REGEX.test(checkpoint.framebufferSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(checkpoint.normalizedSha256)).toBe(true);
+          lastCapturedAtElapsedMs = checkpoint.capturedAtElapsedMs;
+        }
 
-      expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-      expect(evidence.cleanShutdown).toBe(true);
-      expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
-    }, 180_000);
+        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+        expect(evidence.cleanShutdown).toBe(true);
+        expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
+      },
+      180_000,
+    );
   } else {
     test.skip('skipped live attract-loop capture because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);

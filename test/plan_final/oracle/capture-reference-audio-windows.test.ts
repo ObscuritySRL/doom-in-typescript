@@ -24,6 +24,7 @@ import {
   captureReferenceAudioWindows,
 } from '../../../tools/reference/captureReferenceAudioWindows.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceAudioWindowsTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const ACCEPTED_CAPTURE_STATUSES: readonly ReferenceAudioCaptureStatus[] = ['captured'];
@@ -213,69 +214,73 @@ describe('oracle: captureReferenceAudioWindows', () => {
       }
     });
 
-    test('captures a live WASAPI loopback audio recording from clean launch through Main → Episode → Skill → E1M1 spawn and hashes each of the 7 fixture-aligned tic windows', async () => {
-      const evidence: ReferenceAudioWindowsEvidence = await captureReferenceAudioWindows({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 400, settleAfterWindowFoundMs: 1_500 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+    liveReferenceTest(
+      'captures a live WASAPI loopback audio recording from clean launch through Main → Episode → Skill → E1M1 spawn and hashes each of the 7 fixture-aligned tic windows',
+      async () => {
+        const evidence: ReferenceAudioWindowsEvidence = await captureReferenceAudioWindows({ findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 400, settleAfterWindowFoundMs: 1_500 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-      expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-      expect(evidence.executableFilename).toBe('DOOM.EXE');
-      expect(evidence.sandboxId.length).toBeGreaterThan(0);
-      expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
-      expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-      expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-      expect(evidence.captureStartElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-      expect(evidence.captureEndElapsedMs).toBeGreaterThanOrEqual(evidence.captureStartElapsedMs);
-      expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.captureEndElapsedMs);
-      expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-      expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+        expect(evidence.executableFilename).toBe('DOOM.EXE');
+        expect(evidence.sandboxId.length).toBeGreaterThan(0);
+        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+        expect(evidence.captureStartElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+        expect(evidence.captureEndElapsedMs).toBeGreaterThanOrEqual(evidence.captureStartElapsedMs);
+        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.captureEndElapsedMs);
+        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
 
-      expect(ACCEPTED_CAPTURE_STATUSES).toContain(evidence.captureStatus);
-      expect(evidence.captureStatus).toBe('captured');
+        expect(ACCEPTED_CAPTURE_STATUSES).toContain(evidence.captureStatus);
+        expect(evidence.captureStatus).toBe('captured');
 
-      expect(evidence.ticDurationMs).toBe(TIC_DURATION_MS);
-      const longestEndTic = REFERENCE_AUDIO_HASH_WINDOWS.reduce((maximum, window) => (window.endTic > maximum ? window.endTic : maximum), 0);
-      expect(evidence.totalCapturedTics).toBe(longestEndTic);
-      expect(evidence.menuKeyFirstAtTic).toBeGreaterThan(0);
+        expect(evidence.ticDurationMs).toBe(TIC_DURATION_MS);
+        const longestEndTic = REFERENCE_AUDIO_HASH_WINDOWS.reduce((maximum, window) => (window.endTic > maximum ? window.endTic : maximum), 0);
+        expect(evidence.totalCapturedTics).toBe(longestEndTic);
+        expect(evidence.menuKeyFirstAtTic).toBeGreaterThan(0);
 
-      const capturedFormat: CapturedAudioFormat = evidence.capturedFormat;
-      expect(capturedFormat.channelCount).toBeGreaterThan(0);
-      expect(capturedFormat.bitsPerSample).toBeGreaterThan(0);
-      expect(capturedFormat.blockAlign).toBeGreaterThan(0);
-      expect(capturedFormat.samplesPerSecond).toBeGreaterThan(0);
-      expect(capturedFormat.averageBytesPerSecond).toBeGreaterThan(0);
-      expect(capturedFormat.formatTag).toBeGreaterThan(0);
+        const capturedFormat: CapturedAudioFormat = evidence.capturedFormat;
+        expect(capturedFormat.channelCount).toBeGreaterThan(0);
+        expect(capturedFormat.bitsPerSample).toBeGreaterThan(0);
+        expect(capturedFormat.blockAlign).toBeGreaterThan(0);
+        expect(capturedFormat.samplesPerSecond).toBeGreaterThan(0);
+        expect(capturedFormat.averageBytesPerSecond).toBeGreaterThan(0);
+        expect(capturedFormat.formatTag).toBeGreaterThan(0);
 
-      expect(evidence.framesCapturedTotal).toBeGreaterThan(0);
-      expect(evidence.pcmByteLengthTotal).toBe(evidence.framesCapturedTotal * capturedFormat.blockAlign);
-      expect(evidence.silentPacketCount).toBeGreaterThanOrEqual(0);
+        expect(evidence.framesCapturedTotal).toBeGreaterThan(0);
+        expect(evidence.pcmByteLengthTotal).toBe(evidence.framesCapturedTotal * capturedFormat.blockAlign);
+        expect(evidence.silentPacketCount).toBeGreaterThanOrEqual(0);
 
-      expect(SHA256_HEX_REGEX.test(evidence.mixedSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.musicEventSha256)).toBe(true);
-      expect(SHA256_HEX_REGEX.test(evidence.sfxSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.mixedSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.musicEventSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(evidence.sfxSha256)).toBe(true);
 
-      expect(evidence.windows.length).toBe(REFERENCE_AUDIO_HASH_WINDOWS.length);
-      for (let windowIndex = 0; windowIndex < evidence.windows.length; windowIndex += 1) {
-        const capturedWindow: ReferenceAudioWindowEvidence = evidence.windows[windowIndex]!;
-        const expectedWindow = REFERENCE_AUDIO_HASH_WINDOWS[windowIndex]!;
-        expect(capturedWindow.name).toBe(expectedWindow.name);
-        expect(capturedWindow.kind).toBe(expectedWindow.kind);
-        expect(capturedWindow.phase).toBe(expectedWindow.phase);
-        expect(capturedWindow.startTic).toBe(expectedWindow.startTic);
-        expect(capturedWindow.endTic).toBe(expectedWindow.endTic);
-        expect(capturedWindow.description).toBe(expectedWindow.description);
-        expect(capturedWindow.observedEndElapsedMs).toBeGreaterThanOrEqual(capturedWindow.observedStartElapsedMs);
-        expect(capturedWindow.audioByteLength).toBeGreaterThanOrEqual(0);
-        expect(SHA256_HEX_REGEX.test(capturedWindow.audioSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(capturedWindow.mixedSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(capturedWindow.musicEventSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(capturedWindow.sfxSha256)).toBe(true);
-        expect(capturedWindow.audioByteLength % capturedFormat.blockAlign).toBe(0);
-      }
+        expect(evidence.windows.length).toBe(REFERENCE_AUDIO_HASH_WINDOWS.length);
+        for (let windowIndex = 0; windowIndex < evidence.windows.length; windowIndex += 1) {
+          const capturedWindow: ReferenceAudioWindowEvidence = evidence.windows[windowIndex]!;
+          const expectedWindow = REFERENCE_AUDIO_HASH_WINDOWS[windowIndex]!;
+          expect(capturedWindow.name).toBe(expectedWindow.name);
+          expect(capturedWindow.kind).toBe(expectedWindow.kind);
+          expect(capturedWindow.phase).toBe(expectedWindow.phase);
+          expect(capturedWindow.startTic).toBe(expectedWindow.startTic);
+          expect(capturedWindow.endTic).toBe(expectedWindow.endTic);
+          expect(capturedWindow.description).toBe(expectedWindow.description);
+          expect(capturedWindow.observedEndElapsedMs).toBeGreaterThanOrEqual(capturedWindow.observedStartElapsedMs);
+          expect(capturedWindow.audioByteLength).toBeGreaterThanOrEqual(0);
+          expect(SHA256_HEX_REGEX.test(capturedWindow.audioSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(capturedWindow.mixedSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(capturedWindow.musicEventSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(capturedWindow.sfxSha256)).toBe(true);
+          expect(capturedWindow.audioByteLength % capturedFormat.blockAlign).toBe(0);
+        }
 
-      expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-      expect(evidence.cleanShutdown).toBe(true);
-      expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
-    }, 240_000);
+        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+        expect(evidence.cleanShutdown).toBe(true);
+        expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
+      },
+      240_000,
+    );
   } else {
     test.skip('skipped live WASAPI loopback audio capture because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);

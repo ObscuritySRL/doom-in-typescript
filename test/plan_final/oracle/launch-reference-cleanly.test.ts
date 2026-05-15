@@ -5,6 +5,7 @@ import { afterAll, describe, expect, test } from 'bun:test';
 
 import { REFERENCE_SANDBOX_POLICY, SANDBOX_REQUIRED_FILES } from '../../../src/oracles/referenceSandbox.ts';
 import { type ReferenceLaunchEvidence, ReferenceBundleMissingError, launchReferenceCleanly } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceLaunchEvidence['terminationCause'][] = ['natural-exit', 'sandbox-killed'];
 
@@ -46,7 +47,7 @@ describe('oracle: launchReferenceCleanly', () => {
       }
     });
 
-    test('captures a live clean-launch evidence record from a sandbox copy of DOOM.EXE', async () => {
+    liveReferenceTest('captures a live clean-launch evidence record from a sandbox copy of DOOM.EXE', async () => {
       const evidence = await launchReferenceCleanly({ settleDurationMs: 250, killWaitMs: 8_000 });
       capturedSandboxPath = evidence.sandboxAbsolutePath;
 
@@ -61,7 +62,7 @@ describe('oracle: launchReferenceCleanly', () => {
       expect(evidence.cleanShutdown).toBe(true);
     });
 
-    test('removes the sandbox directory after the runner returns', async () => {
+    liveReferenceTest('removes the sandbox directory after the runner returns', async () => {
       const evidence = await launchReferenceCleanly({ settleDurationMs: 100, killWaitMs: 8_000 });
 
       expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);

@@ -80,6 +80,8 @@ ${bulletList(step.testFiles)}
 - \`bun run format\`
 - \`bun test ${focusedTest}\`
 - \`bun test\`
+- \`bun run plan_final/test-live-reference.ts ${focusedTest}\` when \`${focusedTest}\` is a live reference capture test
+- \`bun run plan_final/test-live-reference.ts\` when an oracle or acceptance gate requires live reference evidence
 - \`bun x tsc --noEmit --project tsconfig.json\`
 
 ## progress log
@@ -91,7 +93,8 @@ ${bulletList(step.testFiles)}
 ## completion criteria
 
 - The focused test proves the behavior or inventory result for this exact step.
-- \`bun run format\`, focused \`bun test ${focusedTest}\`, \`bun test\`, and \`bun x tsc --noEmit --project tsconfig.json\` all pass in that order.
+- \`bun run format\`, focused \`bun test ${focusedTest}\`, headless \`bun test\`, any required serialized \`bun run plan_final/test-live-reference.ts\` command, and \`bun x tsc --noEmit --project tsconfig.json\` all pass in that order.
+- Live Win32 reference captures are opt-in and serialized through \`bun run plan_final/test-live-reference.ts\`; do not run several live DOOM windows in parallel on the same desktop.
 - Any failure is fixed in this same step and the full verification sequence is rerun from the beginning.
 - The step is not marked complete, committed, or pushed while any verification command is failing.
 - Files are staged explicitly by path, committed with a Conventional Commit, and pushed directly with local git commands.
@@ -114,7 +117,7 @@ function checklistMarkdown(): string {
     '- Runtime target: `bun run doom.ts`',
     '- Rule: choose the first unchecked step whose prerequisites are complete in the assigned lane.',
     '- Visual status: checklist boxes are synced from `plan_final/status/*.json` by `bun run plan_final/sync-master-checklist.ts`.',
-    '- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` all pass.',
+    '- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full headless `bun test`, any required serialized `bun run plan_final/test-live-reference.ts` command, and `bun x tsc --noEmit --project tsconfig.json` all pass.',
     '',
   ];
 
@@ -194,9 +197,11 @@ A step is complete only when all commands pass in order:
 1. \`bun run format\`
 2. focused \`bun test <path>\`
 3. \`bun test\`
-4. \`bun x tsc --noEmit --project tsconfig.json\`
+4. \`bun run plan_final/test-live-reference.ts <path>\` when the focused test is a live reference capture test
+5. \`bun run plan_final/test-live-reference.ts\` when an oracle or acceptance gate requires live reference evidence
+6. \`bun x tsc --noEmit --project tsconfig.json\`
 
-Any failure must be fixed in the same step, logged, and the full command sequence rerun from the beginning. Do not commit, push, or mark a step complete while anything is failing.
+\`bun test\` is the headless full suite. Live Win32 reference captures are opt-in and serialized by \`bun run plan_final/test-live-reference.ts\` so repeated implementation steps do not launch Chocolate Doom windows unnecessarily. Any failure must be fixed in the same step, logged, and the required command sequence rerun from the beginning. Do not commit, push, or mark a step complete while anything is failing.
 
 ## Publishing
 
@@ -217,11 +222,12 @@ Continue the Ralph loop using \`plan_final/\` as the only active execution contr
 4. Read only the paths listed in the selected step.
 5. Change only the selected step write lock and expected changes.
 6. Add or update the focused test.
-7. Run \`bun run format\`, focused \`bun test\`, full \`bun test\`, and typecheck in order.
-8. If any command fails, log it, fix it, and rerun the full sequence from the beginning.
-9. After all commands pass, write the step evidence and status JSON.
-10. Run \`bun run plan_final/sync-master-checklist.ts\` so \`plan_final/MASTER_CHECKLIST.md\` reflects completed status JSON files.
-11. stage explicit paths, commit, push, and log the pushed commit SHA.
+7. During the edit loop, run \`bun run format\`, focused \`bun test\`, directly affected non-live tests, and typecheck. Do not run live reference capture tests as a repeated smoke test.
+8. Before completion, run \`bun run format\`, focused \`bun test\`, full \`bun test\` (headless), and typecheck in order. If the focused test is a live reference capture test, run \`bun run plan_final/test-live-reference.ts <focused test path>\` after the focused headless test. If the step is an oracle or acceptance gate that requires live evidence, run \`bun run plan_final/test-live-reference.ts\` once before typecheck.
+9. If any command fails, log it, fix it, and rerun the full sequence from the beginning. Live reference capture tests are serialized by \`bun run plan_final/test-live-reference.ts\`; do not run several live DOOM windows in parallel on the same desktop.
+10. After all required commands pass, write the step evidence and status JSON.
+11. Run \`bun run plan_final/sync-master-checklist.ts\` so \`plan_final/MASTER_CHECKLIST.md\` reflects completed status JSON files.
+12. stage explicit paths, commit, push, and log the pushed commit SHA.
 
 End with:
 
@@ -301,6 +307,8 @@ function stepTemplateMarkdown(): string {
 - \`bun run format\`
 - \`bun test <focused test path>\`
 - \`bun test\`
+- \`bun run plan_final/test-live-reference.ts <focused test path>\` when the focused test is a live reference capture test
+- \`bun run plan_final/test-live-reference.ts\` when an oracle or acceptance gate requires live reference evidence
 - \`bun x tsc --noEmit --project tsconfig.json\`
 
 ## progress log
@@ -310,6 +318,7 @@ function stepTemplateMarkdown(): string {
 ## completion criteria
 
 - All verification commands pass in order.
+- \`bun test\` is the headless full suite; live Win32 reference captures are opt-in and serialized through \`bun run plan_final/test-live-reference.ts\`.
 - Failures are fixed, not hidden or skipped.
 - The verified change is committed and pushed.
 

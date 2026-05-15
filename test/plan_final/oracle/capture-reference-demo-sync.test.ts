@@ -19,6 +19,7 @@ import {
   normalizeToInternalFramebuffer,
 } from '../../../tools/reference/captureReferenceDemoSync.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceDemoSyncTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const CAPTURE_BYTES_PER_PIXEL = 4;
@@ -145,51 +146,55 @@ describe('oracle: captureReferenceDemoSync', () => {
       }
     });
 
-    test('captures DEMO3 from clean launch with -playdemo demo3 and produces ordered checkpoint evidence at the contracted tic offsets', async () => {
-      const evidence: ReferenceDemoSyncEvidence = await captureReferenceDemoSync(3, { findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterWindowFoundMs: 1_500 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+    liveReferenceTest(
+      'captures DEMO3 from clean launch with -playdemo demo3 and produces ordered checkpoint evidence at the contracted tic offsets',
+      async () => {
+        const evidence: ReferenceDemoSyncEvidence = await captureReferenceDemoSync(3, { findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterWindowFoundMs: 1_500 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-      expect(evidence.demoNumber).toBe(3);
-      expect(evidence.demoLump).toBe('DEMO3');
-      expect(evidence.playdemoArgument).toBe('demo3');
-      expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-      expect(evidence.executableFilename).toBe('DOOM.EXE');
-      expect(evidence.sandboxId.length).toBeGreaterThan(0);
-      expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
-      expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-      expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-      expect(evidence.ticBaselineAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-      expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.ticBaselineAtElapsedMs);
-      expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-      expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+        expect(evidence.demoNumber).toBe(3);
+        expect(evidence.demoLump).toBe('DEMO3');
+        expect(evidence.playdemoArgument).toBe('demo3');
+        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+        expect(evidence.executableFilename).toBe('DOOM.EXE');
+        expect(evidence.sandboxId.length).toBeGreaterThan(0);
+        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+        expect(evidence.ticBaselineAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.ticBaselineAtElapsedMs);
+        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
 
-      expect(evidence.framebufferWidth).toBeGreaterThan(0);
-      expect(evidence.framebufferHeight).toBeGreaterThan(0);
+        expect(evidence.framebufferWidth).toBeGreaterThan(0);
+        expect(evidence.framebufferHeight).toBeGreaterThan(0);
 
-      const contract = DEMO_CHECKPOINT_CONTRACTS[3];
-      expect(evidence.checkpoints.length).toBe(contract.checkpointTics.length);
-      for (let checkpointIndex = 0; checkpointIndex < evidence.checkpoints.length; checkpointIndex += 1) {
-        const checkpoint: DemoCheckpointEvidence = evidence.checkpoints[checkpointIndex]!;
-        const expectedTic = contract.checkpointTics[checkpointIndex]!;
-        expect(checkpoint.checkpointIndex).toBe(checkpointIndex);
-        expect(checkpoint.checkpointTic).toBe(expectedTic);
-        expect(checkpoint.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
-        expect(checkpoint.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
-        expect(SHA256_HEX_REGEX.test(checkpoint.framebufferSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(checkpoint.normalizedSha256)).toBe(true);
-        expect(checkpoint.scheduledAtElapsedMs).toBeGreaterThanOrEqual(evidence.ticBaselineAtElapsedMs);
-        expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(checkpoint.scheduledAtElapsedMs);
-        if (checkpointIndex > 0) {
-          const previous = evidence.checkpoints[checkpointIndex - 1]!;
-          expect(checkpoint.checkpointTic).toBeGreaterThan(previous.checkpointTic);
-          expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(previous.capturedAtElapsedMs);
+        const contract = DEMO_CHECKPOINT_CONTRACTS[3];
+        expect(evidence.checkpoints.length).toBe(contract.checkpointTics.length);
+        for (let checkpointIndex = 0; checkpointIndex < evidence.checkpoints.length; checkpointIndex += 1) {
+          const checkpoint: DemoCheckpointEvidence = evidence.checkpoints[checkpointIndex]!;
+          const expectedTic = contract.checkpointTics[checkpointIndex]!;
+          expect(checkpoint.checkpointIndex).toBe(checkpointIndex);
+          expect(checkpoint.checkpointTic).toBe(expectedTic);
+          expect(checkpoint.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
+          expect(checkpoint.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
+          expect(SHA256_HEX_REGEX.test(checkpoint.framebufferSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(checkpoint.normalizedSha256)).toBe(true);
+          expect(checkpoint.scheduledAtElapsedMs).toBeGreaterThanOrEqual(evidence.ticBaselineAtElapsedMs);
+          expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(checkpoint.scheduledAtElapsedMs);
+          if (checkpointIndex > 0) {
+            const previous = evidence.checkpoints[checkpointIndex - 1]!;
+            expect(checkpoint.checkpointTic).toBeGreaterThan(previous.checkpointTic);
+            expect(checkpoint.capturedAtElapsedMs).toBeGreaterThanOrEqual(previous.capturedAtElapsedMs);
+          }
         }
-      }
 
-      expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-      expect(evidence.cleanShutdown).toBe(true);
-      expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
-    }, 120_000);
+        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+        expect(evidence.cleanShutdown).toBe(true);
+        expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
+      },
+      120_000,
+    );
   } else {
     test.skip('skipped live demo sync capture because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);

@@ -22,9 +22,11 @@ A step is complete only when all commands pass in order:
 1. `bun run format`
 2. focused `bun test <path>`
 3. `bun test`
-4. `bun x tsc --noEmit --project tsconfig.json`
+4. `bun run plan_final/test-live-reference.ts <path>` when the focused test is a live reference capture test
+5. `bun run plan_final/test-live-reference.ts` when an oracle or acceptance gate requires live reference evidence
+6. `bun x tsc --noEmit --project tsconfig.json`
 
-Any failure must be fixed in the same step, logged, and the full command sequence rerun from the beginning. Do not commit, push, or mark a step complete while anything is failing.
+`bun test` is the headless full suite. Live Win32 reference captures are opt-in and serialized by `bun run plan_final/test-live-reference.ts` so repeated implementation steps do not launch Chocolate Doom windows unnecessarily. Any failure must be fixed in the same step, logged, and the required command sequence rerun from the beginning. Do not commit, push, or mark a step complete while anything is failing.
 
 ## Publishing
 

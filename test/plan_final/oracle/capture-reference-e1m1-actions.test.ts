@@ -19,6 +19,7 @@ import {
   normalizeToInternalFramebuffer,
 } from '../../../tools/reference/captureReferenceE1M1Actions.ts';
 import { ReferenceBundleMissingError } from '../../../tools/reference/launchReferenceCleanly.ts';
+import { liveReferenceTest } from './live-reference-test-gate.ts';
 
 const ACCEPTED_TERMINATION_CAUSES: readonly ReferenceE1M1ActionTerminationCause[] = ['natural-exit', 'sandbox-killed'];
 const CAPTURE_BYTES_PER_PIXEL = 4;
@@ -134,45 +135,49 @@ describe('oracle: captureReferenceE1M1Action', () => {
       }
     });
 
-    test('captures a live movement action from clean launch through Main → Episode → Skill → E1M1 spawn → 56 tics of forward+turn input', async () => {
-      const evidence: ReferenceE1M1ActionEvidence = await captureReferenceE1M1Action('movement', { findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 500, settleAfterWindowFoundMs: 1_500 });
-      lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
+    liveReferenceTest(
+      'captures a live movement action from clean launch through Main → Episode → Skill → E1M1 spawn → 56 tics of forward+turn input',
+      async () => {
+        const evidence: ReferenceE1M1ActionEvidence = await captureReferenceE1M1Action('movement', { findWindowTimeoutMs: 30_000, killWaitMs: 8_000, settleAfterKeyMs: 500, settleAfterWindowFoundMs: 1_500 });
+        lastCapturedSandboxPath = evidence.sandboxAbsolutePath;
 
-      expect(evidence.action).toBe('movement');
-      expect(evidence.description).toBe(SCRIPTED_E1M1_ACTION_SEQUENCES.movement.description);
-      expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
-      expect(evidence.executableFilename).toBe('DOOM.EXE');
-      expect(evidence.sandboxId.length).toBeGreaterThan(0);
-      expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
-      expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
-      expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
-      expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
-      expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
-      expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
+        expect(evidence.action).toBe('movement');
+        expect(evidence.description).toBe(SCRIPTED_E1M1_ACTION_SEQUENCES.movement.description);
+        expect(evidence.windowTitle).toContain('Chocolate Doom 2.2.1');
+        expect(evidence.executableFilename).toBe('DOOM.EXE');
+        expect(evidence.sandboxId.length).toBeGreaterThan(0);
+        expect(evidence.sandboxAbsolutePath.includes(REFERENCE_SANDBOX_POLICY.sandboxPrefix)).toBe(true);
+        expect(evidence.spawnedAtElapsedMs).toBeGreaterThanOrEqual(0);
+        expect(evidence.windowFoundAtElapsedMs).toBeGreaterThanOrEqual(evidence.spawnedAtElapsedMs);
+        expect(evidence.killedAtElapsedMs).toBeGreaterThanOrEqual(evidence.windowFoundAtElapsedMs);
+        expect(evidence.exitedAtElapsedMs).toBeGreaterThanOrEqual(evidence.killedAtElapsedMs);
+        expect(evidence.totalElapsedMs).toBe(evidence.exitedAtElapsedMs);
 
-      expect(evidence.framebufferWidth).toBeGreaterThan(0);
-      expect(evidence.framebufferHeight).toBeGreaterThan(0);
-      expect(SHA256_HEX_REGEX.test(evidence.e1m1EntrySha256)).toBe(true);
+        expect(evidence.framebufferWidth).toBeGreaterThan(0);
+        expect(evidence.framebufferHeight).toBeGreaterThan(0);
+        expect(SHA256_HEX_REGEX.test(evidence.e1m1EntrySha256)).toBe(true);
 
-      const movementSequence = SCRIPTED_E1M1_ACTION_SEQUENCES.movement;
-      expect(evidence.holds.length).toBe(movementSequence.keyHolds.length);
-      for (let holdIndex = 0; holdIndex < evidence.holds.length; holdIndex += 1) {
-        const hold: ScriptedActionHoldEvidence = evidence.holds[holdIndex]!;
-        const expectedHold = movementSequence.keyHolds[holdIndex]!;
-        expect(hold.holdIndex).toBe(holdIndex);
-        expect(hold.description).toBe(expectedHold.description);
-        expect(hold.durationMs).toBe(expectedHold.durationMs);
-        expect([...hold.virtualKeyCodes]).toEqual([...expectedHold.virtualKeyCodes]);
-        expect(hold.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
-        expect(hold.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
-        expect(SHA256_HEX_REGEX.test(hold.framebufferSha256)).toBe(true);
-        expect(SHA256_HEX_REGEX.test(hold.normalizedSha256)).toBe(true);
-      }
+        const movementSequence = SCRIPTED_E1M1_ACTION_SEQUENCES.movement;
+        expect(evidence.holds.length).toBe(movementSequence.keyHolds.length);
+        for (let holdIndex = 0; holdIndex < evidence.holds.length; holdIndex += 1) {
+          const hold: ScriptedActionHoldEvidence = evidence.holds[holdIndex]!;
+          const expectedHold = movementSequence.keyHolds[holdIndex]!;
+          expect(hold.holdIndex).toBe(holdIndex);
+          expect(hold.description).toBe(expectedHold.description);
+          expect(hold.durationMs).toBe(expectedHold.durationMs);
+          expect([...hold.virtualKeyCodes]).toEqual([...expectedHold.virtualKeyCodes]);
+          expect(hold.framebufferByteLength).toBe(evidence.framebufferWidth * evidence.framebufferHeight * CAPTURE_BYTES_PER_PIXEL);
+          expect(hold.normalizedByteLength).toBe(NORMALIZED_INTERNAL_WIDTH * NORMALIZED_INTERNAL_HEIGHT * CAPTURE_BYTES_PER_PIXEL);
+          expect(SHA256_HEX_REGEX.test(hold.framebufferSha256)).toBe(true);
+          expect(SHA256_HEX_REGEX.test(hold.normalizedSha256)).toBe(true);
+        }
 
-      expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
-      expect(evidence.cleanShutdown).toBe(true);
-      expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
-    }, 180_000);
+        expect(ACCEPTED_TERMINATION_CAUSES).toContain(evidence.terminationCause);
+        expect(evidence.cleanShutdown).toBe(true);
+        expect(existsSync(evidence.sandboxAbsolutePath)).toBe(false);
+      },
+      180_000,
+    );
   } else {
     test.skip('skipped live E1M1 action capture because the reference bundle is not present on this host', () => {
       expect(true).toBe(true);
