@@ -140,7 +140,7 @@
 - [x] `10-003` `wire-monster-look-chase` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-003-wire-monster-look-chase.md`
 - [x] `10-004` `wire-monster-attacks` | lane: `ai-specials` | prereqs: `10-003` | file: `plan_final/steps/10-004-wire-monster-attacks.md`
 - [x] `10-005` `wire-state-transitions` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-005-wire-state-transitions.md`
-- [ ] `10-006` `wire-boss-specials` | lane: `ai-specials` | prereqs: `10-005` | file: `plan_final/steps/10-006-wire-boss-specials.md`
+- [x] `10-006` `wire-boss-specials` | lane: `ai-specials` | prereqs: `10-005` | file: `plan_final/steps/10-006-wire-boss-specials.md`
 - [x] `10-007` `wire-special-line-ai-effects` | lane: `ai-specials` | prereqs: `08-004, 10-005` | file: `plan_final/steps/10-007-wire-special-line-ai-effects.md`
 - [ ] `10-008` `gate-ai-specials` | lane: `ai-specials` | prereqs: `10-001, 10-002, 10-003, 10-004, 10-005, 10-006, 10-007` | file: `plan_final/steps/10-008-gate-ai-specials.md`
 
