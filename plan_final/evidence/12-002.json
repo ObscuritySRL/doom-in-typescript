@@ -1,0 +1,26 @@
+{
+  "stepId": "12-002",
+  "lane": "save-config-demo",
+  "title": "wire-settings-menus-to-config",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-settings-menus-to-config.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-002.json",
+    "plan_final/progress/save-config-demo/12-002.md",
+    "plan_final/status/12-002.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireSettingsMenusToConfig.ts",
+    "test/plan_final/save/wire-settings-menus-to-config.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-settings-menus-to-config.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16242, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-002 connects the Options/Sound/Screen settings menus to vanilla config persistence via one src/vanilla facade (wireSettingsMenusToConfig.ts) re-exporting the read-only per-category persist modules (persist-sound-settings, persist-screen-settings incl. the show_messages toggle, persist-mouse-settings, persist-vanilla-key-bindings, persist-chat-macros) plus hostConfig (compatibility / extended host cfg) and the MenuAction settings vocabulary type from src/ui/menus.ts. VANILLA_SETTINGS_CONFIG_INVARIANTS pins six rules binding each category to its vanilla cfg variables (sound volumes [0,15] + device ids 0-9; screen messages/screenblocks 3-11/detail 0-1/gamma 0-4; five mouse vars; ten DOS-scancode key bindings in the 30-col layout; ten chat-macro slots; compatibility in the extended host cfg). The focused test exercises real create/serialize round-trips, the constants, the messages/gamma serialization, the multi-line-tolerant ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax); value/type split. Only src/ui/menus.ts is importer-tracked among the re-exported modules (the src/config persist modules + hostConfig are not importer-tracked by inventory-save-and-config-modules.json).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/menus.ts src 23->24 (test unchanged at 24)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the feat commit needed no MASTER_CHECKLIST change (prior steps already synced, 12-002 correctly unchecked), and the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-002.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 12-002 paths from concurrent shared-index activity."
+  }
+}
