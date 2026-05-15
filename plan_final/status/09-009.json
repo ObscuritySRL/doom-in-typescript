@@ -1,0 +1,7 @@
+{
+  "stepId": "09-009",
+  "lane": "player-weapons-items",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/09-009.json",
+  "commitSha": "cb8955b4f9963e0e3f1750a5078b2a1bbe5f711d"
+}
