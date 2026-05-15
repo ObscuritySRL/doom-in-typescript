@@ -1,0 +1,23 @@
+{
+  "stepId": "09-004",
+  "lane": "player-weapons-items",
+  "title": "wire-weapon-psprites",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-weapon-psprites.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/09-004.json",
+    "plan_final/progress/player-weapons-items/09-004.md",
+    "plan_final/status/09-004.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wireWeaponPsprites.ts",
+    "test/plan_final/player/wire-weapon-psprites.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-weapon-psprites.test.ts", "passed": 5, "failed": 0 },
+  "fullSuite": { "passed": 16096, "failed": 0, "files": 864 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-004 aggregates the weapon ownership/selection functions (giveAmmo, giveWeapon, giveBackpack, checkAmmo) and the weapon psprite-state-machine action functions (fireWeapon, dropWeapon, aWeaponReady, aLower, aRaise, aReFire, aCheckReload, aGunFlash, set/getWeaponStateContext) into a single src/vanilla re-export facade for the weapon ticker. The read-only src/player/weapons.ts and weaponStates.ts already implement vanilla p_inter.c / p_pspr.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/player/weaponStates.ts src 0->1 test 2->3", "src/player/weapons.ts src 3->4 test 3->4"]
+  }
+}

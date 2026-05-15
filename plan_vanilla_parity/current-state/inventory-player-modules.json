@@ -335,8 +335,8 @@
         "src/world/mobj.ts",
         "src/world/thinkers.ts"
       ],
-      "src_importer_count": 0,
-      "test_importer_count": 2
+      "src_importer_count": 1,
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/player/weapons.ts",
@@ -353,8 +353,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/player/playerSpawn.ts", "src/player/playerSpawn.ts"],
-      "src_importer_count": 3,
-      "test_importer_count": 3
+      "src_importer_count": 4,
+      "test_importer_count": 4
     }
   ],
   "test_coverage": {
