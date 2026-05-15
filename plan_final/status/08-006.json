@@ -1,0 +1,7 @@
+{
+  "stepId": "08-006",
+  "lane": "map-world",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/08-006.json",
+  "commitSha": "273669401c6c6b14760648710e16c19310a39472"
+}
