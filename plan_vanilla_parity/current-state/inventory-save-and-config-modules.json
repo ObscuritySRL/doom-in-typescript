@@ -128,7 +128,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/save/coreSerialization.ts", "src/save/coreSerialization.ts", "src/save/saveHeader.ts", "src/save/saveHeader.ts", "src/save/specialSerialization.ts", "src/save/specialSerialization.ts"],
-      "src_importer_count": 6,
+      "src_importer_count": 7,
       "test_importer_count": 6
     },
     {

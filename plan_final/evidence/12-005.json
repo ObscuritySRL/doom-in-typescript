@@ -1,0 +1,27 @@
+{
+  "stepId": "12-005",
+  "lane": "save-config-demo",
+  "title": "wire-savegame-load",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-savegame-load.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-005.json",
+    "plan_final/progress/save-config-demo/12-005.md",
+    "plan_final/status/12-005.json",
+    "plan_vanilla_parity/current-state/inventory-save-and-config-modules.json",
+    "src/vanilla/wireSavegameLoad.ts",
+    "test/plan_final/save/wire-savegame-load.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-savegame-load.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16263, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-005 wires the savegame load path via one src/vanilla facade (wireSavegameLoad.ts) re-exporting the read-only loadgame (readLoadGame -> SaveGameReadResult|null on version mismatch/corruption, SAVEGAME_EOF 0x1d) and restore-post-load-render-audio-input-state (the fixed six-step VANILLA_POST_LOAD_SUBSYSTEM_RESET_ORDER + vanillaPostLoadResetOrderIndex/vanillaPostLoadResetSubsystemFor). VANILLA_SAVEGAME_LOAD_INVARIANTS pins five rules (state restore via readLoadGame; corrupted/wrong-version returns null; SAVEGAME_EOF 0x1d terminator; fixed six-step reset order; render->audio->input subsystem order). The focused test exercises the real reset-order index/subsystem functions (including -1/null for unknown steps), the constants, the frozen order, the multi-line-tolerant ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax). Only loadgame.ts is importer-tracked (restore-post-load module is not).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/save/loadgame.ts src 6->7 (test unchanged at 6)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-005.json marks it COMPLETED.",
+    "flakeNote": "The full-suite rerun's lone failure was the oracle: captureReferenceSaveLoad live timing test (8.5s sandbox roundtrip), same flaky family as captureReferenceDemoSync; it passed on the immediate rerun (16263 pass / 0 fail). Unrelated to this save-load facade.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 12-005 paths from concurrent shared-index activity."
+  }
+}
