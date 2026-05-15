@@ -351,8 +351,8 @@
         "src/world/useLines.ts",
         "src/world/useLines.ts"
       ],
-      "src_importer_count": 9,
-      "test_importer_count": 9
+      "src_importer_count": 10,
+      "test_importer_count": 10
     },
     {
       "relative_path": "src/world/mobj.ts",
@@ -450,8 +450,8 @@
         "src/world/mobj.ts",
         "src/world/thinkers.ts"
       ],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/world/slideMove.ts",
@@ -485,8 +485,8 @@
         "src/world/tryMove.ts",
         "src/world/zMovement.ts"
       ],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/world/teleport.ts",
@@ -517,8 +517,8 @@
         "src/world/mobj.ts",
         "src/world/thinkers.ts"
       ],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/world/thinkers.ts",
@@ -553,8 +553,8 @@
       "exported_types": ["CrossSpecialLineFunction", "SetThingPositionFunction", "UnsetThingPositionFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/map/lineSectorGeometry.ts", "src/map/mapSetup.ts", "src/world/checkPosition.ts", "src/world/checkPosition.ts", "src/world/mobj.ts", "src/world/mobj.ts"],
-      "src_importer_count": 4,
-      "test_importer_count": 1
+      "src_importer_count": 5,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/world/useLines.ts",
@@ -600,8 +600,8 @@
         "src/world/tryMove.ts",
         "src/world/tryMove.ts"
       ],
-      "src_importer_count": 4,
-      "test_importer_count": 1
+      "src_importer_count": 5,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/world/zMovement.ts",
@@ -618,8 +618,8 @@
       "exported_types": ["PlayerLandingFunction", "PlayerSmoothStepFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/rng.ts", "src/world/mobj.ts", "src/world/mobj.ts", "src/world/thinkers.ts", "src/world/xyMovement.ts"],
-      "src_importer_count": 7,
-      "test_importer_count": 3
+      "src_importer_count": 8,
+      "test_importer_count": 4
     }
   ],
   "test_coverage": {
