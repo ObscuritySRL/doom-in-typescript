@@ -121,8 +121,8 @@
       "exported_types": ["UiAssetCategory"],
       "exported_const_enums": [],
       "external_imports": ["src/wad/directory.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 3
+      "src_importer_count": 3,
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/ui/automap.ts",
@@ -429,8 +429,8 @@
       "exported_types": ["MenuAction"],
       "exported_const_enums": [],
       "external_imports": ["src/input/keyboard.ts"],
-      "src_importer_count": 20,
-      "test_importer_count": 21
+      "src_importer_count": 21,
+      "test_importer_count": 22
     },
     {
       "relative_path": "src/ui/statusBar.ts",

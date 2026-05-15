@@ -1,0 +1,23 @@
+{
+  "stepId": "07-002",
+  "lane": "ui",
+  "title": "wire-menu-rendering",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-menu-rendering.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-002.json",
+    "plan_final/progress/ui/07-002.md",
+    "plan_final/status/07-002.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireMenuRendering.ts",
+    "test/plan_final/ui/wire-menu-rendering.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-menu-rendering.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16167, "failed": 0, "files": 874 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-002 aggregates the menu state machine (createMenuState, openMenu, closeMenu, openMessage, tickMenu, handleMenuKey, mouse/joy gating) and the HU-font lump-name resolver (huFontLumpName) into a single src/vanilla re-export facade for the menu-overlay composition pass. The read-only src/ui/menus.ts and src/ui/assets.ts already implement vanilla m_menu.c / hu_stuff.c semantics; pure barrel + frozen manifest, no source modification. Unblocked by the e365561 prereq-cycle fix chain.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/assets.ts src 2->3 test 3->4", "src/ui/menus.ts src 20->21 test 21->22"]
+  }
+}
