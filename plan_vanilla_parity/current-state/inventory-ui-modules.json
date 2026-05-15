@@ -216,8 +216,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/angle.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/trig.ts", "src/render/projection.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 3
+      "src_importer_count": 2,
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/ui/endoom.ts",

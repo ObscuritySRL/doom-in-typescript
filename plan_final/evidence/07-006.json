@@ -1,0 +1,46 @@
+{
+  "stepId": "07-006",
+  "lane": "ui",
+  "title": "wire-automap-runtime",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/ui/wire-automap-runtime.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/07-006.json",
+    "plan_final/progress/ui/07-006.md",
+    "plan_final/status/07-006.json",
+    "plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/automapRuntime.ts",
+    "test/plan_final/ui/wire-automap-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/ui/wire-automap-runtime.test.ts",
+    "passed": 7,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 16026,
+    "failed": 0,
+    "files": 854
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-006 wires the automap start/stop lifecycle, follow/pan/zoom, marker add/clear, the line/thing color palette, and the per-frame state transitions into a single frozen runtime façade. The new wrapper at src/vanilla/automapRuntime.ts imports the read-only automap state machine from src/ui/automap.ts (createAutomapState plus the ftom/mtof scale conversions, boundary walker, follow/scale/pan adjustors, marker helpers, level init, and start/stop transitions) and exposes them through a frozen façade plus a frozen AutomapColors palette descriptor. The state reference is mutable per-tic to match vanilla file-scope automap globals; the façade is frozen.",
+    "publicSurface": [
+      "createAutomapRuntime(): AutomapRuntime",
+      "AutomapRuntime interface (activateNewScale, addMark, changeWindowLoc/Scale, clearMarks, colors, cxMtof, cyMtof, doFollowPlayer, findMinMaxBoundaries, ftom, initVariables, levelInit, maxOutWindowScale, minOutWindowScale, mtof, restoreScaleAndLoc, saveScaleAndLoc, start, state, stop)",
+      "AutomapColors interface (background/wall/two-sided/floor-diff/ceiling-diff/gray/thing/white/you color start+range indices)"
+    ],
+    "uiFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/ui/automap.ts: src_importer_count 1→2, test_importer_count 3→4 (automapRuntime.ts + its focused test)",
+      "src/core/fixed.ts: src_importer_count 74→75 (automapRuntime.ts imports the Fixed type)"
+    ]
+  }
+}
