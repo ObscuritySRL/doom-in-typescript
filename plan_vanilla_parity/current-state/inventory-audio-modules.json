@@ -350,8 +350,8 @@
       "exported_types": ["SoundUpdateActionKind"],
       "exported_const_enums": [],
       "external_imports": ["src/audio/channels.ts", "src/audio/channels.ts", "src/audio/spatial.ts", "src/audio/spatial.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 1
+      "src_importer_count": 2,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/audio/soundSystem.ts",
@@ -386,8 +386,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/angle.ts", "src/core/angle.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/trig.ts"],
-      "src_importer_count": 3,
-      "test_importer_count": 6
+      "src_importer_count": 4,
+      "test_importer_count": 7
     }
   ],
   "test_coverage": {

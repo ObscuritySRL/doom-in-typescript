@@ -1,0 +1,23 @@
+{
+  "stepId": "11-003",
+  "lane": "audio",
+  "title": "wire-spatial-sfx-runtime",
+  "commands": ["bun run format", "bun test test/plan_final/audio/wire-spatial-sfx-runtime.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/11-003.json",
+    "plan_final/progress/audio/11-003.md",
+    "plan_final/status/11-003.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "src/vanilla/wireSpatialSfxRuntime.ts",
+    "test/plan_final/audio/wire-spatial-sfx-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/audio/wire-spatial-sfx-runtime.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16129, "failed": 0, "files": 869 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-003 aggregates the S_AdjustSoundParams distance/pan/volume computation (adjustSoundParams) and the per-tic S_UpdateSounds listener/origin re-evaluation (updateSounds, buildChannelUpdateStates) into a single src/vanilla re-export facade for the audio ticker. The read-only src/audio/spatial.ts and soundOrigins.ts already implement vanilla s_sound.c semantics (P_AproxDistance attenuation, R_PointToAngle2 stereo pan, MAP08 boss-floor branch); pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/audio/soundOrigins.ts src 1->2 test 1->2", "src/audio/spatial.ts src 3->4 test 6->7"]
+  }
+}
