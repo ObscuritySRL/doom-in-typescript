@@ -105,7 +105,7 @@
 - [x] `07-008` `wire-finale-runtime` | lane: `ui` | prereqs: `08-009, 11-007` | file: `plan_final/steps/07-008-wire-finale-runtime.md`
 - [x] `07-009` `wire-pause-and-help-overlays` | lane: `ui` | prereqs: `07-002, 04-005` | file: `plan_final/steps/07-009-wire-pause-and-help-overlays.md`
 - [x] `07-010` `wire-quit-and-endoom-ui` | lane: `ui` | prereqs: `07-003` | file: `plan_final/steps/07-010-wire-quit-and-endoom-ui.md`
-- [ ] `07-011` `gate-ui-parity` | lane: `ui` | prereqs: `07-001, 07-002, 07-003, 07-004, 07-005, 07-006, 07-007, 07-008, 07-009, 07-010` | file: `plan_final/steps/07-011-gate-ui-parity.md`
+- [x] `07-011` `gate-ui-parity` | lane: `ui` | prereqs: `07-001, 07-002, 07-003, 07-004, 07-005, 07-006, 07-007, 07-008, 07-009, 07-010` | file: `plan_final/steps/07-011-gate-ui-parity.md`
 
 ## map-world
 
