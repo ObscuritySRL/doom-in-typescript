@@ -6,7 +6,7 @@
 - Runtime target: `bun run doom.ts`
 - Rule: choose the first unchecked step whose prerequisites are complete in the assigned lane.
 - Visual status: checklist boxes are synced from `plan_final/status/*.json` by `bun run plan_final/sync-master-checklist.ts`.
-- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full headless `bun test`, any required serialized `bun run plan_final/test-live-reference.ts` command, and `bun x tsc --noEmit --project tsconfig.json` all pass.
+- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full headless `bun test --only-failures`, any required serialized `bun run plan_final/test-live-reference.ts` command, and `bun x tsc --noEmit --project tsconfig.json` all pass.
 
 ## governance
 
@@ -141,7 +141,7 @@
 - [x] `10-004` `wire-monster-attacks` | lane: `ai-specials` | prereqs: `10-003` | file: `plan_final/steps/10-004-wire-monster-attacks.md`
 - [x] `10-005` `wire-state-transitions` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-005-wire-state-transitions.md`
 - [ ] `10-006` `wire-boss-specials` | lane: `ai-specials` | prereqs: `10-005, 08-008` | file: `plan_final/steps/10-006-wire-boss-specials.md`
-- [ ] `10-007` `wire-special-line-ai-effects` | lane: `ai-specials` | prereqs: `08-004, 10-005` | file: `plan_final/steps/10-007-wire-special-line-ai-effects.md`
+- [x] `10-007` `wire-special-line-ai-effects` | lane: `ai-specials` | prereqs: `08-004, 10-005` | file: `plan_final/steps/10-007-wire-special-line-ai-effects.md`
 - [ ] `10-008` `gate-ai-specials` | lane: `ai-specials` | prereqs: `10-001, 10-002, 10-003, 10-004, 10-005, 10-006, 10-007` | file: `plan_final/steps/10-008-gate-ai-specials.md`
 
 ## audio
