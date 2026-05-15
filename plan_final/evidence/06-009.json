@@ -1,0 +1,11 @@
+{
+  "stepId": "06-009",
+  "lane": "render",
+  "title": "wire-framebuffer-hash",
+  "commands": ["bun run format", "bun test test/plan_final/render/wire-framebuffer-hash.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": ["plan_final/evidence/06-009.json", "plan_final/progress/render/06-009.md", "plan_final/status/06-009.json", "test/plan_final/render/wire-framebuffer-hash.test.ts"],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/render/wire-framebuffer-hash.test.ts", "passed": 11, "failed": 0 },
+  "fullSuite": { "passed": 16026, "failed": 0, "files": 854 },
+  "typecheck": "clean"
+}
