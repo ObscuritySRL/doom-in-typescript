@@ -33,7 +33,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts"],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 2
     },
     {
@@ -80,7 +80,7 @@
       "exported_types": ["DemoPlaybackCompletionAction"],
       "exported_const_enums": [],
       "external_imports": ["src/demo/demoParse.ts", "src/demo/demoParse.ts"],
-      "src_importer_count": 11,
+      "src_importer_count": 12,
       "test_importer_count": 5
     },
     {
@@ -98,7 +98,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/demo/demoParse.ts", "src/demo/demoParse.ts"],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 2
     }
   ],

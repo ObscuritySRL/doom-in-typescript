@@ -174,7 +174,7 @@
       "exported_classes": ["DoomRandom"],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 17,
+      "src_importer_count": 18,
       "test_importer_count": 23,
       "exported_const_enums": []
     },

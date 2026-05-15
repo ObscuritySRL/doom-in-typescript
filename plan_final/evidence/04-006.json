@@ -1,0 +1,32 @@
+{
+  "stepId": "04-006",
+  "lane": "runtime-core",
+  "title": "wire-rng-and-demo-streams",
+  "commands": ["bun run format", "bun test test/plan_final/runtime/wire-rng-and-demo-streams.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/04-006.json",
+    "plan_final/progress/runtime-core/04-006.md",
+    "plan_final/status/04-006.json",
+    "plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json",
+    "plan_vanilla_parity/current-state/inventory-demo-and-replay-modules.json",
+    "src/vanilla/wireRngAndDemoStreams.ts",
+    "test/plan_final/runtime/wire-rng-and-demo-streams.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/runtime/wire-rng-and-demo-streams.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16320, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-006 wires the two deterministic RNG streams and the demo ticcmd read/write path via one src/vanilla facade (wireRngAndDemoStreams.ts) re-exporting the read-only core/rng (RNG_TABLE frozen 256-entry rndtable, DoomRandom with independent prndindex/rndindex) and the demo/demoFile (DEMO_VERSION_19 109, DEMO_HEADER_SIZE 13, DEMO_TIC_SIZE 4, DEMO_END_MARKER 0x80, DEMO_MAX_PLAYERS 4, DEMO_TIC_RATE 35, parseDemoLump), demo/demoRecord (DemoRecorder), and demo/demoPlayback (DemoPlayback) modules. VANILLA_RNG_DEMO_INVARIANTS pins five rules: 256-entry frozen rndtable; DoomRandom deterministic without seed; P_Random / M_Random independent (no cross-stream drift); vanilla demo header/version/ticcmd/terminator; record and playback share the 4-byte tic stream. The focused test exercises real DoomRandom determinism + P/M-stream independence (calling mRandom does not perturb the pRandom sequence), the demo constants, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. Shared DEMO_* surfaced from demoFile only; demoParse/compare-demo-N not re-exported (would duplicate). No const enums. This step became eligible only after the 442975e cycle fix removed the spurious 12-006 back-edge.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/core/rng.ts src 17->18 (test unchanged at 23)",
+      "src/demo/demoFile.ts src 0->1 (test unchanged at 2)",
+      "src/demo/demoPlayback.ts src 11->12 (test unchanged at 5)",
+      "src/demo/demoRecord.ts src 0->1 (test unchanged at 2)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/04-006.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 04-006 paths from concurrent shared-index activity."
+  }
+}
