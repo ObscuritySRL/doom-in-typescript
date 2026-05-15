@@ -1,0 +1,7 @@
+{
+  "stepId": "10-005",
+  "lane": "ai-specials",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/10-005.json",
+  "commitSha": "2d027cbfe32505161daef27df1fa7452aa3540b3"
+}
