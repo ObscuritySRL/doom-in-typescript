@@ -11,6 +11,7 @@ const REQUIRED_ROOT_FILES = Object.freeze([
   'plan_final/DEPENDENCY_GRAPH.md',
   'plan_final/MASTER_CHECKLIST.md',
   'plan_final/select-step.ts',
+  'plan_final/sync-master-checklist.ts',
   'plan_final/validate-plan.ts',
   'plan_final/validate-plan.test.ts',
 ]);
@@ -166,8 +167,10 @@ function validateChecklist(checklistText: string, errors: string[]): void {
 
   for (const step of FINAL_PLAN_STEPS) {
     const prerequisites = step.prerequisites.length === 0 ? 'none' : step.prerequisites.join(', ');
-    const expectedLine = `- [ ] \`${step.id}\` \`${step.title}\` | lane: \`${step.lane}\` | prereqs: \`${prerequisites}\` | file: \`${stepFilePath(step)}\``;
-    if (!checklistText.includes(expectedLine)) {
+    const expectedLineSuffix = `\`${step.id}\` \`${step.title}\` | lane: \`${step.lane}\` | prereqs: \`${prerequisites}\` | file: \`${stepFilePath(step)}\``;
+    const expectedUncheckedLine = `- [ ] ${expectedLineSuffix}`;
+    const expectedCheckedLine = `- [x] ${expectedLineSuffix}`;
+    if (!checklistText.includes(expectedUncheckedLine) && !checklistText.includes(expectedCheckedLine)) {
       errors.push(`MASTER_CHECKLIST.md is missing ${step.id} ${step.title}.`);
     }
   }

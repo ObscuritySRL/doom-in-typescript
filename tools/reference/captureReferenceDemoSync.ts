@@ -133,6 +133,14 @@ async function sleepMs(durationMs: number): Promise<void> {
   await Bun.sleep(durationMs);
 }
 
+async function sleepUntilElapsedMs(startReferenceMs: number, targetElapsedMs: number): Promise<void> {
+  let remainingMs = targetElapsedMs - (nowMs() - startReferenceMs);
+  while (remainingMs > 0) {
+    await sleepMs(remainingMs);
+    remainingMs = targetElapsedMs - (nowMs() - startReferenceMs);
+  }
+}
+
 function computeSha256Hex(bytes: Buffer): string {
   return createHash('sha256').update(bytes).digest('hex');
 }
@@ -380,8 +388,7 @@ export async function captureReferenceDemoSync(demoNumber: ReferenceDemoNumber, 
         const checkpointTic = contract.checkpointTics[checkpointIndex]!;
         const scheduledOffsetMs = checkpointTic * TIC_DURATION_MS - checkpointLeadMs;
         const scheduledAtElapsedMs = ticBaselineAtElapsedMs + scheduledOffsetMs;
-        const currentElapsedMs = nowMs() - startReference;
-        await sleepMs(scheduledAtElapsedMs - currentElapsedMs);
+        await sleepUntilElapsedMs(startReference, scheduledAtElapsedMs);
         user32Foreground.symbols.SetForegroundWindow(hWnd);
         const sample = captureClientAreaPixels(user32.symbols, gdi32.symbols, hWnd);
         const capturedAtElapsedMs = nowMs() - startReference;

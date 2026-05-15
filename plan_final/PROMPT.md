@@ -12,7 +12,9 @@ Continue the Ralph loop using `plan_final/` as the only active execution control
 6. Add or update the focused test.
 7. Run `bun run format`, focused `bun test`, full `bun test`, and typecheck in order.
 8. If any command fails, log it, fix it, and rerun the full sequence from the beginning.
-9. After all commands pass, stage explicit paths, commit, push, and log the pushed commit SHA.
+9. After all commands pass, write the step evidence and status JSON.
+10. Run `bun run plan_final/sync-master-checklist.ts` so `plan_final/MASTER_CHECKLIST.md` reflects completed status JSON files.
+11. stage explicit paths, commit, push, and log the pushed commit SHA.
 
 End with:
 

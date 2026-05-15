@@ -14,7 +14,10 @@ function bulletList(values: readonly string[]): string {
 }
 
 function slugify(value: string): string {
-  return value.toLowerCase().replaceAll(/[^a-z0-9]+/g, '-').replaceAll(/^-|-$/g, '');
+  return value
+    .toLowerCase()
+    .replaceAll(/[^a-z0-9]+/g, '-')
+    .replaceAll(/^-|-$/g, '');
 }
 
 function stepPath(step: FinalPlanStep): string {
@@ -110,6 +113,7 @@ function checklistMarkdown(): string {
     `- Total steps: ${FINAL_PLAN_STEP_COUNT}`,
     '- Runtime target: `bun run doom.ts`',
     '- Rule: choose the first unchecked step whose prerequisites are complete in the assigned lane.',
+    '- Visual status: checklist boxes are synced from `plan_final/status/*.json` by `bun run plan_final/sync-master-checklist.ts`.',
     '- Completion rule: a step is complete only when `bun run format`, focused `bun test`, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` all pass.',
     '',
   ];
@@ -127,14 +131,7 @@ function checklistMarkdown(): string {
 }
 
 function parallelWorkMarkdown(): string {
-  const lines = [
-    GENERATED_NOTICE,
-    '',
-    '# Parallel Work',
-    '',
-    '| lane | work | owns | blocked by |',
-    '| --- | --- | --- | --- |',
-  ];
+  const lines = [GENERATED_NOTICE, '', '# Parallel Work', '', '| lane | work | owns | blocked by |', '| --- | --- | --- | --- |'];
 
   for (const lane of FINAL_PLAN_LANES) {
     const owns = lane.owns.map((path) => `\`${path}\``).join('<br>');
@@ -222,7 +219,9 @@ Continue the Ralph loop using \`plan_final/\` as the only active execution contr
 6. Add or update the focused test.
 7. Run \`bun run format\`, focused \`bun test\`, full \`bun test\`, and typecheck in order.
 8. If any command fails, log it, fix it, and rerun the full sequence from the beginning.
-9. After all commands pass, stage explicit paths, commit, push, and log the pushed commit SHA.
+9. After all commands pass, write the step evidence and status JSON.
+10. Run \`bun run plan_final/sync-master-checklist.ts\` so \`plan_final/MASTER_CHECKLIST.md\` reflects completed status JSON files.
+11. stage explicit paths, commit, push, and log the pushed commit SHA.
 
 End with:
 
@@ -318,6 +317,7 @@ function stepTemplateMarkdown(): string {
 
 - \`plan_final/evidence/<step-id>.json\`
 - \`plan_final/status/<step-id>.json\`
+- Run \`bun run plan_final/sync-master-checklist.ts\` before staging so \`plan_final/MASTER_CHECKLIST.md\` is updated as a visual progress view.
 `;
 }
 

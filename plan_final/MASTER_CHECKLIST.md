@@ -5,136 +5,137 @@
 - Total steps: 132
 - Runtime target: `bun run doom.ts`
 - Rule: choose the first unchecked step whose prerequisites are complete in the assigned lane.
+- Visual status: checklist boxes are synced from `plan_final/status/*.json` by `bun run plan_final/sync-master-checklist.ts`.
 - Completion rule: a step is complete only when `bun run format`, focused `bun test`, full `bun test`, and `bun x tsc --noEmit --project tsconfig.json` all pass.
 
 ## governance
 
-- [ ] `00-001` `create-final-control-center` | lane: `governance` | prereqs: `none` | file: `plan_final/steps/00-001-create-final-control-center.md`
-- [ ] `00-002` `reject-manifest-only-final-proof` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-002-reject-manifest-only-final-proof.md`
-- [ ] `00-003` `lock-completion-status-schema` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-003-lock-completion-status-schema.md`
-- [ ] `00-004` `lock-step-selector-contract` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-004-lock-step-selector-contract.md`
-- [ ] `00-005` `lock-parallel-lane-contract` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-005-lock-parallel-lane-contract.md`
-- [ ] `00-006` `create-ralph-loop-launcher-contract` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-006-create-ralph-loop-launcher-contract.md`
-- [ ] `00-007` `gate-control-center` | lane: `governance` | prereqs: `00-002, 00-003, 00-004, 00-005, 00-006` | file: `plan_final/steps/00-007-gate-control-center.md`
+- [x] `00-001` `create-final-control-center` | lane: `governance` | prereqs: `none` | file: `plan_final/steps/00-001-create-final-control-center.md`
+- [x] `00-002` `reject-manifest-only-final-proof` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-002-reject-manifest-only-final-proof.md`
+- [x] `00-003` `lock-completion-status-schema` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-003-lock-completion-status-schema.md`
+- [x] `00-004` `lock-step-selector-contract` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-004-lock-step-selector-contract.md`
+- [x] `00-005` `lock-parallel-lane-contract` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-005-lock-parallel-lane-contract.md`
+- [x] `00-006` `create-ralph-loop-launcher-contract` | lane: `governance` | prereqs: `00-001` | file: `plan_final/steps/00-006-create-ralph-loop-launcher-contract.md`
+- [x] `00-007` `gate-control-center` | lane: `governance` | prereqs: `00-002, 00-003, 00-004, 00-005, 00-006` | file: `plan_final/steps/00-007-gate-control-center.md`
 
 ## current-state
 
-- [ ] `01-001` `inventory-root-entrypoints` | lane: `current-state` | prereqs: `00-001` | file: `plan_final/steps/01-001-inventory-root-entrypoints.md`
-- [ ] `01-002` `inventory-simplified-launcher-imports` | lane: `current-state` | prereqs: `01-001` | file: `plan_final/steps/01-002-inventory-simplified-launcher-imports.md`
-- [ ] `01-003` `inventory-pending-oracle-fixtures` | lane: `current-state` | prereqs: `00-001` | file: `plan_final/steps/01-003-inventory-pending-oracle-fixtures.md`
-- [ ] `01-004` `inventory-runtime-implementation-modules` | lane: `current-state` | prereqs: `00-001` | file: `plan_final/steps/01-004-inventory-runtime-implementation-modules.md`
-- [ ] `01-005` `inventory-unwired-ui-systems` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-005-inventory-unwired-ui-systems.md`
-- [ ] `01-006` `inventory-unwired-player-systems` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-006-inventory-unwired-player-systems.md`
-- [ ] `01-007` `inventory-unwired-ai-specials` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-007-inventory-unwired-ai-specials.md`
-- [ ] `01-008` `inventory-unwired-audio-systems` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-008-inventory-unwired-audio-systems.md`
-- [ ] `01-009` `inventory-weak-acceptance-tests` | lane: `current-state` | prereqs: `01-003` | file: `plan_final/steps/01-009-inventory-weak-acceptance-tests.md`
-- [ ] `01-010` `gate-current-state-inventory` | lane: `current-state` | prereqs: `01-001, 01-002, 01-003, 01-004, 01-005, 01-006, 01-007, 01-008, 01-009` | file: `plan_final/steps/01-010-gate-current-state-inventory.md`
+- [x] `01-001` `inventory-root-entrypoints` | lane: `current-state` | prereqs: `00-001` | file: `plan_final/steps/01-001-inventory-root-entrypoints.md`
+- [x] `01-002` `inventory-simplified-launcher-imports` | lane: `current-state` | prereqs: `01-001` | file: `plan_final/steps/01-002-inventory-simplified-launcher-imports.md`
+- [x] `01-003` `inventory-pending-oracle-fixtures` | lane: `current-state` | prereqs: `00-001` | file: `plan_final/steps/01-003-inventory-pending-oracle-fixtures.md`
+- [x] `01-004` `inventory-runtime-implementation-modules` | lane: `current-state` | prereqs: `00-001` | file: `plan_final/steps/01-004-inventory-runtime-implementation-modules.md`
+- [x] `01-005` `inventory-unwired-ui-systems` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-005-inventory-unwired-ui-systems.md`
+- [x] `01-006` `inventory-unwired-player-systems` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-006-inventory-unwired-player-systems.md`
+- [x] `01-007` `inventory-unwired-ai-specials` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-007-inventory-unwired-ai-specials.md`
+- [x] `01-008` `inventory-unwired-audio-systems` | lane: `current-state` | prereqs: `01-004` | file: `plan_final/steps/01-008-inventory-unwired-audio-systems.md`
+- [x] `01-009` `inventory-weak-acceptance-tests` | lane: `current-state` | prereqs: `01-003` | file: `plan_final/steps/01-009-inventory-weak-acceptance-tests.md`
+- [x] `01-010` `gate-current-state-inventory` | lane: `current-state` | prereqs: `01-001, 01-002, 01-003, 01-004, 01-005, 01-006, 01-007, 01-008, 01-009` | file: `plan_final/steps/01-010-gate-current-state-inventory.md`
 
 ## oracle
 
-- [ ] `02-001` `create-reference-sandbox-runner` | lane: `oracle` | prereqs: `01-010` | file: `plan_final/steps/02-001-create-reference-sandbox-runner.md`
-- [ ] `02-002` `launch-reference-cleanly` | lane: `oracle` | prereqs: `02-001` | file: `plan_final/steps/02-002-launch-reference-cleanly.md`
-- [ ] `02-003` `capture-reference-title-frame` | lane: `oracle` | prereqs: `02-002` | file: `plan_final/steps/02-003-capture-reference-title-frame.md`
-- [ ] `02-004` `capture-reference-menu-route` | lane: `oracle` | prereqs: `02-003` | file: `plan_final/steps/02-004-capture-reference-menu-route.md`
-- [ ] `02-005` `capture-reference-e1m1-actions` | lane: `oracle` | prereqs: `02-004` | file: `plan_final/steps/02-005-capture-reference-e1m1-actions.md`
-- [ ] `02-006` `capture-reference-audio-windows` | lane: `oracle` | prereqs: `02-004` | file: `plan_final/steps/02-006-capture-reference-audio-windows.md`
-- [ ] `02-007` `capture-reference-save-load` | lane: `oracle` | prereqs: `02-004` | file: `plan_final/steps/02-007-capture-reference-save-load.md`
-- [ ] `02-008` `capture-reference-demo-sync` | lane: `oracle` | prereqs: `02-003` | file: `plan_final/steps/02-008-capture-reference-demo-sync.md`
-- [ ] `02-009` `capture-reference-intermission-finale` | lane: `oracle` | prereqs: `02-005` | file: `plan_final/steps/02-009-capture-reference-intermission-finale.md`
-- [ ] `02-010` `replace-pending-oracle-fixtures` | lane: `oracle` | prereqs: `02-005, 02-006, 02-007, 02-008, 02-009` | file: `plan_final/steps/02-010-replace-pending-oracle-fixtures.md`
-- [ ] `02-011` `gate-oracle-foundation` | lane: `oracle` | prereqs: `02-010` | file: `plan_final/steps/02-011-gate-oracle-foundation.md`
+- [x] `02-001` `create-reference-sandbox-runner` | lane: `oracle` | prereqs: `01-010` | file: `plan_final/steps/02-001-create-reference-sandbox-runner.md`
+- [x] `02-002` `launch-reference-cleanly` | lane: `oracle` | prereqs: `02-001` | file: `plan_final/steps/02-002-launch-reference-cleanly.md`
+- [x] `02-003` `capture-reference-title-frame` | lane: `oracle` | prereqs: `02-002` | file: `plan_final/steps/02-003-capture-reference-title-frame.md`
+- [x] `02-004` `capture-reference-menu-route` | lane: `oracle` | prereqs: `02-003` | file: `plan_final/steps/02-004-capture-reference-menu-route.md`
+- [x] `02-005` `capture-reference-e1m1-actions` | lane: `oracle` | prereqs: `02-004` | file: `plan_final/steps/02-005-capture-reference-e1m1-actions.md`
+- [x] `02-006` `capture-reference-audio-windows` | lane: `oracle` | prereqs: `02-004` | file: `plan_final/steps/02-006-capture-reference-audio-windows.md`
+- [x] `02-007` `capture-reference-save-load` | lane: `oracle` | prereqs: `02-004` | file: `plan_final/steps/02-007-capture-reference-save-load.md`
+- [x] `02-008` `capture-reference-demo-sync` | lane: `oracle` | prereqs: `02-003` | file: `plan_final/steps/02-008-capture-reference-demo-sync.md`
+- [x] `02-009` `capture-reference-intermission-finale` | lane: `oracle` | prereqs: `02-005` | file: `plan_final/steps/02-009-capture-reference-intermission-finale.md`
+- [x] `02-010` `replace-pending-oracle-fixtures` | lane: `oracle` | prereqs: `02-005, 02-006, 02-007, 02-008, 02-009` | file: `plan_final/steps/02-010-replace-pending-oracle-fixtures.md`
+- [x] `02-011` `gate-oracle-foundation` | lane: `oracle` | prereqs: `02-010` | file: `plan_final/steps/02-011-gate-oracle-foundation.md`
 
 ## launch-host-input
 
-- [ ] `03-001` `replace-root-doom-entrypoint` | lane: `launch-host-input` | prereqs: `01-001` | file: `plan_final/steps/03-001-replace-root-doom-entrypoint.md`
+- [x] `03-001` `replace-root-doom-entrypoint` | lane: `launch-host-input` | prereqs: `01-001` | file: `plan_final/steps/03-001-replace-root-doom-entrypoint.md`
 - [ ] `03-002` `retire-or-redirect-src-main` | lane: `launch-host-input` | prereqs: `03-001` | file: `plan_final/steps/03-002-retire-or-redirect-src-main.md`
-- [ ] `03-003` `wire-vanilla-command-line` | lane: `launch-host-input` | prereqs: `03-001` | file: `plan_final/steps/03-003-wire-vanilla-command-line.md`
-- [ ] `03-004` `wire-iwad-and-config-discovery` | lane: `launch-host-input` | prereqs: `03-003` | file: `plan_final/steps/03-004-wire-iwad-and-config-discovery.md`
-- [ ] `03-005` `wire-vanilla-window-host` | lane: `launch-host-input` | prereqs: `03-001` | file: `plan_final/steps/03-005-wire-vanilla-window-host.md`
-- [ ] `03-006` `wire-event-queue` | lane: `launch-host-input` | prereqs: `03-005` | file: `plan_final/steps/03-006-wire-event-queue.md`
-- [ ] `03-007` `wire-responder-chain-input` | lane: `launch-host-input` | prereqs: `03-006, 04-004` | file: `plan_final/steps/03-007-wire-responder-chain-input.md`
-- [ ] `03-008` `wire-deterministic-input-trace` | lane: `launch-host-input` | prereqs: `03-007` | file: `plan_final/steps/03-008-wire-deterministic-input-trace.md`
-- [ ] `03-009` `wire-clean-quit-and-endoom` | lane: `launch-host-input` | prereqs: `03-005, 07-010` | file: `plan_final/steps/03-009-wire-clean-quit-and-endoom.md`
-- [ ] `03-010` `gate-clean-launch-to-title` | lane: `launch-host-input` | prereqs: `03-004, 03-005, 04-003, 05-004, 07-001` | file: `plan_final/steps/03-010-gate-clean-launch-to-title.md`
+- [x] `03-003` `wire-vanilla-command-line` | lane: `launch-host-input` | prereqs: `03-001` | file: `plan_final/steps/03-003-wire-vanilla-command-line.md`
+- [x] `03-004` `wire-iwad-and-config-discovery` | lane: `launch-host-input` | prereqs: `03-003` | file: `plan_final/steps/03-004-wire-iwad-and-config-discovery.md`
+- [x] `03-005` `wire-vanilla-window-host` | lane: `launch-host-input` | prereqs: `03-001` | file: `plan_final/steps/03-005-wire-vanilla-window-host.md`
+- [x] `03-006` `wire-event-queue` | lane: `launch-host-input` | prereqs: `03-005` | file: `plan_final/steps/03-006-wire-event-queue.md`
+- [x] `03-007` `wire-responder-chain-input` | lane: `launch-host-input` | prereqs: `03-006, 04-004` | file: `plan_final/steps/03-007-wire-responder-chain-input.md`
+- [x] `03-008` `wire-deterministic-input-trace` | lane: `launch-host-input` | prereqs: `03-007` | file: `plan_final/steps/03-008-wire-deterministic-input-trace.md`
+- [x] `03-009` `wire-clean-quit-and-endoom` | lane: `launch-host-input` | prereqs: `03-005, 07-010` | file: `plan_final/steps/03-009-wire-clean-quit-and-endoom.md`
+- [x] `03-010` `gate-clean-launch-to-title` | lane: `launch-host-input` | prereqs: `03-004, 03-005, 04-003, 05-004, 07-001` | file: `plan_final/steps/03-010-gate-clean-launch-to-title.md`
 
 ## runtime-core
 
-- [ ] `04-001` `create-vanilla-runtime-context` | lane: `runtime-core` | prereqs: `03-001, 05-001` | file: `plan_final/steps/04-001-create-vanilla-runtime-context.md`
-- [ ] `04-002` `wire-d-doommain-init-order` | lane: `runtime-core` | prereqs: `04-001, 03-004` | file: `plan_final/steps/04-002-wire-d-doommain-init-order.md`
-- [ ] `04-003` `wire-d-doomloop` | lane: `runtime-core` | prereqs: `04-001` | file: `plan_final/steps/04-003-wire-d-doomloop.md`
-- [ ] `04-004` `wire-try-run-tics` | lane: `runtime-core` | prereqs: `04-003, 03-006` | file: `plan_final/steps/04-004-wire-try-run-tics.md`
-- [ ] `04-005` `wire-game-state-transitions` | lane: `runtime-core` | prereqs: `04-003, 07-001` | file: `plan_final/steps/04-005-wire-game-state-transitions.md`
+- [x] `04-001` `create-vanilla-runtime-context` | lane: `runtime-core` | prereqs: `03-001, 05-001` | file: `plan_final/steps/04-001-create-vanilla-runtime-context.md`
+- [x] `04-002` `wire-d-doommain-init-order` | lane: `runtime-core` | prereqs: `04-001, 03-004` | file: `plan_final/steps/04-002-wire-d-doommain-init-order.md`
+- [x] `04-003` `wire-d-doomloop` | lane: `runtime-core` | prereqs: `04-001` | file: `plan_final/steps/04-003-wire-d-doomloop.md`
+- [x] `04-004` `wire-try-run-tics` | lane: `runtime-core` | prereqs: `04-003, 03-006` | file: `plan_final/steps/04-004-wire-try-run-tics.md`
+- [x] `04-005` `wire-game-state-transitions` | lane: `runtime-core` | prereqs: `04-003, 07-001` | file: `plan_final/steps/04-005-wire-game-state-transitions.md`
 - [ ] `04-006` `wire-rng-and-demo-streams` | lane: `runtime-core` | prereqs: `04-004, 12-006` | file: `plan_final/steps/04-006-wire-rng-and-demo-streams.md`
-- [ ] `04-007` `wire-state-snapshot-hash` | lane: `runtime-core` | prereqs: `04-001, 08-001, 09-001` | file: `plan_final/steps/04-007-wire-state-snapshot-hash.md`
+- [x] `04-007` `wire-state-snapshot-hash` | lane: `runtime-core` | prereqs: `04-001, 08-001, 09-001` | file: `plan_final/steps/04-007-wire-state-snapshot-hash.md`
 - [ ] `04-008` `gate-runtime-core` | lane: `runtime-core` | prereqs: `04-002, 04-003, 04-004, 04-005, 04-006, 04-007` | file: `plan_final/steps/04-008-gate-runtime-core.md`
 
 ## wad-assets
 
-- [ ] `05-001` `wire-iwad-resource-cache` | lane: `wad-assets` | prereqs: `03-004` | file: `plan_final/steps/05-001-wire-iwad-resource-cache.md`
-- [ ] `05-002` `wire-playpal-colormap` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-002-wire-playpal-colormap.md`
-- [ ] `05-003` `wire-textures-flats-patches` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-003-wire-textures-flats-patches.md`
-- [ ] `05-004` `wire-ui-patch-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-004-wire-ui-patch-assets.md`
-- [ ] `05-005` `wire-sprite-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-005-wire-sprite-assets.md`
-- [ ] `05-006` `wire-sound-and-music-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-006-wire-sound-and-music-assets.md`
-- [ ] `05-007` `wire-demo-and-map-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-007-wire-demo-and-map-assets.md`
-- [ ] `05-008` `gate-wad-assets` | lane: `wad-assets` | prereqs: `05-002, 05-003, 05-004, 05-005, 05-006, 05-007` | file: `plan_final/steps/05-008-gate-wad-assets.md`
+- [x] `05-001` `wire-iwad-resource-cache` | lane: `wad-assets` | prereqs: `03-004` | file: `plan_final/steps/05-001-wire-iwad-resource-cache.md`
+- [x] `05-002` `wire-playpal-colormap` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-002-wire-playpal-colormap.md`
+- [x] `05-003` `wire-textures-flats-patches` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-003-wire-textures-flats-patches.md`
+- [x] `05-004` `wire-ui-patch-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-004-wire-ui-patch-assets.md`
+- [x] `05-005` `wire-sprite-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-005-wire-sprite-assets.md`
+- [x] `05-006` `wire-sound-and-music-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-006-wire-sound-and-music-assets.md`
+- [x] `05-007` `wire-demo-and-map-assets` | lane: `wad-assets` | prereqs: `05-001` | file: `plan_final/steps/05-007-wire-demo-and-map-assets.md`
+- [x] `05-008` `gate-wad-assets` | lane: `wad-assets` | prereqs: `05-002, 05-003, 05-004, 05-005, 05-006, 05-007` | file: `plan_final/steps/05-008-gate-wad-assets.md`
 
 ## render
 
-- [ ] `06-001` `wire-view-setup` | lane: `render` | prereqs: `04-001, 05-002` | file: `plan_final/steps/06-001-wire-view-setup.md`
-- [ ] `06-002` `wire-bsp-wall-renderer` | lane: `render` | prereqs: `06-001, 08-001` | file: `plan_final/steps/06-002-wire-bsp-wall-renderer.md`
-- [ ] `06-003` `wire-visplane-renderer` | lane: `render` | prereqs: `06-001, 05-003` | file: `plan_final/steps/06-003-wire-visplane-renderer.md`
-- [ ] `06-004` `wire-masked-textures` | lane: `render` | prereqs: `06-002` | file: `plan_final/steps/06-004-wire-masked-textures.md`
-- [ ] `06-005` `wire-sprite-renderer` | lane: `render` | prereqs: `06-002, 05-005` | file: `plan_final/steps/06-005-wire-sprite-renderer.md`
-- [ ] `06-006` `wire-psprite-renderer` | lane: `render` | prereqs: `06-005, 09-004` | file: `plan_final/steps/06-006-wire-psprite-renderer.md`
-- [ ] `06-007` `wire-sky-detail-gamma-palette` | lane: `render` | prereqs: `06-002, 05-002` | file: `plan_final/steps/06-007-wire-sky-detail-gamma-palette.md`
-- [ ] `06-008` `wire-wipes-and-borders` | lane: `render` | prereqs: `06-001, 07-004` | file: `plan_final/steps/06-008-wire-wipes-and-borders.md`
-- [ ] `06-009` `wire-framebuffer-hash` | lane: `render` | prereqs: `06-007` | file: `plan_final/steps/06-009-wire-framebuffer-hash.md`
-- [ ] `06-010` `gate-renderer-parity` | lane: `render` | prereqs: `06-002, 06-003, 06-004, 06-005, 06-006, 06-007, 06-008, 06-009` | file: `plan_final/steps/06-010-gate-renderer-parity.md`
+- [x] `06-001` `wire-view-setup` | lane: `render` | prereqs: `04-001, 05-002` | file: `plan_final/steps/06-001-wire-view-setup.md`
+- [x] `06-002` `wire-bsp-wall-renderer` | lane: `render` | prereqs: `06-001, 08-001` | file: `plan_final/steps/06-002-wire-bsp-wall-renderer.md`
+- [x] `06-003` `wire-visplane-renderer` | lane: `render` | prereqs: `06-001, 05-003` | file: `plan_final/steps/06-003-wire-visplane-renderer.md`
+- [x] `06-004` `wire-masked-textures` | lane: `render` | prereqs: `06-002` | file: `plan_final/steps/06-004-wire-masked-textures.md`
+- [x] `06-005` `wire-sprite-renderer` | lane: `render` | prereqs: `06-002, 05-005` | file: `plan_final/steps/06-005-wire-sprite-renderer.md`
+- [x] `06-006` `wire-psprite-renderer` | lane: `render` | prereqs: `06-005, 09-004` | file: `plan_final/steps/06-006-wire-psprite-renderer.md`
+- [x] `06-007` `wire-sky-detail-gamma-palette` | lane: `render` | prereqs: `06-002, 05-002` | file: `plan_final/steps/06-007-wire-sky-detail-gamma-palette.md`
+- [x] `06-008` `wire-wipes-and-borders` | lane: `render` | prereqs: `06-001, 07-004` | file: `plan_final/steps/06-008-wire-wipes-and-borders.md`
+- [x] `06-009` `wire-framebuffer-hash` | lane: `render` | prereqs: `06-007` | file: `plan_final/steps/06-009-wire-framebuffer-hash.md`
+- [x] `06-010` `gate-renderer-parity` | lane: `render` | prereqs: `06-002, 06-003, 06-004, 06-005, 06-006, 06-007, 06-008, 06-009` | file: `plan_final/steps/06-010-gate-renderer-parity.md`
 
 ## ui
 
-- [ ] `07-001` `wire-title-loop-rendering` | lane: `ui` | prereqs: `05-004` | file: `plan_final/steps/07-001-wire-title-loop-rendering.md`
-- [ ] `07-002` `wire-menu-rendering` | lane: `ui` | prereqs: `07-001, 05-004` | file: `plan_final/steps/07-002-wire-menu-rendering.md`
-- [ ] `07-003` `wire-menu-actions` | lane: `ui` | prereqs: `07-002, 03-007` | file: `plan_final/steps/07-003-wire-menu-actions.md`
-- [ ] `07-004` `wire-status-bar-drawing` | lane: `ui` | prereqs: `05-004, 09-001` | file: `plan_final/steps/07-004-wire-status-bar-drawing.md`
-- [ ] `07-005` `wire-hud-messages` | lane: `ui` | prereqs: `07-004, 09-002` | file: `plan_final/steps/07-005-wire-hud-messages.md`
-- [ ] `07-006` `wire-automap-runtime` | lane: `ui` | prereqs: `03-007, 08-001` | file: `plan_final/steps/07-006-wire-automap-runtime.md`
+- [x] `07-001` `wire-title-loop-rendering` | lane: `ui` | prereqs: `05-004` | file: `plan_final/steps/07-001-wire-title-loop-rendering.md`
+- [x] `07-002` `wire-menu-rendering` | lane: `ui` | prereqs: `07-001, 05-004` | file: `plan_final/steps/07-002-wire-menu-rendering.md`
+- [x] `07-003` `wire-menu-actions` | lane: `ui` | prereqs: `07-002, 03-007` | file: `plan_final/steps/07-003-wire-menu-actions.md`
+- [x] `07-004` `wire-status-bar-drawing` | lane: `ui` | prereqs: `05-004, 09-001` | file: `plan_final/steps/07-004-wire-status-bar-drawing.md`
+- [x] `07-005` `wire-hud-messages` | lane: `ui` | prereqs: `07-004, 09-002` | file: `plan_final/steps/07-005-wire-hud-messages.md`
+- [x] `07-006` `wire-automap-runtime` | lane: `ui` | prereqs: `03-007, 08-001` | file: `plan_final/steps/07-006-wire-automap-runtime.md`
 - [ ] `07-007` `wire-intermission-runtime` | lane: `ui` | prereqs: `08-009, 11-007` | file: `plan_final/steps/07-007-wire-intermission-runtime.md`
 - [ ] `07-008` `wire-finale-runtime` | lane: `ui` | prereqs: `08-009, 11-007` | file: `plan_final/steps/07-008-wire-finale-runtime.md`
-- [ ] `07-009` `wire-pause-and-help-overlays` | lane: `ui` | prereqs: `07-002, 04-005` | file: `plan_final/steps/07-009-wire-pause-and-help-overlays.md`
-- [ ] `07-010` `wire-quit-and-endoom-ui` | lane: `ui` | prereqs: `07-003` | file: `plan_final/steps/07-010-wire-quit-and-endoom-ui.md`
+- [x] `07-009` `wire-pause-and-help-overlays` | lane: `ui` | prereqs: `07-002, 04-005` | file: `plan_final/steps/07-009-wire-pause-and-help-overlays.md`
+- [x] `07-010` `wire-quit-and-endoom-ui` | lane: `ui` | prereqs: `07-003` | file: `plan_final/steps/07-010-wire-quit-and-endoom-ui.md`
 - [ ] `07-011` `gate-ui-parity` | lane: `ui` | prereqs: `07-001, 07-002, 07-003, 07-004, 07-005, 07-006, 07-007, 07-008, 07-009, 07-010` | file: `plan_final/steps/07-011-gate-ui-parity.md`
 
 ## map-world
 
-- [ ] `08-001` `wire-level-setup` | lane: `map-world` | prereqs: `05-007, 04-001` | file: `plan_final/steps/08-001-wire-level-setup.md`
-- [ ] `08-002` `wire-thinker-ticker` | lane: `map-world` | prereqs: `08-001, 04-004` | file: `plan_final/steps/08-002-wire-thinker-ticker.md`
-- [ ] `08-003` `wire-collision-and-movement` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-003-wire-collision-and-movement.md`
-- [ ] `08-004` `wire-line-crossing-and-use` | lane: `map-world` | prereqs: `08-003, 09-003` | file: `plan_final/steps/08-004-wire-line-crossing-and-use.md`
+- [x] `08-001` `wire-level-setup` | lane: `map-world` | prereqs: `05-007, 04-001` | file: `plan_final/steps/08-001-wire-level-setup.md`
+- [x] `08-002` `wire-thinker-ticker` | lane: `map-world` | prereqs: `08-001, 04-004` | file: `plan_final/steps/08-002-wire-thinker-ticker.md`
+- [x] `08-003` `wire-collision-and-movement` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-003-wire-collision-and-movement.md`
+- [x] `08-004` `wire-line-crossing-and-use` | lane: `map-world` | prereqs: `08-003, 09-003` | file: `plan_final/steps/08-004-wire-line-crossing-and-use.md`
 - [ ] `08-005` `wire-door-specials` | lane: `map-world` | prereqs: `08-004, 11-004` | file: `plan_final/steps/08-005-wire-door-specials.md`
-- [ ] `08-006` `wire-floor-ceiling-platform-specials` | lane: `map-world` | prereqs: `08-004` | file: `plan_final/steps/08-006-wire-floor-ceiling-platform-specials.md`
-- [ ] `08-007` `wire-sector-effects-and-animations` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-007-wire-sector-effects-and-animations.md`
+- [x] `08-006` `wire-floor-ceiling-platform-specials` | lane: `map-world` | prereqs: `08-004` | file: `plan_final/steps/08-006-wire-floor-ceiling-platform-specials.md`
+- [x] `08-007` `wire-sector-effects-and-animations` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-007-wire-sector-effects-and-animations.md`
 - [ ] `08-008` `wire-level-exits` | lane: `map-world` | prereqs: `08-004, 10-006` | file: `plan_final/steps/08-008-wire-level-exits.md`
 - [ ] `08-009` `wire-death-reborn-and-transitions` | lane: `map-world` | prereqs: `08-008, 09-006` | file: `plan_final/steps/08-009-wire-death-reborn-and-transitions.md`
 - [ ] `08-010` `gate-map-world-parity` | lane: `map-world` | prereqs: `08-001, 08-002, 08-003, 08-004, 08-005, 08-006, 08-007, 08-008, 08-009` | file: `plan_final/steps/08-010-gate-map-world-parity.md`
 
 ## player-weapons-items
 
-- [ ] `09-001` `wire-player-spawn-state` | lane: `player-weapons-items` | prereqs: `08-001` | file: `plan_final/steps/09-001-wire-player-spawn-state.md`
-- [ ] `09-002` `wire-player-ticcmd-application` | lane: `player-weapons-items` | prereqs: `04-004, 09-001` | file: `plan_final/steps/09-002-wire-player-ticcmd-application.md`
-- [ ] `09-003` `wire-player-use-action` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-003-wire-player-use-action.md`
-- [ ] `09-004` `wire-weapon-psprites` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-004-wire-weapon-psprites.md`
+- [x] `09-001` `wire-player-spawn-state` | lane: `player-weapons-items` | prereqs: `08-001` | file: `plan_final/steps/09-001-wire-player-spawn-state.md`
+- [x] `09-002` `wire-player-ticcmd-application` | lane: `player-weapons-items` | prereqs: `04-004, 09-001` | file: `plan_final/steps/09-002-wire-player-ticcmd-application.md`
+- [x] `09-003` `wire-player-use-action` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-003-wire-player-use-action.md`
+- [x] `09-004` `wire-weapon-psprites` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-004-wire-weapon-psprites.md`
 - [ ] `09-005` `wire-hitscan-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-005-wire-hitscan-weapons.md`
 - [ ] `09-006` `wire-projectile-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-006-wire-projectile-weapons.md`
-- [ ] `09-007` `wire-pickups` | lane: `player-weapons-items` | prereqs: `09-001, 08-003` | file: `plan_final/steps/09-007-wire-pickups.md`
+- [x] `09-007` `wire-pickups` | lane: `player-weapons-items` | prereqs: `09-001, 08-003` | file: `plan_final/steps/09-007-wire-pickups.md`
 - [ ] `09-008` `wire-player-damage` | lane: `player-weapons-items` | prereqs: `09-001, 10-002` | file: `plan_final/steps/09-008-wire-player-damage.md`
-- [ ] `09-009` `wire-vanilla-cheats` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-009-wire-vanilla-cheats.md`
+- [x] `09-009` `wire-vanilla-cheats` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-009-wire-vanilla-cheats.md`
 - [ ] `09-010` `gate-player-weapons-items` | lane: `player-weapons-items` | prereqs: `09-001, 09-002, 09-003, 09-004, 09-005, 09-006, 09-007, 09-008, 09-009` | file: `plan_final/steps/09-010-gate-player-weapons-items.md`
 
 ## ai-specials
 
-- [ ] `10-001` `wire-monster-spawn-flags` | lane: `ai-specials` | prereqs: `08-001` | file: `plan_final/steps/10-001-wire-monster-spawn-flags.md`
+- [x] `10-001` `wire-monster-spawn-flags` | lane: `ai-specials` | prereqs: `08-001` | file: `plan_final/steps/10-001-wire-monster-spawn-flags.md`
 - [ ] `10-002` `wire-damage-and-targeting` | lane: `ai-specials` | prereqs: `08-002, 09-008` | file: `plan_final/steps/10-002-wire-damage-and-targeting.md`
 - [ ] `10-003` `wire-monster-look-chase` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-003-wire-monster-look-chase.md`
 - [ ] `10-004` `wire-monster-attacks` | lane: `ai-specials` | prereqs: `10-003` | file: `plan_final/steps/10-004-wire-monster-attacks.md`
@@ -145,19 +146,19 @@
 
 ## audio
 
-- [ ] `11-001` `wire-sfx-loader` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-001-wire-sfx-loader.md`
-- [ ] `11-002` `wire-channel-and-priority-runtime` | lane: `audio` | prereqs: `11-001` | file: `plan_final/steps/11-002-wire-channel-and-priority-runtime.md`
-- [ ] `11-003` `wire-spatial-sfx-runtime` | lane: `audio` | prereqs: `11-002, 09-001` | file: `plan_final/steps/11-003-wire-spatial-sfx-runtime.md`
+- [x] `11-001` `wire-sfx-loader` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-001-wire-sfx-loader.md`
+- [x] `11-002` `wire-channel-and-priority-runtime` | lane: `audio` | prereqs: `11-001` | file: `plan_final/steps/11-002-wire-channel-and-priority-runtime.md`
+- [x] `11-003` `wire-spatial-sfx-runtime` | lane: `audio` | prereqs: `11-002, 09-001` | file: `plan_final/steps/11-003-wire-spatial-sfx-runtime.md`
 - [ ] `11-004` `wire-sound-callback-bridge` | lane: `audio` | prereqs: `11-003, 09-004, 10-005, 08-005` | file: `plan_final/steps/11-004-wire-sound-callback-bridge.md`
-- [ ] `11-005` `wire-pcm-mixer-win32-output` | lane: `audio` | prereqs: `11-002, 03-005` | file: `plan_final/steps/11-005-wire-pcm-mixer-win32-output.md`
-- [ ] `11-006` `wire-mus-opl-runtime` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-006-wire-mus-opl-runtime.md`
+- [x] `11-005` `wire-pcm-mixer-win32-output` | lane: `audio` | prereqs: `11-002, 03-005` | file: `plan_final/steps/11-005-wire-pcm-mixer-win32-output.md`
+- [x] `11-006` `wire-mus-opl-runtime` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-006-wire-mus-opl-runtime.md`
 - [ ] `11-007` `wire-music-selection` | lane: `audio` | prereqs: `11-006, 07-001` | file: `plan_final/steps/11-007-wire-music-selection.md`
 - [ ] `11-008` `wire-audio-hash-windows` | lane: `audio` | prereqs: `11-005, 11-007` | file: `plan_final/steps/11-008-wire-audio-hash-windows.md`
 - [ ] `11-009` `gate-audio-parity` | lane: `audio` | prereqs: `11-001, 11-002, 11-003, 11-004, 11-005, 11-006, 11-007, 11-008` | file: `plan_final/steps/11-009-gate-audio-parity.md`
 
 ## save-config-demo
 
-- [ ] `12-001` `wire-config-load-and-persist` | lane: `save-config-demo` | prereqs: `03-004` | file: `plan_final/steps/12-001-wire-config-load-and-persist.md`
+- [x] `12-001` `wire-config-load-and-persist` | lane: `save-config-demo` | prereqs: `03-004` | file: `plan_final/steps/12-001-wire-config-load-and-persist.md`
 - [ ] `12-002` `wire-settings-menus-to-config` | lane: `save-config-demo` | prereqs: `12-001, 07-003` | file: `plan_final/steps/12-002-wire-settings-menus-to-config.md`
 - [ ] `12-003` `wire-save-slot-ui` | lane: `save-config-demo` | prereqs: `07-003` | file: `plan_final/steps/12-003-wire-save-slot-ui.md`
 - [ ] `12-004` `wire-savegame-write` | lane: `save-config-demo` | prereqs: `12-003, 08-002` | file: `plan_final/steps/12-004-wire-savegame-write.md`
@@ -180,4 +181,3 @@
 - [ ] `13-009` `gate-registered-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-009-gate-registered-iwad-when-present.md`
 - [ ] `13-010` `gate-ultimate-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-010-gate-ultimate-iwad-when-present.md`
 - [ ] `13-011` `gate-final-side-by-side-zero-diff` | lane: `acceptance` | prereqs: `13-008, 13-009, 13-010` | file: `plan_final/steps/13-011-gate-final-side-by-side-zero-diff.md`
-
