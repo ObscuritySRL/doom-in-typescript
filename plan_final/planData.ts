@@ -1129,7 +1129,7 @@ export const FINAL_PLAN_STEPS: readonly FinalPlanStep[] = Object.freeze([
     'ai-specials',
     'wire-damage-and-targeting',
     'Wire damageMobj, line attacks, radius attacks, target acquisition, and sound target propagation.',
-    ['08-002', '09-008'],
+    ['08-002'],
     ['src/ai/', 'src/world/', 'src/vanilla/', 'test/plan_final/ai/wire-damage-and-targeting.test.ts'],
     ['src/ai/targeting.ts', 'src/ai/soundPropagation.ts', 'src/world/radiusAttack.ts'],
     ['src/ai/', 'src/world/', 'src/vanilla/', 'test/plan_final/ai/wire-damage-and-targeting.test.ts'],

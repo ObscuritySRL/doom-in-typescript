@@ -21,7 +21,6 @@ Wire damageMobj, line attacks, radius attacks, target acquisition, and sound tar
 ## prerequisites
 
 - 08-002
-- 09-008
 
 ## parallel-safe-with
 

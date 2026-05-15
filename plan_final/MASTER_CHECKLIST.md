@@ -136,7 +136,7 @@
 ## ai-specials
 
 - [x] `10-001` `wire-monster-spawn-flags` | lane: `ai-specials` | prereqs: `08-001` | file: `plan_final/steps/10-001-wire-monster-spawn-flags.md`
-- [ ] `10-002` `wire-damage-and-targeting` | lane: `ai-specials` | prereqs: `08-002, 09-008` | file: `plan_final/steps/10-002-wire-damage-and-targeting.md`
+- [ ] `10-002` `wire-damage-and-targeting` | lane: `ai-specials` | prereqs: `08-002` | file: `plan_final/steps/10-002-wire-damage-and-targeting.md`
 - [ ] `10-003` `wire-monster-look-chase` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-003-wire-monster-look-chase.md`
 - [ ] `10-004` `wire-monster-attacks` | lane: `ai-specials` | prereqs: `10-003` | file: `plan_final/steps/10-004-wire-monster-attacks.md`
 - [ ] `10-005` `wire-state-transitions` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-005-wire-state-transitions.md`
@@ -181,3 +181,4 @@
 - [ ] `13-009` `gate-registered-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-009-gate-registered-iwad-when-present.md`
 - [ ] `13-010` `gate-ultimate-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-010-gate-ultimate-iwad-when-present.md`
 - [ ] `13-011` `gate-final-side-by-side-zero-diff` | lane: `acceptance` | prereqs: `13-008, 13-009, 13-010` | file: `plan_final/steps/13-011-gate-final-side-by-side-zero-diff.md`
+
