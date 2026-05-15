@@ -210,8 +210,8 @@
       "exported_types": ["MapLumpName"],
       "exported_const_enums": [],
       "external_imports": ["src/wad/directory.ts"],
-      "src_importer_count": 3,
-      "test_importer_count": 19
+      "src_importer_count": 4,
+      "test_importer_count": 20
     },
     {
       "relative_path": "src/map/mapSetup.ts",
@@ -245,8 +245,8 @@
         "src/map/things.ts",
         "src/map/things.ts"
       ],
-      "src_importer_count": 14,
-      "test_importer_count": 22
+      "src_importer_count": 15,
+      "test_importer_count": 23
     },
     {
       "relative_path": "src/map/nodeTraversal.ts",

@@ -1,0 +1,53 @@
+{
+  "stepId": "11-001",
+  "lane": "audio",
+  "title": "wire-sfx-loader",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/audio/wire-sfx-loader.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/11-001.json",
+    "plan_final/progress/audio/11-001.md",
+    "plan_final/status/11-001.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/sfxLoader.ts",
+    "test/plan_final/audio/wire-sfx-loader.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/audio/wire-sfx-loader.test.ts",
+    "passed": 11,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15924,
+    "failed": 0,
+    "files": 844
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-001 wires the DMX sound effect lump expansion (DS-prefixed entries from 05-006) and the per-lump header/sample-rate/sample-count metadata into a runtime sound table. The new wrapper at src/vanilla/sfxLoader.ts iterates the SoundAndMusicAssetCatalog.sfxLumps array, reads each entry's bytes via the injected SfxLumpReader, parses via the read-only parseSfxLump helper, and produces a frozen SfxLoader with both an array (preserving directory order) and a Map<string, SfxLump> for O(1) name lookup. Failure modes (header too short, non-digital format, body length mismatch) surface as typed SfxLoaderError instances.",
+    "publicSurface": [
+      "buildSfxLoader(soundAndMusicCatalog: SoundAndMusicAssetCatalog, sfxLumpReader: SfxLumpReader): SfxLoader",
+      "SfxLoader interface (sfxLumps, sfxLumpsByName)",
+      "SfxLumpRecord interface (directoryIndex, lump, name)",
+      "SfxLumpReader interface (readSfxLumpBytes: (entry: DirectoryEntry) => Buffer)",
+      "SfxLoaderError extends Error (reason: SfxLoaderErrorReason, lumpName: string)",
+      "SfxLoaderErrorReason union (sfx-lump-body-mismatch | sfx-lump-header-too-short | sfx-lump-non-digital-format)"
+    ],
+    "audioFilesModified": false,
+    "assetFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/audio/sfxLumps.ts: src_importer_count 2→3, test_importer_count 4→5 (sfxLoader.ts + its focused test)",
+      "src/map/mapBundle.ts: src_importer_count 3→4, test_importer_count 19→20 (parallel-agent drift reconciled)",
+      "src/map/mapSetup.ts: src_importer_count 14→15, test_importer_count 22→23 (parallel-agent drift reconciled)",
+      "src/wad/directory.ts: src_importer_count 27→28, test_importer_count 76→77 (parallel-agent drift reconciled)"
+    ]
+  }
+}

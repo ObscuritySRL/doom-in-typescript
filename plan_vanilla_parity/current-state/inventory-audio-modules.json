@@ -332,8 +332,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 4
+      "src_importer_count": 3,
+      "test_importer_count": 5
     },
     {
       "relative_path": "src/audio/soundOrigins.ts",
