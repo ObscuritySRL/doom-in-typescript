@@ -162,7 +162,7 @@
 - [x] `12-002` `wire-settings-menus-to-config` | lane: `save-config-demo` | prereqs: `12-001, 07-003` | file: `plan_final/steps/12-002-wire-settings-menus-to-config.md`
 - [x] `12-003` `wire-save-slot-ui` | lane: `save-config-demo` | prereqs: `07-003` | file: `plan_final/steps/12-003-wire-save-slot-ui.md`
 - [x] `12-004` `wire-savegame-write` | lane: `save-config-demo` | prereqs: `12-003, 08-002` | file: `plan_final/steps/12-004-wire-savegame-write.md`
-- [ ] `12-005` `wire-savegame-load` | lane: `save-config-demo` | prereqs: `12-004` | file: `plan_final/steps/12-005-wire-savegame-load.md`
+- [x] `12-005` `wire-savegame-load` | lane: `save-config-demo` | prereqs: `12-004` | file: `plan_final/steps/12-005-wire-savegame-load.md`
 - [ ] `12-006` `wire-demo-playback-runtime` | lane: `save-config-demo` | prereqs: `04-006, 05-007` | file: `plan_final/steps/12-006-wire-demo-playback-runtime.md`
 - [ ] `12-007` `wire-demo-record-and-timedemo` | lane: `save-config-demo` | prereqs: `12-006` | file: `plan_final/steps/12-007-wire-demo-record-and-timedemo.md`
 - [ ] `12-008` `wire-long-run-drift-checks` | lane: `save-config-demo` | prereqs: `12-006, 04-007, 06-009, 11-008` | file: `plan_final/steps/12-008-wire-long-run-drift-checks.md`
