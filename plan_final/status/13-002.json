@@ -3,5 +3,5 @@
   "lane": "acceptance",
   "status": "COMPLETED",
   "evidence": "plan_final/evidence/13-002.json",
-  "commitSha": "PENDING"
+  "commitSha": "0ed67b4003347c697a221e86953525d36e31f5e3"
 }
