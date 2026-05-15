@@ -1,0 +1,31 @@
+{
+  "stepId": "10-003",
+  "lane": "ai-specials",
+  "title": "wire-monster-look-chase",
+  "commands": ["bun run format", "bun test test/plan_final/ai/wire-monster-look-chase.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-003.json",
+    "plan_final/progress/ai-specials/10-003.md",
+    "plan_final/status/10-003.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireMonsterLookChase.ts",
+    "test/plan_final/ai/wire-monster-look-chase.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/wire-monster-look-chase.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16303, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-003 wires the monster look/chase brain via one src/vanilla facade (wireMonsterLookChase.ts) re-exporting the read-only ai/chase (move/tryWalk/newChaseDir/chase, NUMDIRS 9, OPPOSITE/DIAGS, X_SPEED/Y_SPEED 47000-diagonal tables, FLOATSPEED 4*FRACUNIT), ai/meleeRange (checkMeleeRange, MELEERANGE 64*FRACUNIT, MELEE_RADIUS_ADJUST 20*FRACUNIT, MELEE_BASE_CUTOFF), and ai/missileRange (checkMissileRange + MISSILE_* per-archetype cutoffs). VANILLA_MONSTER_LOOK_CHASE_INVARIANTS pins five rules (9-dir table; FLOATSPEED; melee 64-20 cutoff; per-archetype missile cutoffs; A_Chase active sound). The DirType const enum is intentionally not re-exported (verbatimModuleSyntax); TargetingContext is surfaced from meleeRange only (both range modules re-export it). The focused test exercises the chase tables + range cutoffs, the callable look/chase/range primitives, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/ai/chase.ts src 0->1 (test unchanged at 1)",
+      "src/ai/meleeRange.ts src 0->1 (test unchanged at 1)",
+      "src/ai/missileRange.ts src 0->1 (test unchanged at 1)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-003.json marks it COMPLETED.",
+    "flakeNote": "The full-suite first pass's lone failure was the documented-flaky oracle: captureReferenceSaveLoad live timing test; it passed on the immediate rerun (16303 pass / 0 fail). Unrelated to this AI facade.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 10-003 paths from concurrent shared-index activity."
+  }
+}

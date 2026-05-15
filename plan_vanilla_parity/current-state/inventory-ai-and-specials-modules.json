@@ -289,7 +289,7 @@
         "src/world/tryMove.ts",
         "src/world/tryMove.ts"
       ],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 1
     },
     {
@@ -307,7 +307,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts"],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 1
     },
     {
@@ -325,7 +325,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 1
     },
     {
