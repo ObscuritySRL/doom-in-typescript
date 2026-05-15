@@ -159,7 +159,7 @@
 ## save-config-demo
 
 - [x] `12-001` `wire-config-load-and-persist` | lane: `save-config-demo` | prereqs: `03-004` | file: `plan_final/steps/12-001-wire-config-load-and-persist.md`
-- [ ] `12-002` `wire-settings-menus-to-config` | lane: `save-config-demo` | prereqs: `12-001, 07-003` | file: `plan_final/steps/12-002-wire-settings-menus-to-config.md`
+- [x] `12-002` `wire-settings-menus-to-config` | lane: `save-config-demo` | prereqs: `12-001, 07-003` | file: `plan_final/steps/12-002-wire-settings-menus-to-config.md`
 - [ ] `12-003` `wire-save-slot-ui` | lane: `save-config-demo` | prereqs: `07-003` | file: `plan_final/steps/12-003-wire-save-slot-ui.md`
 - [ ] `12-004` `wire-savegame-write` | lane: `save-config-demo` | prereqs: `12-003, 08-002` | file: `plan_final/steps/12-004-wire-savegame-write.md`
 - [ ] `12-005` `wire-savegame-load` | lane: `save-config-demo` | prereqs: `12-004` | file: `plan_final/steps/12-005-wire-savegame-load.md`
