@@ -343,7 +343,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/map/lineSectorGeometry.ts", "src/map/mapSetup.ts", "src/world/mobj.ts"],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 1
     },
     {
@@ -393,7 +393,7 @@
         "src/world/mobj.ts",
         "src/world/zMovement.ts"
       ],
-      "src_importer_count": 5,
+      "src_importer_count": 6,
       "test_importer_count": 4
     },
     {

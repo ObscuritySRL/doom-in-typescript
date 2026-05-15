@@ -1,0 +1,31 @@
+{
+  "stepId": "10-002",
+  "lane": "ai-specials",
+  "title": "wire-damage-and-targeting",
+  "commands": ["bun run format", "bun test test/plan_final/ai/wire-damage-and-targeting.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-002.json",
+    "plan_final/progress/ai-specials/10-002.md",
+    "plan_final/status/10-002.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "src/vanilla/wireDamageAndTargeting.ts",
+    "test/plan_final/ai/wire-damage-and-targeting.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/wire-damage-and-targeting.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16270, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-002 wires the shared combat primitives via one src/vanilla facade (wireDamageAndTargeting.ts) re-exporting the read-only ai/targeting (checkSight/lookForPlayers/checkMeleeRange/checkMissileRange + MISSILE_* cutoffs/clamps), ai/soundPropagation (createSoundState/noiseAlert), and world/radiusAttack (radiusAttack). VANILLA_DAMAGE_TARGETING_INVARIANTS pins five rules (LOS-gated target acquisition; allaround FOV gate; fixed melee/missile cutoffs + per-archetype clamps; distance-falloff radius attack; sound-line flood-fill noiseAlert). The focused test exercises the real createSoundState allocation, the MISSILE_* constants, the frozen manifest, the multi-line-tolerant ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax). This step became eligible only after the cb296d9 fix removed the spurious 09-008<->10-002 prerequisite cycle.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/ai/soundPropagation.ts src 0->1 (test unchanged at 1)",
+      "src/ai/targeting.ts src 5->6 (test unchanged at 4)",
+      "src/world/radiusAttack.ts src 0->1 (test unchanged at 1)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-002.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 10-002 paths from concurrent shared-index activity."
+  }
+}
