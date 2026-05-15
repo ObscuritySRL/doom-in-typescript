@@ -1,0 +1,26 @@
+{
+  "stepId": "07-008",
+  "lane": "ui",
+  "title": "wire-finale-runtime",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-finale-runtime.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/07-008.json",
+    "plan_final/progress/ui/07-008.md",
+    "plan_final/status/07-008.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireFinaleRuntime.ts",
+    "test/plan_final/ui/wire-finale-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-finale-runtime.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16357, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-008 wires the finale runtime through one src/vanilla facade (wireFinaleRuntime.ts) re-exporting the read-only src/ui/finale.ts: the text-reveal/cast-call/bunny-scroll state machine entry points (createFinaleState, getFinaleScreen, startFinale, tickFinale, getVisibleCharacterCount), the per-episode flat/art/text constants (E1_FLAT..E4_FLAT, E2_ART_LUMP VICTORY2, E4_ART_LUMP ENDPIC, E1_TEXT..E4_TEXT, BUNNY_SCROLL_LUMPS ['PFUB1','PFUB2']), the timing/sequence constants (TEXTSPEED 3, TEXTWAIT 250, FINALE_TEXT_START_DELAY 10, FINALE_COMMERCIAL_SKIP_DELAY 50, FINALE_CAST_MAP 30, MAXPLAYERS 4), and the FinaleGameMode/FinaleInput/FinaleMusicCue/FinaleScreen/FinaleStartResult/FinaleState/FinaleTickResult types (split value/type re-exports under verbatimModuleSyntax; FinaleGameMode and FinaleMusicCue are type aliases, not const enums, so they are surfaced as types). VANILLA_FINALE_RUNTIME_INVARIANTS pins five rules (episode-3 bunny scroll uses PFUB1/PFUB2; cast call is the commercial MAP30 sequence; finale text types at TEXTSPEED then waits TEXTWAIT; finale music is victor-then-bunny; tickFinale signals the transition exit). The focused test is inventory-neutral: it exercises the real constants, the getFinaleScreen/createFinaleState return shapes, the typeof of every re-exported function, the frozen five-rule manifest, the ../-filtered single-specifier set ['../ui/finale.ts'], and dynamic same-reference identity against src/ui/finale.ts. This step became eligible with prerequisites 08-009 and 11-007 both COMPLETED.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/finale.ts src 2->3 (test unchanged at 2) — the new src/vanilla/wireFinaleRuntime.ts facade is the only added importer"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/07-008.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 07-008 paths from concurrent shared-index activity."
+  }
+}
