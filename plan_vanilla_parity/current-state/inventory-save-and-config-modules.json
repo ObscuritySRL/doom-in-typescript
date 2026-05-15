@@ -58,8 +58,8 @@
       "exported_types": ["ConfigValueType"],
       "exported_const_enums": [],
       "external_imports": ["node:path", "src/bootstrap/cmdline.ts"],
-      "src_importer_count": 4,
-      "test_importer_count": 4
+      "src_importer_count": 5,
+      "test_importer_count": 5
     },
     {
       "relative_path": "src/save/coreSerialization.ts",

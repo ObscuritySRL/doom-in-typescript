@@ -1,0 +1,23 @@
+{
+  "stepId": "12-001",
+  "lane": "save-config-demo",
+  "title": "wire-config-load-and-persist",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-config-load-and-persist.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/12-001.json",
+    "plan_final/progress/save-config-demo/12-001.md",
+    "plan_final/status/12-001.json",
+    "plan_vanilla_parity/current-state/inventory-save-and-config-modules.json",
+    "src/vanilla/wireConfigLoadAndPersist.ts",
+    "test/plan_final/save/wire-config-load-and-persist.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-config-load-and-persist.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16136, "failed": 0, "files": 870 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-001 aggregates the default.cfg + chocolate-doom.cfg parse/create, the vanilla-format write-back (M_SaveDefaults), and the test-isolation policy into a single src/vanilla re-export facade for the launch config path. The two config files are disjoint namespaces (no shared variable, no precedence conflict). The read-only src/config/ modules already implement Chocolate Doom 2.2.1 m_config.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/bootstrap/config.ts src 4->5 test 4->5"]
+  }
+}
