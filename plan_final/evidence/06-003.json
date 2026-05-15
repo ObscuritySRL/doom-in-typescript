@@ -1,0 +1,47 @@
+{
+  "stepId": "06-003",
+  "lane": "render",
+  "title": "wire-visplane-renderer",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/render/wire-visplane-renderer.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/06-003.json",
+    "plan_final/progress/render/06-003.md",
+    "plan_final/status/06-003.json",
+    "plan_vanilla_parity/current-state/inventory-renderer-modules.json",
+    "src/vanilla/visplaneRenderer.ts",
+    "test/plan_final/render/wire-visplane-renderer.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/render/wire-visplane-renderer.test.ts",
+    "passed": 16,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15870,
+    "failed": 0,
+    "files": 839
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-003 wires the floor and ceiling visplane pool, the per-frame clear operation, the find/check allocator surface, the span cache, and the span-flush walker into a single frozen runtime artifact. The new wrapper at src/vanilla/visplaneRenderer.ts imports createVisplanePool/clearPlanes/findPlane/checkPlane from the read-only src/render/visplanes.ts plus createPlaneSpanCache/renderVisplaneSpans from src/render/visplaneSpans.ts. Overflow on MAXVISPLANES=128 surfaces as RangeError from the read-only allocator helpers (matching vanilla's I_Error fatal path). The pool/cache state is mutable per-frame to match vanilla file-scope globals; the wrapper is frozen at the top level so downstream subsystems cannot replace the references.",
+    "publicSurface": [
+      "createVisplaneRenderer(options: VisplaneRendererOptions): VisplaneRenderer",
+      "VisplaneRenderer interface (check, clear, find, pool, renderSpans, spanCache)",
+      "VisplaneRendererOptions interface (screenWidth, viewHeight)",
+      "VANILLA_MAXVISPLANES constant pinned to 128"
+    ],
+    "renderFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/render/visplanes.ts: src_importer_count 1→2, test_importer_count 1→2 (visplaneRenderer.ts + its focused test)",
+      "src/render/visplaneSpans.ts: src_importer_count 0→1, test_importer_count 2→3 (same wiring)",
+      "src/render/renderLimits.ts: src_importer_count 5→6, test_importer_count 7→8 (visplaneRenderer.ts Visplane type import + test VISPLANE_TOP_UNFILLED import)"
+    ]
+  }
+}

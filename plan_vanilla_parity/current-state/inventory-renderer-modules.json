@@ -173,7 +173,7 @@
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
       "src_importer_count": 26,
-      "test_importer_count": 24
+      "test_importer_count": 25
     },
     {
       "relative_path": "src/render/renderLimits.ts",
@@ -200,8 +200,8 @@
       "exported_types": [],
       "exported_const_enums": ["Silhouette"],
       "external_imports": ["src/render/projection.ts"],
-      "src_importer_count": 5,
-      "test_importer_count": 7
+      "src_importer_count": 6,
+      "test_importer_count": 8
     },
     {
       "relative_path": "src/render/sky.ts",
@@ -308,8 +308,8 @@
       "exported_types": ["CloseSpanCallback"],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/core/trig.ts", "src/render/drawPrimitives.ts", "src/render/projection.ts", "src/render/renderLimits.ts", "src/render/renderLimits.ts"],
-      "src_importer_count": 0,
-      "test_importer_count": 2
+      "src_importer_count": 1,
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/render/visplanes.ts",
@@ -326,8 +326,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/render/projection.ts", "src/render/renderLimits.ts", "src/render/renderLimits.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 1
+      "src_importer_count": 2,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/render/wallColumns.ts",
