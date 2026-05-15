@@ -1,0 +1,23 @@
+{
+  "stepId": "04-005",
+  "lane": "runtime-core",
+  "title": "wire-game-state-transitions",
+  "commands": ["bun run format", "bun test test/plan_final/runtime/wire-game-state-transitions.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/04-005.json",
+    "plan_final/progress/runtime-core/04-005.md",
+    "plan_final/status/04-005.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireGameStateTransitions.ts",
+    "test/plan_final/runtime/wire-game-state-transitions.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/runtime/wire-game-state-transitions.test.ts", "passed": 8, "failed": 0 },
+  "fullSuite": { "passed": 16160, "failed": 0, "files": 873 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-005 models the vanilla gamestate_t machine (GS_LEVEL=0/GS_INTERMISSION=1/GS_FINALE=2/GS_DEMOSCREEN=3 from doomstat.h), the 6 canonical gameaction-driven transitions (G_DoCompleted/G_DoWorldDone/F_StartFinale/D_StartTitle/G_DeferedInitNew), the D_Display screen-wipe rule (wipe = gamestate != wipegamestate), and re-exports the per-state primitives from the read-only frontEndSequence/intermission/finale modules. Pure barrel + frozen manifests + predicates, no source modification. Unblocked by the e365561 prereq-cycle fix (07-001 completed first).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/finale.ts src 0->1 test 1->2", "src/ui/frontEndSequence.ts src 21->22 test 21->22", "src/ui/intermission.ts src 0->1 test 1->2"]
+  }
+}

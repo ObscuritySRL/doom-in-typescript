@@ -270,8 +270,8 @@
       "exported_types": ["FinaleGameMode", "FinaleMusicCue"],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/ui/frontEndSequence.ts",
@@ -288,8 +288,8 @@
       "exported_types": ["FrontEndKeyAction", "FrontEndTickAction", "HelpLump"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/bootstrap/titleLoop.ts", "src/input/keyboard.ts"],
-      "src_importer_count": 21,
-      "test_importer_count": 21
+      "src_importer_count": 22,
+      "test_importer_count": 22
     },
     {
       "relative_path": "src/ui/hudMessages.ts",
@@ -397,8 +397,8 @@
       "exported_types": ["IntermissionMusicCue", "IntermissionSoundId"],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/ui/menus.ts",
