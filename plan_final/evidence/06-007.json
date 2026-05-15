@@ -1,0 +1,11 @@
+{
+  "stepId": "06-007",
+  "lane": "render",
+  "title": "wire-sky-detail-gamma-palette",
+  "commands": ["bun run format", "bun test test/plan_final/render/wire-sky-detail-gamma-palette.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": ["plan_final/evidence/06-007.json", "plan_final/progress/render/06-007.md", "plan_final/status/06-007.json", "test/plan_final/render/wire-sky-detail-gamma-palette.test.ts"],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/render/wire-sky-detail-gamma-palette.test.ts", "passed": 8, "failed": 0 },
+  "fullSuite": { "passed": 16008, "failed": 0, "files": 852 },
+  "typecheck": "clean"
+}
