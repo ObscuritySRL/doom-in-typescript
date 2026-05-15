@@ -1,0 +1,20 @@
+{
+  "stepId": "06-010",
+  "lane": "render",
+  "title": "gate-renderer-parity",
+  "commands": ["bun run format", "bun test test/plan_final/render/gate-renderer-parity.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/06-010.json",
+    "plan_final/progress/render/06-010.md",
+    "plan_final/status/06-010.json",
+    "test/plan_final/render/gate-renderer-parity.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/render/gate-renderer-parity.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16111, "failed": 0, "files": 866 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-010 gates the render lane: the focused test asserts every render-lane prerequisite (06-002..06-009) has a committed plan_final/status/<id>.json declaring status=COMPLETED with a >=7-char commitSha, a plan_final/evidence/<id>.json with zero knownFailures and a clean typecheck, and an existing focused test under test/plan_final/render/. No source file is modified — gate-test-only step mirroring the gate-wad-assets precedent.",
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
