@@ -6,9 +6,11 @@ import type { MenuState } from '../ui/menus.ts';
 import { TitleLoop } from '../bootstrap/titleLoop.ts';
 import { parsePlaypal } from '../assets/playpal.ts';
 import { computeClientDimensions, computePresentationRect, SCREENHEIGHT, SCREENWIDTH } from '../host/windowPolicy.ts';
+import { EMPTY_LAUNCHER_INPUT, advanceLauncherSession, createLauncherSession, loadLauncherResources, renderLauncherFrame } from '../launcher/session.ts';
+import type { LauncherResources, LauncherSession } from '../launcher/session.ts';
 import { decodePatch, drawPatch } from '../render/patchDraw.ts';
 import { createFrontEndSequence, handleFrontEndKey, setMenuActive } from '../ui/frontEndSequence.ts';
-import { KEY_ENTER, KEY_ESCAPE, LINEHEIGHT, MENU_TREE, SKULLXOFF, MenuKind, createMenuState, handleMenuKey, tickMenu } from '../ui/menus.ts';
+import { KEY_ENTER, KEY_ESCAPE, LINEHEIGHT, MENU_TREE, SKULLXOFF, MenuKind, createMenuState, handleMenuKey, openMenu, tickMenu } from '../ui/menus.ts';
 import { parseWadDirectory } from '../wad/directory.ts';
 import { parseWadHeader } from '../wad/header.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
@@ -50,6 +52,8 @@ const TITLE_MENU_SMOKE_CONTROL_POLL_INTERVAL_MS = 10;
 const WM_CLOSE = 0x0010;
 const WM_KEYDOWN = 0x0100;
 const WINDOW_STYLE = 0x10cf_0000;
+const DEFAULT_GAMEPLAY_EPISODE = 1;
+const DEFAULT_GAMEPLAY_MAP_NUMBER = 1;
 
 const GDI32_SYMBOLS = {
   DeleteDC: {
@@ -121,6 +125,12 @@ interface TitleLoopSmokeFrame {
 interface TitleLoopSmokeKeyboardState {
   enterDown: boolean;
   escapeDown: boolean;
+}
+
+interface TitleLoopSmokeGameplayState {
+  nextTickAtMs: number;
+  selectedEpisode: number;
+  session: LauncherSession | null;
 }
 
 interface TitleLoopSmokeMenuTickState {
@@ -416,7 +426,13 @@ function drawMenuOverlay(frame: TitleLoopSmokeFrame, gameMode: GameMode, menuSta
   drawPatchByName(frame, skullLumpName, menuDefinition.x + SKULLXOFF, menuDefinition.y - 5 + menuState.itemOn * LINEHEIGHT, framebuffer);
 }
 
-function composeIndexedFrame(frame: TitleLoopSmokeFrame, gameMode: GameMode, menuState: MenuState, framebuffer: Uint8Array): void {
+function composeIndexedFrame(frame: TitleLoopSmokeFrame, gameMode: GameMode, menuState: MenuState, gameplayState: TitleLoopSmokeGameplayState, framebuffer: Uint8Array): void {
+  if (gameplayState.session !== null) {
+    framebuffer.set(renderLauncherFrame(gameplayState.session));
+    drawMenuOverlay(frame, gameMode, menuState, framebuffer);
+    return;
+  }
+
   framebuffer.set(frame.framebuffer);
   drawMenuOverlay(frame, gameMode, menuState, framebuffer);
 }
@@ -430,7 +446,18 @@ function createControlState(): TitleLoopSmokeControlState {
   };
 }
 
-function handleSmokeHostKey(gameMode: GameMode, menuState: MenuState, key: number): boolean {
+function createSmokeHostGameplaySession(resources: LauncherResources, episode: number, skill: number): LauncherSession {
+  return createLauncherSession(resources, {
+    mapName: `E${episode}M${DEFAULT_GAMEPLAY_MAP_NUMBER}`,
+    skill: normalizeMenuSkill(skill),
+  });
+}
+
+function normalizeMenuSkill(skill: number): number {
+  return Math.max(1, skill);
+}
+
+function handleSmokeHostKey(gameMode: GameMode, menuState: MenuState, gameplayResources: LauncherResources, gameplayState: TitleLoopSmokeGameplayState, key: number): boolean {
   if (!menuState.active) {
     if (key === KEY_ESCAPE) {
       const frontEndState = createFrontEndSequence(gameMode);
@@ -449,10 +476,41 @@ function handleSmokeHostKey(gameMode: GameMode, menuState: MenuState, key: numbe
   const previousItemOn = menuState.itemOn;
   const action = handleMenuKey(menuState, key);
 
+  switch (action.kind) {
+    case 'selectEpisode':
+      gameplayState.selectedEpisode = action.episode;
+      openMenu(menuState, MenuKind.Skill);
+      return true;
+    case 'selectSkill':
+      gameplayState.session = createSmokeHostGameplaySession(gameplayResources, gameplayState.selectedEpisode, action.skill);
+      gameplayState.nextTickAtMs = performance.now() + MENU_TIC_INTERVAL_MS;
+      menuState.active = false;
+      return true;
+    case 'adjustMusicVolume':
+    case 'adjustScreenSize':
+    case 'adjustSensitivity':
+    case 'adjustSfxVolume':
+    case 'beginSaveStringEntry':
+    case 'cancelSaveStringEntry':
+    case 'closeMenu':
+    case 'commitSaveStringEntry':
+    case 'endGame':
+    case 'none':
+    case 'openMenu':
+    case 'openMessage':
+    case 'quitGame':
+    case 'readThisAdvance':
+    case 'selectLoadSlot':
+    case 'selectSaveSlot':
+    case 'toggleDetail':
+    case 'toggleMessages':
+      break;
+  }
+
   return action.kind !== 'none' || previousActive !== menuState.active || previousCurrentMenu !== menuState.currentMenu || previousItemOn !== menuState.itemOn;
 }
 
-async function pollSmokeHostControl(gameMode: GameMode, menuState: MenuState, controlState: TitleLoopSmokeControlState): Promise<boolean> {
+async function pollSmokeHostControl(gameMode: GameMode, menuState: MenuState, gameplayResources: LauncherResources, gameplayState: TitleLoopSmokeGameplayState, controlState: TitleLoopSmokeControlState): Promise<boolean> {
   if (controlState.path === null) {
     return false;
   }
@@ -476,15 +534,23 @@ async function pollSmokeHostControl(gameMode: GameMode, menuState: MenuState, co
 
   switch (command) {
     case 'enter':
-      return handleSmokeHostKey(gameMode, menuState, KEY_ENTER);
+      return handleSmokeHostKey(gameMode, menuState, gameplayResources, gameplayState, KEY_ENTER);
     case 'escape':
-      return handleSmokeHostKey(gameMode, menuState, KEY_ESCAPE);
+      return handleSmokeHostKey(gameMode, menuState, gameplayResources, gameplayState, KEY_ESCAPE);
     default:
       return false;
   }
 }
 
-function drainSmokeHostMessages(user32: User32Symbols, windowHandle: bigint, gameMode: GameMode, menuState: MenuState, messageBuffer: Buffer): SmokeHostMessageResult {
+function drainSmokeHostMessages(
+  user32: User32Symbols,
+  windowHandle: bigint,
+  gameMode: GameMode,
+  menuState: MenuState,
+  gameplayResources: LauncherResources,
+  gameplayState: TitleLoopSmokeGameplayState,
+  messageBuffer: Buffer,
+): SmokeHostMessageResult {
   let frameChanged = false;
 
   for (let messageIndex = 0; messageIndex < MAXIMUM_MESSAGES_PER_LOOP; messageIndex += 1) {
@@ -505,7 +571,7 @@ function drainSmokeHostMessages(user32: User32Symbols, windowHandle: bigint, gam
 
     if (messageKind === WM_KEYDOWN) {
       const key = Number(messageBuffer.readBigUInt64LE(MESSAGE_WORD_PARAMETER_OFFSET));
-      frameChanged = handleSmokeHostKey(gameMode, menuState, key) || frameChanged;
+      frameChanged = handleSmokeHostKey(gameMode, menuState, gameplayResources, gameplayState, key) || frameChanged;
     }
   }
 
@@ -522,17 +588,17 @@ function isVirtualKeyDown(user32: User32Symbols, key: number): boolean {
   return (asyncKeyStateResult & 0x8000) !== 0;
 }
 
-function pollSmokeHostKeyboard(user32: User32Symbols, gameMode: GameMode, menuState: MenuState, keyboardState: TitleLoopSmokeKeyboardState): boolean {
+function pollSmokeHostKeyboard(user32: User32Symbols, gameMode: GameMode, menuState: MenuState, gameplayResources: LauncherResources, gameplayState: TitleLoopSmokeGameplayState, keyboardState: TitleLoopSmokeKeyboardState): boolean {
   let frameChanged = false;
   const escapeDown = isVirtualKeyDown(user32, KEY_ESCAPE);
   if (escapeDown && !keyboardState.escapeDown) {
-    frameChanged = handleSmokeHostKey(gameMode, menuState, KEY_ESCAPE) || frameChanged;
+    frameChanged = handleSmokeHostKey(gameMode, menuState, gameplayResources, gameplayState, KEY_ESCAPE) || frameChanged;
   }
   keyboardState.escapeDown = escapeDown;
 
   const enterDown = isVirtualKeyDown(user32, KEY_ENTER);
   if (enterDown && !keyboardState.enterDown) {
-    frameChanged = handleSmokeHostKey(gameMode, menuState, KEY_ENTER) || frameChanged;
+    frameChanged = handleSmokeHostKey(gameMode, menuState, gameplayResources, gameplayState, KEY_ENTER) || frameChanged;
   }
   keyboardState.enterDown = enterDown;
 
@@ -548,6 +614,23 @@ function tickSmokeHostMenu(menuState: MenuState, tickState: TitleLoopSmokeMenuTi
     tickMenu(menuState);
     frameChanged = (menuState.active && previousWhichSkull !== menuState.whichSkull) || frameChanged;
     tickState.nextTickAtMs += MENU_TIC_INTERVAL_MS;
+  }
+
+  return frameChanged;
+}
+
+function tickSmokeHostGameplay(gameplayState: TitleLoopSmokeGameplayState): boolean {
+  if (gameplayState.session === null) {
+    return false;
+  }
+
+  const now = performance.now();
+  let frameChanged = false;
+
+  while (now >= gameplayState.nextTickAtMs) {
+    advanceLauncherSession(gameplayState.session, EMPTY_LAUNCHER_INPUT);
+    gameplayState.nextTickAtMs += MENU_TIC_INTERVAL_MS;
+    frameChanged = true;
   }
 
   return frameChanged;
@@ -616,6 +699,7 @@ function presentFrame(user32: User32Symbols, gdi32: Gdi32Symbols, windowHandle: 
 
 export async function runTitleLoopSmokeHost(options: TitleLoopSmokeHostOptions): Promise<void> {
   const frame = await loadTitleLoopSmokeFrame(options);
+  const gameplayResources = await loadLauncherResources(options.iwadPath);
   const initialClientSize = computeClientDimensions(options.scale ?? DEFAULT_SCALE, true);
   const user32 = openUser32();
   const gdi32 = openGdi32();
@@ -630,6 +714,7 @@ export async function runTitleLoopSmokeHost(options: TitleLoopSmokeHostOptions):
   const backgroundFillBytes = Buffer.from(backgroundFillBuffer.buffer);
   const backgroundFillHeader = buildBitmapInfoHeader(1, 1);
   const controlState = createControlState();
+  const gameplayState: TitleLoopSmokeGameplayState = { nextTickAtMs: performance.now() + MENU_TIC_INTERVAL_MS, selectedEpisode: DEFAULT_GAMEPLAY_EPISODE, session: null };
   const keyboardState: TitleLoopSmokeKeyboardState = { enterDown: false, escapeDown: false };
   const menuState = createMenuState();
   menuState.skullAnimCounter = INITIAL_SKULL_ANIM_COUNTER;
@@ -676,9 +761,9 @@ export async function runTitleLoopSmokeHost(options: TitleLoopSmokeHostOptions):
 
   try {
     while (true) {
-      frameDirty = (await pollSmokeHostControl(options.gameMode, menuState, controlState)) || frameDirty;
+      frameDirty = (await pollSmokeHostControl(options.gameMode, menuState, gameplayResources, gameplayState, controlState)) || frameDirty;
 
-      const messageResult = drainSmokeHostMessages(user32.symbols, windowHandle, options.gameMode, menuState, messageBuffer);
+      const messageResult = drainSmokeHostMessages(user32.symbols, windowHandle, options.gameMode, menuState, gameplayResources, gameplayState, messageBuffer);
 
       if (!messageResult.shouldContinue) {
         void user32.symbols.DestroyWindow(windowHandle);
@@ -686,10 +771,15 @@ export async function runTitleLoopSmokeHost(options: TitleLoopSmokeHostOptions):
         return;
       }
 
-      frameDirty = messageResult.frameChanged || pollSmokeHostKeyboard(user32.symbols, options.gameMode, menuState, keyboardState) || tickSmokeHostMenu(menuState, menuTickState) || frameDirty;
+      frameDirty =
+        messageResult.frameChanged ||
+        pollSmokeHostKeyboard(user32.symbols, options.gameMode, menuState, gameplayResources, gameplayState, keyboardState) ||
+        tickSmokeHostMenu(menuState, menuTickState) ||
+        tickSmokeHostGameplay(gameplayState) ||
+        frameDirty;
 
       if (frameDirty) {
-        composeIndexedFrame(frame, options.gameMode, menuState, composedIndexedFrame);
+        composeIndexedFrame(frame, options.gameMode, menuState, gameplayState, composedIndexedFrame);
         stretchIndexedFrameToChocolate2x(composedIndexedFrame, stretchedIndexedFrame, stretchTables);
         convertIndexedFrame(stretchedIndexedFrame, displayFrameBuffer, paletteLookup);
         presentFrame(user32.symbols, gdi32.symbols, windowHandle, displayFrameBytes, displayFrameHeader, backgroundFillBytes, backgroundFillHeader);
@@ -712,3 +802,28 @@ export const TITLE_LOOP_SMOKE_HOST_CONTRACT = Object.freeze({
   runtimeCommand: RUNTIME_COMMAND,
   windowTitle: TITLE_LOOP_WINDOW_TITLE,
 });
+
+/** Runtime gameplay route exposed by the root title-loop smoke host. */
+export const TITLE_LOOP_SMOKE_GAMEPLAY_CONTRACT = Object.freeze({
+  defaultEpisode: DEFAULT_GAMEPLAY_EPISODE,
+  defaultMapNumber: DEFAULT_GAMEPLAY_MAP_NUMBER,
+  runtimeCommand: RUNTIME_COMMAND,
+});
+
+/**
+ * Create the E1M1 gameplay session used after the title/menu route starts a new game.
+ *
+ * @param iwadPath - Path to the local IWAD file consumed by the smoke host.
+ * @param skill - Menu skill number to use for the launcher session.
+ * @returns A launcher gameplay session positioned at the E1M1 start.
+ *
+ * @example
+ * ```ts
+ * const session = await createTitleLoopSmokeHostGameplaySession('doom/DOOM1.WAD', 2);
+ * console.log(session.mapName); // "E1M1"
+ * ```
+ */
+export async function createTitleLoopSmokeHostGameplaySession(iwadPath: string, skill: number = 2): Promise<LauncherSession> {
+  const resources = await loadLauncherResources(iwadPath);
+  return createSmokeHostGameplaySession(resources, DEFAULT_GAMEPLAY_EPISODE, skill);
+}
