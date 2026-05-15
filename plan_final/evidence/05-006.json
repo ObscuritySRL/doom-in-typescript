@@ -1,0 +1,49 @@
+{
+  "stepId": "05-006",
+  "lane": "wad-assets",
+  "title": "wire-sound-and-music-assets",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-sound-and-music-assets.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/current-state/runtime-implementation-modules.json",
+    "plan_final/evidence/05-006.json",
+    "plan_final/progress/wad-assets/05-006.md",
+    "plan_final/status/05-006.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/soundAndMusicAssets.ts",
+    "test/plan_final/wad/wire-sound-and-music-assets.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-sound-and-music-assets.test.ts",
+    "passed": 12,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15882,
+    "failed": 0,
+    "files": 840
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-006 wires the digital sound effect lumps (DS-prefixed, from linuxdoom-1.10 i_sound.c sprintf(name, \"ds%s\")) and the MUS music lumps (D_-prefixed, from S_StartMusic/S_ChangeMusic) into a runtime catalog the audio subsystem consumes. The new wrapper at src/vanilla/soundAndMusicAssets.ts walks the IwadResourceCache directory partitioning every committed lump into the SFX (DS-prefixed) and MUS (D_-prefixed) buckets, preserving directory order and reporting each entry with its canonical DirectoryEntry reference. The catalog embeds NO proprietary IWAD sample or score bytes — it tells the audio subsystem WHICH entries are available, leaving sample/score decoding to the mixer / MUS scheduler. Zero-size lumps are skipped to match the I_CacheSFX size > 0 guard.",
+    "publicSurface": [
+      "buildSoundAndMusicAssets(resourceCache: IwadResourceCache): SoundAndMusicAssetCatalog",
+      "SoundAndMusicAssetCatalog interface (sfxLumps, musLumps)",
+      "SfxLumpEntry interface (directoryEntry, directoryIndex, name)",
+      "MusLumpEntry interface (directoryEntry, directoryIndex, name)",
+      "VANILLA_SFX_LUMP_PREFIX = 'DS', VANILLA_MUS_LUMP_PREFIX = 'D_'"
+    ],
+    "assetFilesModified": false,
+    "audioFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/wad/directory.ts: test_importer_count 74→75 (the focused test imports DirectoryEntry type)",
+      "plan_final/current-state/runtime-implementation-modules.json src/assets/ tracked_file_count 35→36 (the 05-005 commit landed wireSpriteFrameCacheFromIwadResourceCache.ts in src/assets/ but the plan_final inventory was not updated in that commit; reconciled here)"
+    ]
+  }
+}

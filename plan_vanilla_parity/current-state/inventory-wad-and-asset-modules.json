@@ -276,8 +276,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 25,
-      "test_importer_count": 74,
+      "src_importer_count": 26,
+      "test_importer_count": 75,
       "exported_const_enums": []
     },
     {

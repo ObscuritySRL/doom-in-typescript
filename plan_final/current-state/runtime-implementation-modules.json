@@ -23,7 +23,7 @@
     {
       "relative_path": "src/assets/",
       "classification": "real-implementation",
-      "tracked_file_count": 35,
+      "tracked_file_count": 36,
       "primary_role": "PLAYPAL/COLORMAP/PNAMES/TEXTURE1/flats/sprites/MUS/SFX/demo/map lump parsing and asset bundles.",
       "reachable_from_doom_ts": false
     },
