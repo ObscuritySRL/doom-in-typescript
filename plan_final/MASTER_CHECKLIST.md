@@ -67,7 +67,7 @@
 - [x] `04-005` `wire-game-state-transitions` | lane: `runtime-core` | prereqs: `04-003, 07-001` | file: `plan_final/steps/04-005-wire-game-state-transitions.md`
 - [x] `04-006` `wire-rng-and-demo-streams` | lane: `runtime-core` | prereqs: `04-004` | file: `plan_final/steps/04-006-wire-rng-and-demo-streams.md`
 - [x] `04-007` `wire-state-snapshot-hash` | lane: `runtime-core` | prereqs: `04-001, 08-001, 09-001` | file: `plan_final/steps/04-007-wire-state-snapshot-hash.md`
-- [ ] `04-008` `gate-runtime-core` | lane: `runtime-core` | prereqs: `04-002, 04-003, 04-004, 04-005, 04-006, 04-007` | file: `plan_final/steps/04-008-gate-runtime-core.md`
+- [x] `04-008` `gate-runtime-core` | lane: `runtime-core` | prereqs: `04-002, 04-003, 04-004, 04-005, 04-006, 04-007` | file: `plan_final/steps/04-008-gate-runtime-core.md`
 
 ## wad-assets
 
