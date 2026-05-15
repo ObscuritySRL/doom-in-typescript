@@ -134,8 +134,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts", "src/core/fixed.ts", "src/core/fixed.ts"],
-      "src_importer_count": 5,
-      "test_importer_count": 8
+      "src_importer_count": 6,
+      "test_importer_count": 9
     },
     {
       "relative_path": "src/map/intercepts.ts",
@@ -245,7 +245,7 @@
         "src/map/things.ts",
         "src/map/things.ts"
       ],
-      "src_importer_count": 15,
+      "src_importer_count": 16,
       "test_importer_count": 23
     },
     {
@@ -263,8 +263,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/map/bspStructs.ts", "src/map/bspStructs.ts"],
-      "src_importer_count": 3,
-      "test_importer_count": 2
+      "src_importer_count": 4,
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/map/reject.ts",

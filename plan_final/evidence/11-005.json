@@ -1,0 +1,51 @@
+{
+  "stepId": "11-005",
+  "lane": "audio",
+  "title": "wire-pcm-mixer-win32-output",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/audio/wire-pcm-mixer-win32-output.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/11-005.json",
+    "plan_final/progress/audio/11-005.md",
+    "plan_final/status/11-005.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "src/vanilla/pcmMixerWin32Output.ts",
+    "test/plan_final/audio/wire-pcm-mixer-win32-output.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/audio/wire-pcm-mixer-win32-output.test.ts",
+    "passed": 9,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15959,
+    "failed": 0,
+    "files": 847
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-005 wires the PCM mixer (DMX→int16 expansion, stereo separation, multi-voice mixing, int16 clipping) and the canonical Win32 audio output policy (16-bit, two double-buffer slices, 11025 Hz native SFX, 49716 Hz native music, 1024-sample SFX buffer, eight SFX channels) into a single frozen runtime artifact. The new wrapper at src/vanilla/pcmMixerWin32Output.ts imports expandDmxSamples/mixVoices/MIX_MAX_VOLUME/DEFAULT_OUTPUT_SAMPLE_RATE from src/audio/pcmMixer.ts and the canonical VANILLA_AUDIO_* constants from src/audio/implement-win32-audio-device-open-close.ts. The dlopen of winmm.dll and the per-buffer waveOutWrite FFI calls are intentionally NOT inlined — FFI calls cannot be unit-tested without a real audio device.",
+    "publicSurface": [
+      "createPcmMixerWin32Output(): PcmMixerWin32Output",
+      "PcmMixerWin32Output interface (mix, expandDmxSamplesToOutputRate, mixerMaxVolume, mixerSfxBufferSampleCount, native/output sample rates, output channel/bit/buffer counts, shutdownPolicy, vanillaSfxChannelCount)",
+      "PcmMixerShutdownPolicy interface (closesWaveOutHandle, drainsDoubleBufferQueue, releasesMixerBuffers, waitsForLastBufferToFlush)"
+    ],
+    "audioFilesModified": false,
+    "hostFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/audio/pcmMixer.ts: src_importer_count 1→2, test_importer_count 3→4 (pcmMixerWin32Output.ts + its focused test)",
+      "src/core/fixed.ts: src_importer_count 73→74, test_importer_count 93→94 (parallel-agent drift reconciled)",
+      "src/map/bspStructs.ts: src_importer_count 5→6, test_importer_count 8→9 (parallel-agent drift reconciled)",
+      "src/map/mapSetup.ts: src_importer_count 15→16 (parallel-agent drift reconciled)",
+      "src/map/nodeTraversal.ts: src_importer_count 3→4, test_importer_count 2→3 (parallel-agent drift reconciled)"
+    ]
+  }
+}

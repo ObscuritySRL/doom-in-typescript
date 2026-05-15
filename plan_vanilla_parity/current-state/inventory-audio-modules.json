@@ -314,8 +314,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 1,
-      "test_importer_count": 3
+      "src_importer_count": 2,
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/audio/sfxLumps.ts",
