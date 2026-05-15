@@ -1,0 +1,25 @@
+{
+  "stepId": "12-008",
+  "lane": "save-config-demo",
+  "title": "wire-long-run-drift-checks",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-long-run-drift-checks.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-008.json",
+    "plan_final/progress/save-config-demo/12-008.md",
+    "plan_final/status/12-008.json",
+    "src/oracles/longRunDriftChecks.ts",
+    "test/plan_final/save/wire-long-run-drift-checks.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-long-run-drift-checks.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16419, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-008 adds the long-run replay drift checks the final acceptance gate runs over the long attract loop, recorded demos, and the scripted E1M1 path. Because the step's write lock is src/oracles/ (not src/vanilla/), the aggregator is a NEW same-directory module src/oracles/longRunDriftChecks.ts re-exporting the two read-only oracle drift contracts: ./framebufferHash.ts (pixel drift: FRAMEBUFFER_WIDTH 320, FRAMEBUFFER_HEIGHT 200, FRAMEBUFFER_SIZE 64000, PALETTE_COUNT 14, DEFAULT_FRAMEBUFFER_SAMPLING_INTERVAL_TICS 35, FramebufferHashEntry/Payload/Artifact, and the frozen EMPTY_TITLE_LOOP / EMPTY_DEMO_PLAYBACK framebuffer baselines) and ./stateHash.ts (tic/state drift: STATE_HASH_COMPONENTS 6, DEFAULT_SAMPLING_INTERVAL_TICS 35, INDIVIDUAL_COMPONENT_COUNT 5, StateHashComponent/Entry/Payload/Artifact, and the frozen EMPTY_TITLE_LOOP / EMPTY_DEMO_PLAYBACK state baselines), values via export and types via export type under verbatimModuleSyntax (neither source declares a const enum). VANILLA_LONG_RUN_DRIFT_CHECK_INVARIANTS pins five rules: the combined state hash is SHA-256 over the five individual components in ASCIIbetical order; the demo-playback pixel+state baselines are frozen empty payloads; both drift checks sample every 35 tics; the framebuffer is 320x200 across 14 palettes; and the title-loop pixel+state baselines are frozen empty payloads. The focused test is inventory-neutral: constants, the frozen five-rule manifest, the frozen re-exported baselines, the leading-JSDoc-stripped ./-filtered specifier set ['./framebufferHash.ts','./stateHash.ts'], and dynamic same-reference identity against both read-only oracle modules. An all-inventory probe confirmed zero drift in every plan_vanilla_parity inventory (the oracle infra modules are not inventory-tracked). The step became eligible with prerequisites 12-006, 04-007, 06-009, and 11-008 COMPLETED; a transient concurrent progress-log claim on 12-008 was released before this work began (verified: no live progress log or status JSON, frontier probe clean).",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-008.json marks it COMPLETED.",
+    "parallelAgentNote": "A concurrent worker briefly held a progress-log-first claim on 12-008 then released it (no live progress log / status JSON / frontier-probe entry remained). This step reclaimed via the progress-log-first protocol, kept its write lock (src/oracles/ + the focused test) disjoint from the only active worker (13-001, acceptance lane), and finalized with pathspec-limited git commits isolating the explicit 12-008 paths."
+  }
+}
