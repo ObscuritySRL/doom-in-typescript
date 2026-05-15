@@ -1,0 +1,21 @@
+{
+  "stepId": "04-007",
+  "lane": "runtime-core",
+  "title": "wire-state-snapshot-hash",
+  "commands": ["bun run format", "bun test test/plan_final/runtime/wire-state-snapshot-hash.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/04-007.json",
+    "plan_final/progress/runtime-core/04-007.md",
+    "plan_final/status/04-007.json",
+    "src/vanilla/wireStateSnapshotHash.ts",
+    "test/plan_final/runtime/wire-state-snapshot-hash.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/runtime/wire-state-snapshot-hash.test.ts", "passed": 9, "failed": 0 },
+  "fullSuite": { "passed": 16061, "failed": 0, "files": 859 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-007 adds the deterministic per-tic state-snapshot hash every final acceptance checkpoint compares against the reference. hashStateSnapshot(tic, componentBytes) computes SHA-256 per individual component (automap, player, rng, sectors, thinkers) and a combined SHA-256 over the canonically-ordered concatenation of the five digests, returning a frozen StateHashEntry keyed exactly to the read-only STATE_HASH_COMPONENTS. Pure and deterministic so acceptance runs replay bit-for-bit. The caller supplies the serialized component bytes (a later step wires the concrete serializers); this step pins the hashing + combined-digest-derivation contract. No read-only oracle/save module is modified.",
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
