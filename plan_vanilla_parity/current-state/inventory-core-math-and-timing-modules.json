@@ -228,8 +228,8 @@
       "exported_classes": ["MainLoop"],
       "exported_types": ["MainLoopPhase", "PreLoopStep"],
       "external_imports": [],
-      "src_importer_count": 21,
-      "test_importer_count": 12,
+      "src_importer_count": 22,
+      "test_importer_count": 13,
       "exported_const_enums": []
     }
   ],

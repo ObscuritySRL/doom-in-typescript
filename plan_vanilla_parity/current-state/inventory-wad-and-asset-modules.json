@@ -96,8 +96,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts", "src/wad/markerRange.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 1,
+      "src_importer_count": 2,
+      "test_importer_count": 2,
       "exported_const_enums": []
     },
     {
@@ -132,8 +132,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts", "src/wad/markerRange.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 1,
+      "src_importer_count": 2,
+      "test_importer_count": 2,
       "exported_const_enums": []
     },
     {
@@ -168,8 +168,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/core/binaryReader.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 2,
+      "src_importer_count": 2,
+      "test_importer_count": 3,
       "exported_const_enums": []
     },
     {
@@ -186,8 +186,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/core/binaryReader.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 1,
+      "src_importer_count": 2,
+      "test_importer_count": 2,
       "exported_const_enums": []
     },
     {
@@ -276,8 +276,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 24,
-      "test_importer_count": 70,
+      "src_importer_count": 25,
+      "test_importer_count": 73,
       "exported_const_enums": []
     },
     {
@@ -295,7 +295,7 @@
       "exported_types": ["WadType"],
       "external_imports": [],
       "src_importer_count": 3,
-      "test_importer_count": 65,
+      "test_importer_count": 67,
       "exported_const_enums": []
     },
     {

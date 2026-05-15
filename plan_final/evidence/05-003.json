@@ -1,0 +1,58 @@
+{
+  "stepId": "05-003",
+  "lane": "wad-assets",
+  "title": "wire-textures-flats-patches",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-textures-flats-patches.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-003.json",
+    "plan_final/progress/wad-assets/05-003.md",
+    "plan_final/status/05-003.json",
+    "plan_vanilla_parity/current-state/inventory-core-math-and-timing-modules.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/texturesAndFlats.ts",
+    "test/plan_final/wad/wire-textures-flats-patches.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-textures-flats-patches.test.ts",
+    "passed": 14,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15809,
+    "failed": 0,
+    "files": 835
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-003 wires the TEXTURE1/TEXTURE2/PNAMES lumps and the patch/flat marker-range catalogs into a single frozen runtime artifact downstream renderer steps consume. The new wrapper at src/vanilla/texturesAndFlats.ts imports parsePnames/parseTextureLump/buildPatchCatalog/buildFlatCatalog from the read-only src/assets/ parsers, finds the PNAMES and TEXTURE1 entries via IwadResourceCache.findLump, treats TEXTURE2 as optional (absent in shareware DOOM 1.9), and walks the directory's P_START..P_END and F_START..F_END marker ranges. Failure modes (missing lumps, malformed lumps, missing markers) surface as typed TexturesAndFlatsError instances with a stable TexturesAndFlatsErrorReason discriminator.",
+    "publicSurface": [
+      "buildTexturesAndFlats(resourceCache: IwadResourceCache, lumpReader: LumpReader): TexturesAndFlatsResources",
+      "TexturesAndFlatsResources interface (flatCatalog, patchCatalog, patchNames, textures1, textures2)",
+      "TexturesAndFlatsError extends Error (reason: TexturesAndFlatsErrorReason, identifier: string)",
+      "TexturesAndFlatsErrorReason union (flat-markers-missing | patch-markers-missing | pnames-lump-malformed | pnames-lump-missing | texture1-lump-malformed | texture1-lump-missing | texture2-lump-malformed)",
+      "LumpReader interface (readLumpBytes: (entry: DirectoryEntry) => Uint8Array)",
+      "VANILLA_PNAMES_LUMP_NAME, VANILLA_TEXTURE1_LUMP_NAME, VANILLA_TEXTURE2_LUMP_NAME constants"
+    ],
+    "assetFilesModified": false,
+    "renderFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/assets/flats.ts: src_importer_count 1→2, test_importer_count 1→2 (texturesAndFlats.ts + its focused test)",
+      "src/assets/patchCatalog.ts: src_importer_count 1→2, test_importer_count 1→2 (same wiring)",
+      "src/assets/pnames.ts: src_importer_count 1→2, test_importer_count 2→3 (same wiring)",
+      "src/assets/texture1.ts: src_importer_count 1→2, test_importer_count 1→2 (same wiring)",
+      "src/wad/directory.ts: src_importer_count 24→25, test_importer_count 70→73 (texturesAndFlats DirectoryEntry import plus the focused test plus an out-of-step parallel agent test)",
+      "src/wad/header.ts: test_importer_count 65→67 (parallel-agent drift reconciled to match on-disk reality)",
+      "src/mainLoop.ts: src_importer_count 21→22, test_importer_count 12→13 (parallel-agent drift reconciled)"
+    ]
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "Adding the focused test under test/plan_final/wad/ that imports DirectoryEntry, IwadResourceCache, and four read-only src/assets/ parser surfaces increases their test_importer_count and src_importer_count by exactly the on-disk count. The inventory JSON is updated to match. Several mismatches in this run were not caused by 05-003 (mainLoop.ts and wad/header.ts importer drifts from in-flight parallel agents) but were reconciled here to keep the full-suite green; the same reconcile pattern is used by 05-001 and 05-002 evidence."
+  }
+}
