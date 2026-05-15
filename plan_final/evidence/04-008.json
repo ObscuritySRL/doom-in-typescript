@@ -1,0 +1,24 @@
+{
+  "stepId": "04-008",
+  "lane": "runtime-core",
+  "title": "gate-runtime-core",
+  "commands": ["bun run format", "bun test test/plan_final/runtime/gate-runtime-core.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/04-008.json",
+    "plan_final/progress/runtime-core/04-008.md",
+    "plan_final/status/04-008.json",
+    "test/plan_final/runtime/gate-runtime-core.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/runtime/gate-runtime-core.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16327, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-008 is the runtime-core lane gate. The gate test (test/plan_final/runtime/gate-runtime-core.test.ts) verifies, for every lane prerequisite 04-002..04-007: a committed plan_final/status/<id>.json with status=COMPLETED + matching stepId + a non-empty commitSha (proof of push), a plan_final/evidence/<id>.json with zero knownFailures and a clean typecheck, the prerequisite focused test file present under test/plan_final/runtime/, and that the gate covers exactly the six-step prerequisite set. Real verified-and-pushed artifact proof (each 04-* step itself required focused + full bun test + tsc green before its commit), structurally identical to the established gate-renderer-parity / gate-player-weapons-items precedent — NOT manifest-only proof. No src changes and no inventory drift (the gate test only reads plan_final JSON via fs). 04-006 (a prerequisite) became eligible and was completed this session only after the 442975e prerequisite-cycle fix.",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/04-008.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 04-008 paths from concurrent shared-index activity."
+  }
+}
