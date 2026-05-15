@@ -192,8 +192,8 @@
         "src/world/mobj.ts",
         "src/world/thinkers.ts"
       ],
-      "src_importer_count": 2,
-      "test_importer_count": 6
+      "src_importer_count": 3,
+      "test_importer_count": 7
     },
     {
       "relative_path": "src/player/playerSpawn.ts",
@@ -245,8 +245,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/player/playerSpawn.ts", "src/player/playerSpawn.ts", "src/world/mobj.ts"],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/player/projectiles.ts",

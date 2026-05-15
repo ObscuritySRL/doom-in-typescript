@@ -1,0 +1,23 @@
+{
+  "stepId": "09-007",
+  "lane": "player-weapons-items",
+  "title": "wire-pickups",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-pickups.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/09-007.json",
+    "plan_final/progress/player-weapons-items/09-007.md",
+    "plan_final/status/09-007.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wirePickups.ts",
+    "test/plan_final/player/wire-pickups.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-pickups.test.ts", "passed": 5, "failed": 0 },
+  "fullSuite": { "passed": 16116, "failed": 0, "files": 867 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-007 aggregates the pickup side-effect functions (giveBody, giveArmor, giveCard, givePower, touchSpecialThing, set/get/clearPickupContext) and the per-tic powerup functions (tickPowerups, computeFixedColormap, computePalette) into a single src/vanilla re-export facade for P_TouchSpecialThing + the powerup ticker. The read-only src/player/pickups.ts and powerups.ts already implement vanilla p_inter.c / p_user.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/player/pickups.ts src 2->3 test 6->7", "src/player/powerups.ts src 0->1 test 1->2"]
+  }
+}
