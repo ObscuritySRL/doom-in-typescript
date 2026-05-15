@@ -57,7 +57,7 @@
 - [x] `03-008` `wire-deterministic-input-trace` | lane: `launch-host-input` | prereqs: `03-007` | file: `plan_final/steps/03-008-wire-deterministic-input-trace.md`
 - [x] `03-009` `wire-clean-quit-and-endoom` | lane: `launch-host-input` | prereqs: `03-005, 07-010` | file: `plan_final/steps/03-009-wire-clean-quit-and-endoom.md`
 - [x] `03-010` `gate-clean-launch-to-title` | lane: `launch-host-input` | prereqs: `03-004, 03-005, 04-003, 05-004, 07-001` | file: `plan_final/steps/03-010-gate-clean-launch-to-title.md`
-- [ ] `03-011` `supersede-doom-ts-skeleton-pins` | lane: `launch-host-input` | prereqs: `03-001, 03-010` | file: `plan_final/steps/03-011-supersede-doom-ts-skeleton-pins.md`
+- [x] `03-011` `supersede-doom-ts-skeleton-pins` | lane: `launch-host-input` | prereqs: `03-001, 03-010` | file: `plan_final/steps/03-011-supersede-doom-ts-skeleton-pins.md`
 
 ## runtime-core
 

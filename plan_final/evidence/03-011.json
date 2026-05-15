@@ -1,0 +1,97 @@
+{
+  "changedPaths": [
+    "plan_final/evidence/03-011.json",
+    "plan_final/status/03-011.json",
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/progress/launch-host-input/03-011.md",
+    "plan_vanilla_parity/current-state/classify-real-implementations.json"
+  ],
+  "commands": [
+    {
+      "command": "git status --short",
+      "result": "pass",
+      "summary": "No tracked dirty files; ignored untracked .claude/* and root probe-*.ts files."
+    },
+    {
+      "command": "bun run format",
+      "result": "pass",
+      "summary": "No fixes applied."
+    },
+    {
+      "command": "bun test test/plan_final/launch/supersede-doom-ts-skeleton-pins.test.ts",
+      "result": "pass",
+      "summary": "11 pass, 0 fail across 1 file."
+    },
+    {
+      "command": "bun test test/vanilla_parity/launch/add-root-doom-ts-bun-entrypoint.test.ts test/plan_final/launch/gate-clean-launch-to-title.test.ts test/plan_final/launch/replace-root-doom-entrypoint.test.ts",
+      "result": "pass",
+      "summary": "31 pass, 0 fail across 3 files."
+    },
+    {
+      "command": "bun run plan_final/validate-plan.ts",
+      "result": "pass",
+      "summary": "plan_final valid: 133 steps."
+    },
+    {
+      "command": "bun test --only-failures",
+      "result": "failed-before-fix",
+      "summary": "classify-real-implementations inventory had stale bootstrap_runtime_contracts test_file_count 43; observed 44."
+    },
+    {
+      "command": "bun run format",
+      "result": "pass",
+      "summary": "Restarted sequence after the stale inventory-count fix; no fixes applied."
+    },
+    {
+      "command": "bun test test/plan_final/launch/supersede-doom-ts-skeleton-pins.test.ts",
+      "result": "pass",
+      "summary": "11 pass, 0 fail across 1 file."
+    },
+    {
+      "command": "bun test test/vanilla_parity/launch/add-root-doom-ts-bun-entrypoint.test.ts test/plan_final/launch/gate-clean-launch-to-title.test.ts test/plan_final/launch/replace-root-doom-entrypoint.test.ts",
+      "result": "pass",
+      "summary": "31 pass, 0 fail across 3 files."
+    },
+    {
+      "command": "bun run plan_final/validate-plan.ts",
+      "result": "pass",
+      "summary": "plan_final valid: 133 steps."
+    },
+    {
+      "command": "bun test --only-failures",
+      "result": "pass",
+      "summary": "16437 pass, 11 skip, 0 fail across 916 files."
+    },
+    {
+      "command": "bun x tsc --noEmit --project tsconfig.json",
+      "result": "pass",
+      "summary": "Typecheck clean."
+    }
+  ],
+  "focusedTestPassCounts": [
+    {
+      "command": "bun test test/plan_final/launch/supersede-doom-ts-skeleton-pins.test.ts",
+      "fail": 0,
+      "files": 1,
+      "pass": 11
+    },
+    {
+      "command": "bun test test/vanilla_parity/launch/add-root-doom-ts-bun-entrypoint.test.ts test/plan_final/launch/gate-clean-launch-to-title.test.ts test/plan_final/launch/replace-root-doom-entrypoint.test.ts",
+      "fail": 0,
+      "files": 3,
+      "pass": 31
+    }
+  ],
+  "fullSuiteResult": {
+    "command": "bun test --only-failures",
+    "expectCalls": 2516057,
+    "fail": 0,
+    "files": 916,
+    "pass": 16437,
+    "skip": 11
+  },
+  "knownFailures": [],
+  "lane": "launch-host-input",
+  "stepId": "03-011",
+  "typecheck": "clean"
+}
