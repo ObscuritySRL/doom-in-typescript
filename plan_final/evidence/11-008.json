@@ -1,0 +1,26 @@
+{
+  "stepId": "11-008",
+  "lane": "audio",
+  "title": "wire-audio-hash-windows",
+  "commands": ["bun run format", "bun test test/plan_final/audio/wire-audio-hash-windows.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/11-008.json",
+    "plan_final/progress/audio/11-008.md",
+    "plan_final/status/11-008.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "src/vanilla/wireAudioHashWindows.ts",
+    "test/plan_final/audio/wire-audio-hash-windows.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/audio/wire-audio-hash-windows.test.ts", "passed": 8, "failed": 0 },
+  "fullSuite": { "passed": 16235, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-008 exposes the deterministic audio-hash windows for the acceptance gates via one src/vanilla facade (wireAudioHashWindows.ts) re-exporting the read-only src/audio/audioParity.ts harness (per-tic deterministic SFX/mixer/music + hashPcmBuffer 64-char uppercase-hex SHA-256, runHarnessTic, toAudioHashEntry, HARNESS_TIC_RATE_HZ 35 / HARNESS_SHA256_HEX_LENGTH 64) and src/oracles/musicEventLog.ts (MUSIC_EVENT_KINDS change/pause/resume/stop, frozen EMPTY title-loop/demo-playback baselines, MUS_MAX_CHANNELS 16 / percussion 15 / MIDI 9, music volume [0,15]). VANILLA_AUDIO_HASH_WINDOW_INVARIANTS pins the five rules. The focused test exercises the real harness (hashPcmBuffer determinism + uppercase-hex format corrected to match the authoritative read-only source, createAudioParityHarness integer-samples-per-tic guard, frozen event-kind/empty-log baselines), the multi-line-tolerant ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax). audioParity src importer count reconciled 0->1 (musicEventLog in src/oracles is not importer-tracked).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/audio/audioParity.ts src 0->1 (test unchanged at 3)"],
+    "masterChecklistSyncNote": "A concurrent governance agent committed plan_final/sync-master-checklist.ts + its enforcing test + PROMPT.md step 10 at 96a826b; the full suite now requires plan_final/MASTER_CHECKLIST.md to equal the official sync of the authoritative status JSON. Ran the sanctioned `bun run plan_final/sync-master-checklist.ts` and include the regenerated MASTER_CHECKLIST.md in this step's commits per the new mandatory per-step contract. This derives checkboxes from verified+pushed status JSON (not manual checkbox-faking), consistent with the /goal directive's anti-faking intent and required for any step to pass the suite.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits (options before --, paths after) so only the explicit 11-008 paths land despite concurrent shared-index activity."
+  }
+}

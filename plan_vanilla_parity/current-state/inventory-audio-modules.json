@@ -107,7 +107,7 @@
         "src/oracles/audioHash.ts",
         "src/oracles/audioHash.ts"
       ],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 3
     },
     {
