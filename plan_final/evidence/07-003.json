@@ -1,0 +1,23 @@
+{
+  "stepId": "07-003",
+  "lane": "ui",
+  "title": "wire-menu-actions",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-menu-actions.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-003.json",
+    "plan_final/progress/ui/07-003.md",
+    "plan_final/status/07-003.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireMenuActions.ts",
+    "test/plan_final/ui/wire-menu-actions.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-menu-actions.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16173, "failed": 0, "files": 875 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-003 pins the complete 20-kind MenuAction discriminant vocabulary (New Game/Options/Sound/Read This/Save/Load/End Game/Quit and their slider/toggle/text-entry sub-actions) and wires the producer (handleMenuKey) + MENU_ACTION_NONE + openMessage + the MenuAction type into a single src/vanilla re-export facade for the runtime-effects dispatcher. The focused test cross-checks the manifest against the actual union declared in the read-only src/ui/menus.ts so a dropped/renamed kind fails the gate. Pure barrel + frozen ASCIIbetically-sorted manifest, no source modification. Unblocked by the e365561 prereq-cycle fix chain.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/menus.ts src 21->22 test 22->23"]
+  }
+}

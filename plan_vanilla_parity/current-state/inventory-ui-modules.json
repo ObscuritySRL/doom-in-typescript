@@ -429,8 +429,8 @@
       "exported_types": ["MenuAction"],
       "exported_const_enums": [],
       "external_imports": ["src/input/keyboard.ts"],
-      "src_importer_count": 21,
-      "test_importer_count": 22
+      "src_importer_count": 22,
+      "test_importer_count": 23
     },
     {
       "relative_path": "src/ui/statusBar.ts",
