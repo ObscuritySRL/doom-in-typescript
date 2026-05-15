@@ -404,7 +404,7 @@
       "exported_types": ["ActionFunction"],
       "exported_const_enums": ["MobjType", "SpriteNum", "StateNum"],
       "external_imports": ["src/core/angle.ts", "src/core/fixed.ts", "src/core/fixed.ts", "src/core/rng.ts", "src/world/thinkers.ts"],
-      "src_importer_count": 25,
+      "src_importer_count": 26,
       "test_importer_count": 29
     },
     {

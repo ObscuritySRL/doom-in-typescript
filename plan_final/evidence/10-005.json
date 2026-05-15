@@ -1,0 +1,30 @@
+{
+  "stepId": "10-005",
+  "lane": "ai-specials",
+  "title": "wire-state-transitions",
+  "commands": ["bun run format", "bun test test/plan_final/ai/wire-state-transitions.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-005.json",
+    "plan_final/progress/ai-specials/10-005.md",
+    "plan_final/status/10-005.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "src/vanilla/wireStateTransitions.ts",
+    "test/plan_final/ai/wire-state-transitions.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/wire-state-transitions.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16314, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-005 wires the mobj state-transition path via one src/vanilla facade (wireStateTransitions.ts) re-exporting the read-only ai/stateTransitions (aPain/aScream/aXScream/aPlayerScream/aFall/aExplode, PAIN_DEATH_ACTION_COUNT 69, wirePainDeathActions, context; SFX death ids, EXPLODE_DAMAGE 128, PLAYER_SCREAM_GIB_HEALTH -50) and the world/mobj setMobjState (P_SetMobjState) primitive + Mobj type. The mobj.ts StateNum/SpriteNum/MobjType const enums are intentionally NOT re-exported (verbatimModuleSyntax). VANILLA_STATE_TRANSITION_INVARIANTS pins five rules (setMobjState drives all transitions; 69-action registry; A_Explode 128 splash; gib death below -50; fixed death sfx ids). The focused test exercises the constants, the callable transition primitives, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/ai/stateTransitions.ts src 0->1 (test unchanged at 1)",
+      "src/world/mobj.ts src 25->26 (test unchanged at 29)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-005.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 10-005 paths from concurrent shared-index activity."
+  }
+}

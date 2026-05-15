@@ -361,7 +361,7 @@
       "exported_types": ["RadiusAttackCallback", "StartSoundFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/core/rng.ts", "src/world/mobj.ts", "src/world/mobj.ts"],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 1
     },
     {
