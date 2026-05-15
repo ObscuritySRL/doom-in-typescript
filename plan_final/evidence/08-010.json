@@ -1,0 +1,24 @@
+{
+  "stepId": "08-010",
+  "lane": "map-world",
+  "title": "gate-map-world-parity",
+  "commands": ["bun run format", "bun test test/plan_final/map/gate-map-world-parity.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/08-010.json",
+    "plan_final/progress/map-world/08-010.md",
+    "plan_final/status/08-010.json",
+    "test/plan_final/map/gate-map-world-parity.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/gate-map-world-parity.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16407, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-010 is the map-world-lane parity gate. It adds one test (test/plan_final/map/gate-map-world-parity.test.ts) mirroring the cast-free canonical lane-gate pattern over the nine map-world prerequisites 08-001..08-009 (wire-level-setup, wire-thinker-ticker, wire-collision-and-movement, wire-line-crossing-and-use, wire-door-specials, wire-floor-ceiling-platform-specials, wire-sector-effects-and-animations, wire-level-exits, wire-death-reborn-and-transitions). For every prerequisite it asserts: plan_final/status/<id>.json exists, declares status=COMPLETED with the matching stepId, and records a commitSha of length >= 7 (proof the work was pushed); plan_final/evidence/<id>.json exists, declares zero knownFailures and typecheck=clean; the prerequisite focused test file exists under test/plan_final/map/; and the gate covers exactly the nine-element ordered prerequisite set. The banned cast class (AGENTS.md L201/L222) is avoided by parsing into Record<string, unknown> (any -> Record requires no cast) and field-narrowing via String()/Array.isArray, with a poison sentinel for malformed knownFailures so corrupt prerequisite evidence fails the gate. The test imports nothing from a ../-prefixed src module, so no plan_vanilla_parity inventory module is affected (inventory-neutral; no probe/reconcile required). The step became eligible with all nine map-world prerequisites COMPLETED (08-005 finalized this session at 7329cd5/15c880c).",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/08-010.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 08-010 paths from concurrent shared-index activity."
+  }
+}
