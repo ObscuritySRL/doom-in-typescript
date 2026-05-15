@@ -50,7 +50,7 @@
 
 - `bun run format`
 - `bun test <focused test path>`
-- `bun test`
+- `bun test --only-failures`
 - `bun run plan_final/test-live-reference.ts <focused test path>` when the focused test is a live reference capture test
 - `bun run plan_final/test-live-reference.ts` when an oracle or acceptance gate requires live reference evidence
 - `bun x tsc --noEmit --project tsconfig.json`
@@ -62,7 +62,7 @@
 ## completion criteria
 
 - All verification commands pass in order.
-- `bun test` is the headless full suite; live Win32 reference captures are opt-in and serialized through `bun run plan_final/test-live-reference.ts`.
+- `bun test --only-failures` is the headless full suite with passing-test output suppressed; live Win32 reference captures are opt-in and serialized through `bun run plan_final/test-live-reference.ts`.
 - Failures are fixed, not hidden or skipped.
 - The verified change is committed and pushed.
 

@@ -66,7 +66,7 @@ describe('plan_final G0 control-center gate', () => {
       commitSha: '0123456789abcdef0123456789abcdef01234567',
     };
     const evidence = {
-      commands: ['bun run format', 'bun test test/plan_final/validate-plan.test.ts', 'bun test', 'bun x tsc --noEmit --project tsconfig.json'],
+      commands: ['bun run format', 'bun test test/plan_final/validate-plan.test.ts', 'bun test --only-failures', 'bun x tsc --noEmit --project tsconfig.json'],
     };
     const violations = findStatusSchemaViolations(status, evidence);
 

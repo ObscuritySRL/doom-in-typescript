@@ -63,7 +63,7 @@ Gate current-state inventory and fail if any required gap category is missing fr
 
 - `bun run format`
 - `bun test test/plan_final/current-state/gate-current-state-inventory.test.ts`
-- `bun test`
+- `bun test --only-failures`
 - `bun x tsc --noEmit --project tsconfig.json`
 
 ## progress log
@@ -75,7 +75,7 @@ Gate current-state inventory and fail if any required gap category is missing fr
 ## completion criteria
 
 - The focused test proves the behavior or inventory result for this exact step.
-- `bun run format`, focused `bun test test/plan_final/current-state/gate-current-state-inventory.test.ts`, `bun test`, and `bun x tsc --noEmit --project tsconfig.json` all pass in that order.
+- `bun run format`, focused `bun test test/plan_final/current-state/gate-current-state-inventory.test.ts`, `bun test --only-failures`, and `bun x tsc --noEmit --project tsconfig.json` all pass in that order.
 - Any failure is fixed in this same step and the full verification sequence is rerun from the beginning.
 - The step is not marked complete, committed, or pushed while any verification command is failing.
 - Files are staged explicitly by path, committed with a Conventional Commit, and pushed directly with local git commands.

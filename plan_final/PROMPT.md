@@ -11,7 +11,7 @@ Continue the Ralph loop using `plan_final/` as the only active execution control
 5. Change only the selected step write lock and expected changes.
 6. Add or update the focused test.
 7. During the edit loop, run `bun run format`, focused `bun test`, directly affected non-live tests, and typecheck. Do not run live reference capture tests as a repeated smoke test.
-8. Before completion, run `bun run format`, focused `bun test`, full `bun test` (headless), and typecheck in order. If the focused test is a live reference capture test, run `bun run plan_final/test-live-reference.ts <focused test path>` after the focused headless test. If the step is an oracle or acceptance gate that requires live evidence, run `bun run plan_final/test-live-reference.ts` once before typecheck.
+8. Before completion, run `bun run format`, focused `bun test`, full `bun test --only-failures` (headless), and typecheck in order. If the focused test is a live reference capture test, run `bun run plan_final/test-live-reference.ts <focused test path>` after the focused headless test. If the step is an oracle or acceptance gate that requires live evidence, run `bun run plan_final/test-live-reference.ts` once before typecheck.
 9. If any command fails, log it, fix it, and rerun the full sequence from the beginning. Live reference capture tests are serialized by `bun run plan_final/test-live-reference.ts`; do not run several live DOOM windows in parallel on the same desktop.
 10. After all required commands pass, write the step evidence and status JSON.
 11. Run `bun run plan_final/sync-master-checklist.ts` so `plan_final/MASTER_CHECKLIST.md` reflects completed status JSON files.

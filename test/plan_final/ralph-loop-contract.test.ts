@@ -40,9 +40,9 @@ describe('plan_final Ralph-loop launcher contract', () => {
 
     expect(text).toContain('`bun run format`');
     expect(text).toContain('focused `bun test`');
-    expect(text).toContain('full `bun test`');
+    expect(text).toContain('full `bun test --only-failures`');
     expect(text).toContain('typecheck');
-    expect(text).toMatch(/bun run format[^]+focused `bun test`[^]+full `bun test`[^]+typecheck/);
+    expect(text).toMatch(/bun run format[^]+focused `bun test`[^]+full `bun test --only-failures`[^]+typecheck/);
   });
 
   test('PROMPT.md mandates fix-rerun on any failure rather than skipping or weakening tests', async () => {

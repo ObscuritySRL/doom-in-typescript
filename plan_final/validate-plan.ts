@@ -38,7 +38,7 @@ const STEP_REQUIRED_HEADINGS = Object.freeze([
   '## final evidence',
 ]);
 
-const REQUIRED_VERIFICATION_COMMANDS = Object.freeze(['`bun run format`', '`bun test ', '`bun test`', '`bun x tsc --noEmit --project tsconfig.json`']);
+const REQUIRED_VERIFICATION_COMMANDS = Object.freeze(['`bun run format`', '`bun test ', '`bun test --only-failures`', '`bun x tsc --noEmit --project tsconfig.json`']);
 
 const FINAL_GATE_FORBIDDEN_TOKENS = Object.freeze(['pending', 'contract-only', 'manifest-only', 'unimplemented', 'human attestation alone']);
 
@@ -354,9 +354,9 @@ export function findStatusSchemaViolations(status: CompletionStatusRecord, evide
     violations.push({ category: 'evidence-missing-format-command', detail: 'Evidence commands must include `bun run format`.' });
   }
 
-  const fullTestPattern = /^bun test\s*$/;
+  const fullTestPattern = /^bun test(?:\s+--only-failures)?\s*$/;
   if (!commandStrings.some((command) => fullTestPattern.test(command.trim()))) {
-    violations.push({ category: 'evidence-missing-full-test-command', detail: 'Evidence commands must include the full `bun test` run.' });
+    violations.push({ category: 'evidence-missing-full-test-command', detail: 'Evidence commands must include the full `bun test --only-failures` run.' });
   }
 
   const focusedTestPattern = /^bun test\s+\S/;

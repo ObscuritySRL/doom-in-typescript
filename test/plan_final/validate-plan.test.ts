@@ -6,7 +6,7 @@ import { findCrossLaneWriteLockOverlaps, findEvidencePathMismatch, findFinalProo
 const FORTY_HEX = '0123456789abcdef0123456789abcdef01234567';
 
 function fullEvidenceCommands(focusedTestPath: string): readonly string[] {
-  return ['bun run format', `bun test ${focusedTestPath}`, 'bun test', 'bun x tsc --noEmit --project tsconfig.json'];
+  return ['bun run format', `bun test ${focusedTestPath}`, 'bun test --only-failures', 'bun x tsc --noEmit --project tsconfig.json'];
 }
 
 describe('plan_final control center', () => {
@@ -193,7 +193,7 @@ describe('plan_final completion status schema', () => {
 
   test('rejects evidence missing the full bun test run', () => {
     const status = { stepId: '00-099', lane: 'governance', status: 'COMPLETED', evidence: evidencePath, commitSha: FORTY_HEX };
-    const evidence = { commands: fullEvidenceCommands(focusedTestPath).filter((command) => command !== 'bun test') };
+    const evidence = { commands: fullEvidenceCommands(focusedTestPath).filter((command) => command !== 'bun test --only-failures') };
     const violations = findStatusSchemaViolations(status, evidence);
 
     expect(violations.some((violation) => violation.category === 'evidence-missing-full-test-command')).toBe(true);
