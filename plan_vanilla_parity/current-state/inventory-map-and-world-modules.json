@@ -422,7 +422,7 @@
       "exported_types": ["CheckSightFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/map/blockmap.ts", "src/map/blockmap.ts", "src/map/mapSetup.ts", "src/world/checkPosition.ts", "src/world/checkPosition.ts", "src/world/mobj.ts", "src/world/mobj.ts"],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 1
     },
     {

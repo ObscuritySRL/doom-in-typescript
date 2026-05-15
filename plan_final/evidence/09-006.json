@@ -1,0 +1,31 @@
+{
+  "stepId": "09-006",
+  "lane": "player-weapons-items",
+  "title": "wire-projectile-weapons",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-projectile-weapons.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/09-006.json",
+    "plan_final/progress/player-weapons-items/09-006.md",
+    "plan_final/status/09-006.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wireProjectileWeapons.ts",
+    "test/plan_final/player/wire-projectile-weapons.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-projectile-weapons.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16282, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-006 wires the projectile weapons via one src/vanilla facade (wireProjectileWeapons.ts) re-exporting the read-only src/player/projectiles.ts (aFireMissile rocket, aFirePlasma, aFireBFG, aBFGSpray + spawnPlayerMissile/explodeMissile/checkMissileSpawn/context, PROJECTILE_ACTION_COUNT 4, wireProjectileActions; PROJECTILE_AIM_RANGE/NUDGE, MISSILE_SPAWN_Z_OFFSET, jitter masks, BFG_SPRAY_* constants) and src/world/radiusAttack.ts (radiusAttack splash). VANILLA_PROJECTILE_WEAPON_INVARIANTS pins five rules (4 registered actions; autoaim range+nudge; fixed spawn-z + tic jitter; 40-ray BFG spray over ANG90/2; explodeMissile -> radiusAttack splash). The focused test exercises the projectile constants, the four callable fire actions + explodeMissile/radiusAttack, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/player/projectiles.ts src 0->1 (test unchanged at 1)",
+      "src/world/radiusAttack.ts src 1->2 (test unchanged at 1)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/09-006.json marks it COMPLETED.",
+    "flakeNote": "The full-suite first pass's lone failure was the documented-flaky oracle: captureReferenceSaveLoad live timing test; it passed on the immediate rerun (16282 pass / 0 fail). Unrelated to this projectile facade.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 09-006 paths from concurrent shared-index activity."
+  }
+}
