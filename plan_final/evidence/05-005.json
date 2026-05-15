@@ -1,0 +1,39 @@
+{
+  "stepId": "05-005",
+  "lane": "wad-assets",
+  "title": "wire-sprite-assets",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-sprite-assets.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-005.json",
+    "plan_final/progress/wad-assets/05-005.md",
+    "plan_final/status/05-005.json",
+    "src/assets/wireSpriteFrameCacheFromIwadResourceCache.ts",
+    "test/plan_final/wad/wire-sprite-assets.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-sprite-assets.test.ts",
+    "passed": 10,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15870,
+    "failed": 0,
+    "files": 839
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-005 wires the sprite namespace, rotation/flip semantics, and the firstspritelump-relative frame cache into a runtime artifact the mobj simulator and renderer can consume. The new bridge at src/assets/wireSpriteFrameCacheFromIwadResourceCache.ts consumes an IwadResourceCache from 05-001 plus the underlying WAD byte buffer (intentionally NOT retained inside the cache per the 05-001 design) and produces a frozen SpriteFrameCache via the read-only buildSpriteFrameCache primitive. Failure modes (missing S_START/S_END markers, sprite lump size below patch-header bytes, sprite-name shape errors) propagate verbatim from the upstream primitives — no new error class is introduced.",
+    "publicSurface": [
+      "wireSpriteFrameCacheFromIwadResourceCache(iwadResourceCache: IwadResourceCache, wadBuffer: Buffer): SpriteFrameCache"
+    ],
+    "assetFilesModified": false,
+    "renderFilesModified": false,
+    "crossPlanInventoryRewriteRequired": false
+  }
+}
