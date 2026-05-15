@@ -145,8 +145,8 @@
         "src/world/mobj.ts",
         "src/world/zMovement.ts"
       ],
-      "src_importer_count": 2,
-      "test_importer_count": 3
+      "src_importer_count": 3,
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/player/pickups.ts",

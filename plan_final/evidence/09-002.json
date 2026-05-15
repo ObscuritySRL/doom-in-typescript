@@ -1,0 +1,23 @@
+{
+  "stepId": "09-002",
+  "lane": "player-weapons-items",
+  "title": "wire-player-ticcmd-application",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-player-ticcmd-application.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/09-002.json",
+    "plan_final/progress/player-weapons-items/09-002.md",
+    "plan_final/status/09-002.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wirePlayerTiccmdApplication.ts",
+    "test/plan_final/player/wire-player-ticcmd-application.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-player-ticcmd-application.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16084, "failed": 0, "files": 862 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-002 aggregates the player-movement functions (thrust, calcHeight, movePlayer) and ticcmd button-decode helpers (applyUseButtonLatch, decodeWeaponChangeRequest) plus the BT_/BTS_ flag constants into a single src/vanilla re-export facade for P_PlayerThink. The read-only src/player/movement.ts and implement-ticcmd-application.ts already implement vanilla p_user.c / g_game.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/player/movement.ts src 2->3 test 3->4"]
+  }
+}
