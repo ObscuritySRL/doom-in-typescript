@@ -1,12 +1,13 @@
 // Vanilla DOOM 1.9 parity Bun entrypoint.
 //
-// `plan_vanilla_parity/establish-vanilla-parity-control-center.md` pins
-// `bun run doom.ts` as the canonical runtime target for the vanilla DOOM 1.9
-// parity rebuild. Step 03-001 of the launch lane creates this file as the
-// skeleton entrypoint so `bun run doom.ts` resolves and exits cleanly from
-// this point forward. Subsequent launch-lane steps (03-002 onward)
-// progressively implement vanilla command-line parsing, IWAD discovery,
-// `D_DoomMain` init order, the `D_DoomLoop` per-frame schedule, and clean
-// quit semantics. No simulation, no rendering, and no audio side effects
-// are wired in by 03-001.
-export {};
+// `bun run doom.ts` is the canonical runtime target for the vanilla DOOM 1.9
+// parity rebuild. Under the owner-authorized plan supersession (plan_final
+// supersedes plan_vanilla_parity and plan_fps), this root entrypoint is wired
+// to the real vanilla `D_DoomMain` surface in `src/vanilla/runDoomMain.ts`
+// instead of remaining an `export {}` skeleton. The forwarded argv is the
+// process argument vector with the `bun` and script-path prefixes removed, so
+// `bun run doom.ts -iwad doom/DOOM1.WAD -skill 3` flows the vanilla command
+// line straight into `runDoomMain`.
+import { runDoomMain } from './src/vanilla/runDoomMain.ts';
+
+await runDoomMain(Bun.argv.slice(2));

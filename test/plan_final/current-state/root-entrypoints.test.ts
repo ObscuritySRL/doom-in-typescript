@@ -109,14 +109,14 @@ describe('plan_final current-state: root entrypoints inventory', () => {
     }
   });
 
-  test('doom.ts is recorded as the canonical vanilla runtime target and as skeleton-only', () => {
+  test('doom.ts is recorded as the canonical vanilla runtime target wired to runDoomMain', () => {
     const inventory = readInventory();
     const doomEntry = inventory.root_scripts.find((entry) => entry.relative_path === 'doom.ts');
 
     expect(doomEntry).toBeDefined();
     expect(doomEntry?.role).toBe('canonical-vanilla-runtime-target');
-    expect(doomEntry?.current_behavior).toBe('skeleton-export-empty');
-    expect(doomEntry?.wires_vanilla_runtime).toBe(false);
+    expect(doomEntry?.current_behavior).toBe('vanilla-runtime-runner');
+    expect(doomEntry?.wires_vanilla_runtime).toBe(true);
   });
 
   test('src/main.ts is recorded as the current simplified launcher entrypoint that does not wire vanilla runtime', () => {
@@ -157,11 +157,11 @@ describe('plan_final current-state: root entrypoints inventory', () => {
     expect(inventory.package_metadata.has_test_script).toBe(Object.hasOwn(packageJson.scripts ?? {}, 'test'));
   });
 
-  test('gap_summary reflects the current simplified-launcher state and pins the final runtime target', () => {
+  test('gap_summary reflects the wired doom.ts runtime entrypoint and pins the final runtime target', () => {
     const inventory = readInventory();
 
-    expect(inventory.gap_summary.doom_ts_is_runtime_entrypoint).toBe(false);
-    expect(inventory.gap_summary.doom_ts_skeleton_only).toBe(true);
+    expect(inventory.gap_summary.doom_ts_is_runtime_entrypoint).toBe(true);
+    expect(inventory.gap_summary.doom_ts_skeleton_only).toBe(false);
     expect(inventory.gap_summary.src_main_is_simplified_launcher).toBe(true);
     expect(inventory.gap_summary.package_json_has_doom_script).toBe(false);
     expect(inventory.gap_summary.intended_final_runtime_target).toBe('bun run doom.ts');

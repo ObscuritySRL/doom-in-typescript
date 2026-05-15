@@ -6,11 +6,11 @@
   "repository_root": "D:/Projects/doom-in-typescript",
   "runtime_reachability_summary": {
     "doom_ts_relative_path": "doom.ts",
-    "doom_ts_imports_count": 0,
-    "doom_ts_is_skeleton": true,
-    "subsystems_reachable_from_doom_ts": [],
-    "subsystems_not_reachable_from_doom_ts_count": 23,
-    "notes": "doom.ts is currently a `export {}` skeleton with zero imports. No src/ subsystem or root module is reachable from `bun run doom.ts`. The full implementation surface is wired only through the simplified `bun run src/main.ts` launcher path."
+    "doom_ts_imports_count": 1,
+    "doom_ts_is_skeleton": false,
+    "subsystems_reachable_from_doom_ts": ["src/bootstrap/"],
+    "subsystems_not_reachable_from_doom_ts_count": 22,
+    "notes": "Under the owner-authorized plan supersession, doom.ts imports src/vanilla/runDoomMain.ts and is no longer an `export {}` skeleton. runDoomMain wires the vanilla command-line + launch-context surface, transitively reaching the src/bootstrap/ subsystem (cmdline, gameMode, IWAD discovery). The remaining src/ subsystems are pulled in progressively as the launch-host-input lane fleshes out the runDoomMain D_DoomMain/D_DoomLoop body."
   },
   "subsystems": [
     {

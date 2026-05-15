@@ -8,14 +8,14 @@
     {
       "relative_path": "doom.ts",
       "exists": true,
-      "size_bytes": 676,
-      "line_count": 12,
-      "sha256": "571e5dadc6da3a27c3ce0fe72701df05818ef339647a00b1c54940df209a8e84",
+      "size_bytes": 722,
+      "line_count": 13,
+      "sha256": "bc2404bc00a692f29175d0cec2f42a51eb1fb3b4fedfe3f1a1d5a91aff18a4f4",
       "role": "canonical-vanilla-runtime-target",
-      "current_behavior": "skeleton-export-empty",
-      "wires_vanilla_runtime": false,
+      "current_behavior": "vanilla-runtime-runner",
+      "wires_vanilla_runtime": true,
       "wires_simplified_launcher": false,
-      "notes": "Created by plan_vanilla_parity step 03-001 as a skeleton entrypoint; emits export {} only and does not run any simulation, render, or audio path."
+      "notes": "Under the owner-authorized plan supersession, doom.ts imports and awaits runDoomMain(Bun.argv.slice(2)) from src/vanilla/runDoomMain.ts, making bun run doom.ts the wired vanilla D_DoomMain entrypoint. The runDoomMain body is progressively fleshed out by the launch-host-input lane."
     },
     {
       "relative_path": "src/main.ts",
@@ -52,8 +52,8 @@
     "script_count": 2
   },
   "gap_summary": {
-    "doom_ts_is_runtime_entrypoint": false,
-    "doom_ts_skeleton_only": true,
+    "doom_ts_is_runtime_entrypoint": true,
+    "doom_ts_skeleton_only": false,
     "src_main_is_simplified_launcher": true,
     "package_json_has_doom_script": false,
     "intended_final_runtime_target": "bun run doom.ts"

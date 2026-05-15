@@ -94,14 +94,14 @@ describe('plan_final current-state: runtime implementation modules inventory', (
     }
   });
 
-  test('runtime_reachability_summary matches the empty doom.ts skeleton state', () => {
+  test('runtime_reachability_summary matches the wired doom.ts runtime state', () => {
     const inventory = readInventory();
 
     expect(inventory.runtime_reachability_summary.doom_ts_relative_path).toBe(DOOM_TS_PATH);
     expect(inventory.runtime_reachability_summary.doom_ts_imports_count).toBe(countDoomTsImports());
-    expect(inventory.runtime_reachability_summary.doom_ts_is_skeleton).toBe(true);
-    expect(inventory.runtime_reachability_summary.subsystems_reachable_from_doom_ts).toEqual([]);
-    expect(inventory.runtime_reachability_summary.subsystems_not_reachable_from_doom_ts_count).toBe(inventory.subsystems.length);
+    expect(inventory.runtime_reachability_summary.doom_ts_is_skeleton).toBe(countDoomTsImports() === 0);
+    expect(inventory.runtime_reachability_summary.subsystems_reachable_from_doom_ts.length).toBeGreaterThan(0);
+    expect(inventory.runtime_reachability_summary.subsystems_not_reachable_from_doom_ts_count).toBe(inventory.subsystems.length - inventory.runtime_reachability_summary.subsystems_reachable_from_doom_ts.length);
     expect(inventory.runtime_reachability_summary.notes.length).toBeGreaterThan(0);
   });
 
