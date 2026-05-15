@@ -1,0 +1,21 @@
+{
+  "stepId": "06-008",
+  "lane": "render",
+  "title": "wire-wipes-and-borders",
+  "commands": ["bun run format", "bun test test/plan_final/render/wire-wipes-and-borders.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/06-008.json",
+    "plan_final/progress/render/06-008.md",
+    "plan_final/status/06-008.json",
+    "src/vanilla/wireWipesAndBorders.ts",
+    "test/plan_final/render/wire-wipes-and-borders.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/render/wire-wipes-and-borders.test.ts", "passed": 10, "failed": 0 },
+  "fullSuite": { "passed": 16077, "failed": 0, "files": 861 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-008 aggregates the view-border-rendering and screen-size-block entry points into a single src/vanilla re-export facade for the framebuffer presentation/composition pass. The read-only src/render/implement-view-border-rendering.ts and src/render/implement-screen-size-blocks.ts already implement vanilla R_DrawViewBorder / R_SetViewSize semantics; pure barrel + frozen manifest, no source modification. No cross-plan inventory rewrite was required (the two implement-* modules are not importer-counted in the renderer inventory).",
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
