@@ -211,7 +211,7 @@
       "exported_types": ["MusicDeviceAction", "StartMusicRequest"],
       "exported_const_enums": [],
       "external_imports": ["src/audio/musParser.ts", "src/audio/musScheduler.ts", "src/audio/musScheduler.ts"],
-      "src_importer_count": 11,
+      "src_importer_count": 12,
       "test_importer_count": 10
     },
     {

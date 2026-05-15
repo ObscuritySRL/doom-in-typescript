@@ -1,0 +1,30 @@
+{
+  "stepId": "11-007",
+  "lane": "audio",
+  "title": "wire-music-selection",
+  "commands": ["bun run format", "bun test test/plan_final/audio/wire-music-selection.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/11-007.json",
+    "plan_final/progress/audio/11-007.md",
+    "plan_final/status/11-007.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireMusicSelection.ts",
+    "test/plan_final/audio/wire-music-selection.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/audio/wire-music-selection.test.ts", "passed": 9, "failed": 0 },
+  "fullSuite": { "passed": 16227, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-007 wires per-game-state music selection into one src/vanilla facade (wireMusicSelection.ts) re-exporting the read-only src/audio/musicSystem.ts engine (S_ChangeMusic/S_StartMusic/S_StopMusic/S_PauseSound/S_ResumeSound/S_SetMusicVolume port + resolveMusicNumber + the volume/device/MUS constants) plus the per-state music-cue types from src/ui/frontEndSequence.ts (ShowPageTickAction.musicLump), src/ui/intermission.ts (IntermissionMusicCue), and src/ui/finale.ts (FinaleMusicCue). VANILLA_MUSIC_SELECTION_INVARIANTS pins six parity rules: title/demo page music driven by ShowPageTickAction; level music resolves MUS_INTRO->MUS_INTROA only on an OPL device with D_INTROA; intermission uses mus_inter (Doom1, not commercial mus_dm2int); finale uses mus_victor then mus_bunny on episode 3 (mus_read_m for Doom2); pause halts and resume restores; music volume integer [0,127] default 8 with RangeError on out-of-range. No const enums re-exported (verbatimModuleSyntax); value/type re-exports split. The focused test exercises the real pure music engine (createMusicSystem default state, setMusicVolume action + RangeError, pause/resume no-op without a song, resolveMusicNumber INTRO->INTROA gating), the frozen/sorted manifest, the re-export specifier set (multi-line-tolerant regex filtered to ../-prefixed specifiers — the line-anchored variant breaks once prettier wraps a >240-char export list), and dynamic same-reference identity, keeping the test inventory-neutral.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/audio/musicSystem.ts src 11->12 (test unchanged at 10)",
+      "src/ui/finale.ts src 1->2 (test unchanged at 2)",
+      "src/ui/frontEndSequence.ts src 23->24 (test unchanged at 23)",
+      "src/ui/intermission.ts src 1->2 (test unchanged at 2)"
+    ],
+    "parallelAgentNote": "During verification a concurrent agent left uncommitted/staged in-flight edits to tools/reference/captureReferenceDemoSync.ts and plan_final/PROMPT.md/MASTER_CHECKLIST.md (outside this step's write lock). The tools-reference inventory failure cleared once that agent reconciled its manifest; this step's commit uses a pathspec-limited git commit so it captures only the explicit 11-007 paths and does not sweep in the concurrent agent's staged work."
+  }
+}
