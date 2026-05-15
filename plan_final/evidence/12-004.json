@@ -1,0 +1,30 @@
+{
+  "stepId": "12-004",
+  "lane": "save-config-demo",
+  "title": "wire-savegame-write",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-savegame-write.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-004.json",
+    "plan_final/progress/save-config-demo/12-004.md",
+    "plan_final/status/12-004.json",
+    "plan_vanilla_parity/current-state/inventory-save-and-config-modules.json",
+    "src/vanilla/wireSavegameWrite.ts",
+    "test/plan_final/save/wire-savegame-write.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-savegame-write.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16256, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-004 wires the savegame write path via one src/vanilla facade (wireSavegameWrite.ts) re-exporting the read-only saveHeader (writeSaveGameHeader/readSaveGameHeader, version 109, fixed header size), coreSerialization (writeArchivedPlayers/Mobjs/World + read*, SAVEGAME_MOBJ_SIZE 154 / PLAYER_SIZE 280, THINKER_CLASS_END 0 / _MOBJ 1), and specialSerialization (writeArchivedSpecials/readArchivedSpecials, per-class special sizes + class tags). VANILLA_SAVEGAME_WRITE_INVARIANTS pins five rules (fixed header w/ version 109; fixed mobj/player record sizes; world sectors->lines->sides->thinkers order; thinker list terminated by CLASS_END 0; specials serialized by class with fixed sizes). The shared SAVEGAME_PLAYER_COUNT / SaveGamePlayerPresence names are surfaced from saveHeader only to avoid a TS duplicate-export. The focused test exercises a real writeSaveGameHeader/readSaveGameHeader round-trip + version-corruption rejection, the struct-size constants, the multi-line-tolerant ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/save/coreSerialization.ts src 2->3 (test unchanged at 4)",
+      "src/save/saveHeader.ts src 12->13 (test unchanged at 15)",
+      "src/save/specialSerialization.ts src 1->2 (test unchanged at 4)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-004.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 12-004 paths from concurrent shared-index activity."
+  }
+}
