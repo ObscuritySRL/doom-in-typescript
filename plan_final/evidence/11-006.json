@@ -1,0 +1,51 @@
+{
+  "stepId": "11-006",
+  "lane": "audio",
+  "title": "wire-mus-opl-runtime",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/audio/wire-mus-opl-runtime.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/11-006.json",
+    "plan_final/progress/audio/11-006.md",
+    "plan_final/status/11-006.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "plan_vanilla_parity/current-state/inventory-renderer-modules.json",
+    "src/vanilla/musOplRuntime.ts",
+    "test/plan_final/audio/wire-mus-opl-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/audio/wire-mus-opl-runtime.test.ts",
+    "passed": 8,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15976,
+    "failed": 0,
+    "files": 849
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-006 wires the MUS lump parser, the per-tic MUS event scheduler, the OPL synth primitives (phase increment, waveform sample, total-level gain, operator combiner), and the musicSystem start/stop/pause/resume/change action machine into a single frozen runtime façade. The new wrapper at src/vanilla/musOplRuntime.ts is a thin pass-through onto the read-only audio primitives — no additional state is allocated. The façade is frozen so downstream subsystems cannot replace the method references.",
+    "publicSurface": [
+      "createMusOplRuntime(): MusOplRuntime",
+      "MusOplRuntime interface (parseMus, createScheduler, advanceScheduler, createMusicSystem, startMusic, stopMusic, pauseMusic, resumeMusic, changeMusic, setMusicVolume, advanceMusic, isMusicPlaying, resolveMusicNumber, computePhaseIncrement, computeWaveformSample, computeTotalLevelGain, combineOperators)"
+    ],
+    "audioFilesModified": false,
+    "assetFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/audio/musParser.ts: src_importer_count 2→3, test_importer_count 7→8 (musOplRuntime.ts indirect via reexport)",
+      "src/audio/musScheduler.ts: src_importer_count 2→3, test_importer_count 4→5",
+      "src/audio/musicSystem.ts: src_importer_count 10→11, test_importer_count 9→10",
+      "src/audio/oplSynth.ts: src_importer_count 0→1, test_importer_count 2→3",
+      "src/render/maskedTextures.ts: test_importer_count 2→3 (parallel-agent drift)",
+      "src/render/solidWalls.ts: test_importer_count 3→4 (parallel-agent drift)",
+      "src/render/twoSidedWalls.ts: test_importer_count 2→3 (parallel-agent drift)"
+    ]
+  }
+}

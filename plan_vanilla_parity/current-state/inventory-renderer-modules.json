@@ -122,7 +122,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/render/patchDraw.ts", "src/render/projection.ts", "src/render/spriteClip.ts"],
       "src_importer_count": 0,
-      "test_importer_count": 2
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/render/patchDraw.ts",
@@ -237,7 +237,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/render/drawPrimitives.ts", "src/render/projection.ts", "src/render/renderLimits.ts", "src/render/wallColumns.ts", "src/render/wallColumns.ts"],
       "src_importer_count": 1,
-      "test_importer_count": 3
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/render/spriteClip.ts",
@@ -291,7 +291,7 @@
       "exported_const_enums": [],
       "external_imports": ["src/render/drawPrimitives.ts", "src/render/projection.ts", "src/render/renderLimits.ts", "src/render/solidWalls.ts", "src/render/wallColumns.ts", "src/render/wallColumns.ts"],
       "src_importer_count": 0,
-      "test_importer_count": 2
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/render/visplaneSpans.ts",
