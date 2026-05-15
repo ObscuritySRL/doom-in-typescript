@@ -1,0 +1,26 @@
+{
+  "stepId": "12-003",
+  "lane": "save-config-demo",
+  "title": "wire-save-slot-ui",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-save-slot-ui.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-003.json",
+    "plan_final/progress/save-config-demo/12-003.md",
+    "plan_final/status/12-003.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireSaveSlotUi.ts",
+    "test/plan_final/save/wire-save-slot-ui.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-save-slot-ui.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16249, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-003 wires the save/load slot UI via one src/vanilla facade (wireSaveSlotUi.ts) re-exporting the read-only define-save-directory-policy (6 doomsav<N>.dsg slots, temp.dsg staging, save dir policy), implement-save-slot-descriptions (24-byte description codec, 23 printable-ASCII user chars, EMPTY label, isVanillaSaveSlotEmpty), and the SAVESTRINGSIZE + MenuAction save/load vocabulary from src/ui/menus.ts. VANILLA_SAVE_SLOT_UI_INVARIANTS pins five rules (6 dsg slots; temp.dsg staging; 24-byte/23-char printable description; EMPTY empty-slot label; slot-select/quicksave/quickload/save-name-entry via 07-003 MenuAction kinds). The focused test exercises the real slot-filename policy + recognizer round-trip, the description encode/decode round-trip, empty-slot labelling, the constants, the multi-line-tolerant ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax). Only src/ui/menus.ts is importer-tracked among the re-exported modules (the src/save modules are not importer-tracked).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/menus.ts src 24->25 (test unchanged at 24)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-003.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 12-003 paths from concurrent shared-index activity."
+  }
+}
