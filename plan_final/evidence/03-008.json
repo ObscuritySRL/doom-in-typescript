@@ -1,0 +1,46 @@
+{
+  "stepId": "03-008",
+  "lane": "launch-host-input",
+  "title": "wire-deterministic-input-trace",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/launch/wire-deterministic-input-trace.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/03-008.json",
+    "plan_final/progress/launch-host-input/03-008.md",
+    "plan_final/status/03-008.json",
+    "plan_vanilla_parity/current-state/inventory-renderer-modules.json",
+    "src/vanilla/inputTrace.ts",
+    "test/plan_final/launch/wire-deterministic-input-trace.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/launch/wire-deterministic-input-trace.test.ts",
+    "passed": 22,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15870,
+    "failed": 0,
+    "files": 839
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-008 wires deterministic input trace record/replay for oracle and acceptance runs. The new src/vanilla/inputTrace.ts exposes VanillaInputTraceRecorder (captures VanillaEvents tagged with a tic timestamp and freezes them into an InputScriptPayload), VanillaInputTraceReplayer (consumes a frozen InputScriptPayload and posts events into a VanillaEventQueue at matching tics), and the convertVanillaEventToInputScriptEvent / convertInputScriptEventToVanillaEvent pure helpers that round-trip the four shared event kinds. The mouse-move script kind has no VanillaEvent analog (motion is accumulated separately by src/input/mouse.ts) and is silently skipped during replay.",
+    "publicSurface": [
+      "VANILLA_TIC_RATE_HZ = 35",
+      "VanillaInputTraceRecorderOptions interface (description, targetRunMode, ticRateHz?)",
+      "VanillaInputTraceRecorder class (advanceTic, record, freezePayload)",
+      "VanillaInputTraceReplayer class (replayTic, pendingEventCount)",
+      "convertVanillaEventToInputScriptEvent(event, tic): InputScriptEvent | null",
+      "convertInputScriptEventToVanillaEvent(event): VanillaEvent | null"
+    ],
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/render/projection.ts test_importer_count: 24 → 25 (one new parallel-agent test file landed in this session imports projection.ts; bumped to clear the renderer-inventory test failure)"
+    ]
+  }
+}
