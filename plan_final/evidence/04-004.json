@@ -1,0 +1,46 @@
+{
+  "stepId": "04-004",
+  "lane": "runtime-core",
+  "title": "wire-try-run-tics",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/runtime/wire-try-run-tics.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/04-004.json",
+    "plan_final/progress/runtime-core/04-004.md",
+    "plan_final/status/04-004.json",
+    "src/vanilla/wireTryRunTics.ts",
+    "test/plan_final/runtime/wire-try-run-tics.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/runtime/wire-try-run-tics.test.ts",
+    "passed": 17,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15809,
+    "failed": 0,
+    "files": 835
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-004 wires the read-only TicRunner class (src/bootstrap/tryRunTics.ts) to live callbacks driven by the event queue from 03-006. The new src/vanilla/wireTryRunTics.ts exposes a mutable VanillaTryRunTicsState carrying per-callback counters (startTicInvocations, buildTiccmdInvocations, tickerInvocations, advanceDemoInvocations), a drainedEvents log, a renderInvalidated flag, and an advanceDemoRequested toggle. The buildVanillaTicCallbacks builder returns a TicCallbacks whose startTic drains the event queue into the log, buildTiccmd increments its counter and returns EMPTY_TICCMD (real ticcmd building lands in the player-weapons-items lane), ticker increments its counter and flips renderInvalidated, advancedemo proxies state.advanceDemoRequested live via a getter, and doAdvanceDemo clears the flag. The runVanillaTryRunTicsDriver function runs one TicRunner.tryRunTics call with these callbacks and returns the number of tics executed.",
+    "publicSurface": [
+      "VanillaTryRunTicsState interface (mutable counters + drainedEvents log + renderInvalidated + advanceDemoRequested)",
+      "createVanillaTryRunTicsState(): VanillaTryRunTicsState",
+      "buildVanillaTicCallbacks(state, eventQueue): TicCallbacks",
+      "runVanillaTryRunTicsDriver(runner, timeSource, state, eventQueue): number"
+    ],
+    "tryRunTicsContractWired": ["startTic", "buildTiccmd", "ticker", "advancedemo", "doAdvanceDemo"],
+    "ticRunnerFilesModified": false,
+    "ticcmdFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ and src/bootstrap/tryRunTics.ts are consumed by the new wrapper but the bootstrap module is read-only (its src_importer_count rises by 1 due to the new vanilla module, but the inventory test passed at full-suite runtime so the JSON already reflects the bump from the in-flight parallel-agent updates landed during this session). The full 15809-test suite passes without any explicit plan_vanilla_parity inventory rewrite from this step."
+  }
+}
