@@ -1,0 +1,26 @@
+{
+  "stepId": "08-009",
+  "lane": "map-world",
+  "title": "wire-death-reborn-and-transitions",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-death-reborn-and-transitions.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/08-009.json",
+    "plan_final/progress/map-world/08-009.md",
+    "plan_final/status/08-009.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wireDeathRebornAndTransitions.ts",
+    "test/plan_final/map/wire-death-reborn-and-transitions.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-death-reborn-and-transitions.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16345, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-009 wires the player death/reborn/transition path via one src/vanilla facade (wireDeathRebornAndTransitions.ts) re-exporting the read-only implement-death-and-reborn-flow (stepVanillaDeathThink, PLAYER_STATE_LIVE/DEAD/REBORN 0/1/2, VANILLA_DEAD_VIEWHEIGHT_FIXED 6*FRACUNIT / DROP 1*FRACUNIT, VANILLA_DEATHMATCH_RESPAWN_DELAY_TICS 10, DeathThink I/O + PlayerState type alias) and playerSpawn (playerReborn/createPlayer/bringUpWeapon/setupPsprites + NUMWEAPONS 9/NUMAMMO 4/NUMCARDS 6/NUMPOWERS 6/NUMPSPRITES 2). VANILLA_DEATH_REBORN_INVARIANTS pins five rules (3-value player state; dead view drop+clamp at 6; reborn-only-on-use; playerReborn starting loadout; 10-tic DM respawn delay). The playerSpawn const enums (PlayerState/WeaponType/AmmoType/PowerType/CardType/PsprNum) are not re-exported (verbatimModuleSyntax); the death-flow PlayerState 0|1|2 type alias is surfaced instead (resolving the PlayerState name collision between the two modules). The focused test exercises real stepVanillaDeathThink view-drop/clamp/reborn-on-use behavior, the constants, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. This step became eligible after 08-008 completed (itself unblocked by the 442975e cycle fix).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/player/playerSpawn.ts src 15->16 (test unchanged at 15)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/08-009.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 08-009 paths from concurrent shared-index activity."
+  }
+}

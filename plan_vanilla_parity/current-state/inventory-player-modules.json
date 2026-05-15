@@ -227,7 +227,7 @@
       "exported_types": ["PspriteActionFunction"],
       "exported_const_enums": ["AmmoType", "CardType", "PlayerState", "PowerType", "PsprNum", "WeaponType"],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/input/ticcmd.ts", "src/input/ticcmd.ts", "src/world/mobj.ts", "src/world/mobj.ts"],
-      "src_importer_count": 15,
+      "src_importer_count": 16,
       "test_importer_count": 15
     },
     {
