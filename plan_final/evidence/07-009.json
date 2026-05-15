@@ -1,0 +1,23 @@
+{
+  "stepId": "07-009",
+  "lane": "ui",
+  "title": "wire-pause-and-help-overlays",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-pause-and-help-overlays.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-009.json",
+    "plan_final/progress/ui/07-009.md",
+    "plan_final/status/07-009.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wirePauseAndHelpOverlays.ts",
+    "test/plan_final/ui/wire-pause-and-help-overlays.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-pause-and-help-overlays.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16179, "failed": 0, "files": 876 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-009 wires the pause overlay, Read-This help routing, and the menu/demo interaction into a single src/vanilla re-export facade (wirePauseAndHelpOverlays.ts) over the read-only src/ui/frontEndSequence.ts and src/ui/menus.ts, plus a frozen VANILLA_PAUSE_HELP_INVARIANTS manifest pinning the two page-timer parity rules: (1) opening the menu or Read-This help over GS_DEMOSCREEN sets menuActive which gates the D_PageTicker pagetic decrement so the title/demo page does not advance under the overlay, and (2) an in-level PAUSE (gamestate===GS_LEVEL) freezes the game tic but the front-end page timer is not running during a level so the two timers stay independent. The prior session left the facade, focused test, and progress start entry but no verified completion; on resume the focused test and the facade docstring/@example both asserted shareware/registered -> HELP1 for getInitialHelpLump, which contradicts the SHA-pinned read-only src/ui/frontEndSequence.ts (vanilla ReadDef1/ReadDef2: retail->HELP1, commercial->HELP, shareware/registered/indetermined->HELP2). Because frontEndSequence.ts is read-only and authoritative, the test expectations and the facade docstring were corrected to the true vanilla mapping (strengthened to cover all five game modes, not weakened). Pure barrel + frozen manifest; no read-only ui source modified.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/frontEndSequence.ts src 22->23 test 22->23", "src/ui/menus.ts src 22->23 test 23->24"]
+  }
+}
