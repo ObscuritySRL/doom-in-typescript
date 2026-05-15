@@ -1,0 +1,34 @@
+{
+  "stepId": "06-004",
+  "lane": "render",
+  "title": "wire-masked-textures",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/render/wire-masked-textures.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/06-004.json",
+    "plan_final/progress/render/06-004.md",
+    "plan_final/status/06-004.json",
+    "test/plan_final/render/wire-masked-textures.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/render/wire-masked-textures.test.ts",
+    "passed": 9,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15976,
+    "failed": 0,
+    "files": 849
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-004 pins the public-surface contract of the masked-midtexture and two-sided-wall rendering primitives (renderMaskedSegRange, renderTwoSidedWall) and the MAXSHORT=0x7fff done-flag sentinel. The read-only src/render/maskedTextures.ts and src/render/twoSidedWalls.ts modules already implement the canonical R_RenderMaskedSegRange + R_RenderSegLoop two-sided pass; this step's focused test asserts the surface (function existence, arity, exported types, sentinel value, comment anchors) so later render-lane steps cannot accidentally regress the pre-pinned semantics. No source file is modified.",
+    "renderFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
