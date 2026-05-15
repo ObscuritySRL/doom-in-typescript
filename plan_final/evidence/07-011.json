@@ -1,0 +1,24 @@
+{
+  "stepId": "07-011",
+  "lane": "ui",
+  "title": "gate-ui-parity",
+  "commands": ["bun run format", "bun test test/plan_final/ui/gate-ui-parity.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/07-011.json",
+    "plan_final/progress/ui/07-011.md",
+    "plan_final/status/07-011.json",
+    "test/plan_final/ui/gate-ui-parity.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/gate-ui-parity.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16364, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-011 is the ui-lane parity gate. It adds one test (test/plan_final/ui/gate-ui-parity.test.ts) mirroring the canonical lane-gate pattern (test/plan_final/render/gate-renderer-parity.test.ts) over the ten ui prerequisites 07-001..07-010 (wire-title-loop-rendering, wire-menu-rendering, wire-menu-actions, wire-status-bar-drawing, wire-hud-messages, wire-automap-runtime, wire-intermission-runtime, wire-finale-runtime, wire-pause-and-help-overlays, wire-quit-and-endoom-ui). For every prerequisite it asserts: plan_final/status/<id>.json exists, declares status=COMPLETED with the matching stepId, and records a commitSha of length >= 7 (proof the work was pushed); plan_final/evidence/<id>.json exists, declares zero knownFailures and typecheck=clean; the prerequisite focused test file exists under test/plan_final/ui/; and the gate covers exactly the ten-element ordered prerequisite set. Unlike the reference file it avoids the banned cast class (AGENTS.md L201/L222) by parsing into Record<string, unknown> (any -> Record requires no cast) and field-narrowing via String()/Array.isArray, using a poison sentinel for malformed knownFailures so corrupt prerequisite evidence fails the gate rather than passing silently. The test imports nothing from a ../-prefixed src module, so no plan_vanilla_parity inventory module is affected (inventory-neutral; no probe/reconcile required). The step became eligible with all ten ui prerequisites COMPLETED (07-008 finalized this session at commit b16ba1a/b60b381).",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/07-011.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 07-011 paths from concurrent shared-index activity."
+  }
+}
