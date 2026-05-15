@@ -368,7 +368,7 @@
       "exported_types": ["SfxPitchClass", "StartSoundResult", "StartSoundResultKind"],
       "exported_const_enums": [],
       "external_imports": ["src/audio/channels.ts", "src/audio/channels.ts", "src/audio/spatial.ts", "src/audio/spatial.ts", "src/core/rng.ts"],
-      "src_importer_count": 4,
+      "src_importer_count": 5,
       "test_importer_count": 2
     },
     {

@@ -1,0 +1,26 @@
+{
+  "stepId": "11-004",
+  "lane": "audio",
+  "title": "wire-sound-callback-bridge",
+  "commands": ["bun run format", "bun test test/plan_final/audio/wire-sound-callback-bridge.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/11-004.json",
+    "plan_final/progress/audio/11-004.md",
+    "plan_final/status/11-004.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "src/vanilla/wireSoundCallbackBridge.ts",
+    "test/plan_final/audio/wire-sound-callback-bridge.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/audio/wire-sound-callback-bridge.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16377, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-004 connects the player, monster, switch, door, pickup, teleport, and UI sound callback sites to the single vanilla s_sound.c S_StartSound entry point through one src/vanilla facade (wireSoundCallbackBridge.ts) re-exporting the read-only src/audio/soundSystem.ts: the value surface (startSound, NUMSFX 109, SFX_ID_MIN 1, SFX_ID_MAX = NUMSFX, START_SOUND_LINK_MIN_VOLUME 1, PITCH_CLAMP_MIN 0, PITCH_CLAMP_MAX 255) and the type surface (SfxPitchClass, StartSoundRequest, StartSoundResultKind, StartSoundResult, StartSoundStartedResult, StartSoundDroppedResult), split into value vs type re-exports under verbatimModuleSyntax (no const enums exist in soundSystem.ts). VANILLA_SOUND_CALLBACK_BRIDGE_INVARIANTS pins five rules: the sfx_id range includes the vanilla `<= NUMSFX` quirk (RangeError on out-of-range); the sfxinfo_t.link volume/pitch early-return precedes the audibility work; a remote origin routes through adjustSoundParams with the same-position NORM_SEP override before the audibility check; pitch perturbation is partitioned saw (8 - (M_Random() & 15)) / static (no perturbation, zero RNG advance) / default (16 - (M_Random() & 31)) then clamped to [0,255]; and the stopSound-then-allocateChannel slot reuse order is preserved. The focused test is inventory-neutral: constants, typeof startSound, the frozen five-rule manifest, the ../-filtered single-specifier set ['../audio/soundSystem.ts'], and a dynamic same-reference identity check against src/audio/soundSystem.ts (proving the wired startSound IS the SHA-pinned implementation, so its behavior holds transitively). The step became eligible with prerequisites 11-003, 09-004, and 10-005 COMPLETED.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/audio/soundSystem.ts src 4->5 (test unchanged at 2) — the new src/vanilla/wireSoundCallbackBridge.ts facade is the only added importer"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/11-004.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 11-004 paths from concurrent shared-index activity."
+  }
+}
