@@ -1,0 +1,45 @@
+{
+  "stepId": "04-003",
+  "lane": "runtime-core",
+  "title": "wire-d-doomloop",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/runtime/wire-d-doomloop.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/04-003.json",
+    "plan_final/progress/runtime-core/04-003.md",
+    "plan_final/status/04-003.json",
+    "src/vanilla/runDoomLoop.ts",
+    "test/plan_final/runtime/wire-d-doomloop.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/runtime/wire-d-doomloop.test.ts",
+    "passed": 15,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15792,
+    "failed": 0,
+    "files": 834
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-003 wires the existing read-only MainLoop class (src/mainLoop.ts) to live callbacks driven by the shared VanillaRuntimeContext from 04-001. The new src/vanilla/runDoomLoop.ts driver constructs a MainLoop instance, runs the four pre-loop steps in canonical order (initialTryRunTics, restoreBuffer, executeSetViewSize, startGameLoop), then iterates runOneFrame() up to options.maxFrames (default 60) or until a caller-supplied shouldContinue predicate returns false. The pre-loop restoreBuffer step zeros both 320x200 indexed framebuffers (primary and back) in-place. The per-frame phase bodies are placeholders that record their label in a phase log so the focused test can prove canonical phase order ('startFrame', 'tryRunTics', 'updateSounds', 'display') without depending on subsystem side effects. The MainLoop class itself is unchanged.",
+    "publicSurface": [
+      "runVanillaDoomLoop(runtime: VanillaRuntimeContext, options?: VanillaDoomLoopOptions): VanillaDoomLoopRunResult",
+      "VanillaDoomLoopOptions interface (maxFrames?, shouldContinue?)",
+      "VanillaDoomLoopRunResult interface (framesRun, preLoopCallOrder, perFramePhaseOrder, exitReason)"
+    ],
+    "preLoopOrder": ["initialTryRunTics", "restoreBuffer", "executeSetViewSize", "startGameLoop"],
+    "perFrameOrder": ["startFrame", "tryRunTics", "updateSounds", "display"],
+    "mainLoopFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group. The new runDoomLoop.ts imports only MainLoop (from src/mainLoop.ts) and VanillaRuntimeContext (from src/vanilla/runtimeContext.ts). The focused test imports src/wad/directory.ts and src/wad/header.ts (via the synthetic IWAD builder), but those modules' inventory counts already reflect the imports after the previous lane's parallel-agent update. The full 15792-test suite passes without any plan_vanilla_parity inventory rewrite from this step."
+  }
+}
