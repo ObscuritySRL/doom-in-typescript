@@ -1,0 +1,26 @@
+{
+  "stepId": "08-005",
+  "lane": "map-world",
+  "title": "wire-door-specials",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-door-specials.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/08-005.json",
+    "plan_final/progress/map-world/08-005.md",
+    "plan_final/status/08-005.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireDoorSpecials.ts",
+    "test/plan_final/map/wire-door-specials.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-door-specials.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16400, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-005 wires the manual, walk, switch, locked, and timed door specials (with their open/close sounds) through one src/vanilla facade (wireDoorSpecials.ts) re-exporting the read-only src/specials/doors.ts: the timing/sound/message value surface (TICRATE 35, VDOORSPEED FRACUNIT*2, VDOORWAIT 150, CLOSE30_TICS 30*TICRATE, RAISE_IN_5MINS_TICS 5*60*TICRATE, DOOR_CEILING_OFFSET 4<<FRACBITS, SFX_DOROPN 20, SFX_DORCLS 21, SFX_OOF 34, SFX_BDOPN 86, SFX_BDCLS 87, PD_BLUEO/PD_REDO/PD_YELLOWO/PD_BLUEK/PD_REDK/PD_YELLOWK), the VerticalDoor thinker class, and the entry points tVerticalDoor/evDoDoor/evDoLockedDoor/evVerticalDoor/spawnDoorCloseIn30/spawnDoorRaiseIn5Mins, plus the DoorSector/DoorCallbacks/DoorLineSpecial structural interfaces (split value vs type re-exports under verbatimModuleSyntax). The VerticalDoorType, PlaneMoveResult, and DoorDirection const enums are intentionally NOT re-exported (a barrel re-export of a const enum breaks erasable-syntax inlining under verbatimModuleSyntax); consumers needing those members import them directly from the read-only module. VANILLA_DOOR_SPECIALS_INVARIANTS pins five rules: blaze doors (types 5/6/7) move at VDOORSPEED*4 but keep VDOORWAIT 150 and use SFX_BDOPN/SFX_BDCLS; close-crush does not reverse for vld_close/vld_blazeClose while every other type reverses and replays non-blaze sfx_doropn; evDoDoor skips sectors with active specialdata; the locked-door key map (99/133 blue, 134/135 red, 136/137 yellow) returns 0 with the -O messages distinct from manual -K; and spawnDoorCloseIn30/spawnDoorRaiseIn5Mins use CLOSE30_TICS / RAISE_IN_5MINS_TICS and clear the sector special once armed. The focused test is inventory-neutral: constants, typeof of every re-exported function plus the VerticalDoor class, the frozen five-rule manifest, a const-enum-omission assertion that strips the leading JSDoc so it survives prettier wrapping, the ../-filtered single-specifier set ['../specials/doors.ts'], and dynamic same-reference identity against src/specials/doors.ts. The step became eligible with prerequisites 08-004 and 11-004 COMPLETED (11-004 finalized this session).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/specials/doors.ts src 5->6 (test unchanged at 9) — the new src/vanilla/wireDoorSpecials.ts facade is the only added importer"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/08-005.json marks it COMPLETED.",
+    "parallelAgentNote": "A concurrent agent's uncommitted/untracked 12-006 wire-demo-playback-runtime files caused a transient demo-inventory test failure and a TS2769 typecheck error during the first verification pass. Per the parallel-agent contract this step did NOT edit, revert, or stage those files, did NOT commit while the full suite was failing, and waited (background poll) for the concurrent agent to land 12-006; the full verification sequence was then rerun from the beginning and passed cleanly. All git commits are pathspec-limited to the explicit 08-005 paths, so the concurrent 12-006 work is excluded from every commit."
+  }
+}
