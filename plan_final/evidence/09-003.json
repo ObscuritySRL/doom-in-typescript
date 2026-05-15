@@ -1,0 +1,24 @@
+{
+  "stepId": "09-003",
+  "lane": "player-weapons-items",
+  "title": "wire-player-use-action",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-player-use-action.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/09-003.json",
+    "plan_final/progress/player-weapons-items/09-003.md",
+    "plan_final/status/09-003.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "src/vanilla/wirePlayerUseAction.ts",
+    "test/plan_final/player/wire-player-use-action.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-player-use-action.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16199, "failed": 0, "files": 879 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-003 wires the BT_USE button through the usedown debounce into P_UseLines via a new src/vanilla facade (wirePlayerUseAction.ts) that re-exports the read-only src/player/implement-player-use-action.ts (classifyVanillaPlayerUseAction debounce) and src/world/useLines.ts (P_UseLines ray cast + spechit-overrun emulation) and adds applyPlayerUseAction(input, useLinesAction): it runs classifyVanillaPlayerUseAction and invokes the use action thunk iff fireUseEvent (the rising edge), returning the outcome so the caller stores player.usedown = nextUsedown. The thunk seam (caller binds () => useLines(player.mo, mapData, callbacks)) keeps the rising-edge gating unit-testable without constructing a full map and avoids the banned as/as-unknown casts that a typed Mobj/MapData sentinel would have required (no test factories exist for those types). VANILLA_PLAYER_USE_INVARIANTS pins four parity rules anchored to Chocolate Doom 2.2.1 p_user.c P_PlayerThink + p_map.c P_UseLines: edge-triggered usedown, useLines fires only on the rising edge, player/world USERANGE agree at 64*FRACUNIT, and a blocking non-special wall plays sfx_noway (20). The focused test uses line-anchored import-specifier parsing and dynamic await import identity checks so the test file adds no inventory importer.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/world/useLines.ts src 1->2 (test unchanged at 1)"],
+    "inventoryNeutralityNote": "src/player/implement-player-use-action.ts is not tracked by any plan_vanilla_parity manifest. Only src/world/useLines.ts (inventory-map-and-world-modules.json) drifts, src-side only, from the unavoidable facade re-export; bumped to keep manifest==reality, matching the 09-001/09-002 precedent."
+  }
+}

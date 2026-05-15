@@ -571,7 +571,7 @@
       "exported_types": ["NoWaySoundFunction", "UseSpecialLineFunction"],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/core/fixed.ts", "src/core/trig.ts", "src/map/intercepts.ts", "src/map/intercepts.ts", "src/map/mapSetup.ts", "src/world/checkPosition.ts", "src/world/mobj.ts"],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 1
     },
     {
