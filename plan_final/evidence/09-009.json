@@ -1,0 +1,21 @@
+{
+  "stepId": "09-009",
+  "lane": "player-weapons-items",
+  "title": "wire-vanilla-cheats",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-vanilla-cheats.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/09-009.json",
+    "plan_final/progress/player-weapons-items/09-009.md",
+    "plan_final/status/09-009.json",
+    "src/vanilla/wireVanillaCheats.ts",
+    "test/plan_final/player/wire-vanilla-cheats.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-vanilla-cheats.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16123, "failed": 0, "files": 868 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-009 pins the vanilla cheat-flag surface (the only three flags doomdef.h cheat_t carries: CF_NOCLIP=1, CF_GODMODE=2, CF_NOMOMENTUM=4) plus the isGodMode/isNoclip/isNoMomentum predicates via a src/vanilla re-export facade, and pins VANILLA_CHEATS_AFFECT_DEMO_PARITY=false. The read-only src/player/implement-god-mode-and-powerup-flags.ts already implements the flag semantics; cheat-code keystroke recognition is ST_Responder (live keyboard only) so a demo, carrying ticcmds not keystrokes, can never set a cheat flag — that is the parity invariant. Pure barrel + frozen manifest, no source modification.",
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
