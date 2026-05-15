@@ -149,7 +149,7 @@
 - [x] `11-001` `wire-sfx-loader` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-001-wire-sfx-loader.md`
 - [x] `11-002` `wire-channel-and-priority-runtime` | lane: `audio` | prereqs: `11-001` | file: `plan_final/steps/11-002-wire-channel-and-priority-runtime.md`
 - [x] `11-003` `wire-spatial-sfx-runtime` | lane: `audio` | prereqs: `11-002, 09-001` | file: `plan_final/steps/11-003-wire-spatial-sfx-runtime.md`
-- [ ] `11-004` `wire-sound-callback-bridge` | lane: `audio` | prereqs: `11-003, 09-004, 10-005` | file: `plan_final/steps/11-004-wire-sound-callback-bridge.md`
+- [x] `11-004` `wire-sound-callback-bridge` | lane: `audio` | prereqs: `11-003, 09-004, 10-005` | file: `plan_final/steps/11-004-wire-sound-callback-bridge.md`
 - [x] `11-005` `wire-pcm-mixer-win32-output` | lane: `audio` | prereqs: `11-002, 03-005` | file: `plan_final/steps/11-005-wire-pcm-mixer-win32-output.md`
 - [x] `11-006` `wire-mus-opl-runtime` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-006-wire-mus-opl-runtime.md`
 - [x] `11-007` `wire-music-selection` | lane: `audio` | prereqs: `11-006, 07-001` | file: `plan_final/steps/11-007-wire-music-selection.md`
