@@ -234,8 +234,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/ui/finale.ts",

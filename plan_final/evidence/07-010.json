@@ -1,0 +1,23 @@
+{
+  "stepId": "07-010",
+  "lane": "ui",
+  "title": "wire-quit-and-endoom-ui",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-quit-and-endoom-ui.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-010.json",
+    "plan_final/progress/ui/07-010.md",
+    "plan_final/status/07-010.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireQuitAndEndoomUi.ts",
+    "test/plan_final/ui/wire-quit-and-endoom-ui.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-quit-and-endoom-ui.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16186, "failed": 0, "files": 877 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-010 wires Quit Game confirmation, the randomized quit-prompt text, and ENDOOM display into the clean-quit path via a single src/vanilla re-export facade (wireQuitAndEndoomUi.ts) over the read-only src/ui/endoom.ts (80x25 / 4000-byte VGA text parser) and src/bootstrap/quitFlow.ts (I_AtExit LIFO cleanup model), plus a frozen VANILLA_QUIT_ENDOOM_INVARIANTS manifest pinning four parity rules: (1) quit is gated by a randomized yes/no confirmation whose prompt vanilla M_QuitDOOM selects from endmsg[] by gametic % NUM_QUITMESSAGES (the quitGame MenuAction was pinned upstream by 07-003); (2) a confirmed quit drains the I_AtExit stack in LIFO order (QuitFlow.executeQuit -> CANONICAL_QUIT_ORDER); (3) ENDOOM is shown immediately after I_ShutdownGraphics (CANONICAL_QUIT_ORDER[0]=I_ShutdownGraphics, [1]=D_Endoom); (4) ENDOOM is the canonical 80x25 / 4000-byte / 2000-cell VGA text screen decoded by parseEndoom. The focused test exercises real parseEndoom decode + RangeError, the LIFO executeQuit drain, the post-graphics ENDOOM position, and same-reference identity with the read-only modules. Pure barrel + frozen manifest; no read-only source modified. Facade placed in src/vanilla/ per the established 07-001..07-006/07-009 convention (07-004 set precedent for src/vanilla/ placement when the write lock omits it).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/endoom.ts src 0->1 test 1->2"]
+  }
+}
