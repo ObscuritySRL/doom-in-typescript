@@ -2,12 +2,7 @@
   "stepId": "04-001",
   "lane": "runtime-core",
   "title": "create-vanilla-runtime-context",
-  "commands": [
-    "bun run format",
-    "bun test test/plan_final/runtime/create-vanilla-runtime-context.test.ts",
-    "bun test",
-    "bun x tsc --noEmit --project tsconfig.json"
-  ],
+  "commands": ["bun run format", "bun test test/plan_final/runtime/create-vanilla-runtime-context.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
   "changedPaths": [
     "plan_final/evidence/04-001.json",
     "plan_final/progress/runtime-core/04-001.md",
