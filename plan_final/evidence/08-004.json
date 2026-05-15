@@ -1,0 +1,28 @@
+{
+  "stepId": "08-004",
+  "lane": "map-world",
+  "title": "wire-line-crossing-and-use",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-line-crossing-and-use.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/08-004.json",
+    "plan_final/progress/map-world/08-004.md",
+    "plan_final/status/08-004.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "plan_vanilla_parity/current-state/inventory-map-and-world-modules.json",
+    "src/vanilla/wireLineCrossingAndUse.ts",
+    "test/plan_final/map/wire-line-crossing-and-use.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-line-crossing-and-use.test.ts", "passed": 9, "failed": 0 },
+  "fullSuite": { "passed": 16208, "failed": 0, "files": 880 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-004 wires the three special-line activation paths into one src/vanilla facade (wireLineCrossingAndUse.ts) that re-exports the read-only src/specials/lineTriggers.ts (P_CrossSpecialLine / P_ShootSpecialLine / P_UseSpecialLine dispatch tables), src/specials/switches.ts (P_ChangeSwitchTexture + P_StartButton + P_UpdateSpecials button timers), and src/world/useLines.ts (P_UseLines ray + spechit overrun), plus a frozen VANILLA_LINE_CROSSING_USE_INVARIANTS manifest pinning six parity rules: one-shot cross clears line.special after dispatch except exit 52/124; retrigger never clears; back-side use only the UNUSED sliding-door 124; switch flip guarded on the EV_* return except exit 11/51 and void light 138/139 (P_ShootSpecialLine never guards); P_UseLines stops at the first usable line or plays the no-way sound; the spechit pool preserves the vanilla 8-slot overflow within the expanded 20-slot pool. The cross-module GameVersion/ButtonWhere const enums are intentionally not re-exported (verbatimModuleSyntax const-enum hazard; gameVersion defaults to doom_1_9). The focused test exercises the real re-exported functions with plain-object fixtures (one-shot vs exit-52 clearing, retrigger non-clearing, back-side use gate, spechitOverrun, changeSwitchTexture flip + BUTTONTIME button revert) and uses line-anchored import-specifier parsing + dynamic same-reference identity so the test file adds no inventory importer. The full-suite rerun's lone failure was the documented-flaky captureReferenceDemoSync oracle timing test, which passed on the immediate rerun (16208 pass / 0 fail); it is unrelated to this map-world facade change.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/specials/lineTriggers.ts src 0->1 (test unchanged at 1)",
+      "src/specials/switches.ts src 2->3 (test unchanged at 5)",
+      "src/world/useLines.ts src 2->3 (test unchanged at 1)"
+    ]
+  }
+}

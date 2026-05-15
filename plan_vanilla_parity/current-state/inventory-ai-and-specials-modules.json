@@ -519,7 +519,7 @@
       "exported_types": [],
       "exported_const_enums": ["GameVersion"],
       "external_imports": ["src/map/lineSectorGeometry.ts", "src/specials/ceilings.ts", "src/specials/doors.ts", "src/specials/floors.ts", "src/specials/platforms.ts", "src/specials/stairsDonut.ts", "src/world/mobj.ts"],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 1
     },
     {
@@ -591,7 +591,7 @@
       "exported_types": [],
       "exported_const_enums": ["ButtonWhere"],
       "external_imports": ["src/bootstrap/gameMode.ts"],
-      "src_importer_count": 2,
+      "src_importer_count": 3,
       "test_importer_count": 5
     }
   ],
