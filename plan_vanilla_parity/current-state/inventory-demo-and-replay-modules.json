@@ -33,7 +33,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts"],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 2
     },
     {
@@ -98,7 +98,7 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/demo/demoParse.ts", "src/demo/demoParse.ts"],
-      "src_importer_count": 1,
+      "src_importer_count": 2,
       "test_importer_count": 2
     }
   ],
