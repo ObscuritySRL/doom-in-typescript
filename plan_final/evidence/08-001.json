@@ -1,0 +1,41 @@
+{
+  "stepId": "08-001",
+  "lane": "map-world",
+  "title": "wire-level-setup",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/map/wire-level-setup.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/08-001.json",
+    "plan_final/progress/map-world/08-001.md",
+    "plan_final/status/08-001.json",
+    "src/vanilla/wireLevelSetup.ts",
+    "test/plan_final/map/wire-level-setup.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/map/wire-level-setup.test.ts",
+    "passed": 11,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15941,
+    "failed": 0,
+    "files": 845
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-001 bridges the IwadResourceCache (05-001) + wad buffer + a map name into a frozen runtime MapData snapshot via the read-only P_SetupLevel pipeline (src/map/mapSetup.ts setupLevel + src/map/mapBundle.ts parseMapBundle). The wrapper validates the map name and propagates parser errors verbatim. The returned MapData contains the full P_GroupLines outputs: per-sector line lists, bounding boxes, sound origins, sub-sector to sector lookup, line front/back resolution, and the validCount tracker — everything downstream world/AI/render lanes consume at level load.",
+    "publicSurface": [
+      "wireLevelSetup(resourceCache: IwadResourceCache, wadBuffer: Buffer, mapName: string): MapData",
+      "WireLevelSetupErrorReason = 'map-name-empty' | 'map-not-found'",
+      "WireLevelSetupError extends Error (reason, requestedMapName)"
+    ],
+    "mapFilesModified": false,
+    "worldFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
