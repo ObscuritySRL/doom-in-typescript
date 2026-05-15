@@ -1,0 +1,54 @@
+{
+  "stepId": "05-002",
+  "lane": "wad-assets",
+  "title": "wire-playpal-colormap",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-playpal-colormap.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-002.json",
+    "plan_final/progress/wad-assets/05-002.md",
+    "plan_final/status/05-002.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/paletteAndColormap.ts",
+    "test/plan_final/wad/wire-playpal-colormap.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-playpal-colormap.test.ts",
+    "passed": 20,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15733,
+    "failed": 0,
+    "files": 830
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-002 wires the PLAYPAL lump, the COLORMAP lump, and the canonical ST_doPaletteStuff palette-effect selector into a frozen runtime artifact built once per launch from the 05-001 IwadResourceCache. The new wrapper at src/vanilla/paletteAndColormap.ts imports parsePlaypal and parseColormap from the read-only src/assets/ parsers, finds the PLAYPAL and COLORMAP lump entries via IwadResourceCache.findLump, and exposes a selectEffectPalette(effect) helper that maps the four canonical effect kinds (normal, damage, bonus, radiation) onto palette indices [0, 13]. Gamma is intentionally deferred to plan_final 06-007 (wire-sky-detail-gamma-palette); this step exposes only the VANILLA_GAMMA_INDEX_RANGE constant so callers can validate usegamma upstream. Failure modes (missing lumps, wrong-size lumps) surface as typed PaletteAndColormapError instances with a stable PaletteAndColormapErrorReason discriminator.",
+    "publicSurface": [
+      "buildPaletteAndColormap(resourceCache: IwadResourceCache, lumpReader: LumpReader): PaletteAndColormapResources",
+      "PaletteAndColormapResources interface (palettes, colormaps, selectEffectPalette)",
+      "PaletteAndColormapError extends Error (reason: PaletteAndColormapErrorReason, lumpName: string)",
+      "PaletteAndColormapErrorReason union ('colormap-lump-missing' | 'colormap-lump-wrong-size' | 'playpal-lump-missing' | 'playpal-lump-wrong-size')",
+      "LumpReader interface (readLumpBytes: (entry: DirectoryEntry) => Uint8Array)",
+      "VanillaPaletteEffect union (normal, radiation, damage with intensity, bonus with intensity)",
+      "VANILLA_PLAYPAL_LUMP_NAME, VANILLA_COLORMAP_LUMP_NAME, VANILLA_GAMMA_INDEX_RANGE constants"
+    ],
+    "assetFilesModified": false,
+    "renderFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/assets/colormap.ts: test_importer_count 1→2 (test/plan_final/wad/wire-playpal-colormap.test.ts imports COLORMAP_COUNT/COLORMAP_LUMP_SIZE/COLORMAP_SIZE/ENTRIES_PER_COLORMAP)",
+      "src/assets/playpal.ts: test_importer_count 1→2 (test/plan_final/wad/wire-playpal-colormap.test.ts imports the canonical effect-bucket constants)",
+      "src/wad/directory.ts: test_importer_count 68→69 (test/plan_final/wad/wire-playpal-colormap.test.ts imports DirectoryEntry type)"
+    ]
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group. The plan_vanilla_parity inventory-wad-and-asset-modules.json pins importer counts (src and test) for every src/wad/ and src/assets/ module; adding the focused test for 05-002 increases test_importer_count for the three modules listed above by exactly 1 each. Updating the inventory JSON to reflect the new on-disk counts is the only way to satisfy the inventory test without abandoning the focused test. This matches the 05-001 precedent."
+  }
+}
