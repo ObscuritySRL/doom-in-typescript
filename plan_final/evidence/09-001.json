@@ -1,0 +1,23 @@
+{
+  "stepId": "09-001",
+  "lane": "player-weapons-items",
+  "title": "wire-player-spawn-state",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-player-spawn-state.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/09-001.json",
+    "plan_final/progress/player-weapons-items/09-001.md",
+    "plan_final/status/09-001.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wirePlayerSpawnState.ts",
+    "test/plan_final/player/wire-player-spawn-state.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-player-spawn-state.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16052, "failed": 0, "files": 858 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-001 aggregates the player spawn/reborn/psprite functions and the inventory-default constants into a single src/vanilla re-export facade for the runtime spawn path. The read-only src/player/playerSpawn.ts already implements vanilla G_PlayerReborn / P_SetupPsprites / P_MovePsprites semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/player/playerSpawn.ts src 14->15 test 14->15"]
+  }
+}
