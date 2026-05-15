@@ -121,8 +121,8 @@
       "exported_types": ["UiAssetCategory"],
       "exported_const_enums": [],
       "external_imports": ["src/wad/directory.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 2
+      "src_importer_count": 2,
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/ui/automap.ts",

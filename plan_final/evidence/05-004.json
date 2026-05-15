@@ -1,0 +1,47 @@
+{
+  "stepId": "05-004",
+  "lane": "wad-assets",
+  "title": "wire-ui-patch-assets",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/wire-ui-patch-assets.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-004.json",
+    "plan_final/progress/wad-assets/05-004.md",
+    "plan_final/status/05-004.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/uiPatchAssets.ts",
+    "test/plan_final/wad/wire-ui-patch-assets.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/wire-ui-patch-assets.test.ts",
+    "passed": 12,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15854,
+    "failed": 0,
+    "files": 838
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-004 wires the title-loop, menu, HUD font, status-bar, intermission, finale, and ENDOOM patch lumps into a single frozen runtime artifact. The new wrapper at src/vanilla/uiPatchAssets.ts imports the read-only resolveUiAssetLumps helper from src/ui/assets.ts (which already enumerates every shareware-safe UI patch by name) and adds a dedicated ENDOOM lookup via IwadResourceCache.findLump. The wrapper performs no filesystem I/O and never throws; missing lumps surface via UiAssetCatalog.missing and missing ENDOOM surfaces via endoomPresent=false, matching the vanilla graceful-degradation pattern.",
+    "publicSurface": [
+      "buildUiPatchAssets(resourceCache: IwadResourceCache): UiPatchAssetsResources",
+      "UiPatchAssetsResources interface (uiAssetCatalog, endoomPresent, endoomDirectoryIndex)",
+      "VANILLA_ENDOOM_LUMP_NAME constant pinned to 'ENDOOM'"
+    ],
+    "uiFilesModified": false,
+    "assetFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/ui/assets.ts: src_importer_count 1→2, test_importer_count 2→3 (uiPatchAssets.ts + its focused test import resolveUiAssetLumps / UI_ASSET_LUMP_COUNT)",
+      "src/wad/directory.ts: test_importer_count 73→74 (the focused test imports DirectoryEntry type)"
+    ]
+  }
+}
