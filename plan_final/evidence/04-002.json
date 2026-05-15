@@ -1,0 +1,48 @@
+{
+  "stepId": "04-002",
+  "lane": "runtime-core",
+  "title": "wire-d-doommain-init-order",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/runtime/wire-d-doommain-init-order.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/04-002.json",
+    "plan_final/progress/runtime-core/04-002.md",
+    "plan_final/status/04-002.json",
+    "src/vanilla/dDoomMain.ts",
+    "test/plan_final/runtime/wire-d-doommain-init-order.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/runtime/wire-d-doommain-init-order.test.ts",
+    "passed": 13,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15777,
+    "failed": 0,
+    "files": 833
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-002 introduces a typed D_DoomMain init orchestrator that runs the canonical 15-step subsystem init sequence (Z_Init, V_Init, M_LoadDefaults, W_Init, I_Init, OPL_Init, NET_Init, M_Init, R_Init, P_Init, S_Init, D_CheckNetGame, HU_Init, ST_Init, I_InitStretchTables) against the shared VanillaRuntimeContext built by 04-001. The order itself is pinned at this step; the individual run() implementations are no-op placeholders that subsequent runtime-core steps will replace with the real subsystem wiring while keeping the order locked. The read-only ref src/bootstrap/initOrder.ts is SHA-pinned and untouched; the new module lives under src/vanilla/ following the 03-001 / 03-003 / 03-004 / 03-005 / 03-006 / 04-001 / 05-001 precedent. A throw from any step is wrapped in VanillaDDoomMainInitError (carrying stepLabel, stepIndex, cause) and aborts the chain — matching vanilla's I_Error-on-init-failure semantics.",
+    "publicSurface": [
+      "D_DOOM_MAIN_INIT_ORDER: readonly VanillaDDoomMainInitStep[] (length 15, frozen)",
+      "VanillaDDoomMainInitStep interface (label, description, run(context: VanillaRuntimeContext): Promise<void> | void)",
+      "runDDoomMainInit(context: VanillaRuntimeContext, customOrder?: readonly VanillaDDoomMainInitStep[]): Promise<void>",
+      "VanillaDDoomMainInitError extends Error (stepLabel: string, stepIndex: number, cause: unknown)"
+    ],
+    "canonicalInitOrder": [
+      "Z_Init", "V_Init", "M_LoadDefaults", "W_Init", "I_Init", "OPL_Init", "NET_Init", "M_Init", "R_Init", "P_Init", "S_Init", "D_CheckNetGame", "HU_Init", "ST_Init", "I_InitStretchTables"
+    ],
+    "bootstrapFilesModified": false,
+    "initOrderShaPinPreserved": true,
+    "planVanillaParityInventoryUpdatesRequired": false
+  },
+  "crossPlanInventoryUpdate": {
+    "rationale": "src/vanilla/ is not declared as a source_roots entry in any plan_vanilla_parity classify-real / classify-simplified / classify-stubbed group, and test/plan_final/runtime/ is not declared as a test_roots entry in any plan_vanilla_parity inventory. The new dDoomMain.ts imports only VanillaRuntimeContext from the existing src/vanilla/runtimeContext.ts (no WAD/asset/render/core imports), so no plan_vanilla_parity importer counts are bumped. The full 15777-test suite passes without any plan_vanilla_parity inventory rewrite."
+  }
+}
