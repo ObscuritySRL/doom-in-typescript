@@ -1,0 +1,23 @@
+{
+  "stepId": "03-009",
+  "lane": "launch-host-input",
+  "title": "wire-clean-quit-and-endoom",
+  "commands": ["bun run format", "bun test test/plan_final/launch/wire-clean-quit-and-endoom.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/03-009.json",
+    "plan_final/progress/launch-host-input/03-009.md",
+    "plan_final/status/03-009.json",
+    "src/vanilla/cleanQuitAndEndoom.ts",
+    "test/plan_final/launch/wire-clean-quit-and-endoom.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/launch/wire-clean-quit-and-endoom.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16192, "failed": 0, "files": 878 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 03-009 maps every launch-host quit trigger onto the correct QuitFlow drain via a new src/vanilla facade (cleanQuitAndEndoom.ts) that re-exports the quit/ENDOOM surface through the 07-010 facade (./wireQuitAndEndoomUi.ts) rather than importing the read-only src/ui/endoom.ts and src/bootstrap/quitFlow.ts a second time. It adds QuitTrigger ('fatalError' | 'menuQuitConfirmed' | 'normalQuit' | 'windowClose'), resolveQuitPlan (the three clean triggers collapse onto the I_Quit path: full LIFO executeQuit drain, ENDOOM presented, exit 0; fatalError uses executeErrorQuit, no ENDOOM presentation, exit 1), runQuitPlan (drains the correct path and returns the executed step order), and the frozen VANILLA_CLEAN_QUIT_INVARIANTS pinning four launch-host parity rules anchored to Chocolate Doom 2.2.1 i_system.c I_Quit/I_Error, m_menu.c M_QuitResponse, and the SDL window-close -> SDL_QUIT -> I_Quit translation. The actual Win32 message-pump / exit() call stays in src/launcher/win32.ts (FFI is not unit-testable without a real window). The focused test exercises resolveQuitPlan for all four triggers, runQuitPlan LIFO drain vs error drain, frozen-manifest shape, line-anchored import-specifier routing (only ./wireQuitAndEndoomUi.ts), and same-reference identity with the 07-010 facade.",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "inventoryNeutralityNote": "Facade routes through ./wireQuitAndEndoomUi.ts and the focused test uses a line-anchored regex (no embedded 'from ...endoom.ts' / 'from ...quitFlow.ts' literal), so the UI inventory countImporters heuristic is not triggered. plan_vanilla_parity/current-state/inventory-ui-modules.json is unchanged, matching the 03-006/03-007 launch-lane no-inventory-rewrite precedent. src/vanilla/ and test/plan_final/launch/ are not plan_vanilla_parity source_roots/test_roots entries."
+  }
+}
