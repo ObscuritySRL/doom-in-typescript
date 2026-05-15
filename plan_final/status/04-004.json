@@ -1,0 +1,7 @@
+{
+  "stepId": "04-004",
+  "lane": "runtime-core",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/04-004.json",
+  "commitSha": "f8822dcd54bb5f414e1bb1124c2bdf3b04eadb6e"
+}
