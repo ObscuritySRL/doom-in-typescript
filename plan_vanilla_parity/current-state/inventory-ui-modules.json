@@ -397,7 +397,7 @@
       "exported_types": ["IntermissionMusicCue", "IntermissionSoundId"],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 2,
+      "src_importer_count": 3,
       "test_importer_count": 2
     },
     {

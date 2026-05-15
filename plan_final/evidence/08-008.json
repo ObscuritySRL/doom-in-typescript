@@ -1,0 +1,30 @@
+{
+  "stepId": "08-008",
+  "lane": "map-world",
+  "title": "wire-level-exits",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-level-exits.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/08-008.json",
+    "plan_final/progress/map-world/08-008.md",
+    "plan_final/status/08-008.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireLevelExits.ts",
+    "test/plan_final/map/wire-level-exits.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-level-exits.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16339, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-008 wires the level-exit path via one src/vanilla facade (wireLevelExits.ts) re-exporting the read-only ai/bossSpecials (aBossDeath, BOSS_DEATH_TAG 666 = E1M8 episode-end gate) and ui/intermission (createIntermissionState, SP_STATE_INITIAL_PAUSE 1..SP_STATE_FINAL 10, WI timing incl. WI_SHOW_NEXT_LOC_TICS 140, TICRATE 35, WI_MAX_PERCENT 100, music/sound cue types). VANILLA_LEVEL_EXIT_INVARIANTS pins five rules (normal exit -> next map; secret exit -> secret map; E1M8 boss death ends the episode -> finale; 10-state SP intermission machine; 4-second next-location pointer). The focused test exercises the exit/intermission constants, the callable aBossDeath + createIntermissionState entry points, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums. This step became eligible only after the 442975e cycle fix removed the spurious 10-006 back-edge (08-008 <-> 10-006).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/ai/bossSpecials.ts src 1->2 (test unchanged at 1)",
+      "src/ui/intermission.ts src 2->3 (test unchanged at 2)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/08-008.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 08-008 paths from concurrent shared-index activity."
+  }
+}
