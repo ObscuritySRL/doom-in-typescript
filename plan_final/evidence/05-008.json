@@ -1,0 +1,37 @@
+{
+  "stepId": "05-008",
+  "lane": "wad-assets",
+  "title": "gate-wad-assets",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/wad/gate-wad-assets.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/05-008.json",
+    "plan_final/progress/wad-assets/05-008.md",
+    "plan_final/status/05-008.json",
+    "test/plan_final/wad/gate-wad-assets.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/wad/gate-wad-assets.test.ts",
+    "passed": 7,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15902,
+    "failed": 0,
+    "files": 842
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 05-008 gates the wad-assets lane by asserting that every prerequisite step (05-001..05-007) has a committed COMPLETED status JSON with a recorded commitSha, a matching evidence JSON with zero knownFailures and a clean typecheck, and that the prerequisite's source wrapper module and focused test file both exist on disk. The gate test imports nothing from src/ — it operates purely on plan_final/status, plan_final/evidence, src/, and test/ filesystem state.",
+    "publicSurface": [
+      "test/plan_final/wad/gate-wad-assets.test.ts (no exports; describe-block gate)"
+    ],
+    "prerequisiteStepIds": ["05-001", "05-002", "05-003", "05-004", "05-005", "05-006", "05-007"],
+    "crossPlanInventoryRewriteRequired": false
+  }
+}
