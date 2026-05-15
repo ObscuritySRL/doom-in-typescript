@@ -1,0 +1,7 @@
+{
+  "stepId": "05-003",
+  "lane": "wad-assets",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/05-003.json",
+  "commitSha": "d69c93e5efdb8d95bccea2ac29220f334dd69f8e"
+}
