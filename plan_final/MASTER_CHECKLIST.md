@@ -166,7 +166,7 @@
 - [x] `12-006` `wire-demo-playback-runtime` | lane: `save-config-demo` | prereqs: `04-006, 05-007` | file: `plan_final/steps/12-006-wire-demo-playback-runtime.md`
 - [x] `12-007` `wire-demo-record-and-timedemo` | lane: `save-config-demo` | prereqs: `12-006` | file: `plan_final/steps/12-007-wire-demo-record-and-timedemo.md`
 - [x] `12-008` `wire-long-run-drift-checks` | lane: `save-config-demo` | prereqs: `12-006, 04-007, 06-009, 11-008` | file: `plan_final/steps/12-008-wire-long-run-drift-checks.md`
-- [ ] `12-009` `gate-save-config-demo` | lane: `save-config-demo` | prereqs: `12-001, 12-002, 12-003, 12-004, 12-005, 12-006, 12-007, 12-008` | file: `plan_final/steps/12-009-gate-save-config-demo.md`
+- [x] `12-009` `gate-save-config-demo` | lane: `save-config-demo` | prereqs: `12-001, 12-002, 12-003, 12-004, 12-005, 12-006, 12-007, 12-008` | file: `plan_final/steps/12-009-gate-save-config-demo.md`
 
 ## acceptance
 
