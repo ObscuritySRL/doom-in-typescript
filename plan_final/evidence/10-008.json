@@ -1,0 +1,24 @@
+{
+  "stepId": "10-008",
+  "lane": "ai-specials",
+  "title": "gate-ai-specials",
+  "commands": ["bun run format", "bun test test/plan_final/ai/gate-ai-specials.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-008.json",
+    "plan_final/progress/ai-specials/10-008.md",
+    "plan_final/status/10-008.json",
+    "test/plan_final/ai/gate-ai-specials.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/gate-ai-specials.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16371, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-008 is the ai-specials-lane parity gate. It adds one test (test/plan_final/ai/gate-ai-specials.test.ts) mirroring the cast-free canonical lane-gate pattern over the seven ai prerequisites 10-001..10-007 (wire-monster-spawn-flags, wire-damage-and-targeting, wire-monster-look-chase, wire-monster-attacks, wire-state-transitions, wire-boss-specials, wire-special-line-ai-effects). For every prerequisite it asserts: plan_final/status/<id>.json exists, declares status=COMPLETED with the matching stepId, and records a commitSha of length >= 7 (proof the work was pushed); plan_final/evidence/<id>.json exists, declares zero knownFailures and typecheck=clean; the prerequisite focused test file exists under test/plan_final/ai/; and the gate covers exactly the seven-element ordered prerequisite set. The banned cast class (AGENTS.md L201/L222) is avoided by parsing into Record<string, unknown> (any -> Record requires no cast) and field-narrowing via String()/Array.isArray, with a poison sentinel for malformed knownFailures so corrupt prerequisite evidence fails the gate. The test imports nothing from a ../-prefixed src module, so no plan_vanilla_parity inventory module is affected (inventory-neutral; no probe/reconcile required). The step became eligible with all seven ai prerequisites COMPLETED.",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-008.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 10-008 paths from concurrent shared-index activity."
+  }
+}
