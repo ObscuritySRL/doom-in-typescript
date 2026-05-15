@@ -137,7 +137,7 @@
 
 - [x] `10-001` `wire-monster-spawn-flags` | lane: `ai-specials` | prereqs: `08-001` | file: `plan_final/steps/10-001-wire-monster-spawn-flags.md`
 - [x] `10-002` `wire-damage-and-targeting` | lane: `ai-specials` | prereqs: `08-002` | file: `plan_final/steps/10-002-wire-damage-and-targeting.md`
-- [ ] `10-003` `wire-monster-look-chase` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-003-wire-monster-look-chase.md`
+- [x] `10-003` `wire-monster-look-chase` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-003-wire-monster-look-chase.md`
 - [ ] `10-004` `wire-monster-attacks` | lane: `ai-specials` | prereqs: `10-003` | file: `plan_final/steps/10-004-wire-monster-attacks.md`
 - [ ] `10-005` `wire-state-transitions` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-005-wire-state-transitions.md`
 - [ ] `10-006` `wire-boss-specials` | lane: `ai-specials` | prereqs: `10-005, 08-008` | file: `plan_final/steps/10-006-wire-boss-specials.md`
