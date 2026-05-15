@@ -1,0 +1,46 @@
+{
+  "stepId": "11-002",
+  "lane": "audio",
+  "title": "wire-channel-and-priority-runtime",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/audio/wire-channel-and-priority-runtime.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/11-002.json",
+    "plan_final/progress/audio/11-002.md",
+    "plan_final/status/11-002.json",
+    "plan_vanilla_parity/current-state/inventory-audio-modules.json",
+    "src/vanilla/channelAndPriorityRuntime.ts",
+    "test/plan_final/audio/wire-channel-and-priority-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/audio/wire-channel-and-priority-runtime.test.ts",
+    "passed": 17,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15941,
+    "failed": 0,
+    "files": 845
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-002 wires the eight-channel SFX allocator, the same-origin replacement rule, the priority eviction rule, and the stop/update order into a single frozen runtime artifact. The new wrapper at src/vanilla/channelAndPriorityRuntime.ts imports createChannelTable / findFreeChannel / findChannelByOrigin / findEvictableChannel / allocateChannel / stopChannel / stopSound / getOccupiedChannelCount from the read-only src/audio/channels.ts and exposes a frozen façade with a `playSound` helper that composes the four canonical S_StartSound branches (same-origin replace, free slot, evict lowest priority, drop). The channel table reference is mutable per-tic to match vanilla file-scope `channels[]`; the façade is frozen.",
+    "publicSurface": [
+      "createChannelAndPriorityRuntime(options?: { capacity?: number }): ChannelAndPriorityRuntime",
+      "ChannelAndPriorityRuntime interface (evictBySameOrigin, occupiedCount, playSound, stopChannel, stopSound, table)",
+      "SfxPlayRequest interface (origin, priority, sfxId, handle?, pitch?)",
+      "SfxPlayResult interface (channelIndex, evicted)",
+      "VANILLA_SFX_CHANNEL_COUNT constant pinned to 8"
+    ],
+    "audioFilesModified": false,
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/audio/channels.ts: src_importer_count 4→5, test_importer_count 7→8 (channelAndPriorityRuntime.ts + its focused test)"
+    ]
+  }
+}
