@@ -1,0 +1,21 @@
+{
+  "capturedByteLength": 1228800,
+  "capturedHeight": 480,
+  "capturedSha256": "f5e6bef07745e5a3695ebb8c320265c7ed0b980a73f4bc52c98f72d1fd82284a",
+  "capturedWidth": 640,
+  "command": [
+    "bun",
+    "run",
+    "doom.ts",
+    "-iwad",
+    "doom/DOOM1.WAD"
+  ],
+  "exitCodeAfterKill": null,
+  "nonBlackPixelCount": 290506,
+  "stderrText": "",
+  "stdoutText": "",
+  "uniqueColorCount": 17,
+  "windowTitle": "DOOM Codex - TITLEPIC",
+  "knownFailures": [],
+  "stepId": "13-001"
+}

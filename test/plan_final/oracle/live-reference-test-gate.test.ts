@@ -16,6 +16,7 @@ describe('plan_final oracle live reference test gate', () => {
 
   test('dedicated live test path list pins every OS-window reference capture suite', () => {
     expect(LIVE_REFERENCE_TEST_PATHS).toEqual([
+      'test/plan_final/acceptance/gate-bun-run-doom-smoke.test.ts',
       'test/plan_final/oracle/capture-reference-audio-windows.test.ts',
       'test/plan_final/oracle/capture-reference-demo-sync.test.ts',
       'test/plan_final/oracle/capture-reference-e1m1-actions.test.ts',
@@ -31,8 +32,13 @@ describe('plan_final oracle live reference test gate', () => {
     for (const testPath of LIVE_REFERENCE_TEST_PATHS) {
       const sourceText = await Bun.file(testPath).text();
 
-      expect(sourceText).toContain("from './live-reference-test-gate.ts'");
-      expect(sourceText).toContain('liveReferenceTest(');
+      if (testPath.startsWith('test/plan_final/oracle/')) {
+        expect(sourceText).toContain("from './live-reference-test-gate.ts'");
+        expect(sourceText).toContain('liveReferenceTest(');
+      } else {
+        expect(sourceText).toContain('liveReferenceTestsEnabled() ? test : test.skip');
+        expect(sourceText).toContain('liveAcceptanceTest(');
+      }
     }
   });
 });

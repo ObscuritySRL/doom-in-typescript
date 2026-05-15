@@ -150,7 +150,7 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 2,
       "exported_const_enums": []
     },
@@ -276,7 +276,7 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 28,
+      "src_importer_count": 29,
       "test_importer_count": 77,
       "exported_const_enums": []
     },
@@ -294,7 +294,7 @@
       "exported_classes": [],
       "exported_types": ["WadType"],
       "external_imports": [],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 67,
       "exported_const_enums": []
     },
@@ -312,7 +312,7 @@
       "exported_classes": ["LumpLookup"],
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts"],
-      "src_importer_count": 4,
+      "src_importer_count": 5,
       "test_importer_count": 20,
       "exported_const_enums": []
     },

@@ -50,9 +50,11 @@
  * ```
  */
 
+import type { CommandLineConfiguration } from './commandLineConfiguration.ts';
 import { parseCommandLineConfiguration } from './commandLineConfiguration.ts';
 import { resolveLaunchContext } from './launchContext.ts';
 import type { LaunchContextEnvironment } from './launchContext.ts';
+import { runTitleLoopSmokeHost } from './titleLoopSmokeHost.ts';
 
 /**
  * Thrown when {@link runDoomMain} is invoked with an argument shape it
@@ -192,7 +194,31 @@ function validateArgumentVector(argumentVector: unknown): readonly string[] {
  */
 export async function runDoomMain(argumentVector?: unknown, launchContextEnvironment: LaunchContextEnvironment = DEFAULT_LAUNCH_CONTEXT_ENVIRONMENT): Promise<void> {
   const validatedArgumentVector = validateArgumentVector(argumentVector);
-  const commandLineConfiguration = parseCommandLineConfiguration(validatedArgumentVector);
+  const commandLineConfiguration = parseCommandLineConfiguration(normalizeArgumentVectorForMCheckParm(validatedArgumentVector));
   const launchContext = resolveLaunchContext(commandLineConfiguration, launchContextEnvironment);
-  void launchContext;
+  if (shouldRunRootTitleLoopSmoke(commandLineConfiguration)) {
+    await runTitleLoopSmokeHost({
+      gameMode: launchContext.iwad.gameMode,
+      iwadPath: launchContext.iwad.resolvedPath,
+    });
+  }
+}
+
+function normalizeArgumentVectorForMCheckParm(argumentVector: readonly string[]): readonly string[] {
+  const firstArgument = argumentVector[0];
+  if (firstArgument === undefined || !firstArgument.startsWith('-')) {
+    return argumentVector;
+  }
+
+  return Object.freeze(['doom.ts', ...argumentVector]);
+}
+
+function shouldRunRootTitleLoopSmoke(commandLineConfiguration: CommandLineConfiguration): boolean {
+  if (commandLineConfiguration.iwadPath === null) {
+    return false;
+  }
+
+  const entrypointPath = Bun.argv[1] ?? '';
+  const normalizedEntrypointPath = entrypointPath.replace(/\\/g, '/').toLowerCase();
+  return normalizedEntrypointPath === 'doom.ts' || normalizedEntrypointPath.endsWith('/doom.ts');
 }

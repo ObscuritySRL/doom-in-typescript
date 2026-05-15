@@ -139,7 +139,7 @@
       "exported_types": ["PatchColumn"],
       "exported_const_enums": [],
       "external_imports": ["src/render/projection.ts"],
-      "src_importer_count": 3,
+      "src_importer_count": 4,
       "test_importer_count": 6
     },
     {
