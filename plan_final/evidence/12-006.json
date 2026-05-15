@@ -1,0 +1,29 @@
+{
+  "stepId": "12-006",
+  "lane": "save-config-demo",
+  "title": "wire-demo-playback-runtime",
+  "commands": ["bun run format", "bun test test/plan_final/save/wire-demo-playback-runtime.test.ts", "bun test --only-failures", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-006.json",
+    "plan_final/progress/save-config-demo/12-006.md",
+    "plan_final/status/12-006.json",
+    "plan_vanilla_parity/current-state/inventory-demo-and-replay-modules.json",
+    "src/vanilla/wireDemoPlaybackRuntime.ts",
+    "test/plan_final/save/wire-demo-playback-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/wire-demo-playback-runtime.test.ts", "passed": 9, "failed": 0 },
+  "fullSuite": { "passed": 16400, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-006 wires DEMO lump playback from the title attract loop and the -playdemo command-line path through the runtime ticcmd stream via one src/vanilla facade (wireDemoPlaybackRuntime.ts) that is a pure re-export barrel over the two read-only modules src/demo/demoParse.ts (parseDemo first-byte header dispatch, DEMO_END_MARKER 0x80, DEMO_VANILLA_VERSION_19 109, DEMO_VANILLA_HEADER_SIZE 13, DEMO_VANILLA_COMMAND_SIZE 4, DEMO_LONG_TICS_VERSION 111, DEMO_OLD_FORMAT_MAX_SKILL 4, DEMO_MAX_PLAYERS 4, DEMO_TIC_RATE 35, DemoFormat/DemoTicCommand/ParsedDemo) and src/demo/demoPlayback.ts (DemoPlayback streaming reader, DEMO_PLAYBACK_DEFAULT_VERSION 109, DemoPlaybackCompletionAction/Options/Snapshot). The value/type split keeps verbatimModuleSyntax happy and no const enums are re-exported. VANILLA_DEMO_PLAYBACK_INVARIANTS pins five rules: first-byte header dispatch matches G_DoPlayDemo; shareware DOOM1.WAD attract demos are version 109 / 13-byte header / 4-byte ticcmds / 0x80 terminator; readNextTic yields one tic of active-player ticcmds per call in playeringame[] order; the final real tic is returned before the marker-crossing null (G_ReadDemoTiccmd timing, no off-by-one); G_CheckDemoStatus completion is quit for -playdemo/singledemo else advance-demo for the title loop with net/deathmatch/monster flags reset to 0. The focused test exercises a real synthetic vanilla demo: parseDemo header/ticcmd decode, two-tic streaming playback with the attract-loop advance-demo completion, the singledemo quit completion, the version-mismatch RangeError gate, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral (statically imports only the non-inventoried facade; demo modules reached via await import()).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/demo/demoParse.ts src 2->3 (test unchanged at 4)",
+      "src/demo/demoPlayback.ts src 12->13 (test unchanged at 5)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-006.json marks it COMPLETED.",
+    "parallelAgentNote": "Selected 12-006 in the save-config-demo lane via the verify-then-yield strategy to avoid the live parallel default-selector agent on 11-004; finalized with pathspec-limited git commits to isolate the explicit 12-006 paths from concurrent shared-index activity."
+  }
+}
