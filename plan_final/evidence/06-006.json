@@ -1,0 +1,20 @@
+{
+  "stepId": "06-006",
+  "lane": "render",
+  "title": "wire-psprite-renderer",
+  "commands": ["bun run format", "bun test test/plan_final/render/wire-psprite-renderer.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/06-006.json",
+    "plan_final/progress/render/06-006.md",
+    "plan_final/status/06-006.json",
+    "test/plan_final/render/wire-psprite-renderer.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/render/wire-psprite-renderer.test.ts", "passed": 8, "failed": 0 },
+  "fullSuite": { "passed": 16104, "failed": 0, "files": 865 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-006 pins the player-weapon/muzzle-flash psprite render constants (VANILLA_NUMPSPRITES=2, PS_WEAPON=0, PS_FLASH=1, VANILLA_WEAPONTOP_FIXED=32<<FRACBITS, VANILLA_WEAPONBOTTOM_FIXED=128<<FRACBITS) and the canonical slot order (weapon before flash, both after world sprites). The read-only src/render/implement-player-weapon-sprite-rendering.ts already encodes R_DrawPSprite semantics; this step's focused test pins the surface so later render-lane steps cannot regress the slot order. No source file modified — focused-test-only.",
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
