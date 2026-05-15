@@ -1,0 +1,35 @@
+{
+  "stepId": "06-005",
+  "lane": "render",
+  "title": "wire-sprite-renderer",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/render/wire-sprite-renderer.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/06-005.json",
+    "plan_final/progress/render/06-005.md",
+    "plan_final/status/06-005.json",
+    "test/plan_final/render/wire-sprite-renderer.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/render/wire-sprite-renderer.test.ts",
+    "passed": 13,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 16000,
+    "failed": 0,
+    "files": 851
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-005 pins the public-surface constants and function exports of the sprite-rendering pipeline (spriteProjection, spriteClip, fuzz). The read-only modules already implement R_ProjectSprite + R_SortVisSprites + R_DrawMaskedColumn + R_DrawFuzzColumn; this step's focused test asserts the vanilla constants (MAXVISSPRITES=128, FUZZ_TABLE_SIZE=50, FUZZ_COLORMAP_INDEX=6, FF_FRAMEMASK=0x7fff, FF_FULLBRIGHT=0x8000, silhouette flags 0..3, CLIP_UNSET=-2) and every export's existence + callability so later render-lane steps cannot accidentally regress the pre-pinned semantics. No source file is modified.",
+    "renderFilesModified": false,
+    "vanillaFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
