@@ -107,7 +107,7 @@
     {
       "relative_path": "src/oracles/",
       "classification": "real-implementation",
-      "tracked_file_count": 9,
+      "tracked_file_count": 10,
       "primary_role": "Framebuffer/state/audio/music-event hashing, input scripts, reference run manifests, schema, sandbox helpers.",
       "reachable_from_doom_ts": false
     },

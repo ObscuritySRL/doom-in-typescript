@@ -1,0 +1,30 @@
+{
+  "stepId": "12-009",
+  "lane": "save-config-demo",
+  "title": "gate-save-config-demo",
+  "commands": ["bun run format", "bun test test/plan_final/save/gate-save-config-demo.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/12-009.json",
+    "plan_final/progress/save-config-demo/12-009.md",
+    "plan_final/status/12-009.json",
+    "plan_final/current-state/runtime-implementation-modules.json",
+    "plan_vanilla_parity/current-state/classify-real-implementations.json",
+    "test/plan_final/save/gate-save-config-demo.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/save/gate-save-config-demo.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16426, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 12-009 is the save-config-demo-lane parity gate. It adds one test (test/plan_final/save/gate-save-config-demo.test.ts) mirroring the cast-free canonical lane-gate pattern over the eight save-config-demo prerequisites 12-001..12-008 (wire-config-load-and-persist, wire-settings-menus-to-config, wire-save-slot-ui, wire-savegame-write, wire-savegame-load, wire-demo-playback-runtime, wire-demo-record-and-timedemo, wire-long-run-drift-checks). For every prerequisite it asserts: plan_final/status/<id>.json exists, declares status=COMPLETED with the matching stepId, and records a commitSha of length >= 7; plan_final/evidence/<id>.json exists, declares zero knownFailures and typecheck=clean; the prerequisite focused test exists under test/plan_final/save/; and the gate covers exactly the eight-element ordered prerequisite set. The banned cast class (AGENTS.md L201/L222) is avoided by parsing into Record<string, unknown> and field-narrowing via String()/Array.isArray with a poison sentinel for malformed knownFailures. The gate test imports nothing from src, so it is itself inventory-neutral.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "plan_final/current-state/runtime-implementation-modules.json src/oracles/ tracked_file_count 9->10",
+      "plan_vanilla_parity/current-state/classify-real-implementations.json group [src/input/,src/oracles/,tools/reference/] source_file_count 24->25 and classification_summary.classified_source_file_count 469->470"
+    ],
+    "crossCuttingReconcileNote": "These two file-count reconciles are NOT caused by the 12-009 gate test. They are the post-commit surfacing of 12-008's legitimately new src/oracles/longRunDriftChecks.ts: file-count inventories key off git-ls-files, so they only drift once that file became git-tracked (commit a3000b3), which post-dated 12-008's own passing full run. Per the per-step procedure (any failure is fixed in this same step and the full verification sequence is rerun from the beginning) the reconcile was completed within 12-009. Both edits touched only the drifted numeric fields after probe-replicating the exact test count algorithms; no test was skipped, weakened, quarantined, or reclassified.",
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/12-009.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 12-009 paths (including the two count-reconcile inventories fixed within this step) from concurrent shared-index activity."
+  }
+}
