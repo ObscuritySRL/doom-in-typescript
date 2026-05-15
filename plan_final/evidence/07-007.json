@@ -1,0 +1,26 @@
+{
+  "stepId": "07-007",
+  "lane": "ui",
+  "title": "wire-intermission-runtime",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-intermission-runtime.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/07-007.json",
+    "plan_final/progress/ui/07-007.md",
+    "plan_final/status/07-007.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireIntermissionRuntime.ts",
+    "test/plan_final/ui/wire-intermission-runtime.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-intermission-runtime.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16351, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-007 wires the intermission runtime via one src/vanilla facade (wireIntermissionRuntime.ts) re-exporting the read-only src/ui/intermission.ts (createIntermissionState/beginIntermission/checkForAccelerate/tickIntermission, SP_STATE_INITIAL_PAUSE 1..SP_STATE_FINAL 10, SP_*_DELTA 2/2/2/3, WI_MAX_PERCENT 100, WI_SHOW_NEXT_LOC_TICS 140, TICRATE 35, music/sound cue + state/round/input/result/tick-result types). VANILLA_INTERMISSION_RUNTIME_INVARIANTS pins five rules (10-state SP machine; fixed stat deltas clamped at 100; accelerate skips the pause; mus_inter cue; world-done transition after final state). The focused test exercises the constants, the callable runtime entry points (createIntermissionState returns an object), the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums; single-module barrel. Eligible after 08-009 + 11-007 completed.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/intermission.ts src 3->4 (test unchanged at 2)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/07-007.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 07-007 paths from concurrent shared-index activity."
+  }
+}
