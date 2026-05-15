@@ -113,7 +113,7 @@
 - [x] `08-002` `wire-thinker-ticker` | lane: `map-world` | prereqs: `08-001, 04-004` | file: `plan_final/steps/08-002-wire-thinker-ticker.md`
 - [x] `08-003` `wire-collision-and-movement` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-003-wire-collision-and-movement.md`
 - [x] `08-004` `wire-line-crossing-and-use` | lane: `map-world` | prereqs: `08-003, 09-003` | file: `plan_final/steps/08-004-wire-line-crossing-and-use.md`
-- [ ] `08-005` `wire-door-specials` | lane: `map-world` | prereqs: `08-004, 11-004` | file: `plan_final/steps/08-005-wire-door-specials.md`
+- [x] `08-005` `wire-door-specials` | lane: `map-world` | prereqs: `08-004, 11-004` | file: `plan_final/steps/08-005-wire-door-specials.md`
 - [x] `08-006` `wire-floor-ceiling-platform-specials` | lane: `map-world` | prereqs: `08-004` | file: `plan_final/steps/08-006-wire-floor-ceiling-platform-specials.md`
 - [x] `08-007` `wire-sector-effects-and-animations` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-007-wire-sector-effects-and-animations.md`
 - [x] `08-008` `wire-level-exits` | lane: `map-world` | prereqs: `08-004, 10-006` | file: `plan_final/steps/08-008-wire-level-exits.md`
