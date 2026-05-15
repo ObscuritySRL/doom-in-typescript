@@ -21,7 +21,6 @@ Wire the use button to P_UseLines, no-way sounds, and use-down debounce.
 ## prerequisites
 
 - 09-002
-- 08-004
 
 ## parallel-safe-with
 

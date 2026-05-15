@@ -94,7 +94,7 @@
 
 ## ui
 
-- [ ] `07-001` `wire-title-loop-rendering` | lane: `ui` | prereqs: `04-005, 05-004` | file: `plan_final/steps/07-001-wire-title-loop-rendering.md`
+- [ ] `07-001` `wire-title-loop-rendering` | lane: `ui` | prereqs: `05-004` | file: `plan_final/steps/07-001-wire-title-loop-rendering.md`
 - [ ] `07-002` `wire-menu-rendering` | lane: `ui` | prereqs: `07-001, 05-004` | file: `plan_final/steps/07-002-wire-menu-rendering.md`
 - [ ] `07-003` `wire-menu-actions` | lane: `ui` | prereqs: `07-002, 03-007` | file: `plan_final/steps/07-003-wire-menu-actions.md`
 - [ ] `07-004` `wire-status-bar-drawing` | lane: `ui` | prereqs: `05-004, 09-001` | file: `plan_final/steps/07-004-wire-status-bar-drawing.md`
@@ -123,7 +123,7 @@
 
 - [ ] `09-001` `wire-player-spawn-state` | lane: `player-weapons-items` | prereqs: `08-001` | file: `plan_final/steps/09-001-wire-player-spawn-state.md`
 - [ ] `09-002` `wire-player-ticcmd-application` | lane: `player-weapons-items` | prereqs: `04-004, 09-001` | file: `plan_final/steps/09-002-wire-player-ticcmd-application.md`
-- [ ] `09-003` `wire-player-use-action` | lane: `player-weapons-items` | prereqs: `09-002, 08-004` | file: `plan_final/steps/09-003-wire-player-use-action.md`
+- [ ] `09-003` `wire-player-use-action` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-003-wire-player-use-action.md`
 - [ ] `09-004` `wire-weapon-psprites` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-004-wire-weapon-psprites.md`
 - [ ] `09-005` `wire-hitscan-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-005-wire-hitscan-weapons.md`
 - [ ] `09-006` `wire-projectile-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-006-wire-projectile-weapons.md`

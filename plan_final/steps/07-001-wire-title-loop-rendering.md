@@ -20,7 +20,6 @@ Wire clean launch to TITLEPIC, CREDIT, help pages, demo pages, music cues, and p
 
 ## prerequisites
 
-- 04-005
 - 05-004
 
 ## parallel-safe-with
