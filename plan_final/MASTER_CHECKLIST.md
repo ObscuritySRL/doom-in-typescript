@@ -101,7 +101,7 @@
 - [x] `07-004` `wire-status-bar-drawing` | lane: `ui` | prereqs: `05-004, 09-001` | file: `plan_final/steps/07-004-wire-status-bar-drawing.md`
 - [x] `07-005` `wire-hud-messages` | lane: `ui` | prereqs: `07-004, 09-002` | file: `plan_final/steps/07-005-wire-hud-messages.md`
 - [x] `07-006` `wire-automap-runtime` | lane: `ui` | prereqs: `03-007, 08-001` | file: `plan_final/steps/07-006-wire-automap-runtime.md`
-- [ ] `07-007` `wire-intermission-runtime` | lane: `ui` | prereqs: `08-009, 11-007` | file: `plan_final/steps/07-007-wire-intermission-runtime.md`
+- [x] `07-007` `wire-intermission-runtime` | lane: `ui` | prereqs: `08-009, 11-007` | file: `plan_final/steps/07-007-wire-intermission-runtime.md`
 - [ ] `07-008` `wire-finale-runtime` | lane: `ui` | prereqs: `08-009, 11-007` | file: `plan_final/steps/07-008-wire-finale-runtime.md`
 - [x] `07-009` `wire-pause-and-help-overlays` | lane: `ui` | prereqs: `07-002, 04-005` | file: `plan_final/steps/07-009-wire-pause-and-help-overlays.md`
 - [x] `07-010` `wire-quit-and-endoom-ui` | lane: `ui` | prereqs: `07-003` | file: `plan_final/steps/07-010-wire-quit-and-endoom-ui.md`
