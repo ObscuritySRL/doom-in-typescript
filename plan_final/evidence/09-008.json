@@ -1,0 +1,27 @@
+{
+  "stepId": "09-008",
+  "lane": "player-weapons-items",
+  "title": "wire-player-damage",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-player-damage.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/09-008.json",
+    "plan_final/progress/player-weapons-items/09-008.md",
+    "plan_final/status/09-008.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wirePlayerDamage.ts",
+    "test/plan_final/player/wire-player-damage.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-player-damage.test.ts", "passed": 8, "failed": 0 },
+  "fullSuite": { "passed": 16290, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-008 wires the player-damage / armor path via one src/vanilla facade (wirePlayerDamage.ts) re-exporting the read-only implement-player-damage-and-armor (applyVanillaPlayerDamage + VANILLA_ARMOR_TYPE_NONE/GREEN/BLUE + VANILLA_SKILL_BABY) and a focused set of ai/attacks damage-source constants (VILE_ATTACK_DAMAGE 20, VILE_RADIUS_ATTACK_DAMAGE 70, MELEERANGE, MISSILERANGE, MAX_SKULLS_PER_LEVEL). VANILLA_PLAYER_DAMAGE_INVARIANTS pins five rules (green floor(d/3) / blue floor(d/2) absorption; baby-skill halving; depleted armor resets type to none; god mode nullifies; health floors at 0). The focused test exercises applyVanillaPlayerDamage across the god/baby/green/blue/deplete/death cases, the constants, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. This step is the other side of the 09-008<->10-002 cycle fixed at cb296d9. No const enums re-exported (verbatimModuleSyntax).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ai/attacks.ts src 0->1 (test unchanged at 4)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/09-008.json marks it COMPLETED.",
+    "flakeNote": "The full-suite first pass also failed oracle: captureReferenceIntermissionFinale (a ~30s live-capture timing test, same flaky family as captureReferenceDemoSync / captureReferenceSaveLoad); it passed on the immediate rerun (16290 pass / 0 fail). Unrelated to this player-damage facade.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 09-008 paths from concurrent shared-index activity."
+  }
+}

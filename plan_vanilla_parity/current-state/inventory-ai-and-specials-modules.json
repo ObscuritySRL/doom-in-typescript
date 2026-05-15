@@ -162,7 +162,7 @@
         "src/world/thinkers.ts",
         "src/world/zMovement.ts"
       ],
-      "src_importer_count": 0,
+      "src_importer_count": 1,
       "test_importer_count": 4
     },
     {
