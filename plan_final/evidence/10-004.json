@@ -1,0 +1,26 @@
+{
+  "stepId": "10-004",
+  "lane": "ai-specials",
+  "title": "wire-monster-attacks",
+  "commands": ["bun run format", "bun test test/plan_final/ai/wire-monster-attacks.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-004.json",
+    "plan_final/progress/ai-specials/10-004.md",
+    "plan_final/status/10-004.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireMonsterAttacks.ts",
+    "test/plan_final/ai/wire-monster-attacks.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/wire-monster-attacks.test.ts", "passed": 5, "failed": 0 },
+  "fullSuite": { "passed": 16308, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-004 wires the shareware-roster monster attack codepointers via one src/vanilla facade (wireMonsterAttacks.ts) re-exporting the read-only src/ai/attacks.ts named-roster subset (aFaceTarget, aPosAttack zombieman, aSPosAttack shotgun guy, aCPosAttack/aCPosRefire chaingunner, aTroopAttack imp, aSargAttack demon/spectre, aHeadAttack cacodemon, aBruisAttack Baron/E1M8 boss) plus MONSTER_ATTACK_ACTION_COUNT 105, wireMonsterAttackActions, and the attack context. VANILLA_MONSTER_ATTACK_INVARIANTS pins five rules (A_FaceTarget precedes every attack with shadow jitter; hitscan zombies use pos/spos/cpos; imp/baron melee-or-missile branch; sarg pure melee bite; 105-codepointer registry). The focused test exercises the registry count, the callable shareware attack codepointers, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums in attacks.ts; single-module barrel so no duplicate-name risk.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ai/attacks.ts src 1->2 (test unchanged at 4)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-004.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 10-004 paths from concurrent shared-index activity."
+  }
+}
