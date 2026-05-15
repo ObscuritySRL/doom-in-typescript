@@ -1,0 +1,39 @@
+{
+  "stepId": "06-002",
+  "lane": "render",
+  "title": "wire-bsp-wall-renderer",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/render/wire-bsp-wall-renderer.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/06-002.json",
+    "plan_final/progress/render/06-002.md",
+    "plan_final/status/06-002.json",
+    "src/vanilla/wireBspWallRenderer.ts",
+    "test/plan_final/render/wire-bsp-wall-renderer.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": {
+    "path": "test/plan_final/render/wire-bsp-wall-renderer.test.ts",
+    "passed": 9,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15959,
+    "failed": 0,
+    "files": 847
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 06-002 pins the BSP front-to-back walk that feeds the solidsegs + wall clipping + wall column drawing passes. The new src/vanilla/wireBspWallRenderer.ts exposes walkBspFromViewpoint(mapData, viewX, viewY) which iteratively descends the BSP tree using the read-only pointOnSide primitive, emitting visible subsectors in canonical front-to-back order. The traversal is deterministic and produces a permutation of subsector indices (every subsector exactly once) per the vanilla R_RenderBSPNode contract. The read-only src/render/solidWalls.ts, src/render/wallColumns.ts, and src/map/nodeTraversal.ts modules are consumed verbatim — the actual wall rendering passes are exercised by later render-lane steps that consume the front-to-back subsector list this step produces.",
+    "publicSurface": [
+      "walkBspFromViewpoint(mapData: MapData, viewX: Fixed, viewY: Fixed): readonly number[]"
+    ],
+    "renderFilesModified": false,
+    "mapFilesModified": false,
+    "planVanillaParityInventoryUpdatesRequired": false
+  }
+}
