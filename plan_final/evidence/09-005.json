@@ -1,0 +1,26 @@
+{
+  "stepId": "09-005",
+  "lane": "player-weapons-items",
+  "title": "wire-hitscan-weapons",
+  "commands": ["bun run format", "bun test test/plan_final/player/wire-hitscan-weapons.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/09-005.json",
+    "plan_final/progress/player-weapons-items/09-005.md",
+    "plan_final/status/09-005.json",
+    "plan_vanilla_parity/current-state/inventory-player-modules.json",
+    "src/vanilla/wireHitscanWeapons.ts",
+    "test/plan_final/player/wire-hitscan-weapons.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/player/wire-hitscan-weapons.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16276, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 09-005 wires the six hitscan weapon fire actions via one src/vanilla facade (wireHitscanWeapons.ts) re-exporting the read-only src/player/hitscan.ts (aPunch fist, aSaw chainsaw, aFirePistol, aFireShotgun, aFireShotgun2 super-shotgun, aFireCGun chaingun + gunShot/bulletSlope/aim cache/context, HITSCAN_ACTION_COUNT 8, wireHitscanActions; MELEERANGE/MISSILERANGE/BULLET_AIM_RANGE/BULLET_AIM_NUDGE, SAW_ANGLE_STEP/SNAP, SFX_PISTOL/SHOTGN/DSHTGN/SAWFUL/SAWHIT/PUNCH). VANILLA_HITSCAN_WEAPON_INVARIANTS pins five rules (fist/saw MELEERANGE; bullet MISSILERANGE; autoaim BULLET_AIM_RANGE+NUDGE; chainsaw SAW_ANGLE spread/snap; 8 registered actions; fixed weapon sfx ids). The focused test exercises the range/sfx constants, the six callable fire actions, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral. No const enums re-exported (verbatimModuleSyntax). Eligible only after the cb296d9 cycle fix + 10-002 completion.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/player/hitscan.ts src 0->1 (test unchanged at 1)"],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/09-005.json marks it COMPLETED.",
+    "parallelAgentNote": "Finalized with pathspec-limited git commits to isolate the explicit 09-005 paths from concurrent shared-index activity."
+  }
+}
