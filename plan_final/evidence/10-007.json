@@ -1,0 +1,29 @@
+{
+  "stepId": "10-007",
+  "lane": "ai-specials",
+  "title": "wire-special-line-ai-effects",
+  "commands": ["bun run format", "bun test test/plan_final/ai/wire-special-line-ai-effects.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/10-007.json",
+    "plan_final/progress/ai-specials/10-007.md",
+    "plan_final/status/10-007.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireSpecialLineAiEffects.ts",
+    "test/plan_final/ai/wire-special-line-ai-effects.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ai/wire-special-line-ai-effects.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16313, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 10-007 wires the monster/AI side of special lines via one src/vanilla facade (wireSpecialLineAiEffects.ts) re-exporting the read-only lineTriggers (MONSTER_CROSS_SPECIALS [39,97,125,126,4,10,88], MONSTER_SHOOT_SPECIALS [46], MONSTER_USE_SPECIALS [1,32,33,34], NON_TRIGGER_PROJECTILE_TYPES, pCrossSpecialLine/pShootSpecialLine/pUseSpecialLine) and switches (changeSwitchTexture/startButton/updateButtons, SFX_SWTCHN/SWTCHX, EXIT_SWITCH_SPECIAL, BUTTONTIME). VANILLA_SPECIAL_LINE_AI_INVARIANTS pins five rules (boss/normal exit 52/124 no-clear; fixed monster cross set; fixed monster shoot/use sets; 125/126 nonplayer-gated teleports; switch flip on monster impact incl. unconditional pShootSpecialLine flip). The GameVersion/ButtonWhere const enums are intentionally not re-exported (verbatimModuleSyntax). The focused test asserts the exact frozen eligibility sets, the callable dispatchers/switch primitives, the frozen manifest, the ../-filtered specifier set, and dynamic same-reference identity, keeping the test inventory-neutral (and avoiding the banned const-enum import/cast a constructed non-projectile monster MobjType would require).",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/specials/lineTriggers.ts src 1->2 (test unchanged at 1)",
+      "src/specials/switches.ts src 3->4 (test unchanged at 5)"
+    ],
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/10-007.json marks it COMPLETED.",
+    "parallelAgentNote": "During verification a concurrent governance agent landed a large live-reference infra commit (68c79ca, package.json/tools/ + matching hash-pin manifests) which transiently broke ~33 unrelated hash-pin/snapshot tests and PROMPT.md/plan-structure tests; all cleared once that agent committed and once its in-flight PROMPT.md write no longer collided with a full-suite run (validate-plan clean standalone; ralph-loop-contract 9/0 in isolation; full suite 16313/0 on rerun). Finalized with pathspec-limited git commits so only the explicit 10-007 paths land and the concurrent agent's uncommitted PROMPT.md is not swept in."
+  }
+}
