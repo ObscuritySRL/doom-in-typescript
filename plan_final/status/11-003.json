@@ -1,0 +1,7 @@
+{
+  "stepId": "11-003",
+  "lane": "audio",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/11-003.json",
+  "commitSha": "b20aee46df9c292f1ad23aaa536edb1bf5d525b6"
+}
