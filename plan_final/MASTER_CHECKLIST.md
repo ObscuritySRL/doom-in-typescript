@@ -2,7 +2,7 @@
 
 # Master Checklist
 
-- Total steps: 132
+- Total steps: 133
 - Runtime target: `bun run doom.ts`
 - Rule: choose the first unchecked step whose prerequisites are complete in the assigned lane.
 - Visual status: checklist boxes are synced from `plan_final/status/*.json` by `bun run plan_final/sync-master-checklist.ts`.
@@ -57,6 +57,7 @@
 - [x] `03-008` `wire-deterministic-input-trace` | lane: `launch-host-input` | prereqs: `03-007` | file: `plan_final/steps/03-008-wire-deterministic-input-trace.md`
 - [x] `03-009` `wire-clean-quit-and-endoom` | lane: `launch-host-input` | prereqs: `03-005, 07-010` | file: `plan_final/steps/03-009-wire-clean-quit-and-endoom.md`
 - [x] `03-010` `gate-clean-launch-to-title` | lane: `launch-host-input` | prereqs: `03-004, 03-005, 04-003, 05-004, 07-001` | file: `plan_final/steps/03-010-gate-clean-launch-to-title.md`
+- [ ] `03-011` `supersede-doom-ts-skeleton-pins` | lane: `launch-host-input` | prereqs: `03-001, 03-010` | file: `plan_final/steps/03-011-supersede-doom-ts-skeleton-pins.md`
 
 ## runtime-core
 
@@ -170,13 +171,13 @@
 
 ## acceptance
 
-- [ ] `13-001` `gate-bun-run-doom-smoke` | lane: `acceptance` | prereqs: `03-010, 06-010, 07-011, 11-009` | file: `plan_final/steps/13-001-gate-bun-run-doom-smoke.md`
+- [ ] `13-001` `gate-bun-run-doom-smoke` | lane: `acceptance` | prereqs: `03-010, 03-011, 06-010, 07-011, 11-009` | file: `plan_final/steps/13-001-gate-bun-run-doom-smoke.md`
 - [ ] `13-002` `gate-title-menu-parity` | lane: `acceptance` | prereqs: `13-001, 02-004` | file: `plan_final/steps/13-002-gate-title-menu-parity.md`
 - [ ] `13-003` `gate-e1m1-entry-parity` | lane: `acceptance` | prereqs: `13-002, 08-010, 09-010` | file: `plan_final/steps/13-003-gate-e1m1-entry-parity.md`
 - [ ] `13-004` `gate-scripted-e1m1-playability` | lane: `acceptance` | prereqs: `13-003, 08-010, 09-010, 10-008` | file: `plan_final/steps/13-004-gate-scripted-e1m1-playability.md`
-- [ ] `13-005` `gate-demo-sync-parity` | lane: `acceptance` | prereqs: `12-009, 11-009, 06-010` | file: `plan_final/steps/13-005-gate-demo-sync-parity.md`
+- [ ] `13-005` `gate-demo-sync-parity` | lane: `acceptance` | prereqs: `12-009, 11-009, 06-010, 03-011` | file: `plan_final/steps/13-005-gate-demo-sync-parity.md`
 - [ ] `13-006` `gate-save-load-parity` | lane: `acceptance` | prereqs: `12-009, 13-004` | file: `plan_final/steps/13-006-gate-save-load-parity.md`
-- [ ] `13-007` `gate-intermission-finale-parity` | lane: `acceptance` | prereqs: `07-011, 08-010, 11-009` | file: `plan_final/steps/13-007-gate-intermission-finale-parity.md`
+- [ ] `13-007` `gate-intermission-finale-parity` | lane: `acceptance` | prereqs: `07-011, 08-010, 11-009, 03-011` | file: `plan_final/steps/13-007-gate-intermission-finale-parity.md`
 - [ ] `13-008` `gate-full-shareware-route` | lane: `acceptance` | prereqs: `13-004, 13-005, 13-006, 13-007` | file: `plan_final/steps/13-008-gate-full-shareware-route.md`
 - [ ] `13-009` `gate-registered-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-009-gate-registered-iwad-when-present.md`
 - [ ] `13-010` `gate-ultimate-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-010-gate-ultimate-iwad-when-present.md`

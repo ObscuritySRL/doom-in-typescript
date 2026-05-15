@@ -56,6 +56,8 @@ Wire player spawn, reborn, inventory defaults, view height, bob, cards, ammo, an
 - `bun run format`
 - `bun test test/plan_final/player/wire-player-spawn-state.test.ts`
 - `bun test --only-failures`
+- `bun run plan_final/test-live-reference.ts test/plan_final/player/wire-player-spawn-state.test.ts` when `test/plan_final/player/wire-player-spawn-state.test.ts` is a live reference capture test
+- `bun run plan_final/test-live-reference.ts` when an oracle or acceptance gate requires live reference evidence
 - `bun x tsc --noEmit --project tsconfig.json`
 
 ## progress log
@@ -67,7 +69,8 @@ Wire player spawn, reborn, inventory defaults, view height, bob, cards, ammo, an
 ## completion criteria
 
 - The focused test proves the behavior or inventory result for this exact step.
-- `bun run format`, focused `bun test test/plan_final/player/wire-player-spawn-state.test.ts`, `bun test --only-failures`, and `bun x tsc --noEmit --project tsconfig.json` all pass in that order.
+- `bun run format`, focused `bun test test/plan_final/player/wire-player-spawn-state.test.ts`, headless `bun test --only-failures`, any required serialized `bun run plan_final/test-live-reference.ts` command, and `bun x tsc --noEmit --project tsconfig.json` all pass in that order.
+- Live Win32 reference captures are opt-in and serialized through `bun run plan_final/test-live-reference.ts`; do not run several live DOOM windows in parallel on the same desktop.
 - Any failure is fixed in this same step and the full verification sequence is rerun from the beginning.
 - The step is not marked complete, committed, or pushed while any verification command is failing.
 - Files are staged explicitly by path, committed with a Conventional Commit, and pushed directly with local git commands.

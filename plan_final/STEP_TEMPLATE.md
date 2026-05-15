@@ -70,3 +70,4 @@
 
 - `plan_final/evidence/<step-id>.json`
 - `plan_final/status/<step-id>.json`
+- Run `bun run plan_final/sync-master-checklist.ts` before staging so `plan_final/MASTER_CHECKLIST.md` is updated as a visual progress view.
