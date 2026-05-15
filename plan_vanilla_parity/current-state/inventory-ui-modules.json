@@ -288,8 +288,8 @@
       "exported_types": ["FrontEndKeyAction", "FrontEndTickAction", "HelpLump"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/bootstrap/titleLoop.ts", "src/input/keyboard.ts"],
-      "src_importer_count": 20,
-      "test_importer_count": 20
+      "src_importer_count": 21,
+      "test_importer_count": 21
     },
     {
       "relative_path": "src/ui/hudMessages.ts",

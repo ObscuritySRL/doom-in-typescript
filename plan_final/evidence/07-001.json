@@ -1,0 +1,23 @@
+{
+  "stepId": "07-001",
+  "lane": "ui",
+  "title": "wire-title-loop-rendering",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-title-loop-rendering.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-001.json",
+    "plan_final/progress/ui/07-001.md",
+    "plan_final/status/07-001.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireTitleLoopRendering.ts",
+    "test/plan_final/ui/wire-title-loop-rendering.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-title-loop-rendering.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16143, "failed": 0, "files": 871 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-001 aggregates the front-end attract-loop sequence (createFrontEndSequence, tickFrontEnd, handleFrontEndKey, notifyDemoCompleted, setMenuActive, getInitialHelpLump) and the TitleLoop page-timing primitive into a single src/vanilla re-export facade for the clean-launch path. The read-only src/ui/frontEndSequence.ts and src/bootstrap/titleLoop.ts already implement vanilla d_main.c D_StartTitle/D_PageTicker/D_AdvanceDemo semantics; pure barrel + frozen manifest, no source modification. This step's prior spurious prerequisite on 04-005 was removed as part of the e365561 prereq-cycle fix.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/frontEndSequence.ts src 20->21 test 20->21"]
+  }
+}
