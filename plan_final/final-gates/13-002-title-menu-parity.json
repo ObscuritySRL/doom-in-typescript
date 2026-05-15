@@ -1,0 +1,101 @@
+{
+  "audioDifferences": [],
+  "current": {
+    "command": [
+      "bun",
+      "run",
+      "doom.ts",
+      "-iwad",
+      "doom/DOOM1.WAD"
+    ],
+    "exitCodeAfterKill": null,
+    "framebufferHeight": 480,
+    "framebufferWidth": 640,
+    "stderrText": "",
+    "steps": [
+      {
+        "expectedMenuState": "main-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "e8cb9ecf7a2d04860efbf631253086bc319bdda09eaa237d64d8b5ddec1d2147",
+        "matchedExpectedNormalizedSha256": true,
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+        "stepIndex": 0,
+        "virtualKeyCode": 27,
+        "virtualKeyName": "VK_ESCAPE"
+      },
+      {
+        "expectedMenuState": "episode-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "eb2f3c9d816aab63e5d89a09b5e3257e8382bcd1704c721a042216e502dd267f",
+        "matchedExpectedNormalizedSha256": true,
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+        "stepIndex": 1,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      }
+    ],
+    "stdoutText": "",
+    "titleFrameNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+    "titleFrameSha256": "fa94a27cfa0c4dc73a0450fe40f6ffc056b91a23f6eef31dcda3f9ac1176a682",
+    "windowTitle": "DOOM Codex - TITLEPIC"
+  },
+  "framebufferComparisons": [
+    {
+      "currentNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+      "label": "title-attract",
+      "referenceNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+      "zeroDiff": true
+    },
+    {
+      "currentNormalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+      "label": "main-menu",
+      "referenceNormalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+      "zeroDiff": true
+    },
+    {
+      "currentNormalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+      "label": "episode-menu",
+      "referenceNormalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+      "zeroDiff": true
+    }
+  ],
+  "framebufferDifferences": [],
+  "knownFailures": [],
+  "musicDifferences": [],
+  "reference": {
+    "executableFilename": "DOOM.EXE",
+    "steps": [
+      {
+        "capturedAtElapsedMs": 2661.4016,
+        "description": "Escape from title attract → Main Menu (default selection: New Game)",
+        "expectedMenuState": "main-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "e8cb9ecf7a2d04860efbf631253086bc319bdda09eaa237d64d8b5ddec1d2147",
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+        "stepIndex": 0,
+        "virtualKeyCode": 27,
+        "virtualKeyName": "VK_ESCAPE"
+      },
+      {
+        "capturedAtElapsedMs": 3064.5819,
+        "description": "Enter on Main Menu → Episode Menu (default selection: Knee-Deep in the Dead)",
+        "expectedMenuState": "episode-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "eb2f3c9d816aab63e5d89a09b5e3257e8382bcd1704c721a042216e502dd267f",
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+        "stepIndex": 1,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      }
+    ],
+    "titleFrameNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+    "titleFrameSha256": "fa94a27cfa0c4dc73a0450fe40f6ffc056b91a23f6eef31dcda3f9ac1176a682",
+    "windowTitle": "DOOM Shareware - Chocolate Doom 2.2.1"
+  },
+  "stateDifferences": [],
+  "stepId": "13-002"
+}

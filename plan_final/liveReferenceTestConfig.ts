@@ -2,6 +2,7 @@ export const LIVE_REFERENCE_TEST_ENVIRONMENT_VARIABLE = 'DOOM_RUN_LIVE_REFERENCE
 
 export const LIVE_REFERENCE_TEST_PATHS: readonly string[] = Object.freeze([
   'test/plan_final/acceptance/gate-bun-run-doom-smoke.test.ts',
+  'test/plan_final/acceptance/gate-title-menu-parity.test.ts',
   'test/plan_final/oracle/capture-reference-audio-windows.test.ts',
   'test/plan_final/oracle/capture-reference-demo-sync.test.ts',
   'test/plan_final/oracle/capture-reference-e1m1-actions.test.ts',

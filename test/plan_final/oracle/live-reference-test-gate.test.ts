@@ -17,6 +17,7 @@ describe('plan_final oracle live reference test gate', () => {
   test('dedicated live test path list pins every OS-window reference capture suite', () => {
     expect(LIVE_REFERENCE_TEST_PATHS).toEqual([
       'test/plan_final/acceptance/gate-bun-run-doom-smoke.test.ts',
+      'test/plan_final/acceptance/gate-title-menu-parity.test.ts',
       'test/plan_final/oracle/capture-reference-audio-windows.test.ts',
       'test/plan_final/oracle/capture-reference-demo-sync.test.ts',
       'test/plan_final/oracle/capture-reference-e1m1-actions.test.ts',

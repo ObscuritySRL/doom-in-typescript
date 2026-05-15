@@ -288,7 +288,7 @@
       "exported_types": ["FrontEndKeyAction", "FrontEndTickAction", "HelpLump"],
       "exported_const_enums": [],
       "external_imports": ["src/bootstrap/gameMode.ts", "src/bootstrap/titleLoop.ts", "src/input/keyboard.ts"],
-      "src_importer_count": 24,
+      "src_importer_count": 25,
       "test_importer_count": 23
     },
     {
@@ -429,7 +429,7 @@
       "exported_types": ["MenuAction"],
       "exported_const_enums": [],
       "external_imports": ["src/input/keyboard.ts"],
-      "src_importer_count": 25,
+      "src_importer_count": 26,
       "test_importer_count": 24
     },
     {

@@ -1,0 +1,75 @@
+{
+  "stepId": "13-002",
+  "lane": "acceptance",
+  "title": "gate-title-menu-parity",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/acceptance/gate-title-menu-parity.test.ts",
+    "bun test --only-failures",
+    "bun run plan_final/test-live-reference.ts test/plan_final/acceptance/gate-title-menu-parity.test.ts",
+    "bun run plan_final/test-live-reference.ts",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/13-002.json",
+    "plan_final/final-gates/13-002-title-menu-parity.json",
+    "plan_final/liveReferenceTestConfig.ts",
+    "plan_final/progress/acceptance/13-002.md",
+    "plan_final/status/13-002.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/titleLoopSmokeHost.ts",
+    "test/plan_final/acceptance/gate-title-menu-parity.test.ts",
+    "test/plan_final/oracle/live-reference-test-gate.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedHeadlessTest": {
+    "command": "bun test test/plan_final/acceptance/gate-title-menu-parity.test.ts",
+    "failed": 0,
+    "passed": 2,
+    "skipped": 1
+  },
+  "focusedLiveReferenceTest": {
+    "command": "bun run plan_final/test-live-reference.ts test/plan_final/acceptance/gate-title-menu-parity.test.ts",
+    "failed": 0,
+    "passed": 3
+  },
+  "fullHeadlessSuite": {
+    "command": "bun test --only-failures",
+    "failed": 0,
+    "passed": 16441,
+    "skipped": 13
+  },
+  "fullLiveReferenceSuite": {
+    "command": "bun run plan_final/test-live-reference.ts",
+    "failed": 0,
+    "passed": 73
+  },
+  "typecheck": "clean",
+  "finalGateEvidence": {
+    "path": "plan_final/final-gates/13-002-title-menu-parity.json",
+    "framebufferDifferences": [],
+    "stateDifferences": [],
+    "audioDifferences": [],
+    "musicDifferences": [],
+    "framebufferComparisons": [
+      {
+        "label": "title-attract",
+        "normalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+        "zeroDiff": true
+      },
+      {
+        "label": "main-menu",
+        "normalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+        "zeroDiff": true
+      },
+      {
+        "label": "episode-menu",
+        "normalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+        "zeroDiff": true
+      }
+    ]
+  },
+  "crossPlanInventoryUpdates": ["src/ui/frontEndSequence.ts src 24->25", "src/ui/menus.ts src 25->26"],
+  "implementationNote": "The title smoke host now handles the serialized live test route title -> Escape -> main menu -> Enter -> episode menu, renders the menu overlays over TITLEPIC, and presents Chocolate Doom 2.2.1-compatible 2x aspect-corrected palette output. src/main.ts and package.json remain untouched."
+}
