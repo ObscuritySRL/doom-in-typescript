@@ -1,0 +1,25 @@
+{
+  "stepId": "11-009",
+  "lane": "audio",
+  "title": "gate-audio-parity",
+  "commands": ["bun run format", "bun test test/plan_final/audio/gate-audio-parity.test.ts", "bun test --only-failures", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/MASTER_CHECKLIST.md",
+    "plan_final/evidence/11-009.json",
+    "plan_final/progress/audio/11-009.md",
+    "plan_final/status/11-009.json",
+    "test/plan_final/audio/gate-audio-parity.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/audio/gate-audio-parity.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16400, "failed": 0 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 11-009 is the audio-lane parity gate. It adds one test (test/plan_final/audio/gate-audio-parity.test.ts) mirroring the cast-free canonical lane-gate pattern over the eight audio prerequisites 11-001..11-008 (wire-sfx-loader, wire-channel-and-priority-runtime, wire-spatial-sfx-runtime, wire-sound-callback-bridge, wire-pcm-mixer-win32-output, wire-mus-opl-runtime, wire-music-selection, wire-audio-hash-windows). For every prerequisite it asserts: plan_final/status/<id>.json exists, declares status=COMPLETED with the matching stepId, and records a commitSha of length >= 7 (proof the work was pushed); plan_final/evidence/<id>.json exists, declares zero knownFailures and typecheck=clean; the prerequisite focused test file exists under test/plan_final/audio/; and the gate covers exactly the eight-element ordered prerequisite set. The banned cast class (AGENTS.md L201/L222) is avoided by parsing into Record<string, unknown> (JSON.parse -> typed return requires no cast) and field-narrowing via String()/Array.isArray, with a Symbol poison sentinel for malformed knownFailures so corrupt prerequisite evidence fails the gate. The test imports nothing from a ../-prefixed src module, so no plan_vanilla_parity inventory module is affected (inventory-neutral; no probe/reconcile required). The step became eligible with all eight audio prerequisites COMPLETED.",
+    "crossPlanInventoryRewriteRequired": false,
+    "crossPlanInventoryUpdates": [],
+    "transientFailureNote": "Full-suite attempt 1 caught a transient inventory-ai-and-specials-modules src_importer_count mismatch (Expected 6 / Received 5) caused by a concurrent parallel worker mid-writing src/vanilla/wireDoorSpecials.ts (08-005, imports ../specials/doors.ts) during the 42s filesystem scan. Confirmed transient: isolated re-run of that inventory test passed 23/0, and full-suite attempt 2 passed 16400/0. Not caused by 11-009 (gate test imports nothing from src/) and not a committed-code defect; no test was skipped, weakened, or reclassified.",
+    "masterChecklistSyncNote": "Ran the sanctioned bun run plan_final/sync-master-checklist.ts per the mandatory per-step contract; the docs commit includes the re-synced MASTER_CHECKLIST.md once status/11-009.json marks it COMPLETED.",
+    "parallelAgentNote": "Three-agent race: default selector returned 11-004 (Worker A) then 08-005; Worker B held 12-006. 11-009 selected as the eligible non-colliding gap (unique write-lock file test/plan_final/audio/gate-audio-parity.test.ts; shared plan_final/status|evidence are per-step-id). Finalized with two-commit pathspec-limited git commits to isolate the explicit 11-009 paths from concurrent shared-index activity."
+  }
+}
