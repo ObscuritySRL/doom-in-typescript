@@ -129,7 +129,7 @@
 - [x] `09-005` `wire-hitscan-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-005-wire-hitscan-weapons.md`
 - [x] `09-006` `wire-projectile-weapons` | lane: `player-weapons-items` | prereqs: `09-004, 10-002` | file: `plan_final/steps/09-006-wire-projectile-weapons.md`
 - [x] `09-007` `wire-pickups` | lane: `player-weapons-items` | prereqs: `09-001, 08-003` | file: `plan_final/steps/09-007-wire-pickups.md`
-- [ ] `09-008` `wire-player-damage` | lane: `player-weapons-items` | prereqs: `09-001, 10-002` | file: `plan_final/steps/09-008-wire-player-damage.md`
+- [x] `09-008` `wire-player-damage` | lane: `player-weapons-items` | prereqs: `09-001, 10-002` | file: `plan_final/steps/09-008-wire-player-damage.md`
 - [x] `09-009` `wire-vanilla-cheats` | lane: `player-weapons-items` | prereqs: `09-002` | file: `plan_final/steps/09-009-wire-vanilla-cheats.md`
 - [ ] `09-010` `gate-player-weapons-items` | lane: `player-weapons-items` | prereqs: `09-001, 09-002, 09-003, 09-004, 09-005, 09-006, 09-007, 09-008, 09-009` | file: `plan_final/steps/09-010-gate-player-weapons-items.md`
 
