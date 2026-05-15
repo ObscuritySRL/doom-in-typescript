@@ -153,7 +153,7 @@
 - [x] `11-005` `wire-pcm-mixer-win32-output` | lane: `audio` | prereqs: `11-002, 03-005` | file: `plan_final/steps/11-005-wire-pcm-mixer-win32-output.md`
 - [x] `11-006` `wire-mus-opl-runtime` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-006-wire-mus-opl-runtime.md`
 - [x] `11-007` `wire-music-selection` | lane: `audio` | prereqs: `11-006, 07-001` | file: `plan_final/steps/11-007-wire-music-selection.md`
-- [ ] `11-008` `wire-audio-hash-windows` | lane: `audio` | prereqs: `11-005, 11-007` | file: `plan_final/steps/11-008-wire-audio-hash-windows.md`
+- [x] `11-008` `wire-audio-hash-windows` | lane: `audio` | prereqs: `11-005, 11-007` | file: `plan_final/steps/11-008-wire-audio-hash-windows.md`
 - [ ] `11-009` `gate-audio-parity` | lane: `audio` | prereqs: `11-001, 11-002, 11-003, 11-004, 11-005, 11-006, 11-007, 11-008` | file: `plan_final/steps/11-009-gate-audio-parity.md`
 
 ## save-config-demo
