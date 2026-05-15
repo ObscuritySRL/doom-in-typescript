@@ -65,7 +65,7 @@
 - [x] `04-003` `wire-d-doomloop` | lane: `runtime-core` | prereqs: `04-001` | file: `plan_final/steps/04-003-wire-d-doomloop.md`
 - [x] `04-004` `wire-try-run-tics` | lane: `runtime-core` | prereqs: `04-003, 03-006` | file: `plan_final/steps/04-004-wire-try-run-tics.md`
 - [x] `04-005` `wire-game-state-transitions` | lane: `runtime-core` | prereqs: `04-003, 07-001` | file: `plan_final/steps/04-005-wire-game-state-transitions.md`
-- [ ] `04-006` `wire-rng-and-demo-streams` | lane: `runtime-core` | prereqs: `04-004, 12-006` | file: `plan_final/steps/04-006-wire-rng-and-demo-streams.md`
+- [ ] `04-006` `wire-rng-and-demo-streams` | lane: `runtime-core` | prereqs: `04-004` | file: `plan_final/steps/04-006-wire-rng-and-demo-streams.md`
 - [x] `04-007` `wire-state-snapshot-hash` | lane: `runtime-core` | prereqs: `04-001, 08-001, 09-001` | file: `plan_final/steps/04-007-wire-state-snapshot-hash.md`
 - [ ] `04-008` `gate-runtime-core` | lane: `runtime-core` | prereqs: `04-002, 04-003, 04-004, 04-005, 04-006, 04-007` | file: `plan_final/steps/04-008-gate-runtime-core.md`
 
@@ -140,7 +140,7 @@
 - [x] `10-003` `wire-monster-look-chase` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-003-wire-monster-look-chase.md`
 - [x] `10-004` `wire-monster-attacks` | lane: `ai-specials` | prereqs: `10-003` | file: `plan_final/steps/10-004-wire-monster-attacks.md`
 - [x] `10-005` `wire-state-transitions` | lane: `ai-specials` | prereqs: `10-002` | file: `plan_final/steps/10-005-wire-state-transitions.md`
-- [ ] `10-006` `wire-boss-specials` | lane: `ai-specials` | prereqs: `10-005, 08-008` | file: `plan_final/steps/10-006-wire-boss-specials.md`
+- [ ] `10-006` `wire-boss-specials` | lane: `ai-specials` | prereqs: `10-005` | file: `plan_final/steps/10-006-wire-boss-specials.md`
 - [x] `10-007` `wire-special-line-ai-effects` | lane: `ai-specials` | prereqs: `08-004, 10-005` | file: `plan_final/steps/10-007-wire-special-line-ai-effects.md`
 - [ ] `10-008` `gate-ai-specials` | lane: `ai-specials` | prereqs: `10-001, 10-002, 10-003, 10-004, 10-005, 10-006, 10-007` | file: `plan_final/steps/10-008-gate-ai-specials.md`
 
@@ -149,7 +149,7 @@
 - [x] `11-001` `wire-sfx-loader` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-001-wire-sfx-loader.md`
 - [x] `11-002` `wire-channel-and-priority-runtime` | lane: `audio` | prereqs: `11-001` | file: `plan_final/steps/11-002-wire-channel-and-priority-runtime.md`
 - [x] `11-003` `wire-spatial-sfx-runtime` | lane: `audio` | prereqs: `11-002, 09-001` | file: `plan_final/steps/11-003-wire-spatial-sfx-runtime.md`
-- [ ] `11-004` `wire-sound-callback-bridge` | lane: `audio` | prereqs: `11-003, 09-004, 10-005, 08-005` | file: `plan_final/steps/11-004-wire-sound-callback-bridge.md`
+- [ ] `11-004` `wire-sound-callback-bridge` | lane: `audio` | prereqs: `11-003, 09-004, 10-005` | file: `plan_final/steps/11-004-wire-sound-callback-bridge.md`
 - [x] `11-005` `wire-pcm-mixer-win32-output` | lane: `audio` | prereqs: `11-002, 03-005` | file: `plan_final/steps/11-005-wire-pcm-mixer-win32-output.md`
 - [x] `11-006` `wire-mus-opl-runtime` | lane: `audio` | prereqs: `05-006` | file: `plan_final/steps/11-006-wire-mus-opl-runtime.md`
 - [x] `11-007` `wire-music-selection` | lane: `audio` | prereqs: `11-006, 07-001` | file: `plan_final/steps/11-007-wire-music-selection.md`
@@ -181,3 +181,4 @@
 - [ ] `13-009` `gate-registered-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-009-gate-registered-iwad-when-present.md`
 - [ ] `13-010` `gate-ultimate-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-010-gate-ultimate-iwad-when-present.md`
 - [ ] `13-011` `gate-final-side-by-side-zero-diff` | lane: `acceptance` | prereqs: `13-008, 13-009, 13-010` | file: `plan_final/steps/13-011-gate-final-side-by-side-zero-diff.md`
+
