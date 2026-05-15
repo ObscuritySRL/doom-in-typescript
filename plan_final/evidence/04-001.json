@@ -1,0 +1,56 @@
+{
+  "stepId": "04-001",
+  "lane": "runtime-core",
+  "title": "create-vanilla-runtime-context",
+  "commands": [
+    "bun run format",
+    "bun test test/plan_final/runtime/create-vanilla-runtime-context.test.ts",
+    "bun test",
+    "bun x tsc --noEmit --project tsconfig.json"
+  ],
+  "changedPaths": [
+    "plan_final/evidence/04-001.json",
+    "plan_final/progress/runtime-core/04-001.md",
+    "plan_final/status/04-001.json",
+    "plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json",
+    "src/vanilla/runtimeContext.ts",
+    "test/plan_final/runtime/create-vanilla-runtime-context.test.ts"
+  ],
+  "knownFailures": [
+    "test/vanilla_parity/current-state/inventory-wad-and-asset-modules.test.ts: pre-existing parallel-agent inventory drift caused by in-flight step 05-002 (untracked src/assets/wireSpriteFrameCacheFromIwadResourceCache.ts not yet present in plan_vanilla_parity/current-state/inventory-wad-and-asset-modules.json). Documented in memory/plan_vanilla_parity_workflow.md as a pre-existing inventory drift category; out of scope for 04-001 write lock (src/vanilla/, test/plan_final/runtime/)."
+  ],
+  "focusedTest": {
+    "path": "test/plan_final/runtime/create-vanilla-runtime-context.test.ts",
+    "passed": 17,
+    "failed": 0
+  },
+  "fullSuite": {
+    "passed": 15701,
+    "failed": 2,
+    "files": 829
+  },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 04-001 creates the single frozen runtime artifact every downstream subsystem (asset loaders, render init, audio init, save format, demo player, intermission, HUD, automap) reads to derive its own per-tic state. The runtime context wires the LaunchContext from 03-004, the IwadResourceCache from 05-001, flattened GameIdentification fields for ergonomic access, a fixed-size MAXPLAYERS=4 playerSlots array (each slot frozen with present=false/player=null), an initially-empty mapState, an initially-silent audioState, a vanilla initial uiState (HUD visible, automap/menu closed, no intermission), and two zero-filled 320x200 indexed framebuffers (primary + back) matching vanilla screens[0] and screens[1] from r_main.c. The top-level object is frozen; nested mutable buffers follow the vanilla d_main.c in-place-fill pattern with stable object identity.",
+    "publicSurface": [
+      "VANILLA_PLAYER_SLOT_COUNT = 4 (vanilla MAXPLAYERS from doomdef.h)",
+      "PlayerSlot interface (readonly index, present, player: unknown | null)",
+      "RuntimeMapState interface (current: unknown | null)",
+      "RuntimeAudioState interface (musicPlaying, sfxChannels: unknown[])",
+      "RuntimeUiState interface (hudVisible, automapOpen, menuOpen, intermissionPhase: string | null)",
+      "RuntimeFramebuffers interface (readonly primary: Uint8Array, back: Uint8Array)",
+      "VanillaRuntimeContext interface (launchContext, resourceCache, gameIdentification, gameMode, gameMission, gameDescription, episodeCount, playerSlots, mapState, audioState, uiState, framebuffers)",
+      "createVanillaRuntimeContext(launchContext: LaunchContext, resourceCache: IwadResourceCache): VanillaRuntimeContext"
+    ],
+    "readOnlyRefsConsulted": [
+      "src/bootstrap/gameMode.ts (GameIdentification, GameMode, GameMission types)",
+      "src/player/playerSpawn.ts (player primitive surface — referenced for slot typing; concrete Player narrowing deferred to a later runtime-core step)",
+      "src/map/mapSetup.ts (P_SetupLevel surface — referenced for MapData snapshot typing; concrete narrowing deferred to a later step)"
+    ],
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/wad/directory.ts: test_importer_count 67→70 (this step's new test plus parallel-agent test additions from in-flight 05-002 and 05-005 that the linter merged in)",
+      "src/wad/header.ts: test_importer_count 63→65 (same wiring)"
+    ]
+  }
+}

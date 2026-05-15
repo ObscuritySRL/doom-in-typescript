@@ -10,7 +10,7 @@
     {
       "relative_path": "src/assets/",
       "exists": true,
-      "committed_file_count": 35,
+      "committed_file_count": 36,
       "committed_filenames_sorted": [
         "build-asset-cache-lifetime-policy.ts",
         "build-flat-cache.ts",
@@ -46,11 +46,12 @@
         "verify-duplicate-lump-precedence.ts",
         "verify-lump-name-lookup-semantics.ts",
         "verify-marker-range-semantics.ts",
-        "verify-wad-header-and-directory-parsing.ts"
+        "verify-wad-header-and-directory-parsing.ts",
+        "wireSpriteFrameCacheFromIwadResourceCache.ts"
       ],
-      "total_size_bytes": 926392,
-      "total_line_count": 18758,
-      "total_export_count": 552
+      "total_size_bytes": 929432,
+      "total_line_count": 18823,
+      "total_export_count": 553
     },
     {
       "relative_path": "src/wad/",
@@ -77,8 +78,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 2,
-      "test_importer_count": 1,
+      "src_importer_count": 3,
+      "test_importer_count": 2,
       "exported_const_enums": []
     },
     {
@@ -149,8 +150,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": [],
-      "src_importer_count": 2,
-      "test_importer_count": 1,
+      "src_importer_count": 3,
+      "test_importer_count": 2,
       "exported_const_enums": []
     },
     {
@@ -275,8 +276,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
-      "src_importer_count": 23,
-      "test_importer_count": 67,
+      "src_importer_count": 24,
+      "test_importer_count": 70,
       "exported_const_enums": []
     },
     {
@@ -294,7 +295,7 @@
       "exported_types": ["WadType"],
       "external_imports": [],
       "src_importer_count": 3,
-      "test_importer_count": 63,
+      "test_importer_count": 65,
       "exported_const_enums": []
     },
     {
