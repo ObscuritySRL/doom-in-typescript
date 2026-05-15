@@ -118,7 +118,7 @@
 - [x] `08-007` `wire-sector-effects-and-animations` | lane: `map-world` | prereqs: `08-002` | file: `plan_final/steps/08-007-wire-sector-effects-and-animations.md`
 - [x] `08-008` `wire-level-exits` | lane: `map-world` | prereqs: `08-004, 10-006` | file: `plan_final/steps/08-008-wire-level-exits.md`
 - [x] `08-009` `wire-death-reborn-and-transitions` | lane: `map-world` | prereqs: `08-008, 09-006` | file: `plan_final/steps/08-009-wire-death-reborn-and-transitions.md`
-- [ ] `08-010` `gate-map-world-parity` | lane: `map-world` | prereqs: `08-001, 08-002, 08-003, 08-004, 08-005, 08-006, 08-007, 08-008, 08-009` | file: `plan_final/steps/08-010-gate-map-world-parity.md`
+- [x] `08-010` `gate-map-world-parity` | lane: `map-world` | prereqs: `08-001, 08-002, 08-003, 08-004, 08-005, 08-006, 08-007, 08-008, 08-009` | file: `plan_final/steps/08-010-gate-map-world-parity.md`
 
 ## player-weapons-items
 
