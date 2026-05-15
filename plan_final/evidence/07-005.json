@@ -1,0 +1,23 @@
+{
+  "stepId": "07-005",
+  "lane": "ui",
+  "title": "wire-hud-messages",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-hud-messages.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-005.json",
+    "plan_final/progress/ui/07-005.md",
+    "plan_final/status/07-005.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireHudMessages.ts",
+    "test/plan_final/ui/wire-hud-messages.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-hud-messages.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16091, "failed": 0, "files": 863 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-005 aggregates the HUD-message state + per-tic functions (createHudMessageState, hudMessageStart, requestHudMessageRefresh, tickHudMessages) + the Doom 1 map-name resolver (getDoom1MapName) plus the 4-second timeout constants into a single src/vanilla re-export facade for the HUD pass. The read-only src/ui/hudMessages.ts already implements vanilla hu_stuff.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/hudMessages.ts src 0->1 test 1->2"]
+  }
+}
