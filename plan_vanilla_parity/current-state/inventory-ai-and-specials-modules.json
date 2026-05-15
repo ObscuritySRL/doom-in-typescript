@@ -429,8 +429,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": [],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     },
     {
       "relative_path": "src/specials/ceilings.ts",
@@ -555,8 +555,8 @@
       "exported_types": [],
       "exported_const_enums": ["SectorSpecial"],
       "external_imports": ["src/player/playerSpawn.ts"],
-      "src_importer_count": 0,
-      "test_importer_count": 2
+      "src_importer_count": 1,
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/specials/stairsDonut.ts",

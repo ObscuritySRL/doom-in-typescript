@@ -1,0 +1,26 @@
+{
+  "stepId": "08-007",
+  "lane": "map-world",
+  "title": "wire-sector-effects-and-animations",
+  "commands": ["bun run format", "bun test test/plan_final/map/wire-sector-effects-and-animations.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/08-007.json",
+    "plan_final/progress/map-world/08-007.md",
+    "plan_final/status/08-007.json",
+    "plan_vanilla_parity/current-state/inventory-ai-and-specials-modules.json",
+    "src/vanilla/wireSectorEffectsAndAnimations.ts",
+    "test/plan_final/map/wire-sector-effects-and-animations.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/map/wire-sector-effects-and-animations.test.ts", "passed": 7, "failed": 0 },
+  "fullSuite": { "passed": 16045, "failed": 0, "files": 857 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 08-007 aggregates the sector-special (P_PlayerInSpecialSector) and animated texture/flat (P_InitPicAnims + the P_UpdateSpecials anim pass) entry points into a single src/vanilla re-export facade. The read-only specials modules already implement vanilla p_spec.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": [
+      "src/specials/animations.ts src 0->1 test 1->2",
+      "src/specials/sectorSpecials.ts src 0->1 test 2->3"
+    ]
+  }
+}
