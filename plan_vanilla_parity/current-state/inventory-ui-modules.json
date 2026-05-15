@@ -469,8 +469,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/angle.ts", "src/core/angle.ts", "src/core/fixed.ts", "src/player/playerSpawn.ts", "src/player/playerSpawn.ts", "src/ui/assets.ts", "src/world/mobj.ts"],
-      "src_importer_count": 0,
-      "test_importer_count": 1
+      "src_importer_count": 1,
+      "test_importer_count": 2
     }
   ],
   "test_coverage": {

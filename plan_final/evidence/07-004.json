@@ -1,0 +1,23 @@
+{
+  "stepId": "07-004",
+  "lane": "ui",
+  "title": "wire-status-bar-drawing",
+  "commands": ["bun run format", "bun test test/plan_final/ui/wire-status-bar-drawing.test.ts", "bun test", "bun x tsc --noEmit --project tsconfig.json"],
+  "changedPaths": [
+    "plan_final/evidence/07-004.json",
+    "plan_final/progress/ui/07-004.md",
+    "plan_final/status/07-004.json",
+    "plan_vanilla_parity/current-state/inventory-ui-modules.json",
+    "src/vanilla/wireStatusBarDrawing.ts",
+    "test/plan_final/ui/wire-status-bar-drawing.test.ts"
+  ],
+  "knownFailures": [],
+  "focusedTest": { "path": "test/plan_final/ui/wire-status-bar-drawing.test.ts", "passed": 6, "failed": 0 },
+  "fullSuite": { "passed": 16067, "failed": 0, "files": 860 },
+  "typecheck": "clean",
+  "wiringInterpretation": {
+    "rationale": "Plan_final 07-004 aggregates the status-bar state + per-tic widget functions (createStatusBarState, tickStatusBar, tickFaceWidget, calcPainOffset, updateKeyBoxes, computeStatusBarValues) into a single src/vanilla re-export facade for the HUD pass. The read-only src/ui/statusBar.ts already implements vanilla st_stuff.c semantics; pure barrel + frozen manifest, no source modification.",
+    "crossPlanInventoryRewriteRequired": true,
+    "crossPlanInventoryUpdates": ["src/ui/statusBar.ts src 0->1 test 1->2"]
+  }
+}
