@@ -25,6 +25,14 @@ const RECT_BYTE_LENGTH = 16;
 const ROUTE_STEP_COUNT = 4;
 const SETTLE_AFTER_KEY_MS = 400;
 const SETTLE_AFTER_WINDOW_FOUND_MS = 750;
+// The skill→gameplay keypress triggers a level load + RNG-driven screen-melt
+// wipe; a single capture a fixed delay later samples an uncontrolled moment of
+// that animated transition (non-deterministic run-to-run). The final route step
+// is instead captured once it has settled to its static post-load frame:
+// `GAMEPLAY_STABILIZE_REQUIRED_SAMPLES` consecutive identical normalized frames.
+const GAMEPLAY_STABILIZE_MAX_WAIT_MS = 8_000;
+const GAMEPLAY_STABILIZE_POLL_INTERVAL_MS = 100;
+const GAMEPLAY_STABILIZE_REQUIRED_SAMPLES = 10;
 const SHA256_HEX_REGEX = /^[0-9a-f]{64}$/;
 
 const WM_KEYDOWN = 0x0100;
@@ -307,6 +315,37 @@ function captureClientAreaPixels(
   }
 }
 
+async function captureStabilizedCurrentFrame(
+  user32Symbols: ReturnType<typeof dlopen<typeof USER32_CAPTURE_SYMBOLS>>['symbols'],
+  gdi32Symbols: ReturnType<typeof dlopen<typeof GDI32_CAPTURE_SYMBOLS>>['symbols'],
+  windowHandle: bigint,
+): Promise<CapturedClientArea> {
+  const startedAt = performance.now();
+  let stableNormalizedSha256: string | null = null;
+  let consecutiveStableSamples = 0;
+  let lastFrame = captureClientAreaPixels(user32Symbols, gdi32Symbols, windowHandle);
+
+  while (true) {
+    lastFrame = captureClientAreaPixels(user32Symbols, gdi32Symbols, windowHandle);
+    const normalizedSha256 = computeSha256Hex(normalizeToInternalFramebuffer(lastFrame.pixels, lastFrame.width, lastFrame.height));
+
+    if (normalizedSha256 === stableNormalizedSha256) {
+      consecutiveStableSamples += 1;
+    } else {
+      stableNormalizedSha256 = normalizedSha256;
+      consecutiveStableSamples = 1;
+    }
+
+    if (consecutiveStableSamples >= GAMEPLAY_STABILIZE_REQUIRED_SAMPLES) {
+      return lastFrame;
+    }
+    if (performance.now() - startedAt >= GAMEPLAY_STABILIZE_MAX_WAIT_MS) {
+      return lastFrame;
+    }
+    await Bun.sleep(GAMEPLAY_STABILIZE_POLL_INTERVAL_MS);
+  }
+}
+
 function postKeyDownUp(user32InputSymbols: ReturnType<typeof dlopen<typeof USER32_INPUT_SYMBOLS>>['symbols'], windowHandle: bigint, virtualKeyCode: number): void {
   if (user32InputSymbols.PostMessageW(windowHandle, WM_KEYDOWN, BigInt(virtualKeyCode), KEYDOWN_LPARAM) === 0) {
     throw new Error(`PostMessageW(WM_KEYDOWN, 0x${virtualKeyCode.toString(16)}) failed for the bun run doom.ts window`);
@@ -356,15 +395,22 @@ async function captureCurrentE1m1Route(expectedStepNormalizedHashes: readonly st
       postKeyDownUp(user32Input.symbols, discoveredWindow.handle, routeStep.virtualKeyCode);
       await Bun.sleep(SETTLE_AFTER_KEY_MS);
 
-      const matchStartedAt = performance.now();
-      let stepEvidence: CurrentRouteStepEvidence | null = null;
-      while (true) {
-        const stepFrame = captureClientAreaPixels(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
-        stepEvidence = createRouteStepEvidence(routeStep, stepIndex, stepFrame, expectedStepNormalizedSha256);
-        if (stepEvidence.matchedExpectedNormalizedSha256 || performance.now() - matchStartedAt >= FRAME_MATCH_TIMEOUT_MS) {
-          break;
+      let stepEvidence: CurrentRouteStepEvidence;
+      if (stepIndex === ROUTE_STEP_COUNT - 1) {
+        const stabilizedFrame = await captureStabilizedCurrentFrame(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
+        stepEvidence = createRouteStepEvidence(routeStep, stepIndex, stabilizedFrame, expectedStepNormalizedSha256);
+      } else {
+        const matchStartedAt = performance.now();
+        let polledEvidence: CurrentRouteStepEvidence | null = null;
+        while (true) {
+          const stepFrame = captureClientAreaPixels(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
+          polledEvidence = createRouteStepEvidence(routeStep, stepIndex, stepFrame, expectedStepNormalizedSha256);
+          if (polledEvidence.matchedExpectedNormalizedSha256 || performance.now() - matchStartedAt >= FRAME_MATCH_TIMEOUT_MS) {
+            break;
+          }
+          await Bun.sleep(FRAME_MATCH_POLL_INTERVAL_MS);
         }
-        await Bun.sleep(FRAME_MATCH_POLL_INTERVAL_MS);
+        stepEvidence = polledEvidence;
       }
 
       steps.push(stepEvidence);
@@ -495,6 +541,11 @@ describe('plan_final acceptance: gate-e1m1-entry-parity zero-diff', () => {
     'captures the current clean-launch route to E1M1 and matches live Chocolate Doom normalized frame hashes with zero differences',
     async () => {
       const referenceEvidence = await captureReferenceMenuRoute({
+        finalStepStabilization: {
+          maxAdditionalWaitMs: GAMEPLAY_STABILIZE_MAX_WAIT_MS,
+          pollIntervalMs: GAMEPLAY_STABILIZE_POLL_INTERVAL_MS,
+          requiredStableSamples: GAMEPLAY_STABILIZE_REQUIRED_SAMPLES,
+        },
         findWindowTimeoutMs: 30_000,
         killWaitMs: 8_000,
         settleAfterKeyMs: SETTLE_AFTER_KEY_MS,

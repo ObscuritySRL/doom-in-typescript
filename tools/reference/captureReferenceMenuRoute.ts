@@ -131,8 +131,31 @@ export interface ReferenceMenuRouteEvidence {
   readonly windowTitle: string;
 }
 
+/**
+ * Opt-in stabilization for the final route step (skill → gameplay).
+ *
+ * The final keypress triggers a level load followed by Chocolate Doom's
+ * RNG-driven screen-melt wipe. A single capture a fixed delay after the
+ * keypress samples an uncontrolled moment of that animated transition, so
+ * the captured frame hash is non-deterministic run-to-run. When this
+ * override is supplied, the final step is captured repeatedly until the
+ * normalized frame hash is identical for `requiredStableSamples`
+ * consecutive polls (the wipe has completed and the view has settled to
+ * its static post-load state) or `maxAdditionalWaitMs` elapses.
+ *
+ * Absent this override, behavior is unchanged: every step is captured
+ * exactly once after `settleAfterKeyMs`. Menu-only consumers (e.g. the
+ * 13-002 title-menu gate) are unaffected.
+ */
+export interface FinalStepStabilization {
+  readonly maxAdditionalWaitMs: number;
+  readonly pollIntervalMs: number;
+  readonly requiredStableSamples: number;
+}
+
 export interface CaptureReferenceMenuRouteOverrides {
   readonly executableFilename?: string;
+  readonly finalStepStabilization?: FinalStepStabilization;
   readonly findWindowPollIntervalMs?: number;
   readonly findWindowTimeoutMs?: number;
   readonly killWaitMs?: number;
@@ -347,6 +370,38 @@ function captureClientAreaPixels(user32Symbols: ReturnType<typeof dlopen<typeof 
   }
 }
 
+async function captureStabilizedClientArea(
+  user32Symbols: ReturnType<typeof dlopen<typeof USER32_CAPTURE_SYMBOLS>>['symbols'],
+  gdi32Symbols: ReturnType<typeof dlopen<typeof GDI32_CAPTURE_SYMBOLS>>['symbols'],
+  hWnd: bigint,
+  stabilization: FinalStepStabilization,
+): Promise<CapturedClientArea> {
+  const startedAtMs = nowMs();
+  let stableNormalizedSha256: string | null = null;
+  let consecutiveStableSamples = 0;
+  let lastCapture = captureClientAreaPixels(user32Symbols, gdi32Symbols, hWnd);
+
+  while (true) {
+    lastCapture = captureClientAreaPixels(user32Symbols, gdi32Symbols, hWnd);
+    const normalizedSha256 = computeSha256Hex(normalizeToInternalFramebuffer(lastCapture.pixels, lastCapture.width, lastCapture.height));
+
+    if (normalizedSha256 === stableNormalizedSha256) {
+      consecutiveStableSamples += 1;
+    } else {
+      stableNormalizedSha256 = normalizedSha256;
+      consecutiveStableSamples = 1;
+    }
+
+    if (consecutiveStableSamples >= stabilization.requiredStableSamples) {
+      return lastCapture;
+    }
+    if (nowMs() - startedAtMs >= stabilization.maxAdditionalWaitMs) {
+      return lastCapture;
+    }
+    await sleepMs(stabilization.pollIntervalMs);
+  }
+}
+
 function postKeyDownUp(user32InputSymbols: ReturnType<typeof dlopen<typeof USER32_INPUT_SYMBOLS>>['symbols'], hWnd: bigint, virtualKeyCode: number): void {
   const downResult = user32InputSymbols.PostMessageW(hWnd, WM_KEYDOWN, BigInt(virtualKeyCode), KEYDOWN_LPARAM);
   if (downResult === 0) {
@@ -428,7 +483,11 @@ export async function captureReferenceMenuRoute(overrides: CaptureReferenceMenuR
         postKeyDownUp(user32Input.symbols, hWnd, step.virtualKeyCode);
         await sleepMs(settleAfterKeyMs);
 
-        const stepFrame = captureClientAreaPixels(user32.symbols, gdi32.symbols, hWnd);
+        const isFinalStep = stepIndex === MENU_ROUTE_KEY_STEPS.length - 1;
+        const stepFrame =
+          isFinalStep && overrides.finalStepStabilization !== undefined
+            ? await captureStabilizedClientArea(user32.symbols, gdi32.symbols, hWnd, overrides.finalStepStabilization)
+            : captureClientAreaPixels(user32.symbols, gdi32.symbols, hWnd);
         const stepCapturedAtElapsedMs = nowMs() - startReference;
         const stepFrameSha256 = computeSha256Hex(stepFrame.pixels);
         const stepNormalized = normalizeToInternalFramebuffer(stepFrame.pixels, stepFrame.width, stepFrame.height);
