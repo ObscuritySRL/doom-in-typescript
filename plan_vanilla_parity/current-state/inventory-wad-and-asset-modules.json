@@ -96,8 +96,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/wad/directory.ts", "src/wad/markerRange.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 2,
+      "src_importer_count": 3,
+      "test_importer_count": 3,
       "exported_const_enums": []
     },
     {
@@ -277,7 +277,7 @@
       "exported_types": [],
       "external_imports": ["src/wad/header.ts"],
       "src_importer_count": 29,
-      "test_importer_count": 77,
+      "test_importer_count": 78,
       "exported_const_enums": []
     },
     {
