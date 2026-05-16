@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 57,
+      "committed_file_count": 58,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "addLine.ts",
@@ -64,15 +64,16 @@
         "spriteClip.ts",
         "spriteProjection.ts",
         "storeWallRange.ts",
+        "subsector.ts",
         "twoSidedWalls.ts",
         "visplaneSpans.ts",
         "visplanes.ts",
         "wallColumns.ts",
         "wallScaleMath.ts"
       ],
-      "total_size_bytes": 328014,
-      "total_line_count": 8412,
-      "total_export_count": 445
+      "total_size_bytes": 332884,
+      "total_line_count": 8527,
+      "total_export_count": 449
     }
   ],
   "modules": [
@@ -179,7 +180,7 @@
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
       "src_importer_count": 28,
-      "test_importer_count": 29
+      "test_importer_count": 30
     },
     {
       "relative_path": "src/render/renderLimits.ts",
@@ -206,7 +207,7 @@
       "exported_types": [],
       "exported_const_enums": ["Silhouette"],
       "external_imports": ["src/render/projection.ts"],
-      "src_importer_count": 7,
+      "src_importer_count": 8,
       "test_importer_count": 9
     },
     {
@@ -332,8 +333,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/render/projection.ts", "src/render/renderLimits.ts", "src/render/renderLimits.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 2
+      "src_importer_count": 3,
+      "test_importer_count": 3
     },
     {
       "relative_path": "src/render/wallColumns.ts",
@@ -358,7 +359,7 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 20,
+        "test_file_count": 21,
         "test_filenames_sorted": [
           "add-line.test.ts",
           "check-bbox.test.ts",
@@ -375,6 +376,7 @@
           "sprite-projection.test.ts",
           "sprite-sort-clip.test.ts",
           "store-wall-range.test.ts",
+          "subsector.test.ts",
           "two-sided-walls.test.ts",
           "visplane-build.test.ts",
           "visplane-span-render.test.ts",

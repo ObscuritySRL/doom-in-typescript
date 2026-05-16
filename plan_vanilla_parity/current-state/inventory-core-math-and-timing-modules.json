@@ -157,7 +157,7 @@
       "exported_types": ["Fixed"],
       "external_imports": [],
       "src_importer_count": 80,
-      "test_importer_count": 99,
+      "test_importer_count": 100,
       "exported_const_enums": []
     },
     {
