@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 58,
+      "committed_file_count": 59,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "addLine.ts",
@@ -58,6 +58,7 @@
         "projection.ts",
         "renderInitTables.ts",
         "renderLimits.ts",
+        "segRenderModel.ts",
         "sky.ts",
         "solidSegs.ts",
         "solidWalls.ts",
@@ -71,9 +72,9 @@
         "wallColumns.ts",
         "wallScaleMath.ts"
       ],
-      "total_size_bytes": 332884,
-      "total_line_count": 8527,
-      "total_export_count": 449
+      "total_size_bytes": 339637,
+      "total_line_count": 8703,
+      "total_export_count": 455
     }
   ],
   "modules": [
@@ -359,7 +360,7 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 21,
+        "test_file_count": 22,
         "test_filenames_sorted": [
           "add-line.test.ts",
           "check-bbox.test.ts",
@@ -370,6 +371,7 @@
           "projection-constants.test.ts",
           "render-init-tables.test.ts",
           "render-limits.test.ts",
+          "seg-render-model.test.ts",
           "sky.test.ts",
           "solid-segs.test.ts",
           "solid-walls.test.ts",

@@ -134,8 +134,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts", "src/core/fixed.ts", "src/core/fixed.ts"],
-      "src_importer_count": 6,
-      "test_importer_count": 9
+      "src_importer_count": 7,
+      "test_importer_count": 10
     },
     {
       "relative_path": "src/map/intercepts.ts",
@@ -192,8 +192,8 @@
       "exported_types": ["SlopeType"],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts", "src/core/fixed.ts", "src/core/fixed.ts"],
-      "src_importer_count": 14,
-      "test_importer_count": 26
+      "src_importer_count": 15,
+      "test_importer_count": 27
     },
     {
       "relative_path": "src/map/mapBundle.ts",

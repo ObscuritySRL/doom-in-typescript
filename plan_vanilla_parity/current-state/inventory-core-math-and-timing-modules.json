@@ -48,7 +48,7 @@
       "exported_classes": [],
       "exported_types": ["Angle"],
       "external_imports": [],
-      "src_importer_count": 19,
+      "src_importer_count": 20,
       "test_importer_count": 23,
       "exported_const_enums": []
     },
@@ -156,7 +156,7 @@
       "exported_classes": [],
       "exported_types": ["Fixed"],
       "external_imports": [],
-      "src_importer_count": 80,
+      "src_importer_count": 81,
       "test_importer_count": 100,
       "exported_const_enums": []
     },
