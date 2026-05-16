@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 54,
+      "committed_file_count": 55,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "compare-scripted-renderer-path.ts",
@@ -57,6 +57,7 @@
         "renderInitTables.ts",
         "renderLimits.ts",
         "sky.ts",
+        "solidSegs.ts",
         "solidWalls.ts",
         "spriteClip.ts",
         "spriteProjection.ts",
@@ -67,9 +68,9 @@
         "wallColumns.ts",
         "wallScaleMath.ts"
       ],
-      "total_size_bytes": 310000,
-      "total_line_count": 7878,
-      "total_export_count": 430
+      "total_size_bytes": 316347,
+      "total_line_count": 8067,
+      "total_export_count": 435
     }
   ],
   "modules": [
@@ -203,8 +204,8 @@
       "exported_types": [],
       "exported_const_enums": ["Silhouette"],
       "external_imports": ["src/render/projection.ts"],
-      "src_importer_count": 6,
-      "test_importer_count": 8
+      "src_importer_count": 7,
+      "test_importer_count": 9
     },
     {
       "relative_path": "src/render/sky.ts",
@@ -355,7 +356,7 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 17,
+        "test_file_count": 18,
         "test_filenames_sorted": [
           "column-span-draw.test.ts",
           "fuzz.test.ts",
@@ -365,6 +366,7 @@
           "render-init-tables.test.ts",
           "render-limits.test.ts",
           "sky.test.ts",
+          "solid-segs.test.ts",
           "solid-walls.test.ts",
           "sprite-projection.test.ts",
           "sprite-sort-clip.test.ts",
