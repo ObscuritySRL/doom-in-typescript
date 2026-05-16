@@ -7,8 +7,8 @@ import { liveReferenceTestsEnabled } from '../../../plan_final/liveReferenceTest
 import { SCREENHEIGHT, SCREENWIDTH } from '../../../src/host/windowPolicy.ts';
 import { renderLauncherFrame } from '../../../src/launcher/session.ts';
 import { TITLE_LOOP_SMOKE_GAMEPLAY_CONTRACT, TITLE_LOOP_SMOKE_HOST_CONTRACT, createTitleLoopSmokeHostGameplaySession } from '../../../src/vanilla/titleLoopSmokeHost.ts';
-import type { MenuRouteKeyStep, ReferenceMenuRouteEvidence } from '../../../tools/reference/captureReferenceMenuRoute.ts';
-import { MENU_ROUTE_KEY_STEPS, captureReferenceMenuRoute, normalizeToInternalFramebuffer } from '../../../tools/reference/captureReferenceMenuRoute.ts';
+import type { MenuRouteKeyStep, MenuRouteStepEvidence, ReferenceMenuRouteEvidence } from '../../../tools/reference/captureReferenceMenuRoute.ts';
+import { MENU_ROUTE_KEY_STEPS, captureReferenceMenuRoute, computeRegionNormalizedSha256, normalizeToInternalFramebuffer } from '../../../tools/reference/captureReferenceMenuRoute.ts';
 
 const CAPTURE_BYTES_PER_PIXEL = 4;
 const CURRENT_COMMAND = Object.freeze(['bun', 'run', 'doom.ts', '-iwad', 'doom/DOOM1.WAD']);
@@ -21,6 +21,14 @@ const FRAME_MATCH_TIMEOUT_MS = 2_000;
 const IWAD_PATH = 'doom/DOOM1.WAD';
 const KILL_WAIT_MS = 5_000;
 const NORMALIZED_FRAMEBUFFER_BYTE_LENGTH = 320 * 200 * CAPTURE_BYTES_PER_PIXEL;
+// Vanilla DOOM status bar is ST_HEIGHT=32 rows at ST_Y=168 (screenblocks <= 10,
+// reference default.cfg screenblocks=9). Its face widget legitimately animates
+// via the vanilla M_Random stream, so a full-window single-tic hash of the
+// gameplay frame is non-deterministic run-to-run regardless of renderer
+// fidelity. Per owner decision #5 the gameplay-e1m1 comparison is re-scoped to
+// the deterministic top region (3D view + view border), the bottom status-bar
+// rows excluded. Menu-route frames remain full-frame zero-diff.
+const NORMALIZED_VIEW_REGION_ROWS = 168;
 const RECT_BYTE_LENGTH = 16;
 const ROUTE_STEP_COUNT = 4;
 const SETTLE_AFTER_KEY_MS = 400;
@@ -115,6 +123,7 @@ interface CurrentRouteStepEvidence {
   readonly matchedExpectedNormalizedSha256: boolean;
   readonly normalizedByteLength: number;
   readonly normalizedSha256: string;
+  readonly regionNormalizedSha256: string;
   readonly stepIndex: number;
   readonly virtualKeyCode: number;
   readonly virtualKeyName: string;
@@ -163,17 +172,25 @@ function computeSha256Hex(bytes: Buffer): string {
   return hasher.digest('hex');
 }
 
-function createRouteStepEvidence(step: MenuRouteKeyStep, stepIndex: number, capturedClientArea: CapturedClientArea, expectedNormalizedSha256: string | null): CurrentRouteStepEvidence {
+function createRouteStepEvidence(step: MenuRouteKeyStep, stepIndex: number, capturedClientArea: CapturedClientArea, referenceStep: MenuRouteStepEvidence | null): CurrentRouteStepEvidence {
   const normalized = normalizeToInternalFramebuffer(capturedClientArea.pixels, capturedClientArea.width, capturedClientArea.height);
   const normalizedSha256 = computeSha256Hex(normalized);
+  const regionNormalizedSha256 = computeRegionNormalizedSha256(normalized, NORMALIZED_VIEW_REGION_ROWS);
+  const isFinalStep = stepIndex === ROUTE_STEP_COUNT - 1;
+
+  // The final (gameplay) step is compared on the deterministic 3D-view region
+  // (status bar excluded); menu steps remain full-frame comparisons.
+  const expectedSha256 = isFinalStep ? (referenceStep?.regionNormalizedSha256 ?? null) : (referenceStep?.normalizedSha256 ?? null);
+  const observedSha256 = isFinalStep ? regionNormalizedSha256 : normalizedSha256;
 
   return Object.freeze({
     expectedMenuState: step.expectedMenuState,
     framebufferByteLength: capturedClientArea.pixels.byteLength,
     framebufferSha256: computeSha256Hex(capturedClientArea.pixels),
-    matchedExpectedNormalizedSha256: expectedNormalizedSha256 !== null && normalizedSha256 === expectedNormalizedSha256,
+    matchedExpectedNormalizedSha256: expectedSha256 !== null && observedSha256 === expectedSha256,
     normalizedByteLength: normalized.byteLength,
     normalizedSha256,
+    regionNormalizedSha256,
     stepIndex,
     virtualKeyCode: step.virtualKeyCode,
     virtualKeyName: step.virtualKeyName,
@@ -321,18 +338,18 @@ async function captureStabilizedCurrentFrame(
   windowHandle: bigint,
 ): Promise<CapturedClientArea> {
   const startedAt = performance.now();
-  let stableNormalizedSha256: string | null = null;
+  let stableRegionSha256: string | null = null;
   let consecutiveStableSamples = 0;
   let lastFrame = captureClientAreaPixels(user32Symbols, gdi32Symbols, windowHandle);
 
   while (true) {
     lastFrame = captureClientAreaPixels(user32Symbols, gdi32Symbols, windowHandle);
-    const normalizedSha256 = computeSha256Hex(normalizeToInternalFramebuffer(lastFrame.pixels, lastFrame.width, lastFrame.height));
+    const normalizedSha256 = computeRegionNormalizedSha256(normalizeToInternalFramebuffer(lastFrame.pixels, lastFrame.width, lastFrame.height), NORMALIZED_VIEW_REGION_ROWS);
 
-    if (normalizedSha256 === stableNormalizedSha256) {
+    if (normalizedSha256 === stableRegionSha256) {
       consecutiveStableSamples += 1;
     } else {
-      stableNormalizedSha256 = normalizedSha256;
+      stableRegionSha256 = normalizedSha256;
       consecutiveStableSamples = 1;
     }
 
@@ -355,7 +372,7 @@ function postKeyDownUp(user32InputSymbols: ReturnType<typeof dlopen<typeof USER3
   }
 }
 
-async function captureCurrentE1m1Route(expectedStepNormalizedHashes: readonly string[]): Promise<CurrentE1m1RouteEvidence> {
+async function captureCurrentE1m1Route(referenceSteps: readonly MenuRouteStepEvidence[]): Promise<CurrentE1m1RouteEvidence> {
   mkdirSync(FINAL_GATE_DIRECTORY, { recursive: true });
   const user32Discovery = dlopen('user32.dll', USER32_WINDOW_DISCOVERY_SYMBOLS);
   const user32Capture = dlopen('user32.dll', USER32_CAPTURE_SYMBOLS);
@@ -389,7 +406,7 @@ async function captureCurrentE1m1Route(expectedStepNormalizedHashes: readonly st
     const steps: CurrentRouteStepEvidence[] = [];
     for (let stepIndex = 0; stepIndex < ROUTE_STEP_COUNT; stepIndex += 1) {
       const routeStep = MENU_ROUTE_KEY_STEPS[stepIndex]!;
-      const expectedStepNormalizedSha256 = expectedStepNormalizedHashes[stepIndex] ?? null;
+      const referenceStep = referenceSteps[stepIndex] ?? null;
 
       user32Input.symbols.SetForegroundWindow(discoveredWindow.handle);
       postKeyDownUp(user32Input.symbols, discoveredWindow.handle, routeStep.virtualKeyCode);
@@ -398,13 +415,13 @@ async function captureCurrentE1m1Route(expectedStepNormalizedHashes: readonly st
       let stepEvidence: CurrentRouteStepEvidence;
       if (stepIndex === ROUTE_STEP_COUNT - 1) {
         const stabilizedFrame = await captureStabilizedCurrentFrame(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
-        stepEvidence = createRouteStepEvidence(routeStep, stepIndex, stabilizedFrame, expectedStepNormalizedSha256);
+        stepEvidence = createRouteStepEvidence(routeStep, stepIndex, stabilizedFrame, referenceStep);
       } else {
         const matchStartedAt = performance.now();
         let polledEvidence: CurrentRouteStepEvidence | null = null;
         while (true) {
           const stepFrame = captureClientAreaPixels(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
-          polledEvidence = createRouteStepEvidence(routeStep, stepIndex, stepFrame, expectedStepNormalizedSha256);
+          polledEvidence = createRouteStepEvidence(routeStep, stepIndex, stepFrame, referenceStep);
           if (polledEvidence.matchedExpectedNormalizedSha256 || performance.now() - matchStartedAt >= FRAME_MATCH_TIMEOUT_MS) {
             break;
           }
@@ -460,12 +477,18 @@ function buildFrameComparisons(referenceEvidence: ReferenceMenuRouteEvidence, cu
   for (let stepIndex = 0; stepIndex < ROUTE_STEP_COUNT; stepIndex += 1) {
     const currentStep = currentEvidence.steps[stepIndex]!;
     const referenceStep = referenceEvidence.steps[stepIndex]!;
+    const isFinalStep = stepIndex === ROUTE_STEP_COUNT - 1;
+    // The final (gameplay) step is compared on the deterministic 3D-view
+    // region (status bar excluded, per owner decision #5); menu steps stay
+    // full-frame.
+    const currentValue = isFinalStep ? currentStep.regionNormalizedSha256 : currentStep.normalizedSha256;
+    const referenceValue = isFinalStep ? (referenceStep.regionNormalizedSha256 ?? '') : referenceStep.normalizedSha256;
     comparisons.push(
       Object.freeze({
-        currentNormalizedSha256: currentStep.normalizedSha256,
-        label: referenceStep.expectedMenuState,
-        referenceNormalizedSha256: referenceStep.normalizedSha256,
-        zeroDiff: currentStep.normalizedSha256 === referenceStep.normalizedSha256,
+        currentNormalizedSha256: currentValue,
+        label: isFinalStep ? `${referenceStep.expectedMenuState} (3D-view region)` : referenceStep.expectedMenuState,
+        referenceNormalizedSha256: referenceValue,
+        zeroDiff: currentValue === referenceValue && referenceValue.length > 0,
       }),
     );
   }
@@ -542,6 +565,7 @@ describe('plan_final acceptance: gate-e1m1-entry-parity zero-diff', () => {
     async () => {
       const referenceEvidence = await captureReferenceMenuRoute({
         finalStepStabilization: {
+          comparisonTopRows: NORMALIZED_VIEW_REGION_ROWS,
           maxAdditionalWaitMs: GAMEPLAY_STABILIZE_MAX_WAIT_MS,
           pollIntervalMs: GAMEPLAY_STABILIZE_POLL_INTERVAL_MS,
           requiredStableSamples: GAMEPLAY_STABILIZE_REQUIRED_SAMPLES,
@@ -551,7 +575,7 @@ describe('plan_final acceptance: gate-e1m1-entry-parity zero-diff', () => {
         settleAfterKeyMs: SETTLE_AFTER_KEY_MS,
         settleAfterWindowFoundMs: SETTLE_AFTER_WINDOW_FOUND_MS,
       });
-      const currentEvidence = await captureCurrentE1m1Route(referenceEvidence.steps.slice(0, ROUTE_STEP_COUNT).map((step) => step.normalizedSha256));
+      const currentEvidence = await captureCurrentE1m1Route(referenceEvidence.steps.slice(0, ROUTE_STEP_COUNT));
       const frameComparisons = buildFrameComparisons(referenceEvidence, currentEvidence);
       const framebufferDifferences = findFrameDifferences(frameComparisons);
 
@@ -577,6 +601,7 @@ describe('plan_final acceptance: gate-e1m1-entry-parity zero-diff', () => {
         expect(step.normalizedByteLength).toBe(NORMALIZED_FRAMEBUFFER_BYTE_LENGTH);
         expect(SHA256_HEX_REGEX.test(step.framebufferSha256)).toBe(true);
         expect(SHA256_HEX_REGEX.test(step.normalizedSha256)).toBe(true);
+        expect(SHA256_HEX_REGEX.test(step.regionNormalizedSha256)).toBe(true);
       }
 
       expect(framebufferDifferences).toEqual([]);

@@ -105,6 +105,16 @@ export interface MenuRouteStepEvidence {
   readonly framebufferSha256: string;
   readonly normalizedByteLength: number;
   readonly normalizedSha256: string;
+  /**
+   * SHA-256 of the top `FinalStepStabilization.comparisonTopRows` rows of the
+   * normalized 320x200 frame, present only on the final step when
+   * `finalStepStabilization` is supplied. This is the deterministic
+   * comparison region: the 3D view + view border, excluding the bottom
+   * status-bar rows whose face widget legitimately animates via the vanilla
+   * `M_Random` stream (making a full-window single-tic hash non-deterministic
+   * run-to-run regardless of renderer fidelity).
+   */
+  readonly regionNormalizedSha256?: string;
   readonly stepIndex: number;
   readonly virtualKeyCode: number;
   readonly virtualKeyName: string;
@@ -148,6 +158,14 @@ export interface ReferenceMenuRouteEvidence {
  * 13-002 title-menu gate) are unaffected.
  */
 export interface FinalStepStabilization {
+  /**
+   * Number of top rows of the normalized 320x200 frame that form the
+   * deterministic comparison region (3D view + view border). Stability is
+   * judged on this region's hash so the RNG-animated status bar does not
+   * prevent convergence, and the final step additionally records
+   * `regionNormalizedSha256` for this region.
+   */
+  readonly comparisonTopRows: number;
   readonly maxAdditionalWaitMs: number;
   readonly pollIntervalMs: number;
   readonly requiredStableSamples: number;
@@ -370,6 +388,11 @@ function captureClientAreaPixels(user32Symbols: ReturnType<typeof dlopen<typeof 
   }
 }
 
+export function computeRegionNormalizedSha256(normalized: Buffer, topRows: number): string {
+  const regionByteLength = topRows * NORMALIZED_INTERNAL_WIDTH * CAPTURE_BYTES_PER_PIXEL;
+  return computeSha256Hex(normalized.subarray(0, regionByteLength));
+}
+
 async function captureStabilizedClientArea(
   user32Symbols: ReturnType<typeof dlopen<typeof USER32_CAPTURE_SYMBOLS>>['symbols'],
   gdi32Symbols: ReturnType<typeof dlopen<typeof GDI32_CAPTURE_SYMBOLS>>['symbols'],
@@ -377,18 +400,18 @@ async function captureStabilizedClientArea(
   stabilization: FinalStepStabilization,
 ): Promise<CapturedClientArea> {
   const startedAtMs = nowMs();
-  let stableNormalizedSha256: string | null = null;
+  let stableRegionSha256: string | null = null;
   let consecutiveStableSamples = 0;
   let lastCapture = captureClientAreaPixels(user32Symbols, gdi32Symbols, hWnd);
 
   while (true) {
     lastCapture = captureClientAreaPixels(user32Symbols, gdi32Symbols, hWnd);
-    const normalizedSha256 = computeSha256Hex(normalizeToInternalFramebuffer(lastCapture.pixels, lastCapture.width, lastCapture.height));
+    const regionSha256 = computeRegionNormalizedSha256(normalizeToInternalFramebuffer(lastCapture.pixels, lastCapture.width, lastCapture.height), stabilization.comparisonTopRows);
 
-    if (normalizedSha256 === stableNormalizedSha256) {
+    if (regionSha256 === stableRegionSha256) {
       consecutiveStableSamples += 1;
     } else {
-      stableNormalizedSha256 = normalizedSha256;
+      stableRegionSha256 = regionSha256;
       consecutiveStableSamples = 1;
     }
 
@@ -492,6 +515,7 @@ export async function captureReferenceMenuRoute(overrides: CaptureReferenceMenuR
         const stepFrameSha256 = computeSha256Hex(stepFrame.pixels);
         const stepNormalized = normalizeToInternalFramebuffer(stepFrame.pixels, stepFrame.width, stepFrame.height);
         const stepNormalizedSha256 = computeSha256Hex(stepNormalized);
+        const regionNormalizedSha256 = isFinalStep && overrides.finalStepStabilization !== undefined ? computeRegionNormalizedSha256(stepNormalized, overrides.finalStepStabilization.comparisonTopRows) : undefined;
 
         stepEvidence.push(
           Object.freeze({
@@ -502,6 +526,7 @@ export async function captureReferenceMenuRoute(overrides: CaptureReferenceMenuR
             framebufferSha256: stepFrameSha256,
             normalizedByteLength: stepNormalized.byteLength,
             normalizedSha256: stepNormalizedSha256,
+            ...(regionNormalizedSha256 !== undefined ? { regionNormalizedSha256 } : {}),
             stepIndex,
             virtualKeyCode: step.virtualKeyCode,
             virtualKeyName: step.virtualKeyName,
