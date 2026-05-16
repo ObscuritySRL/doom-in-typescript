@@ -24,6 +24,14 @@ const DIB_RGB_COLORS = 0;
 const EPISODE_MENU_TITLE_LUMP = 'M_EPISOD';
 const EPISODE_MENU_TITLE_X = 54;
 const EPISODE_MENU_TITLE_Y = 38;
+// Vanilla Chocolate Doom 2.2.1 m_menu.c M_DrawNewGame draws two title patches
+// for the skill (NewDef) menu: M_NEWG at (96,14) and M_SKILL at (54,38).
+const SKILL_MENU_NEW_GAME_TITLE_LUMP = 'M_NEWG';
+const SKILL_MENU_NEW_GAME_TITLE_X = 96;
+const SKILL_MENU_NEW_GAME_TITLE_Y = 14;
+const SKILL_MENU_SKILL_TITLE_LUMP = 'M_SKILL';
+const SKILL_MENU_SKILL_TITLE_X = 54;
+const SKILL_MENU_SKILL_TITLE_Y = 38;
 const INTERNAL_STRETCH_GROUP_SCANLINES = 5;
 const INITIAL_SKULL_ANIM_COUNTER = 10;
 const MAIN_MENU_TITLE_LUMP = 'M_DOOM';
@@ -373,12 +381,15 @@ function drawMenuTitle(frame: TitleLoopSmokeFrame, menuState: MenuState, framebu
     case MenuKind.Episode:
       drawPatchByName(frame, EPISODE_MENU_TITLE_LUMP, EPISODE_MENU_TITLE_X, EPISODE_MENU_TITLE_Y, framebuffer);
       return;
+    case MenuKind.Skill:
+      drawPatchByName(frame, SKILL_MENU_NEW_GAME_TITLE_LUMP, SKILL_MENU_NEW_GAME_TITLE_X, SKILL_MENU_NEW_GAME_TITLE_Y, framebuffer);
+      drawPatchByName(frame, SKILL_MENU_SKILL_TITLE_LUMP, SKILL_MENU_SKILL_TITLE_X, SKILL_MENU_SKILL_TITLE_Y, framebuffer);
+      return;
     case MenuKind.Load:
     case MenuKind.Options:
     case MenuKind.ReadThis1:
     case MenuKind.ReadThis2:
     case MenuKind.Save:
-    case MenuKind.Skill:
     case MenuKind.SoundVolume:
       return;
   }
