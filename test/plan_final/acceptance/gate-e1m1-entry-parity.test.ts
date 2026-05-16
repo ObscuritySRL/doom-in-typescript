@@ -453,6 +453,16 @@ describe('plan_final acceptance: gate-e1m1-entry-parity structural unblock', () 
     });
   });
 
+  test('regresses duplicate manual Escape key handling through the Win32 message pump', async () => {
+    const sourceText = await Bun.file('src/vanilla/titleLoopSmokeHost.ts').text();
+
+    expect(sourceText).toContain('const WM_KEYUP = 0x0101');
+    expect(sourceText).toContain('const SMOKE_HOST_KEY_REPEAT_MASK = 1n << 30n');
+    expect(sourceText).toContain('(messageLongParameter & SMOKE_HOST_KEY_REPEAT_MASK) !== 0n');
+    expect(sourceText).toContain('markSmokeHostKeyDown(keyboardState, key);');
+    expect(sourceText).toContain('markSmokeHostKeyUp(keyboardState, key);');
+  });
+
   test('creates the E1M1 gameplay session used after title menu skill selection', async () => {
     const session = await createTitleLoopSmokeHostGameplaySession(IWAD_PATH, 2);
     const framebuffer = renderLauncherFrame(session);
