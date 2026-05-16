@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 53,
+      "committed_file_count": 54,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "compare-scripted-renderer-path.ts",
@@ -60,15 +60,16 @@
         "solidWalls.ts",
         "spriteClip.ts",
         "spriteProjection.ts",
+        "storeWallRange.ts",
         "twoSidedWalls.ts",
         "visplaneSpans.ts",
         "visplanes.ts",
         "wallColumns.ts",
         "wallScaleMath.ts"
       ],
-      "total_size_bytes": 291189,
-      "total_line_count": 7347,
-      "total_export_count": 422
+      "total_size_bytes": 315246,
+      "total_line_count": 8013,
+      "total_export_count": 434
     }
   ],
   "modules": [
@@ -174,8 +175,8 @@
       "exported_types": [],
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
-      "src_importer_count": 27,
-      "test_importer_count": 26
+      "src_importer_count": 28,
+      "test_importer_count": 27
     },
     {
       "relative_path": "src/render/renderLimits.ts",
@@ -256,8 +257,8 @@
       "exported_types": ["DrawVisSprite", "RenderMaskedSegRange"],
       "exported_const_enums": [],
       "external_imports": ["src/core/fixed.ts", "src/render/spriteProjection.ts"],
-      "src_importer_count": 1,
-      "test_importer_count": 3
+      "src_importer_count": 2,
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/render/spriteProjection.ts",
@@ -354,7 +355,7 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 16,
+        "test_file_count": 17,
         "test_filenames_sorted": [
           "column-span-draw.test.ts",
           "fuzz.test.ts",
@@ -367,6 +368,7 @@
           "solid-walls.test.ts",
           "sprite-projection.test.ts",
           "sprite-sort-clip.test.ts",
+          "store-wall-range.test.ts",
           "two-sided-walls.test.ts",
           "visplane-build.test.ts",
           "visplane-span-render.test.ts",
