@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 52,
+      "committed_file_count": 53,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "compare-scripted-renderer-path.ts",
@@ -63,11 +63,12 @@
         "twoSidedWalls.ts",
         "visplaneSpans.ts",
         "visplanes.ts",
-        "wallColumns.ts"
+        "wallColumns.ts",
+        "wallScaleMath.ts"
       ],
-      "total_size_bytes": 286106,
-      "total_line_count": 7208,
-      "total_export_count": 416
+      "total_size_bytes": 291189,
+      "total_line_count": 7347,
+      "total_export_count": 422
     }
   ],
   "modules": [
@@ -353,7 +354,7 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 15,
+        "test_file_count": 16,
         "test_filenames_sorted": [
           "column-span-draw.test.ts",
           "fuzz.test.ts",
@@ -369,7 +370,8 @@
           "two-sided-walls.test.ts",
           "visplane-build.test.ts",
           "visplane-span-render.test.ts",
-          "wall-column-fetch.test.ts"
+          "wall-column-fetch.test.ts",
+          "wall-scale-math.test.ts"
         ]
       }
     ],

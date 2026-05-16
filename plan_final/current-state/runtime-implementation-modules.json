@@ -135,7 +135,7 @@
     {
       "relative_path": "src/render/",
       "classification": "real-implementation",
-      "tracked_file_count": 52,
+      "tracked_file_count": 53,
       "primary_role": "Software renderer: projection, walls, visplanes, sprites, masked textures, fuzz, sky, patches, primitives.",
       "reachable_from_doom_ts": false
     },
