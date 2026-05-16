@@ -115,6 +115,18 @@ export interface MenuRouteStepEvidence {
    * run-to-run regardless of renderer fidelity).
    */
   readonly regionNormalizedSha256?: string;
+  /**
+   * Sorted set of the distinct `FinalStepFrameSet.comparisonTopRows`-region
+   * normalized SHA-256 hashes observed across the final step's capture
+   * window, present only on the final step when `finalStepFrameSet` is
+   * supplied. The idle E1M1 spawn 3D view animates perpetually via the
+   * vanilla animated-flat cycle (a fixed period), so no single externally
+   * wall-clock-sampled frame is deterministic — but the SET of frames the
+   * idle view cycles through over at least one full animation period is.
+   * A bit-exact renderer must reproduce exactly this set; comparing the set
+   * is strictly stronger than matching one frame.
+   */
+  readonly regionFrameSetSorted?: readonly string[];
   readonly stepIndex: number;
   readonly virtualKeyCode: number;
   readonly virtualKeyName: string;
@@ -171,8 +183,39 @@ export interface FinalStepStabilization {
   readonly requiredStableSamples: number;
 }
 
+/**
+ * Opt-in deterministic frame-SET capture for the final route step
+ * (skill → E1M1 spawn).
+ *
+ * The idle E1M1 spawn 3D view animates perpetually via the vanilla
+ * animated-flat cycle (`P_UpdateSpecials`, a fixed period), so no single
+ * externally wall-clock-sampled frame is deterministic run-to-run
+ * regardless of renderer fidelity. The deterministic invariant is instead
+ * the SET of distinct region-normalized frame hashes the idle view cycles
+ * through over at least one full animation period. After the final
+ * keypress this waits `settleBeforeWindowMs` (Chocolate Doom's RNG-driven
+ * screen-melt wipe + level load + level-start weapon raise settle), then
+ * captures every `pollIntervalMs` for `captureWindowMs` and records the
+ * sorted set of distinct `comparisonTopRows`-region hashes. A bit-exact
+ * renderer must reproduce exactly this set; it is strictly stronger than a
+ * single-frame match and needs no non-live oracle.
+ *
+ * Absent this override, behavior is unchanged. When both
+ * `finalStepFrameSet` and `finalStepStabilization` are supplied,
+ * `finalStepFrameSet` takes precedence (the set supersedes single-frame
+ * stabilization). Menu-only consumers (e.g. the 13-002 title-menu gate)
+ * are unaffected.
+ */
+export interface FinalStepFrameSet {
+  readonly captureWindowMs: number;
+  readonly comparisonTopRows: number;
+  readonly pollIntervalMs: number;
+  readonly settleBeforeWindowMs: number;
+}
+
 export interface CaptureReferenceMenuRouteOverrides {
   readonly executableFilename?: string;
+  readonly finalStepFrameSet?: FinalStepFrameSet;
   readonly finalStepStabilization?: FinalStepStabilization;
   readonly findWindowPollIntervalMs?: number;
   readonly findWindowTimeoutMs?: number;
@@ -425,6 +468,34 @@ async function captureStabilizedClientArea(
   }
 }
 
+function sortAsciiAscending(values: Iterable<string>): readonly string[] {
+  return [...values].sort((leftValue, rightValue) => (leftValue < rightValue ? -1 : leftValue > rightValue ? 1 : 0));
+}
+
+async function captureFinalStepFrameSet(
+  user32Symbols: ReturnType<typeof dlopen<typeof USER32_CAPTURE_SYMBOLS>>['symbols'],
+  gdi32Symbols: ReturnType<typeof dlopen<typeof GDI32_CAPTURE_SYMBOLS>>['symbols'],
+  hWnd: bigint,
+  frameSet: FinalStepFrameSet,
+): Promise<{ lastCapture: CapturedClientArea; regionFrameSetSorted: readonly string[] }> {
+  await sleepMs(frameSet.settleBeforeWindowMs);
+
+  const distinctRegionHashes = new Set<string>();
+  const windowStartedAtMs = nowMs();
+  let lastCapture = captureClientAreaPixels(user32Symbols, gdi32Symbols, hWnd);
+
+  while (true) {
+    lastCapture = captureClientAreaPixels(user32Symbols, gdi32Symbols, hWnd);
+    const regionSha256 = computeRegionNormalizedSha256(normalizeToInternalFramebuffer(lastCapture.pixels, lastCapture.width, lastCapture.height), frameSet.comparisonTopRows);
+    distinctRegionHashes.add(regionSha256);
+
+    if (nowMs() - windowStartedAtMs >= frameSet.captureWindowMs) {
+      return { lastCapture, regionFrameSetSorted: sortAsciiAscending(distinctRegionHashes) };
+    }
+    await sleepMs(frameSet.pollIntervalMs);
+  }
+}
+
 function postKeyDownUp(user32InputSymbols: ReturnType<typeof dlopen<typeof USER32_INPUT_SYMBOLS>>['symbols'], hWnd: bigint, virtualKeyCode: number): void {
   const downResult = user32InputSymbols.PostMessageW(hWnd, WM_KEYDOWN, BigInt(virtualKeyCode), KEYDOWN_LPARAM);
   if (downResult === 0) {
@@ -507,15 +578,26 @@ export async function captureReferenceMenuRoute(overrides: CaptureReferenceMenuR
         await sleepMs(settleAfterKeyMs);
 
         const isFinalStep = stepIndex === MENU_ROUTE_KEY_STEPS.length - 1;
-        const stepFrame =
-          isFinalStep && overrides.finalStepStabilization !== undefined
-            ? await captureStabilizedClientArea(user32.symbols, gdi32.symbols, hWnd, overrides.finalStepStabilization)
-            : captureClientAreaPixels(user32.symbols, gdi32.symbols, hWnd);
+        const useFinalStepFrameSet = isFinalStep && overrides.finalStepFrameSet !== undefined;
+        const useFinalStepStabilization = isFinalStep && !useFinalStepFrameSet && overrides.finalStepStabilization !== undefined;
+
+        let stepFrame: CapturedClientArea;
+        let regionFrameSetSorted: readonly string[] | undefined;
+        if (useFinalStepFrameSet) {
+          const frameSetCapture = await captureFinalStepFrameSet(user32.symbols, gdi32.symbols, hWnd, overrides.finalStepFrameSet!);
+          stepFrame = frameSetCapture.lastCapture;
+          regionFrameSetSorted = frameSetCapture.regionFrameSetSorted;
+        } else if (useFinalStepStabilization) {
+          stepFrame = await captureStabilizedClientArea(user32.symbols, gdi32.symbols, hWnd, overrides.finalStepStabilization!);
+        } else {
+          stepFrame = captureClientAreaPixels(user32.symbols, gdi32.symbols, hWnd);
+        }
         const stepCapturedAtElapsedMs = nowMs() - startReference;
         const stepFrameSha256 = computeSha256Hex(stepFrame.pixels);
         const stepNormalized = normalizeToInternalFramebuffer(stepFrame.pixels, stepFrame.width, stepFrame.height);
         const stepNormalizedSha256 = computeSha256Hex(stepNormalized);
-        const regionNormalizedSha256 = isFinalStep && overrides.finalStepStabilization !== undefined ? computeRegionNormalizedSha256(stepNormalized, overrides.finalStepStabilization.comparisonTopRows) : undefined;
+        const regionTopRows = useFinalStepFrameSet ? overrides.finalStepFrameSet!.comparisonTopRows : useFinalStepStabilization ? overrides.finalStepStabilization!.comparisonTopRows : undefined;
+        const regionNormalizedSha256 = regionTopRows !== undefined ? computeRegionNormalizedSha256(stepNormalized, regionTopRows) : undefined;
 
         stepEvidence.push(
           Object.freeze({
@@ -527,6 +609,7 @@ export async function captureReferenceMenuRoute(overrides: CaptureReferenceMenuR
             normalizedByteLength: stepNormalized.byteLength,
             normalizedSha256: stepNormalizedSha256,
             ...(regionNormalizedSha256 !== undefined ? { regionNormalizedSha256 } : {}),
+            ...(regionFrameSetSorted !== undefined ? { regionFrameSetSorted } : {}),
             stepIndex,
             virtualKeyCode: step.virtualKeyCode,
             virtualKeyName: step.virtualKeyName,

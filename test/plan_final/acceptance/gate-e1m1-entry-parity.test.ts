@@ -34,13 +34,20 @@ const ROUTE_STEP_COUNT = 4;
 const SETTLE_AFTER_KEY_MS = 400;
 const SETTLE_AFTER_WINDOW_FOUND_MS = 750;
 // The skill→gameplay keypress triggers a level load + RNG-driven screen-melt
-// wipe; a single capture a fixed delay later samples an uncontrolled moment of
-// that animated transition (non-deterministic run-to-run). The final route step
-// is instead captured once it has settled to its static post-load frame:
-// `GAMEPLAY_STABILIZE_REQUIRED_SAMPLES` consecutive identical normalized frames.
-const GAMEPLAY_STABILIZE_MAX_WAIT_MS = 8_000;
-const GAMEPLAY_STABILIZE_POLL_INTERVAL_MS = 100;
-const GAMEPLAY_STABILIZE_REQUIRED_SAMPLES = 10;
+// wipe, after which the idle E1M1 spawn 3D view animates PERPETUALLY via the
+// vanilla animated-flat cycle (`P_UpdateSpecials`, a fixed period). No single
+// externally wall-clock-sampled frame is therefore deterministic run-to-run,
+// regardless of renderer fidelity — but the SET of distinct region-normalized
+// frames the idle view cycles through over >= one full animation period IS
+// deterministic. The final route step is compared as that frame-SET: settle
+// past the wipe + level load + level-start weapon raise, then collect every
+// distinct top-region hash over a window spanning multiple animation periods.
+// Requiring set equality is strictly STRONGER than a single-frame match (every
+// frame in the vanilla animation cycle must be bit-exact) and needs no
+// non-live/manifest-only oracle.
+const GAMEPLAY_FRAMESET_CAPTURE_WINDOW_MS = 2_500;
+const GAMEPLAY_FRAMESET_POLL_INTERVAL_MS = 50;
+const GAMEPLAY_FRAMESET_SETTLE_BEFORE_WINDOW_MS = 4_500;
 const SHA256_HEX_REGEX = /^[0-9a-f]{64}$/;
 
 const WM_KEYDOWN = 0x0100;
@@ -123,6 +130,7 @@ interface CurrentRouteStepEvidence {
   readonly matchedExpectedNormalizedSha256: boolean;
   readonly normalizedByteLength: number;
   readonly normalizedSha256: string;
+  readonly regionFrameSetSorted: readonly string[];
   readonly regionNormalizedSha256: string;
   readonly stepIndex: number;
   readonly virtualKeyCode: number;
@@ -172,24 +180,40 @@ function computeSha256Hex(bytes: Buffer): string {
   return hasher.digest('hex');
 }
 
-function createRouteStepEvidence(step: MenuRouteKeyStep, stepIndex: number, capturedClientArea: CapturedClientArea, referenceStep: MenuRouteStepEvidence | null): CurrentRouteStepEvidence {
+function frameSetsEqual(leftSorted: readonly string[], rightSorted: readonly string[]): boolean {
+  if (leftSorted.length === 0 || rightSorted.length === 0 || leftSorted.length !== rightSorted.length) {
+    return false;
+  }
+  for (let index = 0; index < leftSorted.length; index += 1) {
+    if (leftSorted[index] !== rightSorted[index]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function createRouteStepEvidence(step: MenuRouteKeyStep, stepIndex: number, capturedClientArea: CapturedClientArea, referenceStep: MenuRouteStepEvidence | null, currentRegionFrameSetSorted: readonly string[]): CurrentRouteStepEvidence {
   const normalized = normalizeToInternalFramebuffer(capturedClientArea.pixels, capturedClientArea.width, capturedClientArea.height);
   const normalizedSha256 = computeSha256Hex(normalized);
   const regionNormalizedSha256 = computeRegionNormalizedSha256(normalized, NORMALIZED_VIEW_REGION_ROWS);
   const isFinalStep = stepIndex === ROUTE_STEP_COUNT - 1;
 
-  // The final (gameplay) step is compared on the deterministic 3D-view region
-  // (status bar excluded); menu steps remain full-frame comparisons.
-  const expectedSha256 = isFinalStep ? (referenceStep?.regionNormalizedSha256 ?? null) : (referenceStep?.normalizedSha256 ?? null);
-  const observedSha256 = isFinalStep ? regionNormalizedSha256 : normalizedSha256;
+  // The final (gameplay) step is compared as the deterministic 3D-view-region
+  // frame-SET: the idle E1M1 spawn view animates perpetually via the vanilla
+  // animated-flat cycle, so the deterministic invariant is the set of frames
+  // it cycles through over one animation period, not any single wall-clock-
+  // sampled frame. Requiring set equality is strictly stronger than a single-
+  // frame match. Menu steps remain full-frame single-hash comparisons.
+  const matched = isFinalStep ? frameSetsEqual(currentRegionFrameSetSorted, referenceStep?.regionFrameSetSorted ?? []) : referenceStep !== null && normalizedSha256 === referenceStep.normalizedSha256;
 
   return Object.freeze({
     expectedMenuState: step.expectedMenuState,
     framebufferByteLength: capturedClientArea.pixels.byteLength,
     framebufferSha256: computeSha256Hex(capturedClientArea.pixels),
-    matchedExpectedNormalizedSha256: expectedSha256 !== null && observedSha256 === expectedSha256,
+    matchedExpectedNormalizedSha256: matched,
     normalizedByteLength: normalized.byteLength,
     normalizedSha256,
+    regionFrameSetSorted: currentRegionFrameSetSorted,
     regionNormalizedSha256,
     stepIndex,
     virtualKeyCode: step.virtualKeyCode,
@@ -332,34 +356,27 @@ function captureClientAreaPixels(
   }
 }
 
-async function captureStabilizedCurrentFrame(
+async function captureCurrentFinalStepFrameSet(
   user32Symbols: ReturnType<typeof dlopen<typeof USER32_CAPTURE_SYMBOLS>>['symbols'],
   gdi32Symbols: ReturnType<typeof dlopen<typeof GDI32_CAPTURE_SYMBOLS>>['symbols'],
   windowHandle: bigint,
-): Promise<CapturedClientArea> {
-  const startedAt = performance.now();
-  let stableRegionSha256: string | null = null;
-  let consecutiveStableSamples = 0;
+): Promise<{ lastFrame: CapturedClientArea; regionFrameSetSorted: readonly string[] }> {
+  await Bun.sleep(GAMEPLAY_FRAMESET_SETTLE_BEFORE_WINDOW_MS);
+
+  const distinctRegionHashes = new Set<string>();
+  const windowStartedAt = performance.now();
   let lastFrame = captureClientAreaPixels(user32Symbols, gdi32Symbols, windowHandle);
 
   while (true) {
     lastFrame = captureClientAreaPixels(user32Symbols, gdi32Symbols, windowHandle);
-    const normalizedSha256 = computeRegionNormalizedSha256(normalizeToInternalFramebuffer(lastFrame.pixels, lastFrame.width, lastFrame.height), NORMALIZED_VIEW_REGION_ROWS);
+    const regionSha256 = computeRegionNormalizedSha256(normalizeToInternalFramebuffer(lastFrame.pixels, lastFrame.width, lastFrame.height), NORMALIZED_VIEW_REGION_ROWS);
+    distinctRegionHashes.add(regionSha256);
 
-    if (normalizedSha256 === stableRegionSha256) {
-      consecutiveStableSamples += 1;
-    } else {
-      stableRegionSha256 = normalizedSha256;
-      consecutiveStableSamples = 1;
+    if (performance.now() - windowStartedAt >= GAMEPLAY_FRAMESET_CAPTURE_WINDOW_MS) {
+      const regionFrameSetSorted = [...distinctRegionHashes].sort((leftValue, rightValue) => (leftValue < rightValue ? -1 : leftValue > rightValue ? 1 : 0));
+      return { lastFrame, regionFrameSetSorted };
     }
-
-    if (consecutiveStableSamples >= GAMEPLAY_STABILIZE_REQUIRED_SAMPLES) {
-      return lastFrame;
-    }
-    if (performance.now() - startedAt >= GAMEPLAY_STABILIZE_MAX_WAIT_MS) {
-      return lastFrame;
-    }
-    await Bun.sleep(GAMEPLAY_STABILIZE_POLL_INTERVAL_MS);
+    await Bun.sleep(GAMEPLAY_FRAMESET_POLL_INTERVAL_MS);
   }
 }
 
@@ -414,14 +431,14 @@ async function captureCurrentE1m1Route(referenceSteps: readonly MenuRouteStepEvi
 
       let stepEvidence: CurrentRouteStepEvidence;
       if (stepIndex === ROUTE_STEP_COUNT - 1) {
-        const stabilizedFrame = await captureStabilizedCurrentFrame(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
-        stepEvidence = createRouteStepEvidence(routeStep, stepIndex, stabilizedFrame, referenceStep);
+        const finalStepCapture = await captureCurrentFinalStepFrameSet(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
+        stepEvidence = createRouteStepEvidence(routeStep, stepIndex, finalStepCapture.lastFrame, referenceStep, finalStepCapture.regionFrameSetSorted);
       } else {
         const matchStartedAt = performance.now();
         let polledEvidence: CurrentRouteStepEvidence | null = null;
         while (true) {
           const stepFrame = captureClientAreaPixels(user32Capture.symbols, gdi32Capture.symbols, discoveredWindow.handle);
-          polledEvidence = createRouteStepEvidence(routeStep, stepIndex, stepFrame, referenceStep);
+          polledEvidence = createRouteStepEvidence(routeStep, stepIndex, stepFrame, referenceStep, []);
           if (polledEvidence.matchedExpectedNormalizedSha256 || performance.now() - matchStartedAt >= FRAME_MATCH_TIMEOUT_MS) {
             break;
           }
@@ -478,19 +495,30 @@ function buildFrameComparisons(referenceEvidence: ReferenceMenuRouteEvidence, cu
     const currentStep = currentEvidence.steps[stepIndex]!;
     const referenceStep = referenceEvidence.steps[stepIndex]!;
     const isFinalStep = stepIndex === ROUTE_STEP_COUNT - 1;
-    // The final (gameplay) step is compared on the deterministic 3D-view
-    // region (status bar excluded, per owner decision #5); menu steps stay
-    // full-frame.
-    const currentValue = isFinalStep ? currentStep.regionNormalizedSha256 : currentStep.normalizedSha256;
-    const referenceValue = isFinalStep ? (referenceStep.regionNormalizedSha256 ?? '') : referenceStep.normalizedSha256;
-    comparisons.push(
-      Object.freeze({
-        currentNormalizedSha256: currentValue,
-        label: isFinalStep ? `${referenceStep.expectedMenuState} (3D-view region)` : referenceStep.expectedMenuState,
-        referenceNormalizedSha256: referenceValue,
-        zeroDiff: currentValue === referenceValue && referenceValue.length > 0,
-      }),
-    );
+    // The final (gameplay) step is compared as the deterministic 3D-view-
+    // region frame-SET (the idle spawn view animates perpetually via the
+    // vanilla animated-flat cycle); menu steps stay full-frame single-hash.
+    if (isFinalStep) {
+      const currentSet = currentStep.regionFrameSetSorted;
+      const referenceSet = referenceStep.regionFrameSetSorted ?? [];
+      comparisons.push(
+        Object.freeze({
+          currentNormalizedSha256: `${currentSet.length} frame(s) [${currentSet.join(' ')}]`,
+          label: `${referenceStep.expectedMenuState} (3D-view region frame-set)`,
+          referenceNormalizedSha256: `${referenceSet.length} frame(s) [${referenceSet.join(' ')}]`,
+          zeroDiff: frameSetsEqual(currentSet, referenceSet),
+        }),
+      );
+    } else {
+      comparisons.push(
+        Object.freeze({
+          currentNormalizedSha256: currentStep.normalizedSha256,
+          label: referenceStep.expectedMenuState,
+          referenceNormalizedSha256: referenceStep.normalizedSha256,
+          zeroDiff: currentStep.normalizedSha256 === referenceStep.normalizedSha256,
+        }),
+      );
+    }
   }
 
   return Object.freeze(comparisons);
@@ -564,11 +592,11 @@ describe('plan_final acceptance: gate-e1m1-entry-parity zero-diff', () => {
     'captures the current clean-launch route to E1M1 and matches live Chocolate Doom normalized frame hashes with zero differences',
     async () => {
       const referenceEvidence = await captureReferenceMenuRoute({
-        finalStepStabilization: {
+        finalStepFrameSet: {
+          captureWindowMs: GAMEPLAY_FRAMESET_CAPTURE_WINDOW_MS,
           comparisonTopRows: NORMALIZED_VIEW_REGION_ROWS,
-          maxAdditionalWaitMs: GAMEPLAY_STABILIZE_MAX_WAIT_MS,
-          pollIntervalMs: GAMEPLAY_STABILIZE_POLL_INTERVAL_MS,
-          requiredStableSamples: GAMEPLAY_STABILIZE_REQUIRED_SAMPLES,
+          pollIntervalMs: GAMEPLAY_FRAMESET_POLL_INTERVAL_MS,
+          settleBeforeWindowMs: GAMEPLAY_FRAMESET_SETTLE_BEFORE_WINDOW_MS,
         },
         findWindowTimeoutMs: 30_000,
         killWaitMs: 8_000,
@@ -581,9 +609,7 @@ describe('plan_final acceptance: gate-e1m1-entry-parity zero-diff', () => {
 
       console.log(
         `[13-003] reference window="${referenceEvidence.windowTitle}" current window="${currentEvidence.windowTitle}" stderr=${JSON.stringify(currentEvidence.stderrText.slice(0, 200))}\n` +
-          frameComparisons
-            .map((comparison) => `  ${comparison.zeroDiff ? 'ZERO-DIFF' : 'DIFF     '} ${comparison.label}: current=${comparison.currentNormalizedSha256.slice(0, 12)} reference=${comparison.referenceNormalizedSha256.slice(0, 12)}`)
-            .join('\n'),
+          frameComparisons.map((comparison) => `  ${comparison.zeroDiff ? 'ZERO-DIFF' : 'DIFF     '} ${comparison.label}: current=${comparison.currentNormalizedSha256} reference=${comparison.referenceNormalizedSha256}`).join('\n'),
       );
 
       expect(currentEvidence.command).toEqual(CURRENT_COMMAND);
