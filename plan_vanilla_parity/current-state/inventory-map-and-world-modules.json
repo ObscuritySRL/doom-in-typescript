@@ -192,8 +192,8 @@
       "exported_types": ["SlopeType"],
       "exported_const_enums": [],
       "external_imports": ["src/core/binaryReader.ts", "src/core/fixed.ts", "src/core/fixed.ts"],
-      "src_importer_count": 13,
-      "test_importer_count": 25
+      "src_importer_count": 14,
+      "test_importer_count": 26
     },
     {
       "relative_path": "src/map/mapBundle.ts",

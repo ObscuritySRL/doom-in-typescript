@@ -24,8 +24,8 @@
     "status_value": "real"
   },
   "classification_summary": {
-    "classified_source_file_count": 475,
-    "classified_test_file_count": 279,
+    "classified_source_file_count": 476,
+    "classified_test_file_count": 280,
     "real_group_count": 9,
     "representative_module_count": 47,
     "source_only_metadata": true
@@ -149,9 +149,9 @@
       "notes": "Rendering and UI surfaces contain executable implementations, while framebuffer and menu-oracle parity remains gated by downstream render/UI comparison steps.",
       "representative_modules": ["src/render/drawPrimitives.ts", "src/render/spriteProjection.ts", "src/render/visplanes.ts", "src/ui/automap.ts", "src/ui/menus.ts", "src/ui/statusBar.ts"],
       "representative_tests": ["test/render/column-span-draw.test.ts", "test/render/sprite-projection.test.ts", "test/render/visplane-build.test.ts", "test/ui/automap.test.ts", "test/ui/menus.test.ts", "test/ui/status-bar.test.ts"],
-      "source_file_count": 100,
+      "source_file_count": 101,
       "source_roots": ["src/render/", "src/ui/"],
-      "test_file_count": 27,
+      "test_file_count": 28,
       "test_roots": ["test/render/", "test/ui/"]
     },
     {

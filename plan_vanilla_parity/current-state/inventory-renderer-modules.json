@@ -10,10 +10,11 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 56,
+      "committed_file_count": 57,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "addLine.ts",
+        "checkBBox.ts",
         "compare-scripted-renderer-path.ts",
         "compare-title-and-e1m1-framebuffers.ts",
         "drawPrimitives.ts",
@@ -69,9 +70,9 @@
         "wallColumns.ts",
         "wallScaleMath.ts"
       ],
-      "total_size_bytes": 322562,
-      "total_line_count": 8241,
-      "total_export_count": 442
+      "total_size_bytes": 328014,
+      "total_line_count": 8412,
+      "total_export_count": 445
     }
   ],
   "modules": [
@@ -178,7 +179,7 @@
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
       "src_importer_count": 28,
-      "test_importer_count": 28
+      "test_importer_count": 29
     },
     {
       "relative_path": "src/render/renderLimits.ts",
@@ -357,9 +358,10 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 19,
+        "test_file_count": 20,
         "test_filenames_sorted": [
           "add-line.test.ts",
+          "check-bbox.test.ts",
           "column-span-draw.test.ts",
           "fuzz.test.ts",
           "masked-midtextures.test.ts",
