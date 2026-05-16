@@ -10,7 +10,7 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 51,
+      "committed_file_count": 52,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "compare-scripted-renderer-path.ts",
@@ -54,6 +54,7 @@
         "maskedTextures.ts",
         "patchDraw.ts",
         "projection.ts",
+        "renderInitTables.ts",
         "renderLimits.ts",
         "sky.ts",
         "solidWalls.ts",
@@ -64,9 +65,9 @@
         "visplanes.ts",
         "wallColumns.ts"
       ],
-      "total_size_bytes": 277363,
-      "total_line_count": 6973,
-      "total_export_count": 409
+      "total_size_bytes": 286106,
+      "total_line_count": 7208,
+      "total_export_count": 416
     }
   ],
   "modules": [
@@ -172,8 +173,8 @@
       "exported_types": [],
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
-      "src_importer_count": 26,
-      "test_importer_count": 25
+      "src_importer_count": 27,
+      "test_importer_count": 26
     },
     {
       "relative_path": "src/render/renderLimits.ts",
@@ -352,13 +353,14 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 14,
+        "test_file_count": 15,
         "test_filenames_sorted": [
           "column-span-draw.test.ts",
           "fuzz.test.ts",
           "masked-midtextures.test.ts",
           "patch-draw.test.ts",
           "projection-constants.test.ts",
+          "render-init-tables.test.ts",
           "render-limits.test.ts",
           "sky.test.ts",
           "solid-walls.test.ts",

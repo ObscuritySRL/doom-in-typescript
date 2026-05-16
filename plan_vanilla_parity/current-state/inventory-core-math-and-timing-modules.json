@@ -156,8 +156,8 @@
       "exported_classes": [],
       "exported_types": ["Fixed"],
       "external_imports": [],
-      "src_importer_count": 75,
-      "test_importer_count": 94,
+      "src_importer_count": 76,
+      "test_importer_count": 95,
       "exported_const_enums": []
     },
     {
@@ -192,8 +192,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/core/fixed.ts"],
-      "src_importer_count": 12,
-      "test_importer_count": 9,
+      "src_importer_count": 13,
+      "test_importer_count": 10,
       "exported_const_enums": []
     },
     {
