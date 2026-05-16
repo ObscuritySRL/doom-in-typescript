@@ -48,8 +48,8 @@
       "exported_classes": [],
       "exported_types": ["Angle"],
       "external_imports": [],
-      "src_importer_count": 17,
-      "test_importer_count": 21,
+      "src_importer_count": 18,
+      "test_importer_count": 22,
       "exported_const_enums": []
     },
     {
@@ -156,8 +156,8 @@
       "exported_classes": [],
       "exported_types": ["Fixed"],
       "external_imports": [],
-      "src_importer_count": 78,
-      "test_importer_count": 97,
+      "src_importer_count": 79,
+      "test_importer_count": 98,
       "exported_const_enums": []
     },
     {
@@ -192,8 +192,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/core/fixed.ts"],
-      "src_importer_count": 15,
-      "test_importer_count": 12,
+      "src_importer_count": 16,
+      "test_importer_count": 13,
       "exported_const_enums": []
     },
     {
