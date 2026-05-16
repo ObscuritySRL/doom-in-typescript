@@ -2,33 +2,32 @@
  * Increment I2 parity tests for the assembled-renderer
  * `R_StoreWallRange` per-seg coordinator.
  *
- * The rigor bar mirrors the I1 pattern: alongside shape / invariant /
- * determinism checks, every scalar that is hand-computable from the
- * verbatim Chocolate Doom 2.2.1 source is asserted against an exact
- * literal, and the full `R_StoreWallRange` parameter set is checked
- * against a STRUCTURALLY DISTINCT in-test re-transcription of r_segs.c
- * (different statement ordering / variable layout) so a transcription
- * error in `storeWallRange.ts` diverges from the oracle. The shared
- * fixed-point / trig primitives are themselves covered by the core and
- * I1 suites, so the independence here is at the algorithm-transcription
- * level — exactly where the explorer flagged the parity risk.
+ * The verbatim r_main.c primitives (`R_PointToAngle` /
+ * `R_PointToDist` / `R_ScaleFromGlobalAngle`) live in
+ * `src/render/wallScaleMath.ts` and are exercised by
+ * `test/render/wall-scale-math.test.ts`; this file consumes them and
+ * focuses on the unique coordinator. The rigor bar mirrors the I1
+ * pattern: alongside shape / invariant / determinism checks, the full
+ * `R_StoreWallRange` parameter set is checked against a STRUCTURALLY
+ * DISTINCT in-test re-transcription of r_segs.c (different statement
+ * ordering / variable layout) so a transcription error in
+ * `storeWallRange.ts` diverges from the oracle, plus exact
+ * hand-computable scalars.
  */
 
 import { describe, expect, test } from 'bun:test';
 
-import { FRACBITS, FRACUNIT, fixedDiv, fixedMul } from '../../src/core/fixed.ts';
-import { ANG45, ANG90, ANG180, ANG270 } from '../../src/core/angle.ts';
-import { ANGLETOFINESHIFT, DBITS, finesine, finetangent, slopeDiv, tantoangle } from '../../src/core/trig.ts';
+import { FRACBITS, FRACUNIT, fixedMul } from '../../src/core/fixed.ts';
+import { ANG45, ANG90, ANG180 } from '../../src/core/angle.ts';
+import { ANGLETOFINESHIFT, finesine, finetangent } from '../../src/core/trig.ts';
 
 import { ML_DONTPEGBOTTOM, ML_DONTPEGTOP } from '../../src/map/lineSectorGeometry.ts';
 import { DetailMode, LIGHTLEVELS, LIGHTSEGSHIFT, computeViewport } from '../../src/render/projection.ts';
 import { SIL_BOTH, SIL_BOTTOM, SIL_NONE, SIL_TOP } from '../../src/render/spriteClip.ts';
 import { buildProjectionAngleTables } from '../../src/render/renderInitTables.ts';
+import { rPointToAngle, rPointToDist, rScaleFromGlobalAngle } from '../../src/render/wallScaleMath.ts';
 import type { StoreWallRangeSeg, StoreWallRangeView } from '../../src/render/storeWallRange.ts';
-import { pointToAngle, pointToAngle2, pointToDist, scaleFromGlobalAngle, storeWallRange } from '../../src/render/storeWallRange.ts';
-
-const VANILLA_WALL_SCALE_MAX = 64 * FRACUNIT;
-const VANILLA_WALL_SCALE_MIN = 256;
+import { storeWallRange } from '../../src/render/storeWallRange.ts';
 
 const u32 = (v: number): number => v >>> 0;
 const i32 = (v: number): number => v | 0;
@@ -38,122 +37,12 @@ const i32 = (v: number): number => v | 0;
 const viewport = computeViewport(11, DetailMode.high);
 const angleTables = buildProjectionAngleTables(viewport);
 
-describe('R_PointToAngle / R_PointToAngle2', () => {
-  test('cardinal directions match the verbatim octant formulas exactly', () => {
-    // R_PointToAngle is always called with fixed_t (map units <<
-    // FRACBITS) in vanilla, so SlopeDiv's denominator clears its
-    // `den < 512 → SLOPERANGE` guard. Each constant is derived by
-    // hand from the verbatim C using slopeDiv()/tantoangle[].
-    expect(pointToAngle(0, 0, 0, 0)).toBe(0); // (!x)&&(!y) → 0
-    expect(pointToAngle(10 * FRACUNIT, 0, 0, 0)).toBe(0); // octant 0: tantoangle[slopeDiv(0,…)] = tantoangle[0] = 0
-    expect(pointToAngle(0, 10 * FRACUNIT, 0, 0)).toBe(u32(ANG90 - 1)); // octant 1: ANG90-1-tantoangle[0]
-    expect(pointToAngle(-10 * FRACUNIT, 0, 0, 0)).toBe(u32(ANG180 - 1)); // octant 3: ANG180-1-tantoangle[0]
-    expect(pointToAngle(0, -10 * FRACUNIT, 0, 0)).toBe(u32(ANG270)); // octant 7: ANG270+tantoangle[0]
-    // Exact diagonal: slopeDiv(d,d) → ans (d<<3)/(d>>8) === 2048;
-    // tantoangle[2048] === ANG45. octant 1 / octant 5 paths.
-    expect(tantoangle[2048]).toBe(ANG45);
-    expect(pointToAngle(100 * FRACUNIT, 100 * FRACUNIT, 0, 0)).toBe(u32(ANG90 - 1 - ANG45));
-    expect(pointToAngle(-100 * FRACUNIT, -100 * FRACUNIT, 0, 0)).toBe(u32(ANG270 - 1 - ANG45)); // octant 5
-  });
-
-  test('the view-origin preamble and R_PointToAngle2 folding hold', () => {
-    // pointToAngle(x,y,vx,vy) == pointToAngle(x-vx,y-vy,0,0)
-    expect(pointToAngle(130, 70, 30, 20)).toBe(pointToAngle(100, 50, 0, 0));
-    // R_PointToAngle2(x1,y1,x2,y2) == set view (x1,y1) then angle to (x2,y2)
-    expect(pointToAngle2(30, 20, 130, 70)).toBe(pointToAngle(130, 70, 30, 20));
-  });
-
-  test('deterministic', () => {
-    expect(pointToAngle(7777, -313, 12, 9)).toBe(pointToAngle(7777, -313, 12, 9));
-  });
-});
-
-describe('R_PointToDist', () => {
-  test('pure-axis distance uses the authentic finesine[2048]==65535 (NOT FRACUNIT)', () => {
-    // Axis case: frac=0 → angle=(tantoangle[0]+ANG90)>>>19=2048. The
-    // vanilla DOOM finesine table peaks at 65535, not 65536, so an
-    // axis distance is FixedDiv(dx, 65535) — fractionally larger than
-    // dx. Pinning the real table value is stricter than the idealized
-    // FRACUNIT assumption.
-    expect(finesine[2048]).toBe(65535);
-    expect(pointToDist(5 * FRACUNIT, 0, 0, 0)).toBe(fixedDiv(5 * FRACUNIT, finesine[2048]!));
-    expect(pointToDist(5 * FRACUNIT, 0, 0, 0)).toBe(327685);
-    expect(pointToDist(0, 7 * FRACUNIT, 0, 0)).toBe(fixedDiv(7 * FRACUNIT, finesine[2048]!));
-    expect(pointToDist(5 * FRACUNIT, 0, 2 * FRACUNIT, 0)).toBe(fixedDiv(3 * FRACUNIT, finesine[2048]!));
-  });
-
-  test('matches an independent re-transcription of r_main.c R_PointToDist', () => {
-    const oracle = (x: number, y: number, vx: number, vy: number): number => {
-      let dx = Math.abs(i32(x - vx));
-      let dy = Math.abs(i32(y - vy));
-      if (dy > dx) {
-        [dx, dy] = [dy, dx];
-      }
-      const frac = dx !== 0 ? fixedDiv(dy, dx) : 0;
-      const ang = u32(tantoangle[frac >> DBITS]! + ANG90) >>> ANGLETOFINESHIFT;
-      return fixedDiv(dx, finesine[ang]!);
-    };
-    for (const [x, y, vx, vy] of [
-      [300 * FRACUNIT, 120 * FRACUNIT, 0, 0],
-      [-512 * FRACUNIT, 64 * FRACUNIT, 16 * FRACUNIT, -8 * FRACUNIT],
-      [13, 99999, 5, -5],
-      [1 * FRACUNIT, 1 * FRACUNIT, 0, 0],
-    ] as const) {
-      expect(pointToDist(x, y, vx, vy)).toBe(oracle(x, y, vx, vy));
-    }
-  });
-});
-
-describe('R_ScaleFromGlobalAngle', () => {
-  test('result is clamped to [256, 64*FRACUNIT]', () => {
-    for (let v = 0; v < 64; v += 1) {
-      const visangle = u32((v * 0x0400_0000) >>> 0);
-      const s = scaleFromGlobalAngle(visangle, 0, ANG90, 4 * FRACUNIT, viewport.projection, viewport.detailShift);
-      expect(s).toBeGreaterThanOrEqual(VANILLA_WALL_SCALE_MIN);
-      expect(s).toBeLessThanOrEqual(VANILLA_WALL_SCALE_MAX);
-    }
-  });
-
-  test('tiny denominator saturates to 64*FRACUNIT', () => {
-    // rw_distance 0 → den = FixedMul(0, sinea) = 0; den > num>>16 is
-    // false for any positive num → max scale.
-    expect(scaleFromGlobalAngle(ANG90, 0, ANG90, 0, viewport.projection, viewport.detailShift)).toBe(VANILLA_WALL_SCALE_MAX);
-  });
-
-  test('matches an independent re-transcription of r_main.c R_ScaleFromGlobalAngle', () => {
-    const oracle = (visangle: number, viewangle: number, rwNormal: number, rwDist: number): number => {
-      const anglea = u32(ANG90 + u32(visangle - viewangle));
-      const angleb = u32(ANG90 + u32(visangle - rwNormal));
-      const sinea = finesine[anglea >>> ANGLETOFINESHIFT]!;
-      const sineb = finesine[angleb >>> ANGLETOFINESHIFT]!;
-      const num = i32(fixedMul(viewport.projection, sineb) << viewport.detailShift);
-      const den = fixedMul(rwDist, sinea);
-      if (den > num >> 16) {
-        let scale = fixedDiv(num, den);
-        if (scale > VANILLA_WALL_SCALE_MAX) {
-          scale = VANILLA_WALL_SCALE_MAX;
-        } else if (scale < VANILLA_WALL_SCALE_MIN) {
-          scale = VANILLA_WALL_SCALE_MIN;
-        }
-        return scale;
-      }
-      return VANILLA_WALL_SCALE_MAX;
-    };
-    for (const [vis, va, n, d] of [
-      [angleTables.xtoviewangle[0]!, 0, ANG90, 8 * FRACUNIT],
-      [u32(0x2000_0000 + angleTables.xtoviewangle[10]!), 0x1000_0000, ANG180, 200 * FRACUNIT],
-      [angleTables.xtoviewangle[viewport.viewWidth]!, 0xc000_0000, ANG270, 1024 * FRACUNIT],
-    ] as const) {
-      expect(scaleFromGlobalAngle(u32(vis), u32(va), u32(n), d, viewport.projection, viewport.detailShift)).toBe(oracle(u32(vis), u32(va), u32(n), d));
-    }
-  });
-});
-
 // ---------------------------------------------------------------------------
 // Structurally distinct in-test re-transcription of r_segs.c
 // R_StoreWallRange (parameter portion). Different statement ordering and
 // variable grouping than storeWallRange.ts so a transcription bug in the
-// implementation diverges from this oracle.
+// implementation diverges from this oracle. The verbatim r_main.c
+// primitives are reused from wallScaleMath.ts (single source of truth).
 // ---------------------------------------------------------------------------
 
 function reDeriveStoreWallRange(seg: StoreWallRangeSeg, view: StoreWallRangeView) {
@@ -167,16 +56,16 @@ function reDeriveStoreWallRange(seg: StoreWallRangeSeg, view: StoreWallRangeView
     oa = ANG90;
   }
   const distangle = u32(ANG90 - oa);
-  const hyp = pointToDist(seg.v1.x, seg.v1.y, view.viewx, view.viewy);
+  const hyp = rPointToDist(view.viewx, view.viewy, seg.v1.x, seg.v1.y);
   const rwDistance = fixedMul(hyp, finesine[distangle >>> ANGLETOFINESHIFT]!);
 
-  const sg = (col: number): number => scaleFromGlobalAngle(u32(view.viewangle + view.xtoviewangle[col]!), view.viewangle, rwNormalangle, rwDistance, view.projection, view.detailshift);
+  const sg = (col: number): number => rScaleFromGlobalAngle(u32(view.viewangle + view.xtoviewangle[col]!), view.viewangle, rwNormalangle, rwDistance, view.projection, view.detailshift);
   const scale1 = sg(seg.start);
   const scale2 = seg.stop > seg.start ? sg(seg.stop) : scale1;
   const rwScalestep = seg.stop > seg.start ? i32((scale2 - scale1) / (seg.stop - seg.start)) : 0;
 
   let worldtop = i32(front.ceilingheight - view.viewz);
-  let worldbottom = i32(front.floorheight - view.viewz);
+  const worldbottom = i32(front.floorheight - view.viewz);
   let worldhigh: number | null = null;
   let worldlow: number | null = null;
 
@@ -410,7 +299,7 @@ describe('R_StoreWallRange — single-sided seg', () => {
     sidedef: { midtexture: 5, toptexture: 0, bottomtexture: 0, textureoffset: 8 * FRACUNIT, rowoffset: 0 },
     frontsector: { ceilingheight: 128 * FRACUNIT, floorheight: 0, ceilingpic: 1, floorpic: 2, lightlevel: 160 },
     backsector: null,
-    rwAngle1: pointToAngle(256 * FRACUNIT, -64 * FRACUNIT, 0, 0),
+    rwAngle1: rPointToAngle(0, 0, 256 * FRACUNIT, -64 * FRACUNIT),
   };
 
   test('full parameter set matches the independent re-transcription', () => {
@@ -474,7 +363,7 @@ describe('R_StoreWallRange — two-sided seg', () => {
     sidedef: { midtexture: 0, toptexture: 7, bottomtexture: 9, textureoffset: 0, rowoffset: 4 * FRACUNIT },
     frontsector: { ceilingheight: 192 * FRACUNIT, floorheight: 0, ceilingpic: 3, floorpic: 4, lightlevel: 192 },
     backsector: { ceilingheight: 96 * FRACUNIT, floorheight: 48 * FRACUNIT, ceilingpic: 3, floorpic: 6, lightlevel: 128 },
-    rwAngle1: pointToAngle(320 * FRACUNIT, -96 * FRACUNIT, 0, 0),
+    rwAngle1: rPointToAngle(0, 0, 320 * FRACUNIT, -96 * FRACUNIT),
   };
 
   test('full parameter set matches the independent re-transcription', () => {

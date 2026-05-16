@@ -1,62 +1,24 @@
 /**
  * Per-seg wall-range parameter coordinator — Chocolate Doom 2.2.1
- * r_main.c `R_PointToAngle` / `R_PointToAngle2` / `R_PointToDist` /
- * `R_ScaleFromGlobalAngle` and r_segs.c `R_StoreWallRange` (the
- * parameter-derivation portion, up to but excluding the drawseg-pool
- * I/O, `R_CheckPlane`, `R_RenderSegLoop`, the openings `memcpy`, and
- * `ds_p++`, which the top-level sequencer owns).
+ * r_segs.c `R_StoreWallRange` (the parameter-derivation portion, up to
+ * but excluding the drawseg-pool I/O, `R_CheckPlane`, `R_RenderSegLoop`,
+ * the openings `memcpy`, and `ds_p++`, which the top-level sequencer
+ * owns).
  *
- * This is the renderer's single most parity-sensitive arithmetic: the
- * `R_ScaleFromGlobalAngle` 32-bit `FixedDiv` overflow guard, the
- * `R_PointToDist` `tantoangle` path, the `abs(rw_normalangle-rw_angle1)`
- * signed/unsigned reinterpretation, and the `rw_offset` /
- * `rw_centerangle` signedness all live here.  Every value is derived
- * verbatim from the pinned Chocolate Doom 2.2.1 source (authority tier:
- * upstream Chocolate Doom source, per plan_fps/REFERENCE_ORACLES.md) so
- * the produced `rw_*` / stepping accumulators / `textureColumnFor`
- * closure feed the existing bit-exact {@link renderSolidWall} /
+ * The verbatim r_main.c primitives this coordinator needs
+ * (`R_PointToDist` / `R_ScaleFromGlobalAngle`) live in the sibling
+ * {@link ./wallScaleMath.ts} module — this file composes them rather
+ * than re-transcribing them, so there is a single bit-exact source of
+ * truth for the renderer's most parity-sensitive arithmetic.
+ *
+ * `R_StoreWallRange` is transcribed field-for-field below from the
+ * pinned Chocolate Doom 2.2.1 source (authority tier: upstream
+ * Chocolate Doom source, per plan_fps/REFERENCE_ORACLES.md) so the
+ * produced `rw_*` / stepping accumulators / `textureColumnFor` closure
+ * feed the existing bit-exact {@link renderSolidWall} /
  * {@link renderTwoSidedWall} with exactly the values vanilla DOOM 1.9
  * computed for the same seg.
  *
- * Verbatim contract (Chocolate Doom 2.2.1 r_main.c):
- *
- *   angle_t R_PointToAngle ( fixed_t x, fixed_t y )
- *   {
- *       x -= viewx;  y -= viewy;
- *       if ( (!x) && (!y) ) return 0;
- *       if (x>= 0) {
- *           if (y>= 0) { if (x>y) return tantoangle[SlopeDiv(y,x)];
- *                        else     return ANG90-1-tantoangle[SlopeDiv(x,y)]; }
- *           else { y = -y;
- *                  if (x>y) return -tantoangle[SlopeDiv(y,x)];
- *                  else     return ANG270+tantoangle[SlopeDiv(x,y)]; } }
- *       else { x = -x;
- *           if (y>= 0) { if (x>y) return ANG180-1-tantoangle[SlopeDiv(y,x)];
- *                        else     return ANG90+ tantoangle[SlopeDiv(x,y)]; }
- *           else { y = -y;
- *                  if (x>y) return ANG180+tantoangle[SlopeDiv(y,x)];
- *                  else     return ANG270-1-tantoangle[SlopeDiv(x,y)]; } }
- *       return 0;
- *   }
- *   angle_t R_PointToAngle2 ( fixed_t x1, fixed_t y1, fixed_t x2, fixed_t y2 )
- *   { viewx = x1; viewy = y1; return R_PointToAngle (x2, y2); }
- *   fixed_t R_PointToDist ( fixed_t x, fixed_t y )
- *   {
- *       int angle; fixed_t dx, dy, temp, dist, frac;
- *       dx = abs(x - viewx);  dy = abs(y - viewy);
- *       if (dy>dx) { temp = dx; dx = dy; dy = temp; }
- *       if (dx != 0) frac = FixedDiv(dy, dx); else frac = 0;
- *       angle = (tantoangle[frac>>DBITS]+ANG90) >> ANGLETOFINESHIFT;
- *       dist = FixedDiv (dx, finesine[angle] );
- *       return dist;
- *   }
- *
- * `R_ScaleFromGlobalAngle` (r_main.c) and the `[256, 64*FRACUNIT]`
- * scale clamp / `den > num>>16` guard are transcribed once in
- * {@link ./implement-wall-column-scale-math.ts} and reused here so the
- * clamp lives in exactly one place.
- *
- * `R_StoreWallRange` (r_segs.c) is transcribed field-for-field below.
  * The drawseg-pool overflow guard (`ds_p == &drawsegs[MAXDRAWSEGS]`),
  * the `linedef->flags |= ML_MAPPED` automap mutation, `R_CheckPlane`,
  * `R_RenderSegLoop`, the sprite-clip `memcpy` into `lastopening`, and
@@ -68,14 +30,14 @@
  * Pure arithmetic; no Win32 or runtime dependencies.
  */
 
-import { FRACBITS, type Fixed, fixedDiv, fixedMul } from '../core/fixed.ts';
-import { ANG90, ANG180, ANG270, type Angle } from '../core/angle.ts';
-import { ANGLETOFINESHIFT, DBITS, finesine, finetangent, slopeDiv, tantoangle } from '../core/trig.ts';
+import { FRACBITS, type Fixed, fixedMul } from '../core/fixed.ts';
+import { ANG90, ANG180, type Angle } from '../core/angle.ts';
+import { ANGLETOFINESHIFT, finesine, finetangent } from '../core/trig.ts';
 
 import { ML_DONTPEGBOTTOM, ML_DONTPEGTOP } from '../map/lineSectorGeometry.ts';
 import { LIGHTLEVELS, LIGHTSEGSHIFT } from './projection.ts';
 import { SIL_BOTH, SIL_BOTTOM, SIL_NONE, SIL_TOP } from './spriteClip.ts';
-import { VANILLA_WALL_SCALE_MAX, clampVanillaWallScale, vanillaWallScaleDenominatorPasses } from './implement-wall-column-scale-math.ts';
+import { rPointToDist, rScaleFromGlobalAngle } from './wallScaleMath.ts';
 
 /** `INT_MAX` — vanilla `ds_p->bsilheight` "no bottom silhouette" sentinel. */
 const INT_MAX = 0x7fff_ffff;
@@ -90,103 +52,6 @@ function toInt32(value: number): number {
 /** Coerce to an unsigned 32-bit int (C `angle_t` wraparound). */
 function toAngle(value: number): Angle {
   return value >>> 0;
-}
-
-/**
- * r_main.c `R_PointToAngle` with the `x -= viewx; y -= viewy;`
- * preamble made explicit (the C globals are passed in).  Returns a
- * 32-bit BAM `angle_t`.
- */
-export function pointToAngle(x: Fixed, y: Fixed, viewx: Fixed, viewy: Fixed): Angle {
-  const dx = toInt32(x - viewx);
-  const dy = toInt32(y - viewy);
-
-  if (dx === 0 && dy === 0) {
-    return 0;
-  }
-
-  if (dx >= 0) {
-    if (dy >= 0) {
-      if (dx > dy) {
-        return toAngle(tantoangle[slopeDiv(dy, dx)]!); // octant 0
-      }
-      return toAngle(ANG90 - 1 - tantoangle[slopeDiv(dx, dy)]!); // octant 1
-    }
-    const absY = toInt32(-dy);
-    if (dx > absY) {
-      return toAngle(-tantoangle[slopeDiv(absY, dx)]!); // octant 8
-    }
-    return toAngle(ANG270 + tantoangle[slopeDiv(dx, absY)]!); // octant 7
-  }
-
-  const absX = toInt32(-dx);
-  if (dy >= 0) {
-    if (absX > dy) {
-      return toAngle(ANG180 - 1 - tantoangle[slopeDiv(dy, absX)]!); // octant 3
-    }
-    return toAngle(ANG90 + tantoangle[slopeDiv(absX, dy)]!); // octant 2
-  }
-  const absY = toInt32(-dy);
-  if (absX > absY) {
-    return toAngle(ANG180 + tantoangle[slopeDiv(absY, absX)]!); // octant 4
-  }
-  return toAngle(ANG270 - 1 - tantoangle[slopeDiv(absX, absY)]!); // octant 5
-}
-
-/**
- * r_main.c `R_PointToAngle2` — `viewx = x1; viewy = y1; return
- * R_PointToAngle(x2, y2);`.  The view-origin side effect is folded
- * into the explicit arguments.
- */
-export function pointToAngle2(x1: Fixed, y1: Fixed, x2: Fixed, y2: Fixed): Angle {
-  return pointToAngle(x2, y2, x1, y1);
-}
-
-/**
- * r_main.c `R_PointToDist`.  `abs(x - viewx)` / `abs(y - viewy)` use
- * the C `int` reinterpretation; the `tantoangle[frac>>DBITS]` /
- * `finesine` path and the `FixedDiv` guards are bit-exact.
- */
-export function pointToDist(x: Fixed, y: Fixed, viewx: Fixed, viewy: Fixed): Fixed {
-  const rawDx = toInt32(x - viewx);
-  const rawDy = toInt32(y - viewy);
-  let dx = rawDx < 0 ? toInt32(-rawDx) : rawDx;
-  let dy = rawDy < 0 ? toInt32(-rawDy) : rawDy;
-
-  if (dy > dx) {
-    const temp = dx;
-    dx = dy;
-    dy = temp;
-  }
-
-  // "Fix crashes in udm1.wad" — vanilla guards dx == 0.
-  const frac = dx !== 0 ? fixedDiv(dy, dx) : 0;
-
-  const angle = toAngle(tantoangle[frac >> DBITS]! + ANG90) >>> ANGLETOFINESHIFT;
-
-  // use as cosine
-  return fixedDiv(dx, finesine[angle]!);
-}
-
-/**
- * r_main.c `R_ScaleFromGlobalAngle`.  The two angle subtractions use
- * 32-bit BAM wraparound; the numerator is shifted by `detailshift`;
- * the `den > num>>16` guard and the `[256, 64*FRACUNIT]` clamp are the
- * single transcription in {@link ./implement-wall-column-scale-math.ts}.
- */
-export function scaleFromGlobalAngle(visangle: Angle, viewangle: Angle, rwNormalangle: Angle, rwDistance: Fixed, projection: Fixed, detailshift: number): Fixed {
-  const anglea = toAngle(ANG90 + toAngle(visangle - viewangle));
-  const angleb = toAngle(ANG90 + toAngle(visangle - rwNormalangle));
-  const sinea = finesine[anglea >>> ANGLETOFINESHIFT]!;
-  const sineb = finesine[angleb >>> ANGLETOFINESHIFT]!;
-
-  const num = toInt32(fixedMul(projection, sineb) << detailshift);
-  const den = fixedMul(rwDistance, sinea);
-
-  if (vanillaWallScaleDenominatorPasses({ den, num })) {
-    return clampVanillaWallScale({ rawScale: fixedDiv(num, den) });
-  }
-  return VANILLA_WALL_SCALE_MAX;
 }
 
 /** A linedef vertex (`v1` / `v2`): map-unit fixed-point coordinates. */
@@ -366,7 +231,7 @@ export function storeWallRange(seg: StoreWallRangeSeg, view: StoreWallRangeView,
     offsetangle = ANG90;
   }
   const distangle = toAngle(ANG90 - offsetangle);
-  const hyp = pointToDist(seg.v1.x, seg.v1.y, view.viewx, view.viewy);
+  const hyp = rPointToDist(view.viewx, view.viewy, seg.v1.x, seg.v1.y);
   const distSineval = finesine[distangle >>> ANGLETOFINESHIFT]!;
   const rwDistance = fixedMul(hyp, distSineval);
 
@@ -374,12 +239,12 @@ export function storeWallRange(seg: StoreWallRangeSeg, view: StoreWallRangeView,
   const rwStopX = stop + 1;
 
   // calculate scale at both ends and step
-  const scale1 = scaleFromGlobalAngle(toAngle(viewangle + xtoviewangle[start]!), viewangle, rwNormalangle, rwDistance, view.projection, view.detailshift);
+  const scale1 = rScaleFromGlobalAngle(toAngle(viewangle + xtoviewangle[start]!), viewangle, rwNormalangle, rwDistance, view.projection, view.detailshift);
   const rwScale = scale1;
   let scale2: Fixed;
   let rwScalestep: Fixed;
   if (stop > start) {
-    scale2 = scaleFromGlobalAngle(toAngle(viewangle + xtoviewangle[stop]!), viewangle, rwNormalangle, rwDistance, view.projection, view.detailshift);
+    scale2 = rScaleFromGlobalAngle(toAngle(viewangle + xtoviewangle[stop]!), viewangle, rwNormalangle, rwDistance, view.projection, view.detailshift);
     rwScalestep = toInt32((scale2 - rwScale) / (stop - start));
   } else {
     scale2 = scale1;
