@@ -45,6 +45,7 @@ const SCALED_STRETCH_GROUP_SCANLINES = 12;
 const SCREENHEIGHT_2X_ASPECT_CORRECTED = (SCREENHEIGHT / INTERNAL_STRETCH_GROUP_SCANLINES) * SCALED_STRETCH_GROUP_SCANLINES;
 const SCREENWIDTH_2X = SCREENWIDTH * SCALE_2X;
 const SMOKE_HOST_KEY_REPEAT_MASK = 1n << 30n;
+const SYNTHETIC_KEYDOWN_LONG_PARAMETER = 1n;
 const SRCCOPY = 0x00cc_0020;
 const SW_SHOW = 5;
 const TITLE_MENU_SMOKE_DEFAULT_CONTROL_PATH = 'plan_final/final-gates/13-002-title-menu-control.txt';
@@ -53,7 +54,6 @@ const TITLE_MENU_SMOKE_CONTROL_PATH_ENVIRONMENT_VARIABLE = 'DOOM_TITLE_MENU_SMOK
 const TITLE_MENU_SMOKE_CONTROL_POLL_INTERVAL_MS = 10;
 const WM_CLOSE = 0x0010;
 const WM_KEYDOWN = 0x0100;
-const WM_KEYUP = 0x0101;
 const WINDOW_STYLE = 0x10cf_0000;
 const DEFAULT_GAMEPLAY_EPISODE = 1;
 const DEFAULT_GAMEPLAY_MAP_NUMBER = 1;
@@ -552,7 +552,6 @@ function drainSmokeHostMessages(
   menuState: MenuState,
   gameplayResources: LauncherResources,
   gameplayState: TitleLoopSmokeGameplayState,
-  keyboardState: TitleLoopSmokeKeyboardState,
   messageBuffer: Buffer,
 ): SmokeHostMessageResult {
   let frameChanged = false;
@@ -576,47 +575,14 @@ function drainSmokeHostMessages(
     if (messageKind === WM_KEYDOWN) {
       const key = Number(messageBuffer.readBigUInt64LE(MESSAGE_WORD_PARAMETER_OFFSET));
       const messageLongParameter = messageBuffer.readBigUInt64LE(MESSAGE_LONG_PARAMETER_OFFSET);
-      if ((messageLongParameter & SMOKE_HOST_KEY_REPEAT_MASK) !== 0n) {
+      if ((messageLongParameter & SMOKE_HOST_KEY_REPEAT_MASK) !== 0n || messageLongParameter !== SYNTHETIC_KEYDOWN_LONG_PARAMETER) {
         continue;
       }
-      markSmokeHostKeyDown(keyboardState, key);
       frameChanged = handleSmokeHostKey(gameMode, menuState, gameplayResources, gameplayState, key) || frameChanged;
-      continue;
-    }
-
-    if (messageKind === WM_KEYUP) {
-      const key = Number(messageBuffer.readBigUInt64LE(MESSAGE_WORD_PARAMETER_OFFSET));
-      markSmokeHostKeyUp(keyboardState, key);
     }
   }
 
   return { frameChanged, shouldContinue: true };
-}
-
-function markSmokeHostKeyDown(keyboardState: TitleLoopSmokeKeyboardState, key: number): void {
-  switch (key) {
-    case KEY_ENTER:
-      keyboardState.enterDown = true;
-      return;
-    case KEY_ESCAPE:
-      keyboardState.escapeDown = true;
-      return;
-    default:
-      return;
-  }
-}
-
-function markSmokeHostKeyUp(keyboardState: TitleLoopSmokeKeyboardState, key: number): void {
-  switch (key) {
-    case KEY_ENTER:
-      keyboardState.enterDown = false;
-      return;
-    case KEY_ESCAPE:
-      keyboardState.escapeDown = false;
-      return;
-    default:
-      return;
-  }
 }
 
 function isVirtualKeyDown(user32: User32Symbols, key: number): boolean {
@@ -804,7 +770,7 @@ export async function runTitleLoopSmokeHost(options: TitleLoopSmokeHostOptions):
     while (true) {
       frameDirty = (await pollSmokeHostControl(options.gameMode, menuState, gameplayResources, gameplayState, controlState)) || frameDirty;
 
-      const messageResult = drainSmokeHostMessages(user32.symbols, windowHandle, options.gameMode, menuState, gameplayResources, gameplayState, keyboardState, messageBuffer);
+      const messageResult = drainSmokeHostMessages(user32.symbols, windowHandle, options.gameMode, menuState, gameplayResources, gameplayState, messageBuffer);
 
       if (!messageResult.shouldContinue) {
         void user32.symbols.DestroyWindow(windowHandle);
