@@ -30,8 +30,8 @@
  *
  * @example
  * ```ts
- * import { renderSkyVisplane } from './sky.ts';
- * import { renderVisplaneSpans } from './visplaneSpans.ts';
+ * // renderSkyVisplane / renderVisplaneSpans are the committed bit-exact
+ * // pieces; the caller binds their contexts via the dispatch closures.
  * drawPlanes(
  *   pool,
  *   skyFlatNum,

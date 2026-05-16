@@ -186,8 +186,8 @@
       "exported_classes": [],
       "exported_types": [],
       "external_imports": ["src/core/binaryReader.ts"],
-      "src_importer_count": 2,
-      "test_importer_count": 2,
+      "src_importer_count": 3,
+      "test_importer_count": 3,
       "exported_const_enums": []
     },
     {

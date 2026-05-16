@@ -10,13 +10,14 @@
     {
       "relative_path": "src/render/",
       "exists": true,
-      "committed_file_count": 60,
+      "committed_file_count": 63,
       "committed_filenames_sorted": [
         "add-framebuffer-hash-hook.ts",
         "addLine.ts",
         "checkBBox.ts",
         "compare-scripted-renderer-path.ts",
         "compare-title-and-e1m1-framebuffers.ts",
+        "drawPlanes.ts",
         "drawPrimitives.ts",
         "flatNumberResolver.ts",
         "fuzz.ts",
@@ -57,6 +58,7 @@
         "maskedTextures.ts",
         "patchDraw.ts",
         "projection.ts",
+        "renderBspNode.ts",
         "renderInitTables.ts",
         "renderLimits.ts",
         "segRenderModel.ts",
@@ -67,15 +69,16 @@
         "spriteProjection.ts",
         "storeWallRange.ts",
         "subsector.ts",
+        "textureNumberResolver.ts",
         "twoSidedWalls.ts",
         "visplaneSpans.ts",
         "visplanes.ts",
         "wallColumns.ts",
         "wallScaleMath.ts"
       ],
-      "total_size_bytes": 342197,
-      "total_line_count": 8765,
-      "total_export_count": 458
+      "total_size_bytes": 352207,
+      "total_line_count": 9014,
+      "total_export_count": 464
     }
   ],
   "modules": [
@@ -182,7 +185,7 @@
       "exported_const_enums": ["DetailMode"],
       "external_imports": ["src/core/fixed.ts", "src/host/windowPolicy.ts"],
       "src_importer_count": 28,
-      "test_importer_count": 30
+      "test_importer_count": 31
     },
     {
       "relative_path": "src/render/renderLimits.ts",
@@ -209,7 +212,7 @@
       "exported_types": [],
       "exported_const_enums": ["Silhouette"],
       "external_imports": ["src/render/projection.ts"],
-      "src_importer_count": 8,
+      "src_importer_count": 9,
       "test_importer_count": 9
     },
     {
@@ -335,8 +338,8 @@
       "exported_types": [],
       "exported_const_enums": [],
       "external_imports": ["src/render/projection.ts", "src/render/renderLimits.ts", "src/render/renderLimits.ts"],
-      "src_importer_count": 3,
-      "test_importer_count": 3
+      "src_importer_count": 4,
+      "test_importer_count": 4
     },
     {
       "relative_path": "src/render/wallColumns.ts",
@@ -361,16 +364,18 @@
     "test_roots": [
       {
         "relative_path": "test/render/",
-        "test_file_count": 23,
+        "test_file_count": 26,
         "test_filenames_sorted": [
           "add-line.test.ts",
           "check-bbox.test.ts",
           "column-span-draw.test.ts",
+          "draw-planes.test.ts",
           "flat-number-resolver.test.ts",
           "fuzz.test.ts",
           "masked-midtextures.test.ts",
           "patch-draw.test.ts",
           "projection-constants.test.ts",
+          "render-bsp-node.test.ts",
           "render-init-tables.test.ts",
           "render-limits.test.ts",
           "seg-render-model.test.ts",
@@ -381,6 +386,7 @@
           "sprite-sort-clip.test.ts",
           "store-wall-range.test.ts",
           "subsector.test.ts",
+          "texture-number-resolver.test.ts",
           "two-sided-walls.test.ts",
           "visplane-build.test.ts",
           "visplane-span-render.test.ts",
