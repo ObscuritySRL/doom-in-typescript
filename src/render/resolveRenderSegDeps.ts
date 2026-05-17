@@ -37,6 +37,8 @@
 import type { Visplane } from './renderLimits.ts';
 import type { RenderSegResolved } from './renderSeg.ts';
 import type { StoredWallRange } from './storeWallRange.ts';
+import { checkPlane } from './visplanes.ts';
+import type { VisplanePool } from './visplanes.ts';
 import type { PreparedWallTexture } from './wallColumns.ts';
 
 /** Texture number → prepared composite texture (`null` only if the catalog lacks it). */
@@ -49,6 +51,14 @@ export interface SubsectorRenderTargets {
   readonly maskedTextureCol: Int16Array | null;
   /** `scalelightfixed` row set when `player->fixedcolormap` is active. */
   readonly fixedColormapRow: readonly Uint8Array[] | null;
+  /**
+   * The frame visplane pool — vanilla r_segs.c `R_StoreWallRange`
+   * runs `R_CheckPlane` per seg to grow each marked floor/ceiling
+   * visplane over the seg's `[rw_x, rw_stopx-1]` column range (or
+   * split it), so {@link checkPlane} needs the pool to allocate the
+   * split plane.
+   */
+  readonly pool: VisplanePool;
 }
 
 /**
@@ -66,6 +76,14 @@ export interface SubsectorRenderTargets {
  * ```
  */
 export function makeResolveRenderSegDeps(scalelightRows: readonly (readonly Uint8Array[])[], texture: TextureResolver, targets: SubsectorRenderTargets): (stored: StoredWallRange) => RenderSegResolved {
+  // Vanilla r_segs.c globals `ceilingplane` / `floorplane`: set by
+  // R_Subsector for this subsector, then grown/split by R_CheckPlane
+  // across the subsector's segs. Closure-scoped (this closure is built
+  // once per subsector) so the accumulation persists across that
+  // subsector's segs exactly as vanilla's global mutation does.
+  let ceilingPlane = targets.ceilingPlane;
+  let floorPlane = targets.floorPlane;
+
   return (stored: StoredWallRange): RenderSegResolved => {
     let wallLights: readonly Uint8Array[];
     if (stored.wallLightsIndex !== null) {
@@ -91,13 +109,27 @@ export function makeResolveRenderSegDeps(scalelightRows: readonly (readonly Uint
       throw new Error('resolveRenderSegDeps: segtextured seg has a null wallLightsIndex (fixed colormap active) but no fixedColormapRow was supplied');
     }
 
+    // r_segs.c R_StoreWallRange — grow/split each marked floor/ceiling
+    // visplane over this seg's screen-column range BEFORE R_RenderSegLoop
+    // writes its top[]/bottom[]:
+    //   if (markceiling) ceilingplane = R_CheckPlane(ceilingplane, rw_x, rw_stopx-1);
+    //   if (markfloor)   floorplane   = R_CheckPlane(floorplane,   rw_x, rw_stopx-1);
+    // Without this every visplane stays at its empty `minx>maxx`
+    // sentinel and R_DrawPlanes skips it (no floor/ceiling drawn).
+    if (stored.markCeiling && ceilingPlane !== null) {
+      ceilingPlane = checkPlane(targets.pool, ceilingPlane, stored.rwX, stored.rwStopX - 1);
+    }
+    if (stored.markFloor && floorPlane !== null) {
+      floorPlane = checkPlane(targets.pool, floorPlane, stored.rwX, stored.rwStopX - 1);
+    }
+
     return Object.freeze({
       midTexture: stored.midTexture !== 0 ? texture(stored.midTexture) : null,
       topTexture: stored.topTexture !== 0 ? texture(stored.topTexture) : null,
       bottomTexture: stored.bottomTexture !== 0 ? texture(stored.bottomTexture) : null,
       wallLights,
-      ceilingPlane: targets.ceilingPlane,
-      floorPlane: targets.floorPlane,
+      ceilingPlane,
+      floorPlane,
       maskedTextureCol: targets.maskedTextureCol,
     });
   };

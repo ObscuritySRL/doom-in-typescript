@@ -147,7 +147,7 @@ export function makeAssembledOnSubsector(config: AssembledOnSubsectorConfig): (f
         config.textureNumber,
         segView,
         textures,
-        makeResolveRenderSegDeps(scalelightRows, textureOf, { ceilingPlane: planes.ceilingplane, floorPlane: planes.floorplane, maskedTextureCol: null, fixedColormapRow }),
+        makeResolveRenderSegDeps(scalelightRows, textureOf, { ceilingPlane: planes.ceilingplane, floorPlane: planes.floorplane, maskedTextureCol: null, fixedColormapRow, pool: config.pool }),
         drawSolid,
         drawTwoSided,
       );
