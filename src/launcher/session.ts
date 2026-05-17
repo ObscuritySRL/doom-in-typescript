@@ -48,6 +48,9 @@ import { MF_AMBUSH, MF_SPAWNCEILING, MOBJINFO, Mobj, MobjType, ONCEILINGZ, ONFLO
 import { ThinkerList } from '../world/thinkers.ts';
 import { xyMovement } from '../world/xyMovement.ts';
 import { VIEWHEIGHT, zMovement } from '../world/zMovement.ts';
+import type { LightThinker } from '../specials/lights.ts';
+import { pSpawnSpecialsLights, tickLight } from '../specials/lights.ts';
+import { buildLightSectors, cloneSectorsMutable } from '../specials/lightsLevel.ts';
 
 import { loadGameplayRenderResources } from './gameplayAssets.ts';
 import type { GameplayRenderResources } from './gameplayAssets.ts';
@@ -79,6 +82,8 @@ export interface LauncherSession {
   readonly renderState: GameplayRenderState;
   readonly thinkerList: ThinkerList;
   readonly doomRandom: DoomRandom;
+  /** Vanilla sector-light-special thinkers (P_SpawnSpecials light branch), ticked once per tic in spawn order. */
+  readonly lightThinkers: LightThinker[];
   levelTime: number;
   showAutomap: boolean;
 }
@@ -145,7 +150,13 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
   validateSkill(options.skill);
 
   const mapName = options.mapName.toUpperCase();
-  const mapData = setupLevel(parseMapBundle(resources.directory, resources.wadBuffer, mapName));
+  // Vanilla `sector_t` is mutable; the parsed sectors are frozen
+  // (parse-layer pin). Substitute an unfrozen mutable copy so the
+  // sector specials can run while `parseSectors`' own output stays
+  // frozen. The renderer re-snapshots sectors per frame, so the
+  // mutated light levels flow through with no renderer change.
+  const parsedMap = setupLevel(parseMapBundle(resources.directory, resources.wadBuffer, mapName));
+  const mapData: MapData = { ...parsedMap, sectors: cloneSectorsMutable(parsedMap.sectors) };
   const thinkerList = new ThinkerList();
   const doomRandom = new DoomRandom();
   const blocklinks = createBlockThingsGrid(mapData.blockmap.columns, mapData.blockmap.rows);
@@ -203,6 +214,13 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
     throw new Error(`Player 1 start was not spawned for ${mapName}.`);
   }
 
+  // P_SpawnSpecials (light branch) — vanilla runs this after the
+  // map-thing spawn loop. C1 emulates gameversion 1.9 (> exe_doom_1_2),
+  // so the v1.4-beta fireFlicker special is enabled. The thinkers
+  // share `mapData.sectors[*]` by reference, so ticking them mutates
+  // exactly what the renderer re-snapshots each frame.
+  const lightThinkers = pSpawnSpecialsLights(buildLightSectors(mapData), () => doomRandom.pRandom(), true);
+
   const automapState = createAutomapState();
   const levelKey = parseLevelKey(mapName);
   const lastLevelKey = { episode: -1, map: -1 };
@@ -236,6 +254,7 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
     renderState,
     thinkerList,
     doomRandom,
+    lightThinkers,
     levelTime: 0,
     showAutomap: false,
   };
@@ -284,6 +303,13 @@ export function advanceLauncherSession(session: LauncherSession, inputState: Lau
     playerX: session.player.mo.x,
     playerY: session.player.mo.y,
   });
+
+  // P_RunThinkers (light branch) — vanilla ticks the thinker list
+  // every tic in insertion (spawn) order; the shared P_Random stream
+  // stays positioned as in vanilla.
+  for (const thinker of session.lightThinkers) {
+    tickLight(thinker, () => session.doomRandom.pRandom());
+  }
 
   session.levelTime += 1;
 }

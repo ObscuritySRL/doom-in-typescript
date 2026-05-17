@@ -125,10 +125,13 @@ export interface MapSector {
   readonly floorpic: string;
   /** Ceiling flat name (uppercased, null-padding stripped). */
   readonly ceilingpic: string;
-  /** Light level (0–255 typical). */
-  readonly lightlevel: number;
-  /** Sector special type. */
-  readonly special: number;
+  /** Light level (0–255 typical). Mutated at runtime by the sector
+   *  light specials (vanilla `sector_t.lightlevel`); `parseSectors`
+   *  still freezes its own output, so the parse-layer pin holds. */
+  lightlevel: number;
+  /** Sector special type. Cleared at runtime by `P_SpawnSpecials`
+   *  (vanilla `sector_t.special`). */
+  special: number;
   /** Sector tag for linedef triggers. */
   readonly tag: number;
 }
