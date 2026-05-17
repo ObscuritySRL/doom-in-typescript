@@ -92,12 +92,16 @@ describe('resolveRenderSegDeps: R_StoreWallRange texture/light/plane resolution'
     expect(r.wallLights).toBe(SCALELIGHT_ROWS[0]!);
   });
 
-  test('null wallLightsIndex uses fixedColormapRow when supplied, else throws', () => {
+  test('null wallLightsIndex: fixedColormapRow when supplied; segtextured + none throws; non-segtextured → inert row', () => {
     const withFixed = makeResolveRenderSegDeps(SCALELIGHT_ROWS, textureOf, { ceilingPlane: null, floorPlane: null, maskedTextureCol: null, fixedColormapRow: FIXED_ROW });
-    expect(withFixed(stored({ wallLightsIndex: null })).wallLights).toBe(FIXED_ROW);
+    expect(withFixed(stored({ wallLightsIndex: null, segtextured: true })).wallLights).toBe(FIXED_ROW);
 
     const noFixed = makeResolveRenderSegDeps(SCALELIGHT_ROWS, textureOf, { ceilingPlane: null, floorPlane: null, maskedTextureCol: null, fixedColormapRow: null });
-    expect(() => noFixed(stored({ wallLightsIndex: null }))).toThrow('fixed colormap active');
+    // Segtextured + null + no fixed row = genuine fixed-colormap wiring error.
+    expect(() => noFixed(stored({ wallLightsIndex: null, segtextured: true }))).toThrow('fixed colormap active');
+    // Non-segtextured + null = vanilla never samples walllights → inert
+    // valid row (scalelightRows[0]), no throw.
+    expect(noFixed(stored({ wallLightsIndex: null, segtextured: false })).wallLights).toBe(SCALELIGHT_ROWS[0]!);
   });
 
   test('out-of-range wallLightsIndex throws (no silent fallback)', () => {

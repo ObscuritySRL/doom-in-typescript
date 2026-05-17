@@ -19,13 +19,17 @@
  *
  * `wallLightsIndex` is already the vanilla-clamped `[0,
  * LIGHTLEVELS-1]` row index `storeWallRange` produced (it owns the
- * `lightnum` clamp), so it indexes `scalelightRows` directly. When it
- * is `null` a fixed colormap is active (`walllights =
- * scalelightfixed`); the caller supplies that row set as
- * `fixedColormapRow`. Resolving a one-sided seg whose mid texture is
- * absent, or hitting the `null` light index without a
- * `fixedColormapRow`, is a wiring error and throws — never a silent
- * wrong fallback.
+ * `lightnum` clamp), so it indexes `scalelightRows` directly. It is
+ * `null` in two distinct vanilla cases — r_segs.c assigns `walllights`
+ * only inside `if (segtextured)`: (a) a *segtextured* seg with a fixed
+ * colormap active (`walllights = scalelightfixed`), where the caller
+ * supplies that row set as `fixedColormapRow`; (b) a *non-segtextured*
+ * seg (e.g. a pure two-sided window), where vanilla never samples
+ * `walllights` for that seg at all — an inert valid row is returned
+ * (never read by `R_RenderSegLoop`). Resolving a one-sided seg whose
+ * mid texture is absent, or a *segtextured* seg with the `null` light
+ * index but no `fixedColormapRow`, is a wiring error and throws —
+ * never a silent wrong fallback.
  *
  * Pure; no Win32 or runtime dependencies.
  */
@@ -72,8 +76,19 @@ export function makeResolveRenderSegDeps(scalelightRows: readonly (readonly Uint
       wallLights = row;
     } else if (targets.fixedColormapRow !== null) {
       wallLights = targets.fixedColormapRow;
+    } else if (!stored.segtextured) {
+      // Vanilla r_segs.c assigns `walllights` only inside `if
+      // (segtextured)`; a non-segtextured seg (e.g. a pure two-sided
+      // window with no upper/lower/mid texture) never samples it. The
+      // typed RenderSegResolved still needs a value — supply an inert
+      // valid row (never read by R_RenderSegLoop for this seg).
+      const row = scalelightRows[0];
+      if (row === undefined) {
+        throw new RangeError('resolveRenderSegDeps: scalelightRows is empty');
+      }
+      wallLights = row;
     } else {
-      throw new Error('resolveRenderSegDeps: wallLightsIndex is null (fixed colormap active) but no fixedColormapRow was supplied');
+      throw new Error('resolveRenderSegDeps: segtextured seg has a null wallLightsIndex (fixed colormap active) but no fixedColormapRow was supplied');
     }
 
     return Object.freeze({
