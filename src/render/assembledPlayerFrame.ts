@@ -59,6 +59,16 @@ export interface AssembledPlayerFrameConfig {
   readonly renderHooks?: RenderPlayerViewHooks;
   /** Optional plane DI hooks (pass through to the committed passes). */
   readonly planeHooks?: AssembledPlaneRenderersHooks;
+  /**
+   * Optional deferred `R_DrawMasked` / `R_DrawPlayerSprites` slot.
+   * Vanilla `R_RenderPlayerView` runs `R_DrawMasked()` (which ends
+   * with `R_DrawPlayerSprites()`) immediately after `R_DrawPlanes()`;
+   * `renderPlayerViewWalls` performs `R_SetupFrame` → … →
+   * `R_DrawPlanes`, so this fires once, right after, with the same
+   * per-frame {@link ViewFrame} and the player.  When omitted the
+   * per-frame call is unchanged (wall + visplane path only).
+   */
+  readonly drawMasked?: (frame: ViewFrame, player: SetupFramePlayer) => void;
 }
 
 /**
@@ -88,8 +98,8 @@ export function makeAssembledPlayerFrameRenderer(config: AssembledPlayerFrameCon
     return cachedPlanes;
   };
 
-  return (player: SetupFramePlayer): RenderPlayerViewResult =>
-    renderPlayerViewWalls(
+  return (player: SetupFramePlayer): RenderPlayerViewResult => {
+    const result = renderPlayerViewWalls(
       config.scene,
       player,
       config.projectionAngles,
@@ -101,4 +111,9 @@ export function makeAssembledPlayerFrameRenderer(config: AssembledPlayerFrameCon
       (frame: ViewFrame) => planesFor(frame).onRegularPlane,
       config.renderHooks ?? {},
     );
+    // R_DrawMasked() (→ R_DrawPlayerSprites()) — vanilla runs this
+    // right after R_DrawPlanes(), which renderPlayerViewWalls just did.
+    config.drawMasked?.(result.frame, player);
+    return result;
+  };
 }

@@ -149,4 +149,47 @@ describe('assembledPlayerFrame: makeAssembledPlayerFrameRenderer — full R_Rend
     renderFrame(player());
     expect(skyCalls).toBe(2);
   });
+
+  test('the deferred drawMasked slot fires once per frame, AFTER R_DrawPlanes, with the result frame + player', () => {
+    const order: string[] = [];
+    const p = player();
+    let seenFrame: unknown = null;
+    let seenPlayer: unknown = null;
+    const cfg: AssembledPlayerFrameConfig = {
+      ...frameConfig(),
+      renderHooks: {
+        bspWalk: (_s, _v, _st, onSubsector) => onSubsector(0),
+        planeFlush: () => void order.push('planes'), // R_DrawPlanes
+      },
+      drawMasked: (frame, pl) => {
+        order.push('masked'); // R_DrawMasked → R_DrawPlayerSprites
+        seenFrame = frame;
+        seenPlayer = pl;
+      },
+    };
+    const result = makeAssembledPlayerFrameRenderer(cfg)(p);
+    // Vanilla R_RenderPlayerView order: … R_DrawPlanes() then R_DrawMasked().
+    expect(order).toEqual(['planes', 'masked']);
+    expect(seenFrame).toBe(result.frame);
+    expect(seenPlayer).toBe(p);
+  });
+
+  test('omitting drawMasked leaves the per-frame call unchanged (wall + visplane path only)', () => {
+    const poolA = createVisplanePool();
+    const poolB = createVisplanePool();
+    const without = makeAssembledPlayerFrameRenderer(frameConfig(poolA))(player());
+    let called = 0;
+    const withNoop = makeAssembledPlayerFrameRenderer({ ...frameConfig(poolB), drawMasked: () => void (called += 1) })(player());
+    expect(called).toBe(1);
+    expect(withNoop.frame).toEqual(without.frame);
+    expect(poolA.count).toBe(poolB.count);
+  });
+
+  test('drawMasked is invoked once per frame (two frames → two calls)', () => {
+    let calls = 0;
+    const renderFrame = makeAssembledPlayerFrameRenderer({ ...frameConfig(), drawMasked: () => void (calls += 1) });
+    renderFrame(player());
+    renderFrame(player());
+    expect(calls).toBe(2);
+  });
 });
