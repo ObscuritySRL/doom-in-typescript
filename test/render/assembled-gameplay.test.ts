@@ -33,7 +33,7 @@ describe('assembledGameplay: makeAssembledGameplayRenderer — bit-exact E1M1 fr
 
   test('a null player.mo is a hard error (caller renders black first)', async () => {
     const renderFrame = makeAssembledGameplayRenderer(await loadE1M1());
-    expect(() => renderFrame(createPlayer())).toThrow('player.mo is null');
+    expect(() => renderFrame(createPlayer(), 0)).toThrow('player.mo is null');
   });
 
   test('renders a frame from an in-map viewpoint: walks the real E1M1 BSP, returns a view + clip state', async () => {
@@ -50,7 +50,7 @@ describe('assembledGameplay: makeAssembledGameplayRenderer — bit-exact E1M1 fr
     player.mo = mo;
     player.viewz = 41 * FRACUNIT;
 
-    const result = renderFrame(player);
+    const result = renderFrame(player, 0);
     expect(result.frame.viewx).toBe(mo.x);
     expect(result.frame.viewy).toBe(mo.y);
     expect(result.frame.viewz).toBe(41 * FRACUNIT);
@@ -72,8 +72,8 @@ describe('assembledGameplay: makeAssembledGameplayRenderer — bit-exact E1M1 fr
       p.viewz = 41 * FRACUNIT;
       return p;
     };
-    const a = makeAssembledGameplayRenderer(depsA)(playerOf());
-    const b = makeAssembledGameplayRenderer(depsB)(playerOf());
+    const a = makeAssembledGameplayRenderer(depsA)(playerOf(), 0);
+    const b = makeAssembledGameplayRenderer(depsB)(playerOf(), 0);
     expect(a.frame).toEqual(b.frame);
   });
 });

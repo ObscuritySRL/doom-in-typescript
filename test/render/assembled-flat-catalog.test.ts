@@ -35,6 +35,14 @@ describe('assembledFlatCatalog: R_FlatNumForName + flatSource from the real DOOM
     expect(() => cat.flatNumber('NOSUCHFLAT')).toThrow('R_FlatNumForName: NOSUCHFLAT not found');
   });
 
+  test('flatExists mirrors W_CheckNumForName != -1 (case-insensitive), used by P_InitPicAnims', async () => {
+    const cat = await loadCatalog();
+    expect(cat.flatExists('FLOOR4_8')).toBe(true);
+    expect(cat.flatExists('floor4_8')).toBe(true);
+    expect(cat.flatExists('NUKAGE1')).toBe(true); // animated-flat cycle present in DOOM1
+    expect(cat.flatExists('NOSUCHFLAT')).toBe(false);
+  });
+
   test('an out-of-range flat number is a hard error', async () => {
     const cat = await loadCatalog();
     expect(() => cat.flatSource(999_999)).toThrow(RangeError);

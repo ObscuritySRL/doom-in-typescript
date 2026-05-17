@@ -34,6 +34,8 @@ export interface AssembledFlatCatalog {
   readonly flatNumber: FlatNumberResolver;
   /** `picnum` → its 4096-byte 64×64 flat (`ds_source`). */
   readonly flatSource: FlatSourceResolver;
+  /** `W_CheckNumForName(name) != -1` (the `P_InitPicAnims` skip-if-absent guard). */
+  readonly flatExists: (name: string) => boolean;
 }
 
 /**
@@ -76,5 +78,7 @@ export function buildAssembledFlatCatalog(directory: readonly DirectoryEntry[], 
     return pixels;
   };
 
-  return Object.freeze({ flatNumber, flatSource });
+  const flatExists = (name: string): boolean => cache.flatNameToNumber.has(name.toUpperCase());
+
+  return Object.freeze({ flatNumber, flatSource, flatExists });
 }

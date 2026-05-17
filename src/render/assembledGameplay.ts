@@ -41,6 +41,7 @@ import type { DirectoryEntry } from '../wad/directory.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
 
 import { buildAssembledFlatCatalog } from './assembledFlatCatalog.ts';
+import { makeFlatAnimation } from './assembledFlatAnimation.ts';
 import { buildAssembledTextureCatalog } from './assembledTextureCatalog.ts';
 import { makeAssembledPlayerFrameRenderer } from './assembledPlayerFrame.ts';
 import { paintAssembledViewBorder } from './assembledViewBorder.ts';
@@ -78,10 +79,10 @@ export interface AssembledGameplayDeps {
  * @example
  * ```ts
  * const renderFrame = makeAssembledGameplayRenderer({ directory, wadBuffer, mapData, framebuffer });
- * renderFrame(player); // each gameplay tic — writes into framebuffer
+ * renderFrame(player, session.levelTime); // each gameplay tic — writes into framebuffer
  * ```
  */
-export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (player: Player) => RenderPlayerViewResult {
+export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (player: Player, leveltime: number) => RenderPlayerViewResult {
   const textures = buildAssembledTextureCatalog(deps.directory, deps.wadBuffer);
   const flats = buildAssembledFlatCatalog(deps.directory, deps.wadBuffer);
 
@@ -98,6 +99,15 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
 
   const skyflatnum = flats.flatNumber(SKY_FLAT_NAME);
   const pool = createVisplanePool({ screenWidth: SCREENWIDTH });
+
+  // p_spec.c P_UpdateSpecials: ds_source uses flattranslation[picnum],
+  // which cycles with leveltime. The per-frame closure sets the current
+  // tic; the (static-config) flat source closes over it so the regular
+  // plane pass animates exactly as vanilla. Sky/border flats are not
+  // animated (their picnums fall outside every animdef → identity).
+  const flatTranslation = makeFlatAnimation(flats.flatNumber, flats.flatExists);
+  let currentLeveltime = 0;
+  const animatedFlatSource = (picnum: number): Uint8Array => flats.flatSource(flatTranslation(picnum, currentLeveltime));
 
   // r_draw.c R_FillBackScreen + R_DrawViewBorder — paint the tiled
   // background + BRDR_* edges once (the per-frame 3D view overwrites
@@ -149,7 +159,7 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
       skyTextureMid: SKY_TEXTURE_MID,
       colormaps: textures.colormaps,
       zlightRows,
-      flatSource: flats.flatSource,
+      flatSource: animatedFlatSource,
       viewport,
       xToViewAngle,
       planeTables,
@@ -161,11 +171,13 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
 
   const renderFrame = makeAssembledPlayerFrameRenderer(config);
 
-  return (player: Player): RenderPlayerViewResult => {
+  return (player: Player, leveltime: number): RenderPlayerViewResult => {
     const mobj = player.mo;
     if (mobj === null) {
       throw new Error('makeAssembledGameplayRenderer: player.mo is null (caller must render black before reaching the assembled renderer)');
     }
+    // P_UpdateSpecials advances flattranslation by the current tic.
+    currentLeveltime = leveltime;
     // r_plane.c R_ClearPlanes also re-initialises the per-column clip
     // bounds every frame (`for i<viewwidth: floorclip[i]=viewheight;
     // ceilingclip[i]=-1`); the committed clearPlanes only resets the

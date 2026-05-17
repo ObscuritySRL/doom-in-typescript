@@ -73,8 +73,8 @@ export interface LauncherSession {
   readonly mapName: string;
   readonly palette: Uint8Array;
   readonly player: Player;
-  /** Bit-exact assembled `R_RenderPlayerView` for this level (writes into `framebuffer`). */
-  readonly assembledGameplayRenderer: (player: Player) => RenderPlayerViewResult;
+  /** Bit-exact assembled `R_RenderPlayerView` for this level (writes into `framebuffer`); `leveltime` drives animated flats. */
+  readonly assembledGameplayRenderer: (player: Player, leveltime: number) => RenderPlayerViewResult;
   readonly renderResources: GameplayRenderResources;
   readonly renderState: GameplayRenderState;
   readonly thinkerList: ThinkerList;
@@ -296,7 +296,7 @@ export function renderLauncherFrame(session: LauncherSession): Uint8Array {
       session.framebuffer.fill(0);
       return session.framebuffer;
     }
-    session.assembledGameplayRenderer(session.player);
+    session.assembledGameplayRenderer(session.player, session.levelTime);
     return session.framebuffer;
   }
 
