@@ -38,10 +38,13 @@ import type { MapData } from '../map/mapSetup.ts';
 import type { Player } from '../player/playerSpawn.ts';
 import { SCREENWIDTH } from '../host/windowPolicy.ts';
 import type { DirectoryEntry } from '../wad/directory.ts';
+import { LumpLookup } from '../wad/lumpLookup.ts';
 
 import { buildAssembledFlatCatalog } from './assembledFlatCatalog.ts';
 import { buildAssembledTextureCatalog } from './assembledTextureCatalog.ts';
 import { makeAssembledPlayerFrameRenderer } from './assembledPlayerFrame.ts';
+import { paintAssembledViewBorder } from './assembledViewBorder.ts';
+import { decodePatch } from './patchDraw.ts';
 import type { AssembledPlayerFrameConfig } from './assembledPlayerFrame.ts';
 import { buildDiminishingLightLevelTables, buildPlaneProjectionTables, buildProjectionAngleTables, materializeColormapRows } from './renderInitTables.ts';
 import type { RenderPlayerViewResult } from './renderPlayerView.ts';
@@ -51,6 +54,9 @@ import { createVisplanePool } from './visplanes.ts';
 
 /** Episode-1 sky flat marker (r_data.c `SKYFLATNAME`). */
 const SKY_FLAT_NAME = 'F_SKY1';
+
+/** r_draw.c non-commercial view-border background flat. */
+const VIEW_BORDER_BACKGROUND = 'FLOOR7_2';
 
 /** The parsed map + WAD inputs the level-static renderer binds. */
 export interface AssembledGameplayDeps {
@@ -93,6 +99,18 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
   const skyflatnum = flats.flatNumber(SKY_FLAT_NAME);
   const pool = createVisplanePool({ screenWidth: SCREENWIDTH });
 
+  // r_draw.c R_FillBackScreen + R_DrawViewBorder — paint the tiled
+  // background + BRDR_* edges once (the per-frame 3D view overwrites
+  // only the window; nothing else dirties the margins). FLOOR7_2 is
+  // the DOOM1 (non-commercial) border background.
+  const lookup = new LumpLookup(deps.directory);
+  paintAssembledViewBorder(deps.framebuffer, viewport, flats.flatSource(flats.flatNumber(VIEW_BORDER_BACKGROUND)), (name) => decodePatch(lookup.getLumpData(name, deps.wadBuffer)));
+
+  // The committed 3D pixel passes write at framebuffer-relative (x, y);
+  // offset into the screenblocks view window (viewwindowx/y) via a
+  // zero-copy subview sharing the buffer (stride stays SCREENWIDTH).
+  const windowedFramebuffer = deps.framebuffer.subarray(viewport.viewWindowY * SCREENWIDTH + viewport.viewWindowX);
+
   const ceilingClip = new Int16Array(viewport.viewWidth);
   const floorClip = new Int16Array(viewport.viewWidth);
   const spanScratch = {
@@ -122,7 +140,7 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
       projectionAngles,
       skyflatnum,
       pool,
-      drawContext: { framebuffer: deps.framebuffer, screenWidth: SCREENWIDTH, viewHeight: viewport.viewHeight, centerY: viewport.centerY, ceilingClip, floorClip },
+      drawContext: { framebuffer: windowedFramebuffer, screenWidth: SCREENWIDTH, viewHeight: viewport.viewHeight, centerY: viewport.centerY, ceilingClip, floorClip },
     },
     planes: {
       skyTexture: textures.skyTexture,
@@ -136,7 +154,7 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
       xToViewAngle,
       planeTables,
       spanScratch,
-      framebuffer: deps.framebuffer,
+      framebuffer: windowedFramebuffer,
       screenWidth: SCREENWIDTH,
     },
   };
