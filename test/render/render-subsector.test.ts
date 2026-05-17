@@ -50,6 +50,8 @@ function scene(): RenderSubsectorScene {
 interface Trace {
   storeCalls: Array<readonly [number, number]>;
   fragments: Array<readonly [number, number, number]>;
+  /** Planes the factory saw — must be the ones the subsector selected. */
+  factoryPlanes: Array<{ floor: boolean; ceil: boolean }>;
 }
 
 function recordingSegStore(trace: Trace): SegStore {
@@ -64,8 +66,11 @@ function recordingSegStore(trace: Trace): SegStore {
 function run(s: RenderSubsectorScene, view: RenderSubsectorView) {
   const pool = createVisplanePool();
   const state = clearClipSegs(viewport.viewWidth);
-  const trace: Trace = { storeCalls: [], fragments: [] };
-  const r = renderSubsector(s, view, pool, state, recordingSegStore(trace));
+  const trace: Trace = { storeCalls: [], fragments: [], factoryPlanes: [] };
+  const r = renderSubsector(s, view, pool, state, (planes) => {
+    trace.factoryPlanes.push({ floor: planes.floorplane !== null, ceil: planes.ceilingplane !== null });
+    return recordingSegStore(trace);
+  });
   return {
     trace,
     floor: r.floorplane ? { h: r.floorplane.height, p: r.floorplane.picnum, l: r.floorplane.lightlevel } : null,
@@ -78,7 +83,7 @@ function run(s: RenderSubsectorScene, view: RenderSubsectorView) {
 function reDerive(s: RenderSubsectorScene, view: RenderSubsectorView) {
   const pool = createVisplanePool();
   const state = clearClipSegs(viewport.viewWidth);
-  const trace: Trace = { storeCalls: [], fragments: [] };
+  const trace: Trace = { storeCalls: [], fragments: [], factoryPlanes: [] };
   const fs = s.frontsector;
   let floorplane = null as ReturnType<typeof findPlane> | null;
   let ceilingplane = null as ReturnType<typeof findPlane> | null;
@@ -88,6 +93,8 @@ function reDerive(s: RenderSubsectorScene, view: RenderSubsectorView) {
   if (fs.ceilingheight > view.viewz || fs.ceilingpic === view.skyflatnum) {
     ceilingplane = findPlane(pool, fs.ceilingheight, fs.ceilingpic, fs.lightlevel, view.skyflatnum);
   }
+  // Store factory built once, after plane selection (vanilla ordering).
+  trace.factoryPlanes.push({ floor: floorplane !== null, ceil: ceilingplane !== null });
   for (let k = 0; k < s.numsegs; k += 1) {
     const segIndex = s.firstseg + k;
     const d = addLine(s.addLineSegAt(segIndex), fs, view);
@@ -128,6 +135,10 @@ describe('renderSubsector: completed R_Subsector with per-seg curline stores', (
     expect(got.trace.fragments).toEqual(want.trace.fragments);
     expect(got.trace.fragments.length).toBeGreaterThan(0);
     expect(got.trace.fragments.every(([i]) => i === FIRSTSEG || i === FIRSTSEG + 1)).toBe(true);
+    // The factory was invoked once, after plane selection, seeing the
+    // planes this subsector selected (both visible here).
+    expect(got.trace.factoryPlanes).toEqual(want.trace.factoryPlanes);
+    expect(got.trace.factoryPlanes).toEqual([{ floor: true, ceil: true }]);
   });
 
   test('ceiling below viewz and not sky → no ceilingplane (still routes segs)', () => {

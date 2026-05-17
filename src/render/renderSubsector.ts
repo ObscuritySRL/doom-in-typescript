@@ -92,16 +92,24 @@ export interface RenderSubsectorResult {
  * `R_ClipSolidWallSegment` / `R_ClipPassWallSegment` with that seg's
  * own `curline`-bound `R_StoreWallRange`.
  *
- * @param segStore - The I4d per-seg store factory; called `segStore(segIndex, d.rwAngle1)` after `R_AddLine`.
+ * `makeSegStore` is invoked once, *after* plane selection and before
+ * the seg loop — mirroring vanilla, where `floorplane` / `ceilingplane`
+ * are assigned before the `R_AddLine` loop and `R_StoreWallRange` reads
+ * those globals. The per-subsector resolve targets a seg store binds
+ * (`ceilingplane` / `floorplane`) are exactly the planes this subsector
+ * just selected, so the factory must see them.
+ *
+ * @param makeSegStore - Builds the I4d per-seg store factory from the selected planes; called once after plane selection.
  * @returns The selected planes for the wall renderer's visplane-marking step.
  *
  * @example
  * ```ts
- * const segStore = makeSegStoreFactory(scene, flatNum, texNum, view, textures, resolve, drawSolid, drawTwoSided);
- * const { floorplane, ceilingplane } = renderSubsector(subScene, view, pool, state, segStore);
+ * const { floorplane, ceilingplane } = renderSubsector(subScene, view, pool, state, (planes) =>
+ *   makeSegStoreFactory(scene, flatNum, texNum, segView, textures, makeResolveRenderSegDeps(scalelightRows, textureOf, { ceilingPlane: planes.ceilingplane, floorPlane: planes.floorplane, maskedTextureCol: null, fixedColormapRow: null }), drawSolid, drawTwoSided),
+ * );
  * ```
  */
-export function renderSubsector(scene: RenderSubsectorScene, view: RenderSubsectorView, pool: VisplanePool, state: ClipState, segStore: SegStore): RenderSubsectorResult {
+export function renderSubsector(scene: RenderSubsectorScene, view: RenderSubsectorView, pool: VisplanePool, state: ClipState, makeSegStore: (planes: RenderSubsectorResult) => SegStore): RenderSubsectorResult {
   const fs = scene.frontsector;
 
   const floorplane = fs.floorheight < view.viewz ? findPlane(pool, fs.floorheight, fs.floorpic, fs.lightlevel, view.skyflatnum) : null;
@@ -109,6 +117,11 @@ export function renderSubsector(scene: RenderSubsectorScene, view: RenderSubsect
   const ceilingplane = fs.ceilingheight > view.viewz || fs.ceilingpic === view.skyflatnum ? findPlane(pool, fs.ceilingheight, fs.ceilingpic, fs.lightlevel, view.skyflatnum) : null;
 
   // R_AddSprites(frontsector) — deferred to the sprite increment (I6).
+
+  // floorplane / ceilingplane are now set (vanilla globals); the per-seg
+  // curline store factory binds them as its resolve targets.
+  const planes: RenderSubsectorResult = { floorplane, ceilingplane };
+  const segStore = makeSegStore(planes);
 
   for (let k = 0; k < scene.numsegs; k += 1) {
     const segIndex = scene.firstseg + k;
@@ -124,5 +137,5 @@ export function renderSubsector(scene: RenderSubsectorScene, view: RenderSubsect
     }
   }
 
-  return { floorplane, ceilingplane };
+  return planes;
 }
