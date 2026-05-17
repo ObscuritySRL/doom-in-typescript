@@ -36,6 +36,8 @@ import {
   createAutomapState,
 } from '../ui/automap.ts';
 import type { AutomapState, Line2D } from '../ui/automap.ts';
+import { makeAssembledGameplayRenderer } from '../render/assembledGameplay.ts';
+import type { RenderPlayerViewResult } from '../render/renderPlayerView.ts';
 import type { DirectoryEntry } from '../wad/directory.ts';
 import { parseWadDirectory } from '../wad/directory.ts';
 import { parseWadHeader } from '../wad/header.ts';
@@ -49,7 +51,7 @@ import { VIEWHEIGHT, zMovement } from '../world/zMovement.ts';
 
 import { loadGameplayRenderResources } from './gameplayAssets.ts';
 import type { GameplayRenderResources } from './gameplayAssets.ts';
-import { createGameplayRenderState, renderGameplayFrame } from './gameplayRenderer.ts';
+import { createGameplayRenderState } from './gameplayRenderer.ts';
 import type { GameplayRenderState } from './gameplayRenderer.ts';
 
 const THING_MARK_SCALE = 16 * FRACUNIT;
@@ -71,6 +73,8 @@ export interface LauncherSession {
   readonly mapName: string;
   readonly palette: Uint8Array;
   readonly player: Player;
+  /** Bit-exact assembled `R_RenderPlayerView` for this level (writes into `framebuffer`). */
+  readonly assembledGameplayRenderer: (player: Player) => RenderPlayerViewResult;
   readonly renderResources: GameplayRenderResources;
   readonly renderState: GameplayRenderState;
   readonly thinkerList: ThinkerList;
@@ -216,14 +220,18 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
     vertexes: mapData.vertexes,
   });
 
+  const framebuffer = new Uint8Array(SCREENWIDTH * SCREENHEIGHT);
+  const assembledGameplayRenderer = makeAssembledGameplayRenderer({ directory: resources.directory, wadBuffer: resources.wadBuffer, mapData, framebuffer });
+
   return {
     automapState,
     blocklinks,
-    framebuffer: new Uint8Array(SCREENWIDTH * SCREENHEIGHT),
+    framebuffer,
     mapData,
     mapName,
     palette: resources.palette,
     player,
+    assembledGameplayRenderer,
     renderResources: resources.renderResources,
     renderState,
     thinkerList,
@@ -282,13 +290,14 @@ export function advanceLauncherSession(session: LauncherSession, inputState: Lau
 
 export function renderLauncherFrame(session: LauncherSession): Uint8Array {
   if (!session.showAutomap) {
-    return renderGameplayFrame({
-      framebuffer: session.framebuffer,
-      mapData: session.mapData,
-      player: session.player,
-      renderResources: session.renderResources,
-      renderState: session.renderState,
-    });
+    // Bit-exact assembled R_RenderPlayerView. Vanilla draws nothing
+    // until the player mobj exists; mirror that with a cleared frame.
+    if (session.player.mo === null) {
+      session.framebuffer.fill(0);
+      return session.framebuffer;
+    }
+    session.assembledGameplayRenderer(session.player);
+    return session.framebuffer;
   }
 
   const framebuffer = session.framebuffer;

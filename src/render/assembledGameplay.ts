@@ -148,6 +148,12 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
     if (mobj === null) {
       throw new Error('makeAssembledGameplayRenderer: player.mo is null (caller must render black before reaching the assembled renderer)');
     }
+    // r_plane.c R_ClearPlanes also re-initialises the per-column clip
+    // bounds every frame (`for i<viewwidth: floorclip[i]=viewheight;
+    // ceilingclip[i]=-1`); the committed clearPlanes only resets the
+    // visplane pool, so do the clip-array half here.
+    ceilingClip.fill(-1);
+    floorClip.fill(viewport.viewHeight);
     const setupFramePlayer: SetupFramePlayer = {
       mobjX: mobj.x,
       mobjY: mobj.y,
