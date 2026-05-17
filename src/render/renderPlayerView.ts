@@ -33,21 +33,25 @@
  * The per-subsector seg→wall pipeline (`R_Subsector` → `R_AddLine` →
  * clip → `R_StoreWallRange` → wall draw) and the per-plane sky/regular
  * renderers are bound by the caller via the `makeOnSubsector` /
- * `onSkyPlane` / `onRegularPlane` closures — the established
+ * `makeOnSkyPlane` / `makeOnRegularPlane` factories — the established
  * closure-injection pattern — so this module's sole responsibility
  * (the R_RenderPlayerView control flow + buffer-clear ordering) stays
  * pure and unit-testable. `bspWalk` / `planeFlush` are injected
  * (defaulting to the real committed implementations) for the same
  * reason.
  *
- * `makeOnSubsector` is a factory, not a pre-built visitor: vanilla
- * `R_Subsector` reads the globals `R_SetupFrame` / `R_ClearClipSegs`
- * just assigned (`viewx` / `viewy` / `viewangle` / `viewz`, the fresh
- * `solidsegs` clip list). The closure-injected visitor binds those
- * per-frame, so its factory is invoked *after* `setupFrame` /
- * `clearClipSegs` and handed the resulting {@link ViewFrame} +
- * {@link ClipState} — the same precedent as the per-subsector store
- * built after plane selection.
+ * `makeOnSubsector` / `makeOnSkyPlane` / `makeOnRegularPlane` are
+ * factories, not pre-built closures: vanilla `R_Subsector` reads the
+ * globals `R_SetupFrame` / `R_ClearClipSegs` just assigned (`viewx` /
+ * `viewy` / `viewangle` / `viewz`, the fresh `solidsegs` clip list),
+ * and `R_DrawPlanes` reads the same `R_SetupFrame` view plus the
+ * `R_ClearPlanes` `basexscale` / `baseyscale` (derived from
+ * `viewangle`). The closure-injected visitor / plane renderers bind
+ * those per-frame, so their factories are invoked *after* `setupFrame`
+ * / `clearClipSegs` / `clearPlanes` and handed the resulting
+ * {@link ViewFrame} (+ {@link ClipState} for the subsector visitor) —
+ * the same precedent as the per-subsector store built after plane
+ * selection.
  *
  * Pure with respect to its own state; the only effects are the
  * supplied closures and the `clearPlanes` reset of the caller-owned
@@ -97,8 +101,8 @@ export function renderPlayerViewWalls(
   viewWidth: number,
   skyFlatNum: number,
   makeOnSubsector: (frame: ViewFrame, clipState: ClipState) => SubsectorVisitor,
-  onSkyPlane: VisplaneRenderer,
-  onRegularPlane: VisplaneRenderer,
+  makeOnSkyPlane: (frame: ViewFrame) => VisplaneRenderer,
+  makeOnRegularPlane: (frame: ViewFrame) => VisplaneRenderer,
   hooks: RenderPlayerViewHooks = {},
 ): RenderPlayerViewResult {
   const bspWalk = hooks.bspWalk ?? renderBspNode;
@@ -117,9 +121,13 @@ export function renderPlayerViewWalls(
     viewangletox: projectionAngles.viewangletox,
   };
 
-  // R_Subsector reads the globals just set by R_SetupFrame /
-  // R_ClearClipSegs — bind the visitor to this frame's view + clip list.
+  // R_Subsector / R_DrawPlanes read the globals just set by
+  // R_SetupFrame / R_ClearClipSegs / R_ClearPlanes (the plane drawers
+  // need viewangle / viewz / basexscale exactly as R_ClearPlanes
+  // derived them) — bind the per-frame visitor + plane renderers here.
   const onSubsector = makeOnSubsector(frame, clipState);
+  const onSkyPlane = makeOnSkyPlane(frame);
+  const onRegularPlane = makeOnRegularPlane(frame);
 
   bspWalk(scene, view, clipState, onSubsector); // R_RenderBSPNode(numnodes-1)
   planeFlush(visplanePool, skyFlatNum, onSkyPlane, onRegularPlane); // R_DrawPlanes

@@ -40,8 +40,8 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       VIEW_WIDTH,
       SKY_FLAT_NUM,
       () => () => order.push('subsector'),
-      () => order.push('sky'),
-      () => order.push('regular'),
+      () => () => order.push('sky'),
+      () => () => order.push('regular'),
       {
         bspWalk: (scene, view, state) => {
           order.push('bsp');
@@ -97,8 +97,8 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
         factoryViewx = frame.viewx;
         return (ssIndex) => seen.push(`ss:${ssIndex}`);
       },
-      () => seen.push('sky'),
-      () => seen.push('reg'),
+      () => () => seen.push('sky'),
+      () => () => seen.push('reg'),
       {
         bspWalk: (_scene, _view, state, onSubsector) => {
           // The visitor factory saw the same fresh clip list the walk gets.
@@ -127,8 +127,8 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       VIEW_WIDTH,
       SKY_FLAT_NUM,
       () => () => {},
-      () => {},
-      () => {},
+      () => () => {},
+      () => () => {},
       {
         viewangleoffset: ANG90,
         bspWalk: (_s, view, _state, onSubsector) => {
@@ -152,8 +152,8 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       VIEW_WIDTH,
       SKY_FLAT_NUM,
       () => () => {},
-      () => {},
-      () => {},
+      () => () => {},
+      () => () => {},
     );
     const b = renderPlayerViewWalls(
       SCENE,
@@ -163,8 +163,8 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       VIEW_WIDTH,
       SKY_FLAT_NUM,
       () => () => {},
-      () => {},
-      () => {},
+      () => () => {},
+      () => () => {},
     );
     expect(a.frame).toEqual(b.frame);
     expect(poolA.count).toBe(0);
