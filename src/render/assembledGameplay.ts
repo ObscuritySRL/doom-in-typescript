@@ -32,10 +32,18 @@
  * Every composed piece is an independently committed + tested module.
  */
 
-import { LIGHTLEVELS, MAXLIGHTZ } from './projection.ts';
+import { LIGHTLEVELS, MAXLIGHTSCALE, MAXLIGHTZ } from './projection.ts';
 import { DetailMode, computeViewport } from './projection.ts';
 import type { MapData } from '../map/mapSetup.ts';
 import type { Player } from '../player/playerSpawn.ts';
+import { VANILLA_PW_INVISIBILITY } from '../player/implement-god-mode-and-powerup-flags.ts';
+import { pointInSubsector } from '../map/nodeTraversal.ts';
+import { buildSpriteFrameCache } from '../assets/build-sprite-frame-cache.ts';
+import { buildSpriteCatalog } from './spriteCatalog.ts';
+import { buildSpriteMetrics } from './spriteMetrics.ts';
+import type { PSprite } from './drawPsprite.ts';
+import type { PlayerPSprites } from './drawPlayerSprites.ts';
+import { drawPlayerSprites } from './drawPlayerSprites.ts';
 import { SCREENWIDTH } from '../host/windowPolicy.ts';
 import type { DirectoryEntry } from '../wad/directory.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
@@ -90,8 +98,10 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
   const viewport = computeViewport(9, DetailMode.high);
   const projectionAngles = buildProjectionAngleTables(viewport);
   const planeTables = buildPlaneProjectionTables(viewport, projectionAngles.xtoviewangle);
-  const { zlightLevels } = buildDiminishingLightLevelTables(viewport);
+  const { scalelightLevels, zlightLevels } = buildDiminishingLightLevelTables(viewport);
   const zlightRows = materializeColormapRows(zlightLevels, LIGHTLEVELS, MAXLIGHTZ, textures.colormaps);
+  // R_DrawPlayerSprites: spritelights = scalelight[clamp(lightnum)].
+  const scalelightRows = materializeColormapRows(scalelightLevels, LIGHTLEVELS, MAXLIGHTSCALE, textures.colormaps);
 
   // xtoviewangle is angle_t (BAM, unsigned); the committed sky/span
   // contexts type it Int32Array — a zero-copy view over identical bytes.
@@ -131,6 +141,35 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
     spanStart: new Int32Array(viewport.viewHeight),
   };
 
+  // R_InitSprites (I6a/I6b): the sprite-frame catalog + lump metrics +
+  // a firstspritelump-relative decoded-patch cache for R_DrawPSprite.
+  const spriteCache = buildSpriteFrameCache({ directory: deps.directory, wadBuffer: deps.wadBuffer });
+  const sprites = buildSpriteCatalog(spriteCache.namespace.entries.map((entry) => ({ name: entry.name, spriteNumber: entry.spriteNumber })));
+  const spriteMetrics = buildSpriteMetrics(spriteCache);
+  const spriteEntryByNumber = new Map(spriteCache.entries.map((entry) => [entry.spriteNumber, entry]));
+  const decodedSpritePatch = new Map<number, ReturnType<typeof decodePatch>>();
+  const patchFor = (lump: number): ReturnType<typeof decodePatch> => {
+    let decoded = decodedSpritePatch.get(lump);
+    if (decoded === undefined) {
+      const entry = spriteEntryByNumber.get(lump);
+      if (entry === undefined) {
+        throw new Error(`assembledGameplay: no sprite lump for firstspritelump-relative index ${lump}`);
+      }
+      decoded = decodePatch(deps.wadBuffer.subarray(entry.offset, entry.offset + entry.size));
+      decodedSpritePatch.set(lump, decoded);
+    }
+    return decoded;
+  };
+  // The COLORMAP lump as one buffer (ramp 0 = full-bright; ramp 6 = fuzz).
+  const colormapLump = new Uint8Array(textures.colormaps.length * 256);
+  textures.colormaps.forEach((row, ramp) => colormapLump.set(row, ramp * 256));
+
+  // The per-frame Player (psprite state + powers + sector light) the
+  // deferred R_DrawMasked/R_DrawPlayerSprites slot reads (mirrors the
+  // `currentLeveltime` mutable-holder pattern used for animated flats).
+  let currentPlayer: Player | null = null;
+  const pspriteOf = (psp: Player['psprites'][number]): PSprite | null => (psp.state === null ? null : { sprite: psp.state.sprite, frame: psp.state.frame, sx: psp.sx, sy: psp.sy });
+
   const config: AssembledPlayerFrameConfig = {
     scene: { nodes: deps.mapData.nodes, subsectorCount: deps.mapData.subsectors.length },
     projectionAngles,
@@ -167,6 +206,38 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
       framebuffer: windowedFramebuffer,
       screenWidth: SCREENWIDTH,
     },
+    // r_main.c R_RenderPlayerView: R_DrawMasked() after R_DrawPlanes()
+    // (R_DrawMasked ends with R_DrawPlayerSprites()). World sprites /
+    // masked midtextures (R_AddSprites + the drawseg pool) are a later
+    // increment; the weapon psprite — present in every reference frame
+    // — is the gameplay-e1m1 prerequisite and is drawn here.
+    drawMasked: (): void => {
+      const player = currentPlayer;
+      if (player === null || player.mo === null) {
+        return;
+      }
+      const mo = player.mo;
+      const subsectorIndex = pointInSubsector(mo.x, mo.y, deps.mapData.nodes);
+      const sectorIndex = deps.mapData.subsectorSectors[subsectorIndex]!;
+      const sectorLightLevel = deps.mapData.sectors[sectorIndex]!.lightlevel;
+      const psprites: PlayerPSprites = [pspriteOf(player.psprites[0]!), pspriteOf(player.psprites[1]!)];
+      drawPlayerSprites(
+        psprites,
+        sprites,
+        spriteMetrics,
+        patchFor,
+        { centerXFrac: viewport.centerXFrac, centerYFrac: viewport.centerYFrac, centerY: viewport.centerY, viewWidth: viewport.viewWidth, viewHeight: viewport.viewHeight, detailShift: viewport.detailShift, screenWidth: SCREENWIDTH },
+        {
+          sectorLightLevel,
+          extralight: player.extralight,
+          invisibilityPower: player.powers[VANILLA_PW_INVISIBILITY] ?? 0,
+          fixedColormapRow: player.fixedcolormap > 0 ? (textures.colormaps[player.fixedcolormap] ?? null) : null,
+          scalelightRows,
+          colormaps: colormapLump,
+        },
+        windowedFramebuffer,
+      );
+    },
   };
 
   const renderFrame = makeAssembledPlayerFrameRenderer(config);
@@ -184,6 +255,7 @@ export function makeAssembledGameplayRenderer(deps: AssembledGameplayDeps): (pla
     // visplane pool, so do the clip-array half here.
     ceilingClip.fill(-1);
     floorClip.fill(viewport.viewHeight);
+    currentPlayer = player; // the deferred drawMasked slot reads this
     const setupFramePlayer: SetupFramePlayer = {
       mobjX: mobj.x,
       mobjY: mobj.y,
