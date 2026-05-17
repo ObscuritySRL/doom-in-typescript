@@ -39,7 +39,7 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       pool,
       VIEW_WIDTH,
       SKY_FLAT_NUM,
-      () => order.push('subsector'),
+      () => () => order.push('subsector'),
       () => order.push('sky'),
       () => order.push('regular'),
       {
@@ -83,6 +83,8 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
   test('passes the caller subsector/plane closures straight through to the BSP walk and plane flush', () => {
     const pool = createVisplanePool();
     const seen: string[] = [];
+    let factoryClip: ClipState | null = null;
+    let factoryViewx: number | null = null;
     renderPlayerViewWalls(
       SCENE,
       player(),
@@ -90,11 +92,20 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       pool,
       VIEW_WIDTH,
       SKY_FLAT_NUM,
-      (ssIndex) => seen.push(`ss:${ssIndex}`),
+      (frame, clipState) => {
+        factoryClip = clipState;
+        factoryViewx = frame.viewx;
+        return (ssIndex) => seen.push(`ss:${ssIndex}`);
+      },
       () => seen.push('sky'),
       () => seen.push('reg'),
       {
-        bspWalk: (_scene, _view, _state, onSubsector) => onSubsector(7),
+        bspWalk: (_scene, _view, state, onSubsector) => {
+          // The visitor factory saw the same fresh clip list the walk gets.
+          expect(factoryClip).not.toBeNull();
+          expect(state === factoryClip).toBe(true);
+          onSubsector(7);
+        },
         planeFlush: (_pool, _sky, onSky, onRegular) => {
           onSky(pool.planes[0]!);
           onRegular(pool.planes[1]!);
@@ -102,6 +113,7 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       },
     );
     expect(seen).toEqual(['ss:7', 'sky', 'reg']);
+    expect(factoryViewx === setupFrame(player()).viewx).toBe(true);
   });
 
   test('viewangleoffset is applied to the setup frame view angle', () => {
@@ -114,13 +126,14 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       pool,
       VIEW_WIDTH,
       SKY_FLAT_NUM,
-      () => {},
+      () => () => {},
       () => {},
       () => {},
       {
         viewangleoffset: ANG90,
-        bspWalk: (_s, view) => {
+        bspWalk: (_s, view, _state, onSubsector) => {
           captured = view;
+          onSubsector(0);
         },
         planeFlush: () => {},
       },
@@ -138,7 +151,7 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       poolA,
       VIEW_WIDTH,
       SKY_FLAT_NUM,
-      () => {},
+      () => () => {},
       () => {},
       () => {},
     );
@@ -149,7 +162,7 @@ describe('renderPlayerViewWalls: R_RenderPlayerView control flow', () => {
       poolB,
       VIEW_WIDTH,
       SKY_FLAT_NUM,
-      () => {},
+      () => () => {},
       () => {},
       () => {},
     );

@@ -32,13 +32,22 @@
  *
  * The per-subsector seg→wall pipeline (`R_Subsector` → `R_AddLine` →
  * clip → `R_StoreWallRange` → wall draw) and the per-plane sky/regular
- * renderers are bound by the caller via the `onSubsector` /
+ * renderers are bound by the caller via the `makeOnSubsector` /
  * `onSkyPlane` / `onRegularPlane` closures — the established
  * closure-injection pattern — so this module's sole responsibility
  * (the R_RenderPlayerView control flow + buffer-clear ordering) stays
  * pure and unit-testable. `bspWalk` / `planeFlush` are injected
  * (defaulting to the real committed implementations) for the same
  * reason.
+ *
+ * `makeOnSubsector` is a factory, not a pre-built visitor: vanilla
+ * `R_Subsector` reads the globals `R_SetupFrame` / `R_ClearClipSegs`
+ * just assigned (`viewx` / `viewy` / `viewangle` / `viewz`, the fresh
+ * `solidsegs` clip list). The closure-injected visitor binds those
+ * per-frame, so its factory is invoked *after* `setupFrame` /
+ * `clearClipSegs` and handed the resulting {@link ViewFrame} +
+ * {@link ClipState} — the same precedent as the per-subsector store
+ * built after plane selection.
  *
  * Pure with respect to its own state; the only effects are the
  * supplied closures and the `clearPlanes` reset of the caller-owned
@@ -87,7 +96,7 @@ export function renderPlayerViewWalls(
   visplanePool: VisplanePool,
   viewWidth: number,
   skyFlatNum: number,
-  onSubsector: SubsectorVisitor,
+  makeOnSubsector: (frame: ViewFrame, clipState: ClipState) => SubsectorVisitor,
   onSkyPlane: VisplaneRenderer,
   onRegularPlane: VisplaneRenderer,
   hooks: RenderPlayerViewHooks = {},
@@ -107,6 +116,10 @@ export function renderPlayerViewWalls(
     clipangle: projectionAngles.clipangle,
     viewangletox: projectionAngles.viewangletox,
   };
+
+  // R_Subsector reads the globals just set by R_SetupFrame /
+  // R_ClearClipSegs — bind the visitor to this frame's view + clip list.
+  const onSubsector = makeOnSubsector(frame, clipState);
 
   bspWalk(scene, view, clipState, onSubsector); // R_RenderBSPNode(numnodes-1)
   planeFlush(visplanePool, skyFlatNum, onSkyPlane, onRegularPlane); // R_DrawPlanes
