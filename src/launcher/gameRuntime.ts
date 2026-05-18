@@ -57,6 +57,7 @@ import { checkSight, lookForPlayers } from '../ai/targeting.ts';
 import { identifyGame } from '../bootstrap/gameMode.ts';
 import { pointInSubsector } from '../map/nodeTraversal.ts';
 import { setHitscanContext, wireHitscanActions } from '../player/hitscan.ts';
+import { VANILLA_CF_GODMODE } from '../player/implement-god-mode-and-powerup-flags.ts';
 import { calcHeight, movePlayer } from '../player/movement.ts';
 import { clearPickupContext, setPickupContext, touchSpecialThing } from '../player/pickups.ts';
 import { movePsprites, pspriteActions } from '../player/playerSpawn.ts';
@@ -66,6 +67,10 @@ import { pCrossSpecialLine, pUseSpecialLine } from '../specials/lineTriggers.ts'
 import { buildSpecialsModel } from '../specials/specialsLevel.ts';
 import type { SpecialsModel } from '../specials/specialsLevel.ts';
 import { rPointToAngle2 } from '../render/wallScaleMath.ts';
+import { computeStatusBarValues, createStatusBarState, tickStatusBar } from '../ui/statusBar.ts';
+import type { StatusBarState } from '../ui/statusBar.ts';
+import { createStatusBarRenderer, drawStatusBar } from '../ui/statusBarDraw.ts';
+import type { StatusBarRenderer } from '../ui/statusBarDraw.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
 import { clearDamageContext, damageMobj, setDamageContext } from '../world/damage.ts';
 import { makeHitscanPrimitives } from '../world/hitscanAttack.ts';
@@ -101,6 +106,14 @@ export interface GameRuntime {
    * never touches it directly (`tickGame` drives it).
    */
   readonly specials: SpecialsModel;
+  /**
+   * The per-runtime vanilla status bar state (st_stuff.c face state
+   * machine + key-box memory). `tickGame` advances it every tic after
+   * P_PlayerThink; `renderGame` composites it over the player view.
+   * Instance-scoped — no module global, so the shared Bun test worker
+   * stays hermetic without a reset hook.
+   */
+  readonly statusBar: StatusBarState;
   /** Enumerate every live mobj on the thinker list (spawn order). */
   allMobjs(): Mobj[];
   /**
@@ -111,6 +124,15 @@ export interface GameRuntime {
    */
   dispose(): void;
 }
+
+/**
+ * Per-runtime status bar draw dependencies that are not part of the
+ * public {@link GameRuntime} surface: the decoded-patch cache bound to
+ * the IWAD and the injected `R_PointToAngle2` the face state machine's
+ * attacker-pain branch needs. Keyed weakly by the runtime so it is
+ * collected with it and never leaks across the shared test worker.
+ */
+const statusBarDeps = new WeakMap<GameRuntime, { renderer: StatusBarRenderer; pointToAngle2: (x1: Fixed, y1: Fixed, x2: Fixed, y2: Fixed) => Angle }>();
 
 const STATE_CHAIN_WALK_CAP = 64;
 
@@ -525,7 +547,15 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
 
   wireCombat(session, resources, options, targetingContext, combatMoveCallbacks);
 
-  return {
+  // ST_Start / ST_initData — vanilla creates the status bar state at
+  // level setup from the freshly spawned player (snapshots weaponowned
+  // so the first bonus pickup does not spurious-evil-grin). The decoded
+  // patch cache binds to this IWAD; both are instance-scoped.
+  const statusBar = createStatusBarState(session.player);
+  const statusBarRenderer = createStatusBarRenderer(new LumpLookup(resources.directory), resources.wadBuffer);
+  const statusBarPointToAngle2 = (x1: Fixed, y1: Fixed, x2: Fixed, y2: Fixed): Angle => rPointToAngle2(x1, y1, x2, y2) >>> 0;
+
+  const runtime: GameRuntime = {
     session,
     get player(): Player {
       return session.player;
@@ -537,6 +567,7 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
       return session.levelTime;
     },
     specials,
+    statusBar,
     allMobjs(): Mobj[] {
       const mobjs: Mobj[] = [];
       session.thinkerList.forEach((thinker) => {
@@ -550,6 +581,10 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
       resetGameRuntimeGlobals();
     },
   };
+
+  statusBarDeps.set(runtime, { renderer: statusBarRenderer, pointToAngle2: statusBarPointToAngle2 });
+
+  return runtime;
 }
 
 /**
@@ -608,10 +643,52 @@ export function tickGame(runtime: GameRuntime, cmd: TicCommand): void {
   // and snap its texture back when it expires.
   runtime.specials.updateSpecials();
 
+  // G_Ticker order: P_Ticker → ST_Ticker. Advance the status bar face
+  // state machine + key-box memory now that this tic's damage/attacker/
+  // pickup state is settled (monster attacks ran inside P_RunThinkers).
+  // `st_randomnumber` is an M_Random() sample (menu stream) in vanilla,
+  // so face cycling never desyncs the P_Random demo stream.
+  const deps = statusBarDeps.get(runtime);
+  if (deps !== undefined) {
+    tickStatusBar(runtime.statusBar, {
+      player,
+      godMode: (player.cheats & VANILLA_CF_GODMODE) !== 0,
+      randomNumber: session.doomRandom.mRandom(),
+      pointToAngle2: deps.pointToAngle2,
+    });
+  }
+
   session.levelTime += 1;
 }
 
-/** Render the current player view (the bit-exact assembled R_RenderPlayerView). */
+/**
+ * Render the current player view, then composite the vanilla status bar
+ * over its bottom 32 rows (ST_Y..199) — `D_Display`'s `R_RenderPlayerView`
+ * followed by `ST_Drawer`. The automap view (`session.showAutomap`) keeps
+ * the status bar too, matching vanilla `D_Display` (AM_Drawer then
+ * ST_Drawer both draw). Returns the same `session.framebuffer` the
+ * assembled renderer wrote, now with the HUD on it.
+ */
 export function renderGame(runtime: GameRuntime): Uint8Array {
-  return renderLauncherFrame(runtime.session);
+  const framebuffer = renderLauncherFrame(runtime.session);
+
+  const deps = statusBarDeps.get(runtime);
+  if (deps === undefined || runtime.session.player.mo === null) {
+    return framebuffer;
+  }
+
+  // ST_drawWidgets reads a fresh value snapshot every frame
+  // (computeStatusBarValues is pure — no state mutation). Single
+  // player, status bar always on (no fullscreen-HUD toggle yet),
+  // console player 0.
+  const values = computeStatusBarValues({
+    state: runtime.statusBar,
+    player: runtime.session.player,
+    deathmatch: false,
+    statusBarOn: true,
+    consolePlayer: 0,
+  });
+  drawStatusBar(framebuffer, deps.renderer, values);
+
+  return framebuffer;
 }
