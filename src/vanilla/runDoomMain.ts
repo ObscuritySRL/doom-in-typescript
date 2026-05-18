@@ -54,7 +54,7 @@ import type { CommandLineConfiguration } from './commandLineConfiguration.ts';
 import { parseCommandLineConfiguration } from './commandLineConfiguration.ts';
 import { resolveLaunchContext } from './launchContext.ts';
 import type { LaunchContextEnvironment } from './launchContext.ts';
-import { runTitleLoopSmokeHost } from './titleLoopSmokeHost.ts';
+import { runWin32GameHost } from '../launcher/win32GameHost.ts';
 
 /**
  * Thrown when {@link runDoomMain} is invoked with an argument shape it
@@ -197,8 +197,7 @@ export async function runDoomMain(argumentVector?: unknown, launchContextEnviron
   const commandLineConfiguration = parseCommandLineConfiguration(normalizeArgumentVectorForMCheckParm(validatedArgumentVector));
   const launchContext = resolveLaunchContext(commandLineConfiguration, launchContextEnvironment);
   if (shouldRunRootTitleLoopSmoke(commandLineConfiguration)) {
-    await runTitleLoopSmokeHost({
-      gameMode: launchContext.iwad.gameMode,
+    await runWin32GameHost({
       iwadPath: launchContext.iwad.resolvedPath,
     });
   }
