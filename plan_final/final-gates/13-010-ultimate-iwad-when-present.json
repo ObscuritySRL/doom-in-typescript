@@ -1,0 +1,38 @@
+{
+  "stepId": "13-010",
+  "gate": "gate-ultimate-iwad-when-present",
+  "deterministicScope": "The Ultimate DOOM IWAD (DOOM.WAD, retail, 36 maps / 4 episodes) is proprietary and never bundled — the C1 product target is shareware (PRIMARY_TARGET.gameMode shareware, DOOM1.WAD). The Ultimate parity smoke is intrinsically conditional: it runs `bun run doom.ts -iwad iwad/DOOM.WAD` ONLY when the user supplies an Ultimate iwad/DOOM.WAD, and is correctly skipped (not failed) when absent. This gate proves that conditional behaviour deterministically: scope contract, correct presence detection, the shareware copy is not misclassified as Ultimate, and the Ultimate smoke is presence-gated.",
+  "runtimeCommandContract": {
+    "runtimeCommand": "bun run doom.ts",
+    "ultimateSmokeCommand": "bun run doom.ts -iwad iwad/DOOM.WAD"
+  },
+  "ultimateScope": {
+    "primaryTargetGameMode": "shareware",
+    "primaryTargetWadFilename": "DOOM1.WAD",
+    "ultimateIwadFilename": "DOOM.WAD",
+    "ultimateMapBundleCount": 36,
+    "ultimateEpisodeCount": 4
+  },
+  "presence": {
+    "ultimateIwadPath": "iwad/DOOM.WAD",
+    "ultimateIwadFilePresent": false,
+    "ultimateUserIwadPresent": false,
+    "sharewareCopyPath": "iwad/DOOM1.WAD",
+    "sharewareCopyPresent": true,
+    "sharewareCopyDetection": {
+      "wadType": "IWAD",
+      "mapBundleCount": 9,
+      "episode1MapCount": 9,
+      "episode2MapCount": 0,
+      "episode3MapCount": 0,
+      "episode4MapCount": 0,
+      "hasTexture2": false,
+      "hasSky4": false,
+      "isUltimate": false
+    },
+    "sharewareCopyIsNotUltimate": true,
+    "ultimateDetection": null
+  },
+  "conditionalSmoke": "skipped-correctly-no-user-supplied-ultimate-iwad",
+  "knownFailures": []
+}
