@@ -32,12 +32,30 @@
  */
 
 import type { LauncherResources } from './session.ts';
-import type { GameRuntime } from './gameRuntime.ts';
+import type { GameRuntime, GameAudioBridge } from './gameRuntime.ts';
 import type { MenuState } from '../ui/menus.ts';
 
 import { ANGLE_TURN, BT_USE, FORWARD_MOVE, SIDE_MOVE, packTicCommand } from '../input/ticcmd.ts';
 import { MenuKind, createMenuState, handleMenuKey, openMenu, tickMenu } from '../ui/menus.ts';
 import { createGameRuntime, renderGame, resetGameRuntimeGlobals, tickGame } from './gameRuntime.ts';
+
+/**
+ * Audio surface the host drives for the front-end (title/menu).  The
+ * gameplay runtime needs the broader {@link GameAudioBridge}; the host
+ * additionally pumps the mixer, pauses music, and emits the anonymous
+ * menu sfx (m_menu.c routes them through `S_StartSound(NULL, sfx)`).
+ */
+export interface GameHostAudio extends GameAudioBridge {
+  pause(): void;
+  resume(): void;
+}
+
+/** sfx_swtchn (23) — menu opened / submenu entered (m_menu.c). */
+const SFX_SWTCHN = 23;
+/** sfx_pistol (1) — menu item selected. */
+const SFX_PISTOL = 1;
+/** sfx_pstop (19) — cursor moved up/down. */
+const SFX_PSTOP = 19;
 
 /** The three top-level host phases. */
 export type GameHostPhase = 'title' | 'menu' | 'game';
@@ -73,19 +91,39 @@ export interface GameHost {
   readonly menu: MenuState;
   selectedEpisode: number;
   runtime: GameRuntime | null;
+  /**
+   * Live audio host, or `null` for the silent front-end (every
+   * historical caller).  When present the host starts the title music
+   * (`D_INTRO`), emits the anonymous menu sfx, and threads the same
+   * bridge into the spawned {@link GameRuntime} so gameplay sounds.
+   */
+  readonly audio: GameHostAudio | null;
 }
 
 /**
  * Create a host parked on the title screen. No level is loaded until
  * the player walks the menu through to a skill selection.
+ *
+ * `audio` is optional: omit it for the historical silent host (tests,
+ * headless control-flow checks); pass a {@link GameHostAudio} (the
+ * Win32 waveOut host) to make `bun run doom.ts` audible.  The title
+ * music starts immediately so the front-end is not silent either.
  */
-export function createGameHost(resources: LauncherResources): GameHost {
+export function createGameHost(resources: LauncherResources, audio?: GameHostAudio | null): GameHost {
+  const resolvedAudio = audio ?? null;
+  if (resolvedAudio !== null) {
+    // s_sound.c title-screen music: D_INTRO (the OPL device gets
+    // D_INTROA substituted by musicSystem.resolveMusicNumber). The
+    // host maps the synthetic 'TITLE' selection to the intro track.
+    resolvedAudio.startMusic('TITLE');
+  }
   return {
     resources,
     phase: 'title',
     menu: createMenuState(),
     selectedEpisode: 1,
     runtime: null,
+    audio: resolvedAudio,
   };
 }
 
@@ -105,26 +143,44 @@ export function feedMenuKey(host: GameHost, doomKey: number): void {
   if (host.phase === 'title') {
     host.phase = 'menu';
     openMenu(host.menu, MenuKind.Main);
+    // m_menu.c M_StartControlPanel: opening the menu plays sfx_swtchn.
+    host.audio?.startSfx(null, SFX_SWTCHN);
     return;
   }
 
+  const cursorBefore = host.menu.itemOn;
   const action = handleMenuKey(host.menu, doomKey);
   switch (action.kind) {
     case 'selectEpisode':
       host.selectedEpisode = action.episode;
       openMenu(host.menu, MenuKind.Skill);
+      // M_NewGame → episode pick advances to a submenu: sfx_pistol
+      // (the item-selected cue) then sfx_swtchn (submenu entered).
+      host.audio?.startSfx(null, SFX_PISTOL);
+      host.audio?.startSfx(null, SFX_SWTCHN);
       return;
     case 'selectSkill': {
       const gameskill = Math.max(1, action.skill);
+      // s_sound.c S_Start at level setup stops the menu/title music
+      // and starts the map music; createGameRuntime threads the same
+      // audio bridge so monsters/weapons/specials sound in-game.
+      host.audio?.startSfx(null, SFX_PISTOL);
       host.runtime = createGameRuntime(host.resources, {
         mapName: `E${host.selectedEpisode}M1`,
         skill: gameskill,
+        audio: host.audio,
       });
       host.menu.active = false;
       host.phase = 'game';
       return;
     }
     default:
+      // m_menu.c M_Responder up/down: a cursor row change plays
+      // sfx_pstop (cursor-move). Detected by the itemOn delta since
+      // the read-only menu module emits no sound event.
+      if (host.menu.itemOn !== cursorBefore) {
+        host.audio?.startSfx(null, SFX_PSTOP);
+      }
       return;
   }
 }
@@ -160,8 +216,20 @@ export function renderHost(host: GameHost): Uint8Array | null {
   return null;
 }
 
-/** Restore process-global runtime state (test-suite isolation). */
+/**
+ * Restore process-global runtime state and release the audio device
+ * (test-suite isolation + clean process exit).  Audio shutdown is
+ * idempotent and never throws, so calling this after the runtime
+ * already disposed (or with no audio at all) is safe.
+ */
 export function disposeGameHost(host: GameHost): void {
   host.runtime = null;
+  if (host.audio !== null) {
+    try {
+      host.audio.shutdown();
+    } catch {
+      // A waveOut-close failure must not block global-state reset.
+    }
+  }
   resetGameRuntimeGlobals();
 }

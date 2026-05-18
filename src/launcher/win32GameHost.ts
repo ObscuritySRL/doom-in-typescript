@@ -32,6 +32,7 @@ import { LINEHEIGHT, MENU_TREE, MenuKind, SKULLXOFF } from '../ui/menus.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
 import { EMPTY_GAME_HOST_INPUT, createGameHost, feedMenuKey, renderHost, tickHost } from './gameHost.ts';
 import { loadLauncherResources } from './session.ts';
+import { createWin32AudioHost } from './win32Audio.ts';
 
 const BI_RGB = 0;
 const CW_USEDEFAULT = -0x8000_0000;
@@ -287,7 +288,13 @@ function presentFrame(user32: User32Symbols, gdi32: Gdi32Symbols, windowHandle: 
  */
 export async function runWin32GameHost(options: Win32GameHostOptions): Promise<void> {
   const resources = await loadLauncherResources(options.iwadPath);
-  const host = createGameHost(resources);
+  // Open the real waveOut device (createWin32AudioHost degrades to a
+  // silent no-op + a logged warning if winmm / the device is
+  // unavailable — it never throws, so the game still runs). The same
+  // host carries the title music and is threaded into the spawned
+  // GameRuntime so monsters, weapons, and pickups are audible.
+  const audio = createWin32AudioHost(resources);
+  const host = createGameHost(resources, audio);
   const compositor = new MenuCompositor(resources);
   const paletteLookup = buildPaletteLookup(resources.palette);
   const scale = options.scale ?? DEFAULT_SCALE;
@@ -367,6 +374,13 @@ export async function runWin32GameHost(options: Win32GameHostOptions): Promise<v
         } else {
           tickHost(host, EMPTY_GAME_HOST_INPUT);
         }
+        // i_sdlsound.c whole-tic chunk: mix exactly one 35 Hz tic of
+        // PCM and push it to waveOut in lock-step with the game tic so
+        // sfx start/stop boundaries align with game logic. The
+        // listener is the player ear (player.mo x/y/angle) during
+        // gameplay; on the title/menu it is irrelevant (every
+        // front-end sound is anonymous → centre pan, full volume).
+        pumpAudioForTic(audio, host);
         nextTicAtMs += TIC_INTERVAL_MS;
       }
 
@@ -382,10 +396,33 @@ export async function runWin32GameHost(options: Win32GameHostOptions): Promise<v
       await Bun.sleep(1);
     }
   } finally {
+    // Stop music, abort pending waveOut buffers, and close the device
+    // before the window so the FFI handle never outlives the process.
+    audio.shutdown();
     if (!windowDestroyed) {
       void user32.symbols.DestroyWindow(windowHandle);
     }
     gdi32.close();
     user32.close();
   }
+}
+
+/** `E#M8` is the boss level (S_AdjustSoundParams floor-of-15 branch). */
+const BOSS_MAP_PATTERN = /^E[1-9]M8$/i;
+
+/**
+ * Mix and push one tic of audio.  During gameplay the listener is the
+ * player mobj's world x/y/angle and its stable origin id is `1` (the
+ * id `buildStartSound` assigns the player mobj, so its own weapon
+ * sounds take the centre-pan self-origin fast path).  Off the play
+ * phase there is no listener — the front-end sounds are all anonymous.
+ */
+function pumpAudioForTic(audio: ReturnType<typeof createWin32AudioHost>, host: ReturnType<typeof createGameHost>): void {
+  const runtime = host.runtime;
+  if (host.phase === 'game' && runtime !== null && runtime.player.mo !== null) {
+    const mo = runtime.player.mo;
+    audio.pump({ x: mo.x, y: mo.y, angle: mo.angle }, 1, BOSS_MAP_PATTERN.test(runtime.session.mapName));
+    return;
+  }
+  audio.pump({ x: 0, y: 0, angle: 0 }, null, false);
 }

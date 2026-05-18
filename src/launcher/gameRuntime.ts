@@ -83,10 +83,37 @@ import { xyMovement } from '../world/xyMovement.ts';
 import { zMovement } from '../world/zMovement.ts';
 import { createLauncherSession, renderLauncherFrame } from './session.ts';
 
+/**
+ * Narrow audio surface the runtime drives.  Implemented by
+ * `src/launcher/win32Audio.ts` `Win32AudioHost`; injected (not
+ * hard-imported) so the runtime stays headless-testable and the
+ * silent-by-default path (no host) is a plain `undefined`.
+ *
+ * `startSfx(origin, sfxId)` is the host side of vanilla
+ * `S_StartSound`: `origin.originId` is the mobj identity used for
+ * channel origin-dedup (`null` ⇒ anonymous/fullscreen, centre pan,
+ * full volume); `origin.x/y` is the source world position the host
+ * feeds into `S_AdjustSoundParams` against the listener it last saw
+ * in {@link GameAudioBridge.pump}.
+ */
+export interface GameAudioBridge {
+  startSfx(origin: { readonly originId: number | null; readonly x: number; readonly y: number } | null, sfxId: number): unknown;
+  startMusic(mapName: string): void;
+  shutdown(): void;
+}
+
 /** Options for {@link createGameRuntime}. */
 export interface GameRuntimeOptions {
   readonly mapName: string;
   readonly skill: number;
+  /**
+   * Live audio host.  Omit (or pass `null`) for the historical silent
+   * runtime — every `startSound` context stays a no-op exactly as
+   * before.  When supplied, the assembled `S_StartSound` chain is
+   * threaded into all six combat contexts plus A_Chase, and the map's
+   * music is started at level setup.
+   */
+  readonly audio?: GameAudioBridge | null;
 }
 
 /** Assembled live game runtime handle. */
@@ -236,6 +263,52 @@ function makeSectorIndexResolver(session: LauncherSession): (mobj: Mobj) => numb
 }
 
 /**
+ * Per-runtime stable identity for the channel origin-dedup the
+ * `S_StartSound` / `S_GetChannel` path needs.  Vanilla compares the
+ * raw `mobj_t *` pointer; JS has no stable object id, so a WeakMap
+ * assigns a small monotone integer the first time a mobj emits sound
+ * (collected with the mobj — no leak across the shared test worker).
+ * The player mobj gets id `1` so the host's "origin === listener"
+ * self-origin centre-pan fast path lines up with the listener id
+ * `tickGame` feeds the host (see {@link buildStartSound}).
+ */
+const PLAYER_ORIGIN_ID = 1;
+
+/**
+ * Build the live `S_StartSound(origin, sfx_id)` callback wired into
+ * every combat / pickup / chase context.  Maps the origin Mobj to a
+ * stable channel identity and its world x/y, then delegates to the
+ * injected audio host (which owns the assembled `soundSystem` /
+ * `audioParity` start path).  A `null` origin is an
+ * anonymous/fullscreen sound (boss cue, pickup) — forwarded with a
+ * `null` originId so the host skips spatialization, exactly as
+ * vanilla `S_StartSound(NULL, sfx)` does.
+ */
+function buildStartSound(audio: GameAudioBridge, session: LauncherSession): (origin: Mobj | null, sfxId: number) => void {
+  const originIds = new WeakMap<Mobj, number>();
+  let nextOriginId = PLAYER_ORIGIN_ID + 1;
+  const idFor = (mobj: Mobj): number => {
+    if (mobj === session.player.mo) {
+      return PLAYER_ORIGIN_ID;
+    }
+    let id = originIds.get(mobj);
+    if (id === undefined) {
+      id = nextOriginId;
+      nextOriginId += 1;
+      originIds.set(mobj, id);
+    }
+    return id;
+  };
+  return (origin: Mobj | null, sfxId: number): void => {
+    if (origin === null) {
+      audio.startSfx(null, sfxId);
+      return;
+    }
+    audio.startSfx({ originId: idFor(origin), x: origin.x, y: origin.y }, sfxId);
+  };
+}
+
+/**
  * Resolve the vanilla game mode for this IWAD (shareware / registered /
  * retail / commercial). `A_Scream` and `A_PlayerScream` branch on it,
  * and the pickup dispatch gates the megasphere / commercial-only paths
@@ -259,7 +332,14 @@ function resolveGameMode(resources: LauncherResources): GameMode {
  * trace, damage rolls, puff/blood jitter, and pain/death checks all
  * advance the one parity-critical P_Random stream in vanilla order.
  */
-function wireCombat(session: LauncherSession, resources: LauncherResources, options: GameRuntimeOptions, targetingContext: TargetingContext, combatMoveCallbacks: XYMovementCallbacks): void {
+function wireCombat(
+  session: LauncherSession,
+  resources: LauncherResources,
+  options: GameRuntimeOptions,
+  targetingContext: TargetingContext,
+  combatMoveCallbacks: XYMovementCallbacks,
+  startSound: ((origin: Mobj | null, sfxId: number) => void) | null,
+): void {
   const gameMode = resolveGameMode(resources);
 
   // P_SpawnMobj bound to this level's RNG / thinker list / skill, with
@@ -304,8 +384,6 @@ function wireCombat(session: LauncherSession, resources: LauncherResources, opti
     spawnMobj: spawnMobjBound,
     damageMobj,
   });
-
-  const startSound = null;
 
   const hitscanContext: HitscanContext = {
     rng: session.doomRandom,
@@ -423,6 +501,22 @@ function refreshSpawnedMobjSector(mobj: Mobj, session: LauncherSession, requeste
 export function createGameRuntime(resources: LauncherResources, options: GameRuntimeOptions): GameRuntime {
   const session = createLauncherSession(resources, { mapName: options.mapName, skill: options.skill });
 
+  // Vanilla `S_StartSound(origin, sfx_id)`.  `null` when no audio host
+  // was supplied (historical silent runtime — every consuming context
+  // treats a null startSound as inert).  When wired, the origin Mobj
+  // is mapped to a stable identity for channel origin-dedup and its
+  // world x/y is forwarded so the host's S_AdjustSoundParams pans /
+  // attenuates remote sounds against the live listener (player.mo).
+  // Built once and shared by the six combat contexts, A_Chase, and the
+  // weapon-state psprite actions so every sound site is the one
+  // observable path to the mixer.
+  const startSound: ((origin: Mobj | null, sfxId: number) => void) | null = options.audio == null ? null : buildStartSound(options.audio, session);
+
+  // p_pspr.c weapon fire / saw-idle sounds (`session.ts` left this
+  // null until the audio milestone). The psprite actions read it from
+  // the session-owned WeaponStateContext every tic.
+  session.weaponStateContext.startSound = startSound;
+
   const targetingContext: TargetingContext = {
     mapData: session.mapData,
     getSectorIndex: makeSectorIndexResolver(session),
@@ -484,6 +578,9 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     // p_enemy.c P_Move: a blocked monster walks its spechit list and
     // calls P_UseSpecialLine(actor, ld, 0) to open doors it bumps.
     useSpecialLine: (actor: Mobj, linedefIndex: number, lineSide: number): boolean => useSpecialLine(linedefIndex, lineSide, actor),
+    // p_enemy.c A_Chase: emits the monster's active sound while
+    // pursuing (P_Random < 3 gate) through this same S_StartSound path.
+    ...(startSound === null ? {} : { startSound }),
   };
 
   // Combat side-effect callbacks threaded through P_XYMovement →
@@ -545,7 +642,14 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
   // MF_COUNTKILL roster (shareware uses a subset; extra wiring is inert).
   forEachRosterAiChain(aLook, aChase);
 
-  wireCombat(session, resources, options, targetingContext, combatMoveCallbacks);
+  wireCombat(session, resources, options, targetingContext, combatMoveCallbacks, startSound);
+
+  // s_sound.c S_Start: vanilla starts the level's music (S_ChangeMusic
+  // with the map's D_E#M# lump) at P_SetupLevel time. The host maps
+  // E1M1 → D_E1M1 (music number 1) and loops it.
+  if (options.audio != null) {
+    options.audio.startMusic(options.mapName);
+  }
 
   // ST_Start / ST_initData — vanilla creates the status bar state at
   // level setup from the freshly spawned player (snapshots weaponowned
@@ -578,6 +682,18 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
       return mobjs;
     },
     dispose(): void {
+      // Stop music + close the waveOut device first so the FFI handle
+      // never leaks across the shared Bun test worker (or the
+      // production process lifetime), then restore the process-global
+      // movement-hook / AI-codepointer state. Audio shutdown is
+      // idempotent and never throws.
+      if (options.audio != null) {
+        try {
+          options.audio.shutdown();
+        } catch {
+          // A device-close failure must not stop global-state reset.
+        }
+      }
       resetGameRuntimeGlobals();
     },
   };
