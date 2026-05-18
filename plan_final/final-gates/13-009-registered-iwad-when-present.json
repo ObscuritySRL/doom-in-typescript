@@ -1,0 +1,36 @@
+{
+  "stepId": "13-009",
+  "gate": "gate-registered-iwad-when-present",
+  "deterministicScope": "The registered DOOM IWAD (DOOM.WAD, 27 maps / 3 episodes) is proprietary and never bundled — the C1 product target is shareware (PRIMARY_TARGET.gameMode shareware, DOOM1.WAD). The registered parity smoke is intrinsically conditional: it runs `bun run doom.ts -iwad iwad/DOOM.WAD` ONLY when the user supplies iwad/DOOM.WAD, and is correctly skipped (not failed) when absent. This gate proves that conditional behaviour deterministically: scope contract, correct presence detection, the shareware copy is not misclassified as registered, and the registered smoke is presence-gated.",
+  "runtimeCommandContract": {
+    "runtimeCommand": "bun run doom.ts",
+    "registeredSmokeCommand": "bun run doom.ts -iwad iwad/DOOM.WAD"
+  },
+  "registeredScope": {
+    "primaryTargetGameMode": "shareware",
+    "primaryTargetWadFilename": "DOOM1.WAD",
+    "registeredIwadFilename": "DOOM.WAD",
+    "registeredMapBundleCount": 27,
+    "registeredEpisodeCount": 3
+  },
+  "presence": {
+    "registeredIwadPath": "iwad/DOOM.WAD",
+    "registeredIwadPresent": false,
+    "sharewareCopyPath": "iwad/DOOM1.WAD",
+    "sharewareCopyPresent": true,
+    "sharewareCopyDetection": {
+      "wadType": "IWAD",
+      "mapBundleCount": 9,
+      "episode1MapCount": 9,
+      "episode2MapCount": 0,
+      "episode3MapCount": 0,
+      "episode4MapCount": 0,
+      "hasTexture2": false,
+      "isRegistered": false
+    },
+    "sharewareCopyIsNotRegistered": true,
+    "registeredDetection": null
+  },
+  "conditionalSmoke": "skipped-correctly-no-user-supplied-registered-iwad",
+  "knownFailures": []
+}
