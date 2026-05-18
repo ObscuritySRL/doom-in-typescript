@@ -67,6 +67,8 @@ import type { LauncherResources } from './session.ts';
 
 import { DoomRandom } from '../core/rng.ts';
 import { createAudioParityHarness, runHarnessTic, startHarnessSfx } from '../audio/audioParity.ts';
+import { createOplMusicDriver } from './oplMusicDriver.ts';
+import type { OplMusicDriver } from './oplMusicDriver.ts';
 import { MUS_INTRO, changeMusic, pauseMusic, resolveMusicNumber, resumeMusic, setMusicVolume, stopMusic } from '../audio/musicSystem.ts';
 import { SAMPLES_PER_TIC } from '../oracles/audioHash.ts';
 import { parseMusScore } from '../audio/musParser.ts';
@@ -212,6 +214,21 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
   // already the audioParity harness music-system default.
   const harness: AudioParityHarness = createAudioParityHarness({ music: { initialVolume: musicVolume0, hasIntroALump: musLumpNames.has('D_INTROA') } });
 
+  // The OPL music driver (i_oplmusic.c on top of the OPL2 synth core).
+  // It parses the IWAD GENMIDI lump and synthesizes the MUS scheduler's
+  // dispatched events into 49716 Hz OPL PCM, resampled to the device
+  // rate and mixed UNDER the sfx in `pump`. A missing/invalid GENMIDI
+  // lump leaves the driver `ready === false` so the game runs
+  // music-silent instead of crashing (robustness contract).
+  const genmidiLump = tryReadGenmidiLump(resources, onDeviceError);
+  const musicDriver: OplMusicDriver = createOplMusicDriver(genmidiLump, { outputSampleRate: AUDIO_SAMPLE_RATE_HZ, musicVolume: musicVolume0 });
+  if (!musicDriver.ready && genmidiLump !== null) {
+    onDeviceError('audio: GENMIDI lump present but unparseable (music silent)');
+  }
+  // Scratch buffer for one tic of synthesized music PCM (interleaved
+  // stereo, SAMPLES_PER_TIC frames) — allocated once, reused per pump.
+  const musicScratch = new Int16Array(AUDIO_FRAMES_PER_TIC * AUDIO_CHANNEL_COUNT);
+
   let sfxVolume = sfxVolume0;
 
   // The pitch-perturbation RNG is the menu (M_Random) stream in
@@ -277,6 +294,10 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
       return;
     }
     changeMusic(harness.music, { musicNum: selection.musicNumber, looping: true, score });
+    // i_oplmusic.c re-initialises the OPL register/voice state on
+    // I_RegisterSong; the scheduler restarts at tick 0 (changeMusic
+    // allocated a fresh one) so the driver must drop every held note.
+    musicDriver.reset();
   };
 
   const host: Win32AudioHost = {
@@ -284,6 +305,8 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
     startMusic,
     stopMusic(): void {
       stopMusic(harness.music);
+      // S_StopMusic → I_StopSong → silence every OPL voice.
+      musicDriver.reset();
     },
     pause(): void {
       pauseMusic(harness.music);
@@ -293,20 +316,31 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
     },
     setVolumes(nextSfxVolume: number, nextMusicVolume: number): void {
       sfxVolume = clampSfxVolume(nextSfxVolume);
-      setMusicVolume(harness.music, clampMusicVolume(nextMusicVolume));
+      const clampedMusicVolume = clampMusicVolume(nextMusicVolume);
+      setMusicVolume(harness.music, clampedMusicVolume);
+      musicDriver.setMusicVolume(clampedMusicVolume);
     },
     pump(listener: SpatialListener, listenerOriginId: number | null, isBossMap: boolean): void {
       lastListener = listener;
       lastListenerOriginId = listenerOriginId;
       lastIsBossMap = isBossMap;
       // audioParity.runHarnessTic advances the MUS scheduler one game
-      // tic, mixes every active voice into a SAMPLES_PER_TIC-frame
+      // tic, mixes every active sfx voice into a SAMPLES_PER_TIC-frame
       // stereo Int16Array, reaps finished voices, and returns the
-      // buffer. The OPL→PCM music synthesis bridge is not assembled
-      // (see module note); the scheduler still advances so the
-      // looping/pause lifecycle stays correct and the sfx buffer is
-      // real, non-silent PCM.
+      // buffer plus the MUS events the scheduler dispatched this tic.
       const tic = runHarnessTic(harness);
+
+      // Feed the dispatched MUS events to the i_oplmusic.c driver, then
+      // synthesize one tic of OPL music PCM and mix it UNDER the sfx
+      // (the sfx path is unchanged). When the song is paused or no
+      // GENMIDI parsed, the driver renders silence so the sfx buffer is
+      // emitted verbatim.
+      if (musicDriver.ready) {
+        musicDriver.applyEvents(tic.dispatchedMusicEvents);
+        musicDriver.render(musicScratch, AUDIO_FRAMES_PER_TIC);
+        mixMusicUnderSfx(tic.sfxFrames, musicScratch);
+      }
+
       if (sink !== null) {
         sink.write(tic.sfxFrames);
       }
@@ -314,6 +348,7 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
     shutdown(): void {
       try {
         stopMusic(harness.music);
+        musicDriver.reset();
       } finally {
         const closing = sink;
         sink = null;
@@ -345,6 +380,46 @@ function clampMusicVolume(volume: number): number {
 
 function describeError(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+/**
+ * Resolve the IWAD `GENMIDI` lump for the OPL music driver.  Returns
+ * `null` (driver runs music-silent) when the lump is absent — the live
+ * game must never crash because the music device cannot initialise.
+ * The PWAD-override rule (`W_CheckNumForName` last-wins) is honoured by
+ * scanning the directory from the end, exactly as vanilla resolves
+ * `GENMIDI`.
+ */
+function tryReadGenmidiLump(resources: LauncherResources, onDeviceError: (message: string) => void): Buffer | null {
+  try {
+    for (let index = resources.directory.length - 1; index >= 0; index -= 1) {
+      const entry = resources.directory[index]!;
+      if (entry.name.toUpperCase() === 'GENMIDI' && entry.size > 0) {
+        return resources.wadBuffer.subarray(entry.offset, entry.offset + entry.size);
+      }
+    }
+    onDeviceError('audio: GENMIDI lump absent from WAD (music silent, game continues)');
+    return null;
+  } catch (error) {
+    onDeviceError(`audio: failed to read GENMIDI lump (music silent): ${describeError(error)}`);
+    return null;
+  }
+}
+
+/**
+ * Mix one tic of synthesized music PCM UNDER the sfx buffer in place,
+ * saturating to int16.  Both buffers are interleaved stereo of equal
+ * length; the sfx buffer is the device output and is mutated.  This
+ * mirrors chocolate-doom's SDL_mixer behaviour where the OPL music
+ * stream and the digital sfx stream are summed into the same output
+ * mix (`i_sound.c` post-mix music callback), sfx on top.
+ */
+function mixMusicUnderSfx(sfxFrames: Int16Array, musicFrames: Int16Array): void {
+  const count = Math.min(sfxFrames.length, musicFrames.length);
+  for (let index = 0; index < count; index += 1) {
+    const summed = sfxFrames[index]! + musicFrames[index]!;
+    sfxFrames[index] = summed > 32767 ? 32767 : summed < -32768 ? -32768 : summed;
+  }
 }
 
 function readLump(resources: LauncherResources, lumpName: string): Buffer {
