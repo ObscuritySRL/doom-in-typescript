@@ -98,6 +98,22 @@ import { createLauncherSession, renderLauncherFrame } from './session.ts';
  */
 export interface GameAudioBridge {
   startSfx(origin: { readonly originId: number | null; readonly x: number; readonly y: number } | null, sfxId: number): unknown;
+  /**
+   * Host side of vanilla `S_StartSound(&sector->soundorg, sfx)` for
+   * the sector/line specials (doors, switches, lifts, floors,
+   * ceilings).  Vanilla passes a POSITIONAL origin — the sector's
+   * `soundorg` (the bbox centre P_GroupLines computed) — so the host
+   * spatializes it against the listener exactly like a mobj sound
+   * (distance attenuation + stereo pan), never the anonymous
+   * centre-pan fast path.  `(x, y)` are fixed-point world units.
+   *
+   * Optional: a bridge that omits it (the historical silent runtime,
+   * or a minimal test stub) leaves doors/switches/lifts/floors
+   * silent — exactly as the `startSectorSound?` callbacks on the
+   * specials interfaces are non-fatal when unwired.  The production
+   * `Win32AudioHost` implements it.
+   */
+  startSectorSfx?(x: number, y: number, sfxId: number): unknown;
   startMusic(mapName: string): void;
   shutdown(): void;
 }
@@ -389,6 +405,32 @@ function buildStartSound(audio: GameAudioBridge, session: LauncherSession): (ori
 }
 
 /**
+ * Build the live positional `S_StartSound(&sector->soundorg, sfx)`
+ * callback the sector/line specials need.  Vanilla door/plat/floor/
+ * ceiling/switch code emits at a SECTOR soundorg — a fixed (x, y)
+ * world point (the bbox centre P_GroupLines computed), not a
+ * `mobj_t *`.  This forwards that position to the host's
+ * {@link GameAudioBridge.startSectorSfx}, which spatializes it against
+ * the listener (`player.mo`) exactly as `S_AdjustSoundParams` does for
+ * a mobj — so a far door is quieter / more panned than an adjacent
+ * one.  A bridge with no `startSectorSfx` (historical silent runtime,
+ * minimal stub) yields a no-op, exactly as the `startSectorSound?`
+ * specials callbacks are non-fatal when unwired.  The player-denial
+ * `S_StartSound(NULL, sfx_oof)` path is the anonymous centre-pan fast
+ * path, so it routes through plain `startSfx(null, sfx)`.
+ */
+function buildSectorSound(audio: GameAudioBridge): { startSectorSound: (x: number, y: number, sfxId: number) => void; startPlayerSound: (sfxId: number) => void } {
+  return {
+    startSectorSound: (x: number, y: number, sfxId: number): void => {
+      audio.startSectorSfx?.(x, y, sfxId);
+    },
+    startPlayerSound: (sfxId: number): void => {
+      audio.startSfx(null, sfxId);
+    },
+  };
+}
+
+/**
  * Resolve the vanilla game mode for this IWAD (shareware / registered /
  * retail / commercial). `A_Scream` and `A_PlayerScream` branch on it,
  * and the pickup dispatch gates the megasphere / commercial-only paths
@@ -612,6 +654,14 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
   // bridge. Instance-scoped (no module globals) so the shared Bun
   // test worker stays hermetic without a reset hook.
   const gameMode = resolveGameMode(resources);
+  // S_StartSound for the sector/line specials: vanilla door/plat/
+  // floor/ceiling/switch code calls `S_StartSound(&sec->soundorg,
+  // sfx)` (positional) and the locked-door denial `S_StartSound(NULL,
+  // sfx_oof)` (anonymous). Threaded per-runtime so doors/switches/
+  // lifts/floors are audible; `null` (no audio host) keeps the
+  // historical silent runtime — every `startSectorSound?` callback is
+  // non-fatal when unwired.
+  const specialsSound = options.audio == null ? null : buildSectorSound(options.audio);
   const specials = buildSpecialsModel(
     session.mapData,
     session.mutableSectors,
@@ -621,6 +671,7 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     () => session.levelTime,
     () => session.player,
     gameMode,
+    specialsSound,
   );
 
   // P_UseSpecialLine bridge for P_UseLines (player Use press) and the

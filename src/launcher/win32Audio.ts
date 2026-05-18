@@ -154,6 +154,22 @@ export interface Win32AudioHost {
    */
   startSfx(origin: SfxOrigin | null, sfxId: number): StartSoundResult | null;
   /**
+   * Vanilla `S_StartSound(&sector->soundorg, sfx)` for sector/line
+   * specials (p_doors.c / p_plats.c / p_floor.c / p_ceilng.c /
+   * p_switch.c).  Vanilla passes a POSITIONAL origin — the sector's
+   * `soundorg` (the bbox-centre x/y P_GroupLines computed) — NOT a
+   * `mobj_t *`.  It is therefore spatialized (distance-attenuated +
+   * stereo-panned by `S_AdjustSoundParams` against the listener),
+   * exactly like a mobj sound, not the anonymous centre-pan fast
+   * path.  Each distinct sector position gets a stable synthetic
+   * channel-dedup id (vanilla compares the `degenmobj_t *` soundorg
+   * pointer; a per-position id reproduces that identity so a sector
+   * re-triggering a looped scrape reuses its own channel rather than
+   * stealing another's).  `(x, y)` are fixed-point world units.  A
+   * stray id / missing lump / inaudible result is a silent no-op.
+   */
+  startSectorSfx(x: number, y: number, sfxId: number): StartSoundResult | null;
+  /**
    * Vanilla `S_ChangeMusic` for a map: `E1M1` → `D_E1M1` (music
    * number 1), parsed + looped.  No-op when the lump is absent.
    */
@@ -243,6 +259,43 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
   let lastIsBossMap = false;
 
   const startSfx = (origin: SfxOrigin | null, sfxId: number): StartSoundResult | null => {
+    const remote = origin !== null && origin.originId !== null;
+    return startSfxCore(origin?.originId ?? null, remote ? origin!.x : 0, remote ? origin!.y : 0, remote, sfxId);
+  };
+
+  // Stable synthetic channel-dedup ids for sector soundorgs. Vanilla
+  // compares the `degenmobj_t *` soundorg pointer for channel
+  // origin-dedup; each sector soundorg is a fixed (x, y) so a
+  // per-position id reproduces that identity (a sector re-triggering
+  // its looped scrape every 8 tics reuses its own channel instead of
+  // stealing another sector's). Negative ids keep the namespace
+  // disjoint from the runtime's positive mobj origin ids so a sector
+  // and a mobj never collide on the same channel-dedup key.
+  const sectorOriginIds = new Map<string, number>();
+  let nextSectorOriginId = -1;
+  const sectorOriginIdFor = (x: number, y: number): number => {
+    // (x, y) are 16.16 fixed-point ints; the pair uniquely keys one
+    // sector soundorg (P_GroupLines bbox centre), so a string key is
+    // exact and collision-free.
+    const key = `${x | 0},${y | 0}`;
+    let id = sectorOriginIds.get(key);
+    if (id === undefined) {
+      id = nextSectorOriginId;
+      nextSectorOriginId -= 1;
+      sectorOriginIds.set(key, id);
+    }
+    return id;
+  };
+
+  const startSectorSfx = (x: number, y: number, sfxId: number): StartSoundResult | null => {
+    // Vanilla `S_StartSound(&sec->soundorg, sfx)`: a positional origin
+    // (always non-null), so it spatializes against the listener — the
+    // same path a mobj sound takes, never the anonymous centre-pan
+    // fast path.
+    return startSfxCore(sectorOriginIdFor(x, y), x, y, true, sfxId);
+  };
+
+  function startSfxCore(originId: number | null, sourceX: number, sourceY: number, remote: boolean, sfxId: number): StartSoundResult | null {
     if (sfxLoader === null) {
       return null;
     }
@@ -255,15 +308,14 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
       return null;
     }
 
-    const remote = origin !== null && origin.originId !== null;
     const result = startHarnessSfx(harness, {
       sfxLump: lump,
       request: {
         sfxId,
         priority: entry.priority,
         pitchClass: entry.pitchClass,
-        origin: origin?.originId ?? null,
-        sourcePosition: remote ? { x: origin!.x, y: origin!.y } : null,
+        origin: originId,
+        sourcePosition: remote ? { x: sourceX, y: sourceY } : null,
         listener: lastListener,
         listenerOrigin: lastListenerOriginId,
         sfxVolume,
@@ -275,7 +327,7 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
       },
     });
     return result;
-  };
+  }
 
   const startMusic = (mapName: string): void => {
     const selection = resolveMusicSelection(mapName, harness);
@@ -302,6 +354,7 @@ export function createWin32AudioHost(resources: LauncherResources, options?: Win
 
   const host: Win32AudioHost = {
     startSfx,
+    startSectorSfx,
     startMusic,
     stopMusic(): void {
       stopMusic(harness.music);

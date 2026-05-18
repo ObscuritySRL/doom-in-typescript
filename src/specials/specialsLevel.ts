@@ -187,6 +187,51 @@ export interface RuntimeTriggerLine extends LineTriggerLine {
   __doorSector?: SpecialsSector;
   __switchSide?: SwitchSide;
   __mobj?: Mobj;
+  /**
+   * The line's FRONT-sector `soundorg` position (vanilla
+   * `&line->frontsector->soundorg`), the soundorg P_StartButton stores
+   * on the `button_t` and `P_ChangeSwitchTexture` plays the press sfx
+   * at.  `null` ⇒ play anonymously (centre pan) — used to honour the
+   * vanilla fresh-level `buttonlist->soundorg == NULL` quirk where the
+   * very first press broadcasts from world origin.
+   */
+  __switchSoundOrigin?: SwitchSoundOrigin;
+}
+
+/**
+ * A switch's soundorg position carried on the {@link Button} slot.
+ * Opaque to {@link ./switches.ts} (it never dereferences `soundorg`);
+ * the {@link buildSpecialsModel} switch `startSound` adapter reads
+ * `x`/`y` and forwards to the positional {@link SpecialsSoundBridge}.
+ */
+export interface SwitchSoundOrigin {
+  readonly x: number;
+  readonly y: number;
+}
+
+/**
+ * The per-runtime sound bridge {@link buildSpecialsModel} threads into
+ * every door/plat/floor/ceiling/switch sound hook.  Mirrors the two
+ * vanilla `S_StartSound` shapes the sector/line specials use:
+ *
+ * - `startSectorSound(x, y, sfx)` is `S_StartSound(&sec->soundorg,
+ *   sfx)` — a POSITIONAL origin at the sector's `soundorg` (the bbox
+ *   centre P_GroupLines computed in `mapData.sectorGroups[i]`).  The
+ *   host spatializes it against the listener (distance attenuation +
+ *   stereo pan) exactly as it does a mobj sound, so a far door is
+ *   quieter / more panned than an adjacent one.
+ * - `startPlayerSound(sfx)` is `S_StartSound(NULL, sfx_oof)` — the
+ *   anonymous locked-door denial bump (centre pan, full volume).
+ *
+ * `null` ⇒ the historical silent runtime (no audio host); every
+ * `startSectorSound?` / `startPlayerSound?` callback on the specials
+ * interfaces is non-fatal when unwired, so the movers stay silent-safe.
+ */
+export interface SpecialsSoundBridge {
+  /** `S_StartSound(&sec->soundorg, sfx)` — positional, spatialized. */
+  startSectorSound(soundOriginX: number, soundOriginY: number, sfx: number): void;
+  /** `S_StartSound(NULL, sfx)` — anonymous (locked-door `sfx_oof`). */
+  startPlayerSound(sfx: number): void;
 }
 
 /**
@@ -461,8 +506,17 @@ function makeMovePlane(
  * is that player's avatar (`thing.player === player`), so monsters
  * attempting locked-door specials get the vanilla null-player
  * rejection inside `evDoLockedDoor` / `evVerticalDoor`.
+ *
+ * `sound` is the per-runtime {@link SpecialsSoundBridge}: when wired,
+ * every door open/close, switch flip / button release, lift
+ * start/stop, and floor/ceiling scrape emits the exact vanilla sfx at
+ * the sector's `soundorg` (the bbox centre `mapData.sectorGroups[i]`
+ * holds), spatialized against the listener.  `null` (or omitted) keeps
+ * the historical silent runtime — every `startSectorSound?` /
+ * `startPlayerSound?` / switch `startSound` hook is non-fatal when
+ * unwired, so the movers behave bit-for-bit but stay silent.
  */
-export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapSector[], thinkerList: ThinkerList, rng: DoomRandom, blocklinks: BlockThingsGrid, getLevelTime: () => number, getPlayer: () => Player, gameMode: GameMode): SpecialsModel {
+export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapSector[], thinkerList: ThinkerList, rng: DoomRandom, blocklinks: BlockThingsGrid, getLevelTime: () => number, getPlayer: () => Player, gameMode: GameMode, sound: SpecialsSoundBridge | null = null): SpecialsModel {
   const views = mutableSectors.map((sector) => new SpecialsSectorView(sector));
 
   const sectorIndexByView = new Map<SpecialsSector, number>();
@@ -510,12 +564,31 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
 
   const movePlane = makeMovePlane(sectorIndexOf, mapData, blocklinks, rng, thinkerList, getLevelTime);
 
+  // S_StartSound(&sec->soundorg, sfx): resolve the mover's sector to
+  // its P_GroupLines bbox-centre soundorg (mapData.sectorGroups[i])
+  // and forward to the per-runtime positional bridge. No-op when no
+  // audio host was wired (the historical silent runtime); the movers
+  // are silent-safe because every `startSectorSound?` is optional.
+  const startSectorSound =
+    sound === null
+      ? undefined
+      : (sector: SpecialsSector, sfx: number): void => {
+          const sectorIndex = sectorIndexOf(sector);
+          const group = mapData.sectorGroups[sectorIndex]!;
+          sound.startSectorSound(group.soundOriginX, group.soundOriginY, sfx);
+        };
+  // S_StartSound(NULL, sfx_oof): the anonymous locked-door denial bump.
+  const startPlayerSound = sound === null ? undefined : (sfx: number): void => sound.startPlayerSound(sfx);
+
   // Shared side-effect bridge for every door/floor/plat/ceiling/stairs
   // helper. T_MovePlane + the five neighbor lookups are level-bound;
-  // sound is null (the audio milestone wires startSectorSound) but the
-  // movers are silent-safe (every startSectorSound? is optional).
+  // `startSectorSound` is the positional S_StartSound wired above
+  // (undefined ⇒ historical silent runtime; still bit-for-bit because
+  // the consuming `startSectorSound?` hooks are optional).
   const moverCallbacks = {
     movePlane,
+    ...(startSectorSound === undefined ? {} : { startSectorSound }),
+    ...(startPlayerSound === undefined ? {} : { startPlayerSound }),
     findLowestFloorSurrounding,
     findHighestFloorSurrounding,
     findNextHighestFloor,
@@ -537,7 +610,28 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
 
   const switchList: SwitchList = initSwitchList(switchEpisodeForGameMode(gameMode), idForName);
   const buttons: Button[] = createButtonList();
-  const buttonSounds = { startSound: (): void => {} };
+  // p_switch.c `S_StartSound(buttonlist->soundorg, sound)` /
+  // updateButtons `S_StartSound(slot.soundorg, sfx_swtchn)`.  The
+  // switch module treats `soundorg` as an opaque ref; here it is the
+  // line's front-sector soundorg position ({@link SwitchSoundOrigin}),
+  // so a flipped switch is spatialized at its sector exactly like a
+  // door.  A `null` soundorg (the vanilla fresh-level
+  // `buttonlist->soundorg == NULL` quirk on the very first press)
+  // routes through the anonymous centre-pan path.  No-op when no audio
+  // host is wired (historical silent runtime).
+  const buttonSounds: { startSound(origin: unknown, sfx: number): void } = {
+    startSound:
+      sound === null
+        ? (): void => {}
+        : (origin: unknown, sfx: number): void => {
+            const so = origin as SwitchSoundOrigin | null | undefined;
+            if (so === null || so === undefined) {
+              sound.startPlayerSound(sfx);
+              return;
+            }
+            sound.startSectorSound(so.x, so.y, sfx);
+          },
+  };
 
   // Mutable runtime sidedef texture slots (numeric ids in the shared
   // name space). One view per parsed sidedef; changeSwitchTexture
@@ -571,6 +665,11 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
       // EV_VerticalDoor moves the manual-door BACK sector (the sidedef
       // faces into the moving sector); -1 back ⇒ no door (left undefined).
       const backSector = lineSectors.backsector === -1 ? undefined : views[lineSectors.backsector]!;
+      // Vanilla `P_StartButton` stores `&line->frontsector->soundorg`
+      // on the button slot and `P_ChangeSwitchTexture` plays the press
+      // sfx there. Resolve the front sector's P_GroupLines soundorg
+      // (bbox centre) once per line.
+      const frontGroup = mapData.sectorGroups[lineSectors.frontsector]!;
       line = {
         special: linedef.special,
         flags: linedef.flags,
@@ -579,6 +678,7 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
         frontSpecial: mutableSectors[lineSectors.frontsector]!.special,
         __doorSector: backSector,
         __switchSide: sideViews[linedef.sidenum0]!,
+        __switchSoundOrigin: { x: frontGroup.soundOriginX, y: frontGroup.soundOriginY },
       };
       triggerLines[linedefIndex] = line;
     }
@@ -659,7 +759,12 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
     changeSwitchTexture(line: LineTriggerLine, useAgain: 0 | 1): void {
       const side = (line as RuntimeTriggerLine).__switchSide;
       if (side === undefined) return;
-      changeSwitchTexture(line, side, useAgain === 1, switchList.switchlist, switchList.numswitches, buttons, buttonSounds, side);
+      // 8th arg is the `soundorg` P_StartButton stores on the slot
+      // (vanilla `&line->frontsector->soundorg`); the press itself
+      // broadcasts from `buttons[0].soundorg` inside the switch module
+      // — the vanilla buttonlist->soundorg quirk preserved there.
+      const soundOrigin = (line as RuntimeTriggerLine).__switchSoundOrigin ?? null;
+      changeSwitchTexture(line, side, useAgain === 1, switchList.switchlist, switchList.numswitches, buttons, buttonSounds, soundOrigin);
     },
     gExitLevel(): void {
       // g_game.c G_ExitLevel: `secretexit = false; gameaction =
