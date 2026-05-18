@@ -178,7 +178,7 @@
 - [x] `13-005` `gate-demo-sync-parity` | lane: `acceptance` | prereqs: `12-009, 11-009, 06-010, 03-011` | file: `plan_final/steps/13-005-gate-demo-sync-parity.md`
 - [x] `13-006` `gate-save-load-parity` | lane: `acceptance` | prereqs: `12-009, 13-004` | file: `plan_final/steps/13-006-gate-save-load-parity.md`
 - [x] `13-007` `gate-intermission-finale-parity` | lane: `acceptance` | prereqs: `07-011, 08-010, 11-009, 03-011` | file: `plan_final/steps/13-007-gate-intermission-finale-parity.md`
-- [ ] `13-008` `gate-full-shareware-route` | lane: `acceptance` | prereqs: `13-004, 13-005, 13-006, 13-007` | file: `plan_final/steps/13-008-gate-full-shareware-route.md`
+- [x] `13-008` `gate-full-shareware-route` | lane: `acceptance` | prereqs: `13-004, 13-005, 13-006, 13-007` | file: `plan_final/steps/13-008-gate-full-shareware-route.md`
 - [ ] `13-009` `gate-registered-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-009-gate-registered-iwad-when-present.md`
 - [ ] `13-010` `gate-ultimate-iwad-when-present` | lane: `acceptance` | prereqs: `13-008` | file: `plan_final/steps/13-010-gate-ultimate-iwad-when-present.md`
 - [ ] `13-011` `gate-final-side-by-side-zero-diff` | lane: `acceptance` | prereqs: `13-008, 13-009, 13-010` | file: `plan_final/steps/13-011-gate-final-side-by-side-zero-diff.md`

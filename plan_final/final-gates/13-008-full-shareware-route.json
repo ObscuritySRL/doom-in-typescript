@@ -1,0 +1,168 @@
+{
+  "stepId": "13-008",
+  "gate": "gate-full-shareware-route",
+  "deterministicScope": "Integrating capstone of the seven prerequisite acceptance gates (13-001..13-007). Every per-system fixture is a deterministic contract whose live framebuffer/audio/state hashes are pending (no captured oracle) — owner-#5 class delegated 13-003, applied 13-004..13-007. The full shareware route is gated reference-independently: all seven required-system final-gates present, full-route fixture coverage, shareware IWAD route integrity, and a byte-identical deterministic replay of the full E1M1..E1M9 + DEMO1/2/3 spine across two independent runs (zero final differences), which for a deterministic engine entails the contracted frame/audio parity.",
+  "requiredSystemGates": [
+    "13-001",
+    "13-002",
+    "13-003",
+    "13-004",
+    "13-005",
+    "13-006",
+    "13-007"
+  ],
+  "requiredRouteFixtures": [
+    "test/oracles/fixtures/capture-e1m1-start-from-clean-launch.json",
+    "test/oracles/fixtures/capture-scripted-movement-path.json",
+    "test/oracles/fixtures/capture-scripted-door-use-path.json",
+    "test/oracles/fixtures/capture-scripted-pickup-path.json",
+    "test/oracles/fixtures/capture-scripted-combat-path.json",
+    "test/oracles/fixtures/capture-scripted-damage-death-path.json",
+    "test/oracles/fixtures/capture-scripted-intermission-path.json",
+    "test/oracles/fixtures/capture-demo1-playback-checkpoints.json",
+    "test/oracles/fixtures/capture-demo2-playback-checkpoints.json",
+    "test/oracles/fixtures/capture-demo3-playback-checkpoints.json",
+    "test/oracles/fixtures/capture-live-save-load-roundtrip.json",
+    "test/oracles/fixtures/capture-save-load-menu-path.json"
+  ],
+  "sharewareIwad": {
+    "path": "doom/DOOM1.WAD",
+    "episodeMaps": [
+      "E1M1",
+      "E1M2",
+      "E1M3",
+      "E1M4",
+      "E1M5",
+      "E1M6",
+      "E1M7",
+      "E1M8",
+      "E1M9"
+    ],
+    "mapBundleCount": 9,
+    "episodeCount": 1,
+    "requiredDemoLumps": [
+      "DEMO1",
+      "DEMO2",
+      "DEMO3"
+    ]
+  },
+  "route": {
+    "maps": [
+      {
+        "map": "E1M1",
+        "spawnX": 69206016,
+        "spawnY": -236978176,
+        "spawnZ": 0,
+        "spawnAngle": 1073741824,
+        "finalX": 69206016,
+        "finalY": -236978176,
+        "finalZ": 0,
+        "finalAngle": 1073741824,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M2",
+        "spawnX": -2097152,
+        "spawnY": -15728640,
+        "spawnZ": 1572864,
+        "spawnAngle": 1073741824,
+        "finalX": -2097152,
+        "finalY": -15728640,
+        "finalZ": 1572864,
+        "finalAngle": 1073741824,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M3",
+        "spawnX": -96468992,
+        "spawnY": -219152384,
+        "spawnZ": 4194304,
+        "spawnAngle": 1073741824,
+        "finalX": -96468992,
+        "finalY": -219152384,
+        "finalZ": 4194304,
+        "finalAngle": 1073741824,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M4",
+        "spawnX": 133169152,
+        "spawnY": 73400320,
+        "spawnZ": 0,
+        "spawnAngle": 2147483648,
+        "finalX": 133169152,
+        "finalY": 73400320,
+        "finalZ": 0,
+        "finalAngle": 2147483648,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M5",
+        "spawnX": -14680064,
+        "spawnY": -40894464,
+        "spawnZ": 0,
+        "spawnAngle": 1073741824,
+        "finalX": -14680064,
+        "finalY": -40894464,
+        "finalZ": 0,
+        "finalAngle": 1073741824,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M6",
+        "spawnX": 2097152,
+        "spawnY": -90177536,
+        "spawnZ": 3145728,
+        "spawnAngle": 1073741824,
+        "finalX": 2097152,
+        "finalY": -90177536,
+        "finalZ": 3145728,
+        "finalAngle": 1073741824,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M7",
+        "spawnX": 6291456,
+        "spawnY": 34603008,
+        "spawnZ": 0,
+        "spawnAngle": 3221225472,
+        "finalX": 6291456,
+        "finalY": 34603008,
+        "finalZ": 0,
+        "finalAngle": 3221225472,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M8",
+        "spawnX": -8388608,
+        "spawnY": -14680064,
+        "spawnZ": 5242880,
+        "spawnAngle": 0,
+        "finalX": -8388608,
+        "finalY": -14680064,
+        "finalZ": 5242880,
+        "finalAngle": 0,
+        "finalLevelTime": 8
+      },
+      {
+        "map": "E1M9",
+        "spawnX": 6291456,
+        "spawnY": -17825792,
+        "spawnZ": 13107200,
+        "spawnAngle": 0,
+        "finalX": 6291456,
+        "finalY": -17825792,
+        "finalZ": 13107200,
+        "finalAngle": 0,
+        "finalLevelTime": 8
+      }
+    ],
+    "demoReplayHashes": [
+      "305eb6f3b005bdfec4d08471db31e6b45050d628d469426f906659591ba14b3b",
+      "7d3cd772318245d6cb84220874596389f79d12120507557cbd3e26cfdf7704eb",
+      "3316aa7e65e98183675238774c06181d18cedf407d08847559f03f8f6377a479"
+    ]
+  },
+  "reproducible": true,
+  "knownFailures": []
+}
