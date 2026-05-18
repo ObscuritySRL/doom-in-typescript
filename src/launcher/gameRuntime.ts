@@ -34,20 +34,42 @@
  * ```
  */
 
+import type { Angle } from '../core/angle.ts';
+import type { Fixed } from '../core/fixed.ts';
 import type { TicCommand } from '../input/ticcmd.ts';
 import type { ChaseContext } from '../ai/chase.ts';
+import type { MonsterAttackContext } from '../ai/attacks.ts';
+import type { StateTransitionContext } from '../ai/stateTransitions.ts';
 import type { PlayerLike, TargetingContext } from '../ai/targeting.ts';
+import type { GameMode } from '../bootstrap/gameMode.ts';
+import type { HitscanContext } from '../player/hitscan.ts';
 import type { Player } from '../player/playerSpawn.ts';
+import type { PickupContext } from '../player/pickups.ts';
+import type { ProjectileContext } from '../player/projectiles.ts';
+import type { XYMovementCallbacks } from '../world/xyMovement.ts';
 import type { LauncherResources, LauncherSession } from './session.ts';
 
 import { BT_USE } from '../input/ticcmd.ts';
+import { setMonsterAttackContext, wireMonsterAttackActions } from '../ai/attacks.ts';
 import { chase } from '../ai/chase.ts';
-import { lookForPlayers } from '../ai/targeting.ts';
+import { clearStateTransitionContext, setStateTransitionContext, wirePainDeathActions } from '../ai/stateTransitions.ts';
+import { checkSight, lookForPlayers } from '../ai/targeting.ts';
+import { identifyGame } from '../bootstrap/gameMode.ts';
 import { pointInSubsector } from '../map/nodeTraversal.ts';
+import { setHitscanContext, wireHitscanActions } from '../player/hitscan.ts';
 import { calcHeight, movePlayer } from '../player/movement.ts';
-import { movePsprites } from '../player/playerSpawn.ts';
-import { MF_COUNTKILL, MF_SKULLFLY, MOBJINFO, Mobj, STATES, StateNum, setMobjMovementHook, setMobjState } from '../world/mobj.ts';
+import { clearPickupContext, setPickupContext, touchSpecialThing } from '../player/pickups.ts';
+import { movePsprites, pspriteActions } from '../player/playerSpawn.ts';
+import { setProjectileContext, wireProjectileActions } from '../player/projectiles.ts';
+import { dropWeapon } from '../player/weaponStates.ts';
+import { rPointToAngle2 } from '../render/wallScaleMath.ts';
+import { LumpLookup } from '../wad/lumpLookup.ts';
+import { clearDamageContext, damageMobj, setDamageContext } from '../world/damage.ts';
+import { makeHitscanPrimitives } from '../world/hitscanAttack.ts';
+import { MF_COUNTKILL, MF_SKULLFLY, MOBJINFO, Mobj, MobjType, ONCEILINGZ, ONFLOORZ, STATES, StateNum, setMobjMovementHook, setMobjState, spawnMobj } from '../world/mobj.ts';
+import { radiusAttack } from '../world/radiusAttack.ts';
 import { REMOVED } from '../world/thinkers.ts';
+import { tryMove } from '../world/tryMove.ts';
 import { useLines } from '../world/useLines.ts';
 import { xyMovement } from '../world/xyMovement.ts';
 import { zMovement } from '../world/zMovement.ts';
@@ -122,14 +144,47 @@ function forEachRosterAiChain(spawnAction: ((mobj: Mobj) => void) | null, seeAct
 }
 
 /**
+ * Snapshot of `pspriteActions` taken in {@link wireCombat} immediately
+ * before the hitscan/projectile psprite actions are installed (i.e. the
+ * 55-entry table left by `session.ts`'s `wireWeaponStateActions`).
+ * {@link resetGameRuntimeGlobals} restores it so the shared Bun worker's
+ * `pspriteActions` count stays pristine across tests, mirroring how
+ * `forEachRosterAiChain(null, null)` restores the STATES AI chains.
+ */
+let preCombatPspriteActions: readonly (typeof pspriteActions)[number][] | null = null;
+
+/**
  * Restore the process-global state the live runtime mutates — the
- * P_MobjThinker movement hook and the monster AI codepointers in the
- * shared STATES table — to pristine. Idempotent. Vanilla wires these
- * once per process; this exists purely for test-suite isolation.
+ * P_MobjThinker movement hook, the monster AI codepointers in the
+ * shared STATES table, the player-psprite action table, and every
+ * injected combat/pickup/damage context — to pristine. Idempotent.
+ * Vanilla wires these once per process; this exists purely for
+ * test-suite isolation.
+ *
+ * The STATES attack/pain/death action pointers installed by
+ * `wireMonsterAttackActions` / `wirePainDeathActions` are left in place:
+ * they are pure functions of their injected context, and clearing the
+ * contexts makes them inert (every action early-returns on a null
+ * context), exactly as `forEachRosterAiChain(null, null)` neutralizes
+ * the look/chase chains. `pspriteActions`, by contrast, is also size-
+ * asserted by the weapon-state suite, so it is snapshotted/restored
+ * verbatim rather than left wired-but-inert.
  */
 export function resetGameRuntimeGlobals(): void {
   setMobjMovementHook(null);
   forEachRosterAiChain(null, null);
+  clearDamageContext();
+  clearStateTransitionContext();
+  clearPickupContext();
+  setHitscanContext(null);
+
+  if (preCombatPspriteActions !== null) {
+    pspriteActions.length = 0;
+    for (const action of preCombatPspriteActions) {
+      pspriteActions.push(action);
+    }
+    preCombatPspriteActions = null;
+  }
 }
 
 /**
@@ -146,6 +201,185 @@ function makeSectorIndexResolver(session: LauncherSession): (mobj: Mobj) => numb
     const subsectorIndex = pointInSubsector(mobj.x, mobj.y, mapData.nodes);
     return mapData.subsectorSectors[subsectorIndex] ?? 0;
   };
+}
+
+/**
+ * Resolve the vanilla game mode for this IWAD (shareware / registered /
+ * retail / commercial). `A_Scream` and `A_PlayerScream` branch on it,
+ * and the pickup dispatch gates the megasphere / commercial-only paths
+ * on it. `identifyGame` reproduces Chocolate Doom's d_iwad.c +
+ * d_main.c detection from the WAD's lump table.
+ */
+function resolveGameMode(resources: LauncherResources): GameMode {
+  const lookup = new LumpLookup(resources.directory);
+  return identifyGame(resources.iwadPath, lookup).gameMode;
+}
+
+/**
+ * Assemble the combat layer on top of an already-bootstrapped session:
+ * build the level-bound P_AimLineAttack / P_LineAttack / P_DamageMobj
+ * primitives, inject every still-`null` action context (monster
+ * attacks, hitscan psprites, projectile psprites, pain/death, pickups),
+ * and wire the action tables. After this runs the state machine trades
+ * real damage exactly as Chocolate Doom 2.2.1 P_Ticker does.
+ *
+ * RNG note: every primitive shares `session.doomRandom`, so the bullet
+ * trace, damage rolls, puff/blood jitter, and pain/death checks all
+ * advance the one parity-critical P_Random stream in vanilla order.
+ */
+function wireCombat(session: LauncherSession, resources: LauncherResources, options: GameRuntimeOptions, targetingContext: TargetingContext, combatMoveCallbacks: XYMovementCallbacks): void {
+  const gameMode = resolveGameMode(resources);
+
+  // P_SpawnMobj bound to this level's RNG / thinker list / skill, with
+  // the launcher's per-thing subsector + floor/ceiling resolution so
+  // freshly spawned puffs/blood/drops have a valid ONFLOORZ/Z.
+  const spawnMobjBound = (x: Fixed, y: Fixed, z: Fixed, type: MobjType): Mobj => {
+    const mobj = spawnMobj(x, y, z, type, session.doomRandom, session.thinkerList, options.skill);
+    refreshSpawnedMobjSector(mobj, session, z);
+    return mobj;
+  };
+
+  const pointToAngle2 = (x1: Fixed, y1: Fixed, x2: Fixed, y2: Fixed): Angle => rPointToAngle2(x1, y1, x2, y2) >>> 0;
+
+  const tryMoveBound = (mobj: Mobj, x: Fixed, y: Fixed): boolean => tryMove(mobj, x, y, session.mapData, session.blocklinks, combatMoveCallbacks).moved;
+
+  const radiusAttackBound = (spot: Mobj, source: Mobj | null, damage: number): void => {
+    radiusAttack(spot, source ?? spot, damage, session.mapData.blockmap, session.blocklinks, {
+      checkSight: (looker: Mobj, target: Mobj): boolean => checkSight(looker, target, targetingContext),
+      damageMobj,
+    });
+  };
+
+  // P_DamageMobj / P_KillMobj.
+  setDamageContext({
+    rng: session.doomRandom,
+    thinkerList: session.thinkerList,
+    spawnMobj: spawnMobjBound,
+    pointToAngle2,
+    dropWeapon,
+    gameMode: () => gameMode,
+    gameskill: () => options.skill,
+    netgame: false,
+    players: [session.player],
+  });
+
+  // P_AimLineAttack / P_LineAttack (+ P_SpawnPuff / P_SpawnBlood).
+  const { aimLineAttack, lineAttack } = makeHitscanPrimitives({
+    mapData: session.mapData,
+    blocklinks: session.blocklinks,
+    rng: session.doomRandom,
+    thinkerList: session.thinkerList,
+    spawnMobj: spawnMobjBound,
+    damageMobj,
+  });
+
+  const startSound = null;
+
+  const hitscanContext: HitscanContext = {
+    rng: session.doomRandom,
+    thinkerList: session.thinkerList,
+    lineAttack,
+    aimLineAttack,
+    pointToAngle2,
+    startSound,
+  };
+  setHitscanContext(hitscanContext);
+
+  const projectileContext: ProjectileContext = {
+    rng: session.doomRandom,
+    thinkerList: session.thinkerList,
+    aimLineAttack,
+    spawnMobj: spawnMobjBound,
+    tryMove: tryMoveBound,
+    damageMobj,
+    startSound,
+  };
+  setProjectileContext(projectileContext);
+
+  const monsterAttackContext: MonsterAttackContext = {
+    rng: session.doomRandom,
+    thinkerList: session.thinkerList,
+    targetingContext,
+    spawnMobj: spawnMobjBound,
+    tryMove: tryMoveBound,
+    damageMobj,
+    lineAttack,
+    aimLineAttack,
+    radiusAttack: (spot: Mobj, source: Mobj, damage: number): void => radiusAttackBound(spot, source, damage),
+    pointToAngle2,
+    startSound,
+    // A_Tracer gates on `(gametic & 3) === 0`; the launcher's vanilla
+    // game-tic counter is `session.levelTime` (incremented once per
+    // P_Ticker after P_RunThinkers, exactly as vanilla gametic).
+    gametic: (): number => session.levelTime,
+  };
+  setMonsterAttackContext(monsterAttackContext);
+
+  const stateTransitionContext: StateTransitionContext = {
+    rng: session.doomRandom,
+    startSound,
+    radiusAttack: radiusAttackBound,
+    gameMode: () => gameMode,
+  };
+  setStateTransitionContext(stateTransitionContext);
+
+  const pickupContext: PickupContext = {
+    gameMode,
+    gameskill: options.skill,
+    netgame: false,
+    deathmatch: 0,
+    isConsolePlayer: true,
+    thinkerList: session.thinkerList,
+    startSound,
+  };
+  setPickupContext(pickupContext);
+
+  // Snapshot the weapon-state-only pspriteActions table (the 55 entries
+  // session.ts's wireWeaponStateActions installed) before the hitscan /
+  // projectile fire actions extend it, so resetGameRuntimeGlobals can
+  // restore it for the shared Bun test worker. Captured ONCE per
+  // reset cycle: a second createGameRuntime before a reset (e.g. the
+  // determinism tests build two runtimes) must not re-snapshot the
+  // already-combat-extended 66-entry table as the pristine baseline.
+  // The combat wiring is idempotent (same slots), so the first
+  // capture's 55-entry baseline stays valid until the next reset.
+  if (preCombatPspriteActions === null) {
+    preCombatPspriteActions = pspriteActions.slice();
+  }
+
+  wireMonsterAttackActions();
+  wireHitscanActions();
+  wireProjectileActions();
+  wirePainDeathActions();
+}
+
+/**
+ * Give a freshly spawned mobj (puff, blood, dropped item, projectile) a
+ * valid subsector + floor/ceiling, mirroring the launcher's
+ * `refreshThingSector` so P_ZMovement and the ONFLOORZ resolution in
+ * P_SpawnMobj behave. P_SpawnMobj already resolved z if subsector was
+ * null at spawn time; re-resolve now that we can place it, and re-apply
+ * ONFLOORZ/ONCEILINGZ if the caller used a sentinel.
+ */
+function refreshSpawnedMobjSector(mobj: Mobj, session: LauncherSession, requestedZ: Fixed): void {
+  const subsectorIndex = pointInSubsector(mobj.x, mobj.y, session.mapData.nodes);
+  const sectorIndex = session.mapData.subsectorSectors[subsectorIndex] ?? 0;
+  const sector = session.mapData.sectors[sectorIndex]!;
+
+  mobj.subsector = {
+    sector: {
+      ceilingheight: sector.ceilingheight,
+      floorheight: sector.floorheight,
+    },
+  };
+  mobj.floorz = sector.floorheight;
+  mobj.ceilingz = sector.ceilingheight;
+
+  if (requestedZ === ONFLOORZ) {
+    mobj.z = sector.floorheight;
+  } else if (requestedZ === ONCEILINGZ) {
+    mobj.z = (sector.ceilingheight - (mobj.info?.height ?? 0)) | 0;
+  }
 }
 
 /**
@@ -176,11 +410,27 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     netgame: false,
   };
 
+  // Combat side-effect callbacks threaded through P_XYMovement →
+  // P_TryMove → P_CheckPosition → PIT_CheckThing: `damageMobj` lets
+  // skull-flies and projectiles deal their collision damage,
+  // `touchSpecial` lets the MF_PICKUP player vacuum up items it walks
+  // over (P_TouchSpecialThing), and `rng`/`thinkerList` drive the
+  // PIT_CheckThing skullfly/missile damage rolls. Built before the
+  // movement hook so every mobj's move runs the full vanilla path.
+  const combatMoveCallbacks: XYMovementCallbacks = {
+    damageMobj,
+    touchSpecial: (special: Mobj, toucher: Mobj): void => {
+      touchSpecialThing(special, toucher);
+    },
+    rng: session.doomRandom,
+    thinkerList: session.thinkerList,
+  };
+
   // Completed P_MobjThinker movement half (p_mobj.c order): momentum
   // move, then z move; bail if the mobj was removed mid-move.
   setMobjMovementHook((mobj: Mobj): boolean => {
     if (mobj.momx !== 0 || mobj.momy !== 0 || (mobj.flags & MF_SKULLFLY) !== 0) {
-      xyMovement(mobj, session.mapData, session.blocklinks, session.thinkerList, session.doomRandom);
+      xyMovement(mobj, session.mapData, session.blocklinks, session.thinkerList, session.doomRandom, '', combatMoveCallbacks);
       if (mobj.action === REMOVED) {
         return false;
       }
@@ -215,6 +465,8 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
   // every monster see-state chain (info.c parity), for the whole
   // MF_COUNTKILL roster (shareware uses a subset; extra wiring is inert).
   forEachRosterAiChain(aLook, aChase);
+
+  wireCombat(session, resources, options, targetingContext, combatMoveCallbacks);
 
   return {
     session,
