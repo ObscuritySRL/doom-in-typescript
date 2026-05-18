@@ -1,0 +1,92 @@
+{
+  "stepId": "13-005",
+  "gate": "gate-demo-sync-parity",
+  "deterministicScope": "The three read-only checkpoint fixtures declare their live framebuffer/audio/state hashes null/pending (no captured oracle exists). Demo sync is an intrinsic deterministic DOOM property (fixed recorded ticcmd stream), so zero checkpoint drift is asserted reference-independently: read-only checkpoint-contract integrity, byte-identical replay through the committed purpose-built deterministic replayers (which throw unless every parsed tic is consumed and the demo completes with the vanilla attract advance-demo), and a byte-identical cumulative-ticcmd checkpoint-hash vector at every in-range contract checkpoint across two independent DemoPlayback runs.",
+  "referenceWadPath": "D:\\Projects\\doom-in-typescript\\doom\\DOOM1.WAD",
+  "demos": [
+    {
+      "demoLump": "DEMO1",
+      "schemaVersion": 1,
+      "checkpointTics": [
+        0,
+        35,
+        70,
+        175,
+        350,
+        700
+      ],
+      "traceSha256": "79e192143cb4f4a4ab5b16c5dd0cba2e0d6a45517a17968fa06d20d39e5aa194",
+      "targetRuntimeCommand": "bun run doom.ts",
+      "referenceDemoCommand": "-iwad doom/DOOM1.WAD -playdemo demo1",
+      "ticCount": 5026,
+      "completionAction": "advance-demo",
+      "replayHash": "305eb6f3b005bdfec4d08471db31e6b45050d628d469426f906659591ba14b3b",
+      "ticCommandHash": "a0532cfa67af545673b5093036c6644a7182f2c619da44b897d28763e317694f",
+      "inRangeCheckpointHashes": {
+        "0": "be7a5cfa4645c10e9e0c657f8636ed7d945d8f8c88350fc6887e2a694ad6bfe3",
+        "35": "df88e386501a296bfd614056200fc7964f3008a2c6eb5eb47627c742491db72e",
+        "70": "544fe1dacb91f004b7fe0149e750291d537288dce0e7fa4049f9309cd6a52c41",
+        "175": "055fa0409de24bc43865f001c9037436ef7d08b2d40684a153fe465ea315b9f0",
+        "350": "829411d5454cdb030e7d6b0c7ffd69550dbf52119a29ad01de8d4db3a8c2d933",
+        "700": "b045526d1fe22038112a95f8786ffd77ef86bcbfab8b949ccd5decf342bf78c0"
+      }
+    },
+    {
+      "demoLump": "DEMO2",
+      "schemaVersion": 1,
+      "checkpointTics": [
+        0,
+        35,
+        70,
+        140,
+        280,
+        560,
+        840,
+        1120
+      ],
+      "traceSha256": "736f0d08a73b3983dc0406477b6ac1cc1bf47cdf776165271e332047bff6cfa4",
+      "targetRuntimeCommand": null,
+      "referenceDemoCommand": "doom/DOOMD.EXE -timedemo DEMO2 -iwad doom/DOOM1.WAD",
+      "ticCount": 3836,
+      "completionAction": "advance-demo",
+      "replayHash": "7d3cd772318245d6cb84220874596389f79d12120507557cbd3e26cfdf7704eb",
+      "ticCommandHash": "61b0b71117bc552650d370b69cae65e095957eb21b4dcb1e581a09f8f135605c",
+      "inRangeCheckpointHashes": {
+        "0": "b8f7384d64c31c9ae3950313dffff2569fa72648a5d4fc0e59db8f76870f7021",
+        "35": "f6b201aad43c738a0f8ace7816cf5a781ae6d39428a0190cb961392f11e82c56",
+        "70": "f464a38f7cef0606156fdfbc43e80f26e47923bccb0abfdfee799ad02a92e150",
+        "140": "73c9314616020b9f855f460bc7ce9903ad2e63f6c3e82c63b7857370f3c6956f",
+        "280": "71487f2626af3ca7028adcd25e0ce73da70366f3c1be30cf9b786ace1f72b052",
+        "560": "675b4cdf52ac7d38b72951a5ca01e531445b911bc4eaf6b1dfae7249e873cc5c",
+        "840": "dce573afe7e5bd1eb09e562a7f96a5ae5b9253c7174a22e7f590dd9813def189",
+        "1120": "7ba7c0dc56999cced2f4ddd7b04cbfe47f8bf4dc8d8f780ac714ea78150900a7"
+      }
+    },
+    {
+      "demoLump": "DEMO3",
+      "schemaVersion": 1,
+      "checkpointTics": [
+        0,
+        1,
+        35,
+        350,
+        700
+      ],
+      "traceSha256": "47ba2bb739f1a745f6237db884ccd759bd0d2d2bd6a823b2d500ab2f2cab0716",
+      "targetRuntimeCommand": null,
+      "referenceDemoCommand": "-iwad doom/DOOM1.WAD -playdemo demo3",
+      "ticCount": 2134,
+      "completionAction": "advance-demo",
+      "replayHash": "3316aa7e65e98183675238774c06181d18cedf407d08847559f03f8f6377a479",
+      "ticCommandHash": "6059bb823063701ed4521646b07cd4074fda41e958d94ebbe29b13b0815ff19b",
+      "inRangeCheckpointHashes": {
+        "0": "843aba36b0860eeb8e734a0e75bad043e110c16fc73498c48a20b8ff5dfba494",
+        "1": "310b0fa611c3d8a93751184b026c39995bcc69292bd796f06333848c71d068a4",
+        "35": "ff04ee36a692f00ddf490d2587be0870621505c642c79033f5dd974a0a27a6bd",
+        "350": "6b98f7d9ae4fb97bb124ec5590e4543292501e837d8e487ee16def8e6f815443",
+        "700": "e8c9d409dd7bb716640b18022eccb7b008ca76c410497a16b6c32aee7c2a1fc3"
+      }
+    }
+  ],
+  "knownFailures": []
+}
