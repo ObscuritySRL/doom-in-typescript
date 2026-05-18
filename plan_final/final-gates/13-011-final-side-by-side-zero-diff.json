@@ -1,0 +1,62 @@
+{
+  "stepId": "13-011",
+  "gate": "gate-final-side-by-side-zero-diff",
+  "deterministicScope": "Terminal capstone synthesising the ten prior deterministic acceptance gates (13-001..13-010). Every per-system reference oracle is pending-live (owner-#5 class delegated 13-003, applied 13-004..13-010), so the final side-by-side proof is reference-independent and deterministic: no pending evidence (all prior final-gate artifacts declare knownFailures: []), the bun run doom.ts C1 entry is the side-by-side subject, and the end-to-end deterministic spine (clean-launch + E1M1 gameplay + DEMO1 replay + save/load byte round-trip + intermission/finale transition report) recomputes byte-identically across two independent runs — the side-by-side zero-diff.",
+  "runtimeCommandContract": {
+    "entryFile": "doom.ts",
+    "runtimeCommand": "bun run doom.ts"
+  },
+  "priorGateNoPendingEvidence": [
+    {
+      "stepId": "13-001",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-002",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-003",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-004",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-005",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-006",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-007",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-008",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-009",
+      "knownFailures": 0
+    },
+    {
+      "stepId": "13-010",
+      "knownFailures": 0
+    }
+  ],
+  "allGatesNoPending": true,
+  "transitionReport": {
+    "cleanLaunch": "E1M1",
+    "gameplayTics": 8,
+    "demo1ReplayHash": "305eb6f3b005bdfec4d08471db31e6b45050d628d469426f906659591ba14b3b",
+    "saveLoadByteParity": true,
+    "intermissionPercent": 68,
+    "finaleVisibleChars": 40
+  },
+  "noDifferences": true,
+  "knownFailures": []
+}
