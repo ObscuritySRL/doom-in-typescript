@@ -1,0 +1,288 @@
+/**
+ * Live DOOM game runtime — the assembled vanilla P_Ticker.
+ *
+ * The launcher session (`session.ts`) spawns a fully-populated level
+ * (player + every map thing + lights + psprites) and owns the
+ * bit-exact `R_RenderPlayerView`, but its `advanceLauncherSession`
+ * only ticks the *player*: monsters never even animate. This module
+ * assembles the real Chocolate Doom 2.2.1 `p_tick.c` P_Ticker on top
+ * of that session so the world actually comes alive:
+ *
+ *   - The monster AI brain (`p_enemy.c` A_Look / A_Chase) is wired
+ *     into the shared STATES action table for the whole monster
+ *     roster, so `P_RunThinkers` drives idle→see→chase exactly as
+ *     vanilla does (via each state's action pointer).
+ *   - The completed P_MobjThinker (P_XYMovement + P_ZMovement, the
+ *     halves `mobjThinker` deliberately omits to avoid a module
+ *     cycle) is injected through `setMobjMovementHook`, so every
+ *     mobj — present and future (projectiles, blood, dropped items) —
+ *     moves under its momentum.
+ *   - `tickGame` runs the canonical per-tic order: P_PlayerThink
+ *     (move + height + use + psprites) → P_RunThinkers → leveltime++.
+ *
+ * Combat/pain/death/specials action wiring (monster attacks, hitscan,
+ * projectiles, doors/lifts) layers on in the following milestones; the
+ * state machine treats their still-`null` actions as inert no-ops, so
+ * monsters chase here without yet trading damage.
+ *
+ * @example
+ * ```ts
+ * const resources = await loadLauncherResources('doom/DOOM1.WAD');
+ * const runtime = createGameRuntime(resources, { mapName: 'E1M1', skill: 2 });
+ * tickGame(runtime, EMPTY_TICCMD);
+ * const framebuffer = renderGame(runtime);
+ * ```
+ */
+
+import type { TicCommand } from '../input/ticcmd.ts';
+import type { ChaseContext } from '../ai/chase.ts';
+import type { PlayerLike, TargetingContext } from '../ai/targeting.ts';
+import type { Player } from '../player/playerSpawn.ts';
+import type { LauncherResources, LauncherSession } from './session.ts';
+
+import { BT_USE } from '../input/ticcmd.ts';
+import { chase } from '../ai/chase.ts';
+import { lookForPlayers } from '../ai/targeting.ts';
+import { pointInSubsector } from '../map/nodeTraversal.ts';
+import { calcHeight, movePlayer } from '../player/movement.ts';
+import { movePsprites } from '../player/playerSpawn.ts';
+import { MF_COUNTKILL, MF_SKULLFLY, MOBJINFO, Mobj, STATES, StateNum, setMobjMovementHook, setMobjState } from '../world/mobj.ts';
+import { REMOVED } from '../world/thinkers.ts';
+import { useLines } from '../world/useLines.ts';
+import { xyMovement } from '../world/xyMovement.ts';
+import { zMovement } from '../world/zMovement.ts';
+import { createLauncherSession, renderLauncherFrame } from './session.ts';
+
+/** Options for {@link createGameRuntime}. */
+export interface GameRuntimeOptions {
+  readonly mapName: string;
+  readonly skill: number;
+}
+
+/** Assembled live game runtime handle. */
+export interface GameRuntime {
+  /** The underlying launcher session (owns map, renderer, RNG). */
+  readonly session: LauncherSession;
+  /** The local player. */
+  readonly player: Player;
+  /** The active thinker ring (P_RunThinkers list). */
+  readonly thinkerList: LauncherSession['thinkerList'];
+  /** Number of game tics simulated so far (== session leveltime). */
+  readonly levelTime: number;
+  /** Enumerate every live mobj on the thinker list (spawn order). */
+  allMobjs(): Mobj[];
+  /**
+   * Restore the process-global state this runtime mutated (movement
+   * hook + AI codepointers). Production launches one runtime for the
+   * process lifetime and never call this; the test suite does, to stay
+   * hermetic across the shared Bun worker.
+   */
+  dispose(): void;
+}
+
+const STATE_CHAIN_WALK_CAP = 64;
+
+/**
+ * Walk a state chain from `startState` following `nextstate`, assigning
+ * `action` to every state visited, stopping on S_NULL, a revisit, or
+ * the safety cap. Mirrors how `info.c` tags every S_*_STND frame with
+ * A_Look and every S_*_RUN frame with A_Chase.
+ */
+function assignStateChainAction(startState: StateNum, action: ((mobj: Mobj) => void) | null): void {
+  let stateIndex: number = startState;
+  const visited = new Set<number>();
+  for (let step = 0; step < STATE_CHAIN_WALK_CAP; step += 1) {
+    if (stateIndex === StateNum.NULL || visited.has(stateIndex)) {
+      return;
+    }
+    visited.add(stateIndex);
+    const state = STATES[stateIndex];
+    if (state === undefined) {
+      return;
+    }
+    state.action = action;
+    stateIndex = state.nextstate;
+  }
+}
+
+/**
+ * Apply `spawnAction` to every MF_COUNTKILL monster's stand-state
+ * chain and `seeAction` to its see-state chain (info.c parity). Pass
+ * `null` for both to restore the pristine table.
+ */
+function forEachRosterAiChain(spawnAction: ((mobj: Mobj) => void) | null, seeAction: ((mobj: Mobj) => void) | null): void {
+  for (let mobjType = 0; mobjType < MOBJINFO.length; mobjType += 1) {
+    const info = MOBJINFO[mobjType]!;
+    if ((info.flags & MF_COUNTKILL) === 0) {
+      continue;
+    }
+    assignStateChainAction(info.spawnstate, spawnAction);
+    assignStateChainAction(info.seestate, seeAction);
+  }
+}
+
+/**
+ * Restore the process-global state the live runtime mutates — the
+ * P_MobjThinker movement hook and the monster AI codepointers in the
+ * shared STATES table — to pristine. Idempotent. Vanilla wires these
+ * once per process; this exists purely for test-suite isolation.
+ */
+export function resetGameRuntimeGlobals(): void {
+  setMobjMovementHook(null);
+  forEachRosterAiChain(null, null);
+}
+
+/**
+ * Build the geometry-based `sectors`-index resolver `checkSight` /
+ * `P_LookForPlayers` need for the REJECT fast-path. The launcher keeps
+ * mobj `subsector.sector` pointing at the parse-layer sectors while
+ * `mapData.sectors` is a mutable clone, so a reference map is unsafe;
+ * `pointInSubsector` + the P_GroupLines subsector→sector table is the
+ * reference-faithful (`mobj->subsector->sector - sectors`) equivalent.
+ */
+function makeSectorIndexResolver(session: LauncherSession): (mobj: Mobj) => number {
+  const { mapData } = session;
+  return (mobj: Mobj): number => {
+    const subsectorIndex = pointInSubsector(mobj.x, mobj.y, mapData.nodes);
+    return mapData.subsectorSectors[subsectorIndex] ?? 0;
+  };
+}
+
+/**
+ * Create and bootstrap a live game runtime: spawn the level, install
+ * the completed P_MobjThinker movement hook, and wire the monster
+ * look/chase AI into the shared STATES table bound to this runtime's
+ * map/RNG/player.
+ */
+export function createGameRuntime(resources: LauncherResources, options: GameRuntimeOptions): GameRuntime {
+  const session = createLauncherSession(resources, { mapName: options.mapName, skill: options.skill });
+
+  const targetingContext: TargetingContext = {
+    mapData: session.mapData,
+    getSectorIndex: makeSectorIndexResolver(session),
+  };
+  const players: readonly PlayerLike[] = [session.player];
+  const playeringame: readonly boolean[] = [true];
+  const chaseContext: ChaseContext = {
+    rng: session.doomRandom,
+    mapData: session.mapData,
+    blocklinks: session.blocklinks,
+    thinkerList: session.thinkerList,
+    targetingContext,
+    players,
+    playeringame,
+    gameskill: options.skill,
+    fastparm: false,
+    netgame: false,
+  };
+
+  // Completed P_MobjThinker movement half (p_mobj.c order): momentum
+  // move, then z move; bail if the mobj was removed mid-move.
+  setMobjMovementHook((mobj: Mobj): boolean => {
+    if (mobj.momx !== 0 || mobj.momy !== 0 || (mobj.flags & MF_SKULLFLY) !== 0) {
+      xyMovement(mobj, session.mapData, session.blocklinks, session.thinkerList, session.doomRandom);
+      if (mobj.action === REMOVED) {
+        return false;
+      }
+    }
+    if (mobj.z !== mobj.floorz || mobj.momz !== 0) {
+      zMovement(mobj, session.doomRandom, session.thinkerList);
+      if (mobj.action === REMOVED) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  // p_enemy.c A_Look (the no-soundtarget path; sound propagation lands
+  // with the audio milestone). Sets threshold, acquires a player via
+  // P_LookForPlayers, then enters the monster's seestate.
+  const aLook = (actor: Mobj): void => {
+    actor.threshold = 0;
+    if (!lookForPlayers(actor, false, players, playeringame, targetingContext)) {
+      return;
+    }
+    if (actor.info !== null) {
+      setMobjState(actor, actor.info.seestate, session.thinkerList);
+    }
+  };
+  // p_enemy.c A_Chase — the full pursue/attack-decision brain.
+  const aChase = (actor: Mobj): void => {
+    chase(actor, chaseContext);
+  };
+
+  // Wire A_Look onto every monster stand-state chain and A_Chase onto
+  // every monster see-state chain (info.c parity), for the whole
+  // MF_COUNTKILL roster (shareware uses a subset; extra wiring is inert).
+  forEachRosterAiChain(aLook, aChase);
+
+  return {
+    session,
+    get player(): Player {
+      return session.player;
+    },
+    get thinkerList(): LauncherSession['thinkerList'] {
+      return session.thinkerList;
+    },
+    get levelTime(): number {
+      return session.levelTime;
+    },
+    allMobjs(): Mobj[] {
+      const mobjs: Mobj[] = [];
+      session.thinkerList.forEach((thinker) => {
+        if (thinker instanceof Mobj) {
+          mobjs.push(thinker);
+        }
+      });
+      return mobjs;
+    },
+    dispose(): void {
+      resetGameRuntimeGlobals();
+    },
+  };
+}
+
+/**
+ * Advance the simulation by one 35 Hz game tic — the assembled
+ * `p_tick.c` P_Ticker: P_PlayerThink (the subset wired so far: move,
+ * height, use, psprites) → P_RunThinkers (every mobj through the
+ * completed P_MobjThinker) → leveltime++.
+ */
+export function tickGame(runtime: GameRuntime, cmd: TicCommand): void {
+  const session = runtime.session;
+  const player = session.player;
+  player.cmd = cmd;
+
+  if (player.mo !== null) {
+    let onground = false;
+    if (player.mo.reactiontime > 0) {
+      player.mo.reactiontime -= 1;
+    } else {
+      onground = movePlayer(player);
+    }
+    calcHeight(player, session.levelTime, onground && player.mo.z <= player.mo.floorz);
+
+    if ((cmd.buttons & BT_USE) !== 0) {
+      if (!player.usedown) {
+        useLines(player.mo, session.mapData);
+        player.usedown = true;
+      }
+    } else {
+      player.usedown = false;
+    }
+  }
+
+  session.weaponStateContext.leveltime = session.levelTime;
+  movePsprites(player);
+
+  // P_RunThinkers — drives every mobj's action (state machine + the
+  // injected movement half) plus future sector-special thinkers.
+  session.thinkerList.run();
+
+  session.levelTime += 1;
+}
+
+/** Render the current player view (the bit-exact assembled R_RenderPlayerView). */
+export function renderGame(runtime: GameRuntime): Uint8Array {
+  return renderLauncherFrame(runtime.session);
+}

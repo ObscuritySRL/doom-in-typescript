@@ -5980,11 +5980,44 @@ export function spawnMobj(x: Fixed, y: Fixed, z: Fixed, type: MobjType, rng: Doo
 }
 
 /**
+ * Optional per-mobj momentum/z-movement hook (vanilla P_MobjThinker's
+ * P_XYMovement + P_ZMovement halves).
+ *
+ * `mobj.ts` deliberately does not import `xyMovement`/`zMovement`
+ * (that would form a module cycle — both import `Mobj` from here).
+ * Instead the live game runtime injects the movement half via this
+ * hook before the state-machine half runs, exactly matching the
+ * Chocolate Doom 2.2.1 `p_mobj.c` P_MobjThinker order:
+ *
+ *   1. momentum move  (P_XYMovement when momx|momy|MF_SKULLFLY)
+ *   2. z move         (P_ZMovement when z != floorz || momz)
+ *   3. state cycle     (the body below)
+ *
+ * The hook returns `false` when the mobj was removed during movement
+ * (its thinker action became {@link REMOVED}); the state cycle is then
+ * skipped, mirroring vanilla's `if (removed) return;` guards.
+ *
+ * Default `null` ⇒ state-machine-only behavior (unchanged for every
+ * caller/test that does not install a runtime).
+ */
+let mobjMovementHook: ((mobj: Mobj) => boolean) | null = null;
+
+/**
+ * Install (or clear with `null`) the {@link mobjMovementHook}. Called
+ * once by the live game runtime at level setup so every mobj — present
+ * and future (projectiles, blood, dropped items) — gets the full
+ * vanilla P_MobjThinker via the shared {@link mobjThinker} action.
+ */
+export function setMobjMovementHook(hook: ((mobj: Mobj) => boolean) | null): void {
+  mobjMovementHook = hook;
+}
+
+/**
  * P_MobjThinker: per-tic mobj think function.
  *
- * Handles the state tic countdown and state transitions. Movement
- * (P_XYMovement, P_ZMovement) and nightmare respawn are added in
- * later steps; this implementation covers the state machine only.
+ * Runs the {@link mobjMovementHook} (P_XYMovement + P_ZMovement) first
+ * when installed, then the state tic countdown and state transitions.
+ * Nightmare respawn (the `tics === -1` else branch) is still TODO.
  *
  * Parity-critical: tics === -1 means the state lasts forever (no
  * countdown). When tics reaches 0, the mobj transitions to the
@@ -5992,6 +6025,10 @@ export function spawnMobj(x: Fixed, y: Fixed, z: Fixed, type: MobjType, rng: Doo
  */
 export function mobjThinker(thinker: ThinkerNode): void {
   const mobj = thinker as Mobj;
+
+  if (mobjMovementHook !== null && !mobjMovementHook(mobj)) {
+    return;
+  }
 
   // State tic countdown.
   if (mobj.tics !== -1) {
