@@ -39,6 +39,29 @@ describe('launcher session bootstrap', () => {
     expect(session.showAutomap).toBe(false);
   });
 
+  test('raises the ready weapon psprite at spawn and keeps it up (P_SetupPsprites/P_MovePsprites wired)', async () => {
+    const session = createLauncherSession(await loadReferenceResources(), {
+      mapName: 'E1M1',
+      skill: 2,
+    });
+
+    // Regression: the launcher never called P_SetupPsprites, so the
+    // weapon psprite stayed null and was never drawn in the 3D view.
+    expect(session.player.psprites[0]!.state).not.toBeNull();
+    expect(session.weaponStateContext.leveltime).toBe(0);
+
+    for (let tic = 0; tic < 60; tic += 1) {
+      advanceLauncherSession(session, EMPTY_LAUNCHER_INPUT);
+    }
+
+    // After the pistol bring-up the weapon stays up, and the per-tic
+    // context tracks leveltime for the weapon bob (set before the
+    // levelTime increment, so it trails by one).
+    expect(session.player.psprites[0]!.state).not.toBeNull();
+    expect(session.levelTime).toBe(60);
+    expect(session.weaponStateContext.leveltime).toBe(session.levelTime - 1);
+  });
+
   test('renders a varied gameplay frame for E1M1', async () => {
     const session = createLauncherSession(await loadReferenceResources(), {
       mapName: 'E1M1',

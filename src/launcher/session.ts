@@ -14,7 +14,9 @@ import { SCREENHEIGHT, SCREENWIDTH } from '../host/windowPolicy.ts';
 import { ANGLE_TURN, FORWARD_MOVE, SIDE_MOVE, packTicCommand } from '../input/ticcmd.ts';
 import { calcHeight, movePlayer } from '../player/movement.ts';
 import type { Player } from '../player/playerSpawn.ts';
-import { createPlayer, playerReborn } from '../player/playerSpawn.ts';
+import { createPlayer, movePsprites, playerReborn, setupPsprites } from '../player/playerSpawn.ts';
+import type { WeaponStateContext } from '../player/weaponStates.ts';
+import { setWeaponStateContext, wireWeaponStateActions } from '../player/weaponStates.ts';
 import {
   BACKGROUND,
   CDWALLCOLORS,
@@ -84,6 +86,8 @@ export interface LauncherSession {
   readonly doomRandom: DoomRandom;
   /** Vanilla sector-light-special thinkers (P_SpawnSpecials light branch), ticked once per tic in spawn order. */
   readonly lightThinkers: LightThinker[];
+  /** Shared weapon-psprite state context (`leveltime` updated each tic before `P_MovePsprites`). */
+  readonly weaponStateContext: WeaponStateContext;
   levelTime: number;
   showAutomap: boolean;
 }
@@ -221,6 +225,17 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
   // exactly what the renderer re-snapshots each frame.
   const lightThinkers = pSpawnSpecialsLights(buildLightSectors(mapData), () => doomRandom.pRandom(), true);
 
+  // P_SetupPsprites — vanilla P_SpawnPlayer raises the ready weapon at
+  // level start. The psprite state actions read a module-level context
+  // (`leveltime` for weapon bob); install it (and wire the action
+  // table) before P_SetupPsprites runs the raise. DOOM1.WAD is the
+  // shareware game mode; sound/noise callbacks are not needed for the
+  // pistol raise (vanilla only sounds the chainsaw bring-up).
+  wireWeaponStateActions();
+  const weaponStateContext: WeaponStateContext = { leveltime: 0, gamemode: 'shareware', thinkerList, startSound: null, noiseAlert: null };
+  setWeaponStateContext(weaponStateContext);
+  setupPsprites(player);
+
   const automapState = createAutomapState();
   const levelKey = parseLevelKey(mapName);
   const lastLevelKey = { episode: -1, map: -1 };
@@ -255,6 +270,7 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
     thinkerList,
     doomRandom,
     lightThinkers,
+    weaponStateContext,
     levelTime: 0,
     showAutomap: false,
   };
@@ -310,6 +326,13 @@ export function advanceLauncherSession(session: LauncherSession, inputState: Lau
   for (const thinker of session.lightThinkers) {
     tickLight(thinker, () => session.doomRandom.pRandom());
   }
+
+  // P_MovePsprites — vanilla P_PlayerThink advances the weapon psprite
+  // state machine every tic; the weapon bob reads `context.leveltime`
+  // (the shared object installed at session setup; mutating it here
+  // keeps the active weapon-state context current).
+  session.weaponStateContext.leveltime = session.levelTime;
+  movePsprites(session.player);
 
   session.levelTime += 1;
 }
