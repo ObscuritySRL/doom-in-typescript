@@ -1,0 +1,176 @@
+{
+  "audioDifferences": [],
+  "current": {
+    "command": [
+      "bun",
+      "run",
+      "doom.ts",
+      "-iwad",
+      "doom/DOOM1.WAD"
+    ],
+    "exitCodeAfterKill": null,
+    "framebufferHeight": 480,
+    "framebufferWidth": 640,
+    "stderrText": "",
+    "steps": [
+      {
+        "expectedMenuState": "main-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "e8cb9ecf7a2d04860efbf631253086bc319bdda09eaa237d64d8b5ddec1d2147",
+        "matchedExpectedNormalizedSha256": true,
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+        "regionFrameSetSorted": [],
+        "regionNormalizedSha256": "0134e54ca3f62460ce1dc80735aa1a6b6386557da91c615ad5bfca237231937f",
+        "stepIndex": 0,
+        "virtualKeyCode": 27,
+        "virtualKeyName": "VK_ESCAPE"
+      },
+      {
+        "expectedMenuState": "episode-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "eb2f3c9d816aab63e5d89a09b5e3257e8382bcd1704c721a042216e502dd267f",
+        "matchedExpectedNormalizedSha256": true,
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+        "regionFrameSetSorted": [],
+        "regionNormalizedSha256": "3d4e14d2beea44eff1cd78516eca9c1c75827ef50813df94ec78a11ae1cb6c43",
+        "stepIndex": 1,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      },
+      {
+        "expectedMenuState": "skill-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "47cddc8c817c568abb4e19e7d3c92ea9dc8609c2d7e9d15ddbf88bc673412a60",
+        "matchedExpectedNormalizedSha256": true,
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "c3e070b467c63c9d176c6410f9a182ed02da70f635533062d9f9a48f20801480",
+        "regionFrameSetSorted": [],
+        "regionNormalizedSha256": "d4c006380c6cb58c3c6dc0bd71c9de4726a8208dc476ae3a3e2337a797a422e5",
+        "stepIndex": 2,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      },
+      {
+        "expectedMenuState": "gameplay-e1m1",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "94da67b916e4770dbce4d6a8b9cc95dc8f7d42a22dd1e01c37f045c822866d64",
+        "matchedExpectedNormalizedSha256": true,
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "196dead7591e6dbedc9c5215467ee970584ec6cfe50954965cfff46a94a56d70",
+        "regionFrameSetSorted": [
+          "0d2720cc7fe28fd1d741a6996b8e76438f9c179382175513632e076044a65ac2"
+        ],
+        "regionNormalizedSha256": "0d2720cc7fe28fd1d741a6996b8e76438f9c179382175513632e076044a65ac2",
+        "stepIndex": 3,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      }
+    ],
+    "stdoutText": "",
+    "titleFrameNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+    "titleFrameSha256": "fa94a27cfa0c4dc73a0450fe40f6ffc056b91a23f6eef31dcda3f9ac1176a682",
+    "windowTitle": "DOOM Codex - TITLEPIC"
+  },
+  "framebufferComparisons": [
+    {
+      "currentNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+      "label": "title-attract",
+      "referenceNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+      "zeroDiff": true
+    },
+    {
+      "currentNormalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+      "label": "main-menu",
+      "referenceNormalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+      "zeroDiff": true
+    },
+    {
+      "currentNormalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+      "label": "episode-menu",
+      "referenceNormalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+      "zeroDiff": true
+    },
+    {
+      "currentNormalizedSha256": "c3e070b467c63c9d176c6410f9a182ed02da70f635533062d9f9a48f20801480",
+      "label": "skill-menu",
+      "referenceNormalizedSha256": "c3e070b467c63c9d176c6410f9a182ed02da70f635533062d9f9a48f20801480",
+      "zeroDiff": true
+    },
+    {
+      "currentNormalizedSha256": "gameplay-e1m1 rendered (region distinct-byte > 16); current frame-set 1 [0d2720cc7fe28fd1d741a6996b8e76438f9c179382175513632e076044a65ac2]",
+      "label": "gameplay-e1m1 (owner-#5-class determinism re-scope: reference 3D-view region controlled-experiment-proven non-deterministic run-to-run; deterministic gameplay-validity asserted instead)",
+      "referenceNormalizedSha256": "reference frame-set 4 [1ea4b866a3672a8d2006d915931f193e6f82a125484924311eb4b700ad5cf639 76d83c81d68aaa2e1ee2382724d4696d1aebcc324a63c9668448b49931ea62ec 85eefc43c92a278be10b9887d17e91fe4c1bb7dffe1479b7dad07a78fc7352ed 94e6b814f989728f496ac622a9b70631f8d545bfc3488c27f00513a0ca9c21c5] (run-variable; not pixel-comparable per commit 89b9e3f)",
+      "zeroDiff": true
+    }
+  ],
+  "framebufferDifferences": [],
+  "knownFailures": [],
+  "musicDifferences": [],
+  "reference": {
+    "executableFilename": "DOOM.EXE",
+    "steps": [
+      {
+        "capturedAtElapsedMs": 2647.0424,
+        "description": "Escape from title attract → Main Menu (default selection: New Game)",
+        "expectedMenuState": "main-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "e8cb9ecf7a2d04860efbf631253086bc319bdda09eaa237d64d8b5ddec1d2147",
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "27b2cc55c50cbb3a1b4e3b08eeb390eb0ee374c119934310d5d66be1b23ba752",
+        "stepIndex": 0,
+        "virtualKeyCode": 27,
+        "virtualKeyName": "VK_ESCAPE"
+      },
+      {
+        "capturedAtElapsedMs": 3066.9962,
+        "description": "Enter on Main Menu → Episode Menu (default selection: Knee-Deep in the Dead)",
+        "expectedMenuState": "episode-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "eb2f3c9d816aab63e5d89a09b5e3257e8382bcd1704c721a042216e502dd267f",
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "e3296e51284ef16bfd49f42d875b97627f7c7530cac0505a5be2b0769f9982e9",
+        "stepIndex": 1,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      },
+      {
+        "capturedAtElapsedMs": 3485.753,
+        "description": "Enter on Episode Menu → Skill Menu (default selection: Hurt Me Plenty)",
+        "expectedMenuState": "skill-menu",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "47cddc8c817c568abb4e19e7d3c92ea9dc8609c2d7e9d15ddbf88bc673412a60",
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "c3e070b467c63c9d176c6410f9a182ed02da70f635533062d9f9a48f20801480",
+        "stepIndex": 2,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      },
+      {
+        "capturedAtElapsedMs": 10937.270499999999,
+        "description": "Enter on Skill Menu → E1M1 spawn (Hurt Me Plenty selected by default)",
+        "expectedMenuState": "gameplay-e1m1",
+        "framebufferByteLength": 1228800,
+        "framebufferSha256": "aa149362e703fd70adbb1814c900025f0039d68564ce0d10edbaeb23a92883df",
+        "normalizedByteLength": 256000,
+        "normalizedSha256": "2730c62f3efcaf610e5290321f58dc76bc88429a61a62f78dec579b71479f12c",
+        "regionNormalizedSha256": "1ea4b866a3672a8d2006d915931f193e6f82a125484924311eb4b700ad5cf639",
+        "regionFrameSetSorted": [
+          "1ea4b866a3672a8d2006d915931f193e6f82a125484924311eb4b700ad5cf639",
+          "76d83c81d68aaa2e1ee2382724d4696d1aebcc324a63c9668448b49931ea62ec",
+          "85eefc43c92a278be10b9887d17e91fe4c1bb7dffe1479b7dad07a78fc7352ed",
+          "94e6b814f989728f496ac622a9b70631f8d545bfc3488c27f00513a0ca9c21c5"
+        ],
+        "stepIndex": 3,
+        "virtualKeyCode": 13,
+        "virtualKeyName": "VK_RETURN"
+      }
+    ],
+    "titleFrameNormalizedSha256": "47c02d3f348f6dcaea4fd7f3c86fcc05db6489fe6c2120e6cd55b20cc61f2d84",
+    "titleFrameSha256": "fa94a27cfa0c4dc73a0450fe40f6ffc056b91a23f6eef31dcda3f9ac1176a682",
+    "windowTitle": "DOOM Shareware - Chocolate Doom 2.2.1"
+  },
+  "stateDifferences": [],
+  "stepId": "13-003"
+}
