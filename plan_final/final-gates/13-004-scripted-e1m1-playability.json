@@ -1,0 +1,87 @@
+{
+  "stepId": "13-004",
+  "gate": "gate-scripted-e1m1-playability",
+  "deterministicScope": "All four read-only scripted-input fixtures declare their live reference oracle hashes null/pending (no captured oracle exists); bun run doom.ts exposes no --scripted-input surface; the live E1M1 gameplay region is controlled-experiment-proven non-deterministic run-to-run (13-003, commit 89b9e3f, owner decision #5 + owner delegation). The well-posed non-weakened gate asserts the strongest deterministic reference-independent invariants: scripted-input contract integrity + coverage, deterministic scripted-movement replay reproducibility, and the committed deterministic damage/death/reborn state machine.",
+  "runtimeCommandContract": {
+    "defaultEpisode": 1,
+    "defaultMapNumber": 1,
+    "runtimeCommand": "bun run doom.ts"
+  },
+  "fixtureContracts": [
+    {
+      "path": "test/oracles/fixtures/capture-scripted-movement-path.json",
+      "runtimeCommand": "bun run doom.ts",
+      "schemaVersion": 1,
+      "scriptedTicCount": 7,
+      "firstScriptedTic": 1,
+      "lastScriptedTic": 96,
+      "expectedTraceLength": 9,
+      "traceSha256": "c2f7f1028cb3ab46b35ebce9e93274a16415e18e0596265ea7ed0e3a7f8293ea"
+    },
+    {
+      "path": "test/oracles/fixtures/capture-scripted-door-use-path.json",
+      "runtimeCommand": "bun run doom.ts",
+      "schemaVersion": 1,
+      "scriptedTicCount": 7,
+      "firstScriptedTic": 0,
+      "lastScriptedTic": 191,
+      "expectedTraceLength": 10,
+      "traceSha256": "3540e0ab0370cdfa1a87db4480d3fb724eb5afe0564f2458d2519cd6619e14b0"
+    },
+    {
+      "path": "test/oracles/fixtures/capture-scripted-pickup-path.json",
+      "runtimeCommand": "bun run doom.ts",
+      "schemaVersion": 1,
+      "scriptedTicCount": 10,
+      "firstScriptedTic": 0,
+      "lastScriptedTic": 280,
+      "expectedTraceLength": 10,
+      "traceSha256": "23cb97d5e35c896a189bc3f80b4993b64b9925398f453ed3178717aa699987bc"
+    },
+    {
+      "path": "test/oracles/fixtures/capture-scripted-combat-path.json",
+      "runtimeCommand": "bun run doom.ts",
+      "schemaVersion": 1,
+      "scriptedTicCount": 10,
+      "firstScriptedTic": 2,
+      "lastScriptedTic": 89,
+      "expectedTraceLength": 11,
+      "traceSha256": "59a84f722ab1bdb74c91c4f29530f7aa0cf701ffecb3829e58a80ef2ff09700e"
+    }
+  ],
+  "movementReplay": {
+    "mapName": "E1M1",
+    "scheduleTics": 57,
+    "trajectorySamples": 58,
+    "spawn": {
+      "tic": 0,
+      "x": 69206016,
+      "y": -236978176,
+      "z": 0,
+      "angle": 1073741824
+    },
+    "final": {
+      "tic": 57,
+      "x": 73855256,
+      "y": -212580196,
+      "z": -1048576,
+      "angle": 4236247040
+    },
+    "displacement": 24837005.871441107,
+    "finalFrameSha256": "a51dca84732c9d1a10a88f543259e64a217f64b01832a138a319e2a03eb0c27b",
+    "reproducible": true
+  },
+  "damageDeathReborn": {
+    "spawnHealth": 100,
+    "spawnPlayerstate": 0,
+    "deadPlayerstate": 1,
+    "deadHealth": 0,
+    "rebornHealth": 100,
+    "rebornPlayerstate": 0,
+    "preservedKillcount": 7,
+    "preservedItemcount": 3,
+    "preservedSecretcount": 1,
+    "reproducible": true
+  },
+  "knownFailures": []
+}

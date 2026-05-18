@@ -174,7 +174,7 @@
 - [x] `13-001` `gate-bun-run-doom-smoke` | lane: `acceptance` | prereqs: `03-010, 03-011, 06-010, 07-011, 11-009` | file: `plan_final/steps/13-001-gate-bun-run-doom-smoke.md`
 - [x] `13-002` `gate-title-menu-parity` | lane: `acceptance` | prereqs: `13-001, 02-004` | file: `plan_final/steps/13-002-gate-title-menu-parity.md`
 - [x] `13-003` `gate-e1m1-entry-parity` | lane: `acceptance` | prereqs: `13-002, 08-010, 09-010` | file: `plan_final/steps/13-003-gate-e1m1-entry-parity.md`
-- [ ] `13-004` `gate-scripted-e1m1-playability` | lane: `acceptance` | prereqs: `13-003, 08-010, 09-010, 10-008` | file: `plan_final/steps/13-004-gate-scripted-e1m1-playability.md`
+- [x] `13-004` `gate-scripted-e1m1-playability` | lane: `acceptance` | prereqs: `13-003, 08-010, 09-010, 10-008` | file: `plan_final/steps/13-004-gate-scripted-e1m1-playability.md`
 - [ ] `13-005` `gate-demo-sync-parity` | lane: `acceptance` | prereqs: `12-009, 11-009, 06-010, 03-011` | file: `plan_final/steps/13-005-gate-demo-sync-parity.md`
 - [ ] `13-006` `gate-save-load-parity` | lane: `acceptance` | prereqs: `12-009, 13-004` | file: `plan_final/steps/13-006-gate-save-load-parity.md`
 - [ ] `13-007` `gate-intermission-finale-parity` | lane: `acceptance` | prereqs: `07-011, 08-010, 11-009, 03-011` | file: `plan_final/steps/13-007-gate-intermission-finale-parity.md`
