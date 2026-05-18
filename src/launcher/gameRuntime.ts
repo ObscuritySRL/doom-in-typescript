@@ -62,6 +62,9 @@ import { clearPickupContext, setPickupContext, touchSpecialThing } from '../play
 import { movePsprites, pspriteActions } from '../player/playerSpawn.ts';
 import { setProjectileContext, wireProjectileActions } from '../player/projectiles.ts';
 import { dropWeapon } from '../player/weaponStates.ts';
+import { pCrossSpecialLine, pUseSpecialLine } from '../specials/lineTriggers.ts';
+import { buildSpecialsModel } from '../specials/specialsLevel.ts';
+import type { SpecialsModel } from '../specials/specialsLevel.ts';
 import { rPointToAngle2 } from '../render/wallScaleMath.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
 import { clearDamageContext, damageMobj, setDamageContext } from '../world/damage.ts';
@@ -91,6 +94,13 @@ export interface GameRuntime {
   readonly thinkerList: LauncherSession['thinkerList'];
   /** Number of game tics simulated so far (== session leveltime). */
   readonly levelTime: number;
+  /**
+   * The level-bound sector/line-special model (doors, floors, plats,
+   * ceilings, stairs/donut, teleport, switch buttons).  Exposed so
+   * tests can assert sector heights / button timers; production code
+   * never touches it directly (`tickGame` drives it).
+   */
+  readonly specials: SpecialsModel;
   /** Enumerate every live mobj on the thinker list (spawn order). */
   allMobjs(): Mobj[];
   /**
@@ -397,6 +407,47 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
   };
   const players: readonly PlayerLike[] = [session.player];
   const playeringame: readonly boolean[] = [true];
+
+  // P_SpawnSpecials sector/line layer: T_MovePlane + the neighbor
+  // lookups bound to this level's mutable sectors (the renderer
+  // re-reads them per frame, so doors/lifts visibly move), the
+  // ActivePlats/ActiveCeilings registries, the switch button list,
+  // and the assembled P_UseSpecialLine / P_CrossSpecialLine dispatch
+  // bridge. Instance-scoped (no module globals) so the shared Bun
+  // test worker stays hermetic without a reset hook.
+  const gameMode = resolveGameMode(resources);
+  const specials = buildSpecialsModel(
+    session.mapData,
+    session.mutableSectors,
+    session.thinkerList,
+    session.doomRandom,
+    session.blocklinks,
+    () => session.levelTime,
+    () => session.player,
+    gameMode,
+  );
+
+  // P_UseSpecialLine bridge for P_UseLines (player Use press) and the
+  // chase-AI door-open path. `pUseSpecialLine` consumes the runtime
+  // trigger line (one-shot `special = 0` clears persist on it). The
+  // useLines variant ignores the boolean; the chase variant returns
+  // it (vanilla `P_UseSpecialLine` return == "a door opened").
+  const useSpecialLine = (linedefIndex: number, side: number, thing: Mobj): boolean => {
+    if (!specials.isLineArmed(linedefIndex)) return false;
+    const line = specials.triggerLineFor(linedefIndex, thing);
+    return pUseSpecialLine(thing, line, side, specials.callbacks);
+  };
+
+  // P_CrossSpecialLine bridge threaded through P_XYMovement →
+  // P_TryMove spechit (walkover triggers: W1/WR floors, lifts,
+  // teleports). `oldside` is the side the thing crossed FROM (vanilla
+  // `P_CrossSpecialLine(linenum, oldside, thing)`).
+  const crossSpecialLine = (linedefIndex: number, oldside: number, thing: Mobj): void => {
+    if (!specials.isLineArmed(linedefIndex)) return;
+    const line = specials.triggerLineFor(linedefIndex, thing);
+    pCrossSpecialLine(line, oldside, thing, specials.callbacks);
+  };
+
   const chaseContext: ChaseContext = {
     rng: session.doomRandom,
     mapData: session.mapData,
@@ -408,6 +459,9 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     gameskill: options.skill,
     fastparm: false,
     netgame: false,
+    // p_enemy.c P_Move: a blocked monster walks its spechit list and
+    // calls P_UseSpecialLine(actor, ld, 0) to open doors it bumps.
+    useSpecialLine: (actor: Mobj, linedefIndex: number, lineSide: number): boolean => useSpecialLine(linedefIndex, lineSide, actor),
   };
 
   // Combat side-effect callbacks threaded through P_XYMovement →
@@ -422,6 +476,9 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     touchSpecial: (special: Mobj, toucher: Mobj): void => {
       touchSpecialThing(special, toucher);
     },
+    // P_TryMove spechit → P_CrossSpecialLine: walkover line triggers
+    // (W1/WR floors, plats, teleports) fire as any mobj crosses them.
+    crossSpecialLine,
     rng: session.doomRandom,
     thinkerList: session.thinkerList,
   };
@@ -479,6 +536,7 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     get levelTime(): number {
       return session.levelTime;
     },
+    specials,
     allMobjs(): Mobj[] {
       const mobjs: Mobj[] = [];
       session.thinkerList.forEach((thinker) => {
@@ -506,17 +564,27 @@ export function tickGame(runtime: GameRuntime, cmd: TicCommand): void {
   player.cmd = cmd;
 
   if (player.mo !== null) {
+    const playerMobj = player.mo;
     let onground = false;
-    if (player.mo.reactiontime > 0) {
-      player.mo.reactiontime -= 1;
+    if (playerMobj.reactiontime > 0) {
+      playerMobj.reactiontime -= 1;
     } else {
       onground = movePlayer(player);
     }
-    calcHeight(player, session.levelTime, onground && player.mo.z <= player.mo.floorz);
+    calcHeight(player, session.levelTime, onground && playerMobj.z <= playerMobj.floorz);
 
     if ((cmd.buttons & BT_USE) !== 0) {
       if (!player.usedown) {
-        useLines(player.mo, session.mapData);
+        // P_UseLines → PTR_UseTraverse → P_UseSpecialLine: open the
+        // door / flip the switch / start the lift the player faces.
+        useLines(playerMobj, session.mapData, {
+          useSpecialLine: (linedefIndex: number, side: 0 | 1, thing: Mobj): void => {
+            const specials = runtime.specials;
+            if (!specials.isLineArmed(linedefIndex)) return;
+            const line = specials.triggerLineFor(linedefIndex, thing);
+            pUseSpecialLine(thing, line, side, specials.callbacks);
+          },
+        });
         player.usedown = true;
       }
     } else {
@@ -528,8 +596,17 @@ export function tickGame(runtime: GameRuntime, cmd: TicCommand): void {
   movePsprites(player);
 
   // P_RunThinkers — drives every mobj's action (state machine + the
-  // injected movement half) plus future sector-special thinkers.
+  // injected movement half) plus the sector-special thinkers the
+  // door/floor/plat/ceiling spawners added to this same ring.
   session.thinkerList.run();
+
+  // p_tick.c P_Ticker order: P_RunThinkers → P_UpdateSpecials. The
+  // animated-flat/texture half of P_UpdateSpecials is already a pure
+  // function of `leveltime` inside the assembled renderer (it cycles
+  // flattranslation per frame), so only the button/switch-cooldown
+  // timer half runs here — decrement every active button's btimer
+  // and snap its texture back when it expires.
+  runtime.specials.updateSpecials();
 
   session.levelTime += 1;
 }

@@ -32,6 +32,22 @@ import type { MapSector } from '../map/lineSectorGeometry.ts';
 import type { LightLine, LightSector } from './lights.ts';
 
 /**
+ * The runtime (post-clone) sector shape: structurally a
+ * {@link MapSector} but with the parse-layer `readonly` dropped from
+ * the fields the sector specials mutate at simulation time —
+ * `floorheight` / `ceilingheight` / `floorpic` (doors, floors, plats,
+ * ceilings, donut) in addition to the already-mutable
+ * `lightlevel` / `special` (light specials).  `parseSectors` keeps
+ * returning frozen `MapSector`; this is only the *clone's* type, so
+ * the parse-layer pin is untouched.
+ */
+export interface MutableMapSector extends Omit<MapSector, 'floorheight' | 'ceilingheight' | 'floorpic'> {
+  floorheight: MapSector['floorheight'];
+  ceilingheight: MapSector['ceilingheight'];
+  floorpic: MapSector['floorpic'];
+}
+
+/**
  * The `MapData` slice {@link buildLightSectors} reads: the runtime
  * sectors, the linedef flags, and the P_GroupLines line/sector
  * resolution.  A minimal structural shape (not full `MapData`) keeps
@@ -52,7 +68,7 @@ export interface LightLevelMap {
  * simulation can mutate `lightlevel`/`special` while `parseSectors`'
  * own frozen output (and its pins) is untouched.
  */
-export function cloneSectorsMutable(sectors: readonly MapSector[]): MapSector[] {
+export function cloneSectorsMutable(sectors: readonly MapSector[]): MutableMapSector[] {
   return sectors.map((s) => ({
     floorheight: s.floorheight,
     ceilingheight: s.ceilingheight,

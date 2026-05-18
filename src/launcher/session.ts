@@ -53,6 +53,7 @@ import { VIEWHEIGHT, zMovement } from '../world/zMovement.ts';
 import type { LightThinker } from '../specials/lights.ts';
 import { pSpawnSpecialsLights, tickLight } from '../specials/lights.ts';
 import { buildLightSectors, cloneSectorsMutable } from '../specials/lightsLevel.ts';
+import type { MutableMapSector } from '../specials/lightsLevel.ts';
 
 import { loadGameplayRenderResources } from './gameplayAssets.ts';
 import type { GameplayRenderResources } from './gameplayAssets.ts';
@@ -75,6 +76,16 @@ export interface LauncherSession {
   readonly blocklinks: BlockThingsGrid;
   readonly framebuffer: Uint8Array;
   readonly mapData: MapData;
+  /**
+   * The unfrozen runtime sector clone (same array as `mapData.sectors`,
+   * exposed with its true mutable type).  The sector specials — doors,
+   * floors, plats, ceilings — mutate `floorheight`/`ceilingheight`/
+   * `floorpic` here; the software renderer re-reads `mapData.sectors`
+   * every frame, so the moves are visible.  This is the realisation of
+   * the "Substitute an unfrozen mutable copy so the sector specials
+   * can run" design noted at the clone site.
+   */
+  readonly mutableSectors: MutableMapSector[];
   readonly mapName: string;
   readonly palette: Uint8Array;
   readonly player: Player;
@@ -160,7 +171,8 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
   // frozen. The renderer re-snapshots sectors per frame, so the
   // mutated light levels flow through with no renderer change.
   const parsedMap = setupLevel(parseMapBundle(resources.directory, resources.wadBuffer, mapName));
-  const mapData: MapData = { ...parsedMap, sectors: cloneSectorsMutable(parsedMap.sectors) };
+  const mutableSectors = cloneSectorsMutable(parsedMap.sectors);
+  const mapData: MapData = { ...parsedMap, sectors: mutableSectors };
   const thinkerList = new ThinkerList();
   const doomRandom = new DoomRandom();
   const blocklinks = createBlockThingsGrid(mapData.blockmap.columns, mapData.blockmap.rows);
@@ -261,6 +273,7 @@ export function createLauncherSession(resources: LauncherResources, options: Lau
     blocklinks,
     framebuffer,
     mapData,
+    mutableSectors,
     mapName,
     palette: resources.palette,
     player,
