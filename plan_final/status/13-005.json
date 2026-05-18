@@ -1,0 +1,7 @@
+{
+  "stepId": "13-005",
+  "lane": "acceptance",
+  "status": "COMPLETED",
+  "evidence": "plan_final/evidence/13-005.json",
+  "commitSha": "5cf4c506d5d4781b2be8d085decfaabda4a92258"
+}
