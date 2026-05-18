@@ -1,0 +1,68 @@
+{
+  "stepId": "13-006",
+  "gate": "gate-save-load-parity",
+  "deterministicScope": "The read-only capture-live-save-load-roundtrip.json fixture is an abstract-contract-pending-live-reference-run: live framebuffer/audio/state hashes and every required reference replay/hash surface are pending-live-reference-capture (no captured oracle exists). Owner-#5 class (delegated for 13-003; applied 13-004/13-005). Vanilla save/load is a deterministic serialization round-trip, so byte/state parity after restore is asserted reference-independently via the committed src/save engine (write-read-write byte parity + state-save-load-state state parity over the canonical savegame sections + whole-savegame assembly), which for a deterministic engine entails the contracted frame/audio parity after restore.",
+  "runtimeCommandContract": {
+    "entryFile": "doom.ts",
+    "runtimeCommand": "bun run doom.ts"
+  },
+  "roundtripContract": {
+    "schemaVersion": 1,
+    "actions": [
+      "clean-launch",
+      "open-main-menu",
+      "start-e1m1",
+      "open-save-menu",
+      "write-save-slot-zero",
+      "return-to-gameplay-after-save",
+      "mutate-live-state-after-save",
+      "open-load-menu",
+      "load-save-slot-zero",
+      "verify-restored-frame"
+    ],
+    "ordinals": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "tics": [
+      0,
+      35,
+      140,
+      210,
+      245,
+      280,
+      350,
+      420,
+      455,
+      490
+    ],
+    "abstractTraceSha256": "85fd03f8b419d49ef08c1c0fd9050550e0b015cbad1853b3f46e180c29bd2f16"
+  },
+  "roundTripPlanVariants": [
+    "write-read-write",
+    "read-write-read",
+    "state-save-load-state"
+  ],
+  "parity": {
+    "playersByteParity": true,
+    "playersStateParity": true,
+    "mobjsByteParity": true,
+    "mobjsStateParity": true,
+    "worldByteParity": true,
+    "worldStateParity": true,
+    "headerStateParity": true,
+    "wholeSaveByteParity": true,
+    "wholeSaveByteLength": 522,
+    "wholeSaveEofPresent": true
+  },
+  "reproducible": true,
+  "knownFailures": []
+}
