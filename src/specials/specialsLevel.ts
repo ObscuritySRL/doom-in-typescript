@@ -189,6 +189,19 @@ export interface RuntimeTriggerLine extends LineTriggerLine {
   __mobj?: Mobj;
 }
 
+/**
+ * A pending level completion latched by the exit special.  Mirrors
+ * vanilla g_game.c: `G_ExitLevel` sets `secretexit = false` then
+ * `gameaction = ga_completed`; `G_SecretExitLevel` sets
+ * `secretexit = true` then `ga_completed`.  The runtime reads this on
+ * the next tic boundary (the vanilla `G_DoCompleted` deferral) and
+ * transitions to the intermission.
+ */
+export interface PendingLevelCompletion {
+  /** `true` ⇒ the secret-exit special fired (`G_SecretExitLevel`). */
+  readonly secret: boolean;
+}
+
 /** Result of {@link buildSpecialsModel}. */
 export interface SpecialsModel {
   /** The assembled P_UseSpecialLine / P_CrossSpecialLine / P_ShootSpecialLine dispatch bridge. */
@@ -197,6 +210,18 @@ export interface SpecialsModel {
   updateSpecials(): void;
   /** Per-sector views (index-aligned with `mapData.sectors`). */
   readonly sectors: readonly SpecialsSector[];
+  /**
+   * The latched level completion (vanilla `gameaction == ga_completed`
+   * with `secretexit`), or `null` while the level is still in play.
+   * Set by the exit-line / exit-switch specials through
+   * `gExitLevel` / `gSecretExitLevel`; the runtime reads it once per
+   * tic and runs `G_DoCompleted` exactly as vanilla defers the
+   * transition to the top of the next `G_Ticker`.  Idempotent: the
+   * first exit wins (vanilla's single `gameaction` slot — a second
+   * exit special the same tic does not change the already-set
+   * `secretexit`).
+   */
+  readonly levelComplete: PendingLevelCompletion | null;
   /**
    * The persistent runtime trigger-line for a linedef index, with the
    * door sector / front switch side / activator mobj attached for the
@@ -569,6 +594,16 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
 
   const doorCallbacks = moverCallbacks as DoorCallbacks;
 
+  // Vanilla g_game.c keeps a single `gameaction` slot; the FIRST exit
+  // special this level wins (`secretexit` is set then `ga_completed`,
+  // and `G_DoCompleted` reads it on the next tic — a second exit the
+  // same tic cannot un-set the latch). Idempotent setter mirrors that.
+  let pendingCompletion: PendingLevelCompletion | null = null;
+  const requestExit = (secret: boolean): void => {
+    if (pendingCompletion !== null) return;
+    pendingCompletion = { secret };
+  };
+
   const callbacks: LineTriggerCallbacks = {
     evDoDoor(line: LineTriggerLine, type: VerticalDoorType): number {
       return evDoDoor(line.tag, type, sectorsList, thinkerList, doorCallbacks);
@@ -627,12 +662,18 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
       changeSwitchTexture(line, side, useAgain === 1, switchList.switchlist, switchList.numswitches, buttons, buttonSounds, side);
     },
     gExitLevel(): void {
-      // G_ExitLevel transitions to the next map (intermission). The
-      // C1 launcher renders a single level; level exit is the
-      // front-end-sequence milestone. No-op here (the switch still
+      // g_game.c G_ExitLevel: `secretexit = false; gameaction =
+      // ga_completed;`. Latch a normal level completion; the runtime
+      // reads it next tic and runs the intermission (the switch still
       // flips via changeSwitchTexture in the exit cases).
+      requestExit(false);
     },
-    gSecretExitLevel(): void {},
+    gSecretExitLevel(): void {
+      // g_game.c G_SecretExitLevel: `secretexit = true; gameaction =
+      // ga_completed;`. Latch a secret-exit completion (routes the
+      // runtime to the episode secret level).
+      requestExit(true);
+    },
   };
 
   return {
@@ -641,6 +682,9 @@ export function buildSpecialsModel(mapData: MapData, mutableSectors: MutableMapS
       updateButtons(buttons, buttonSounds);
     },
     sectors: views,
+    get levelComplete(): PendingLevelCompletion | null {
+      return pendingCompletion;
+    },
     triggerLineFor,
     isLineArmed,
   };

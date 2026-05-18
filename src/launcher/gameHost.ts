@@ -34,10 +34,16 @@
 import type { LauncherResources } from './session.ts';
 import type { GameRuntime, GameAudioBridge } from './gameRuntime.ts';
 import type { MenuState } from '../ui/menus.ts';
+import type { FinaleState } from '../ui/finale.ts';
+import type { IntermissionPlayerResult, IntermissionRound, IntermissionState } from '../ui/intermission.ts';
 
 import { ANGLE_TURN, BT_USE, FORWARD_MOVE, SIDE_MOVE, packTicCommand } from '../input/ticcmd.ts';
 import { MenuKind, createMenuState, handleMenuKey, openMenu, tickMenu } from '../ui/menus.ts';
+import { createFinaleState, startFinale, tickFinale } from '../ui/finale.ts';
+import { beginIntermission, createIntermissionState, tickIntermission } from '../ui/intermission.ts';
+import { SCREENHEIGHT, SCREENWIDTH } from '../host/windowPolicy.ts';
 import { createGameRuntime, renderGame, resetGameRuntimeGlobals, tickGame } from './gameRuntime.ts';
+import { FrontEndCompositor } from './gameFrontEndCompositor.ts';
 
 /**
  * Audio surface the host drives for the front-end (title/menu).  The
@@ -52,13 +58,61 @@ export interface GameHostAudio extends GameAudioBridge {
 
 /** sfx_swtchn (23) — menu opened / submenu entered (m_menu.c). */
 const SFX_SWTCHN = 23;
-/** sfx_pistol (1) — menu item selected. */
+/** sfx_pistol (1) — menu item selected / intermission ticker. */
 const SFX_PISTOL = 1;
 /** sfx_pstop (19) — cursor moved up/down. */
 const SFX_PSTOP = 19;
+/** sfx_barexp (75) — intermission count-up finished (wi_stuff.c). */
+const SFX_BAREXP = 75;
+/** sfx_sgcock (16) — intermission accept → ShowNextLoc (wi_stuff.c). */
+const SFX_SGCOCK = 16;
 
-/** The three top-level host phases. */
-export type GameHostPhase = 'title' | 'menu' | 'game';
+/**
+ * The host phases.  `title`/`menu`/`game` are the front-end + play
+ * states; `intermission` (wi_stuff.c GS_INTERMISSION) and `finale`
+ * (f_finale.c GS_FINALE) are the end-of-level / end-of-episode
+ * states wired here so the player can play THROUGH an episode.
+ */
+export type GameHostPhase = 'title' | 'menu' | 'game' | 'intermission' | 'finale';
+
+/**
+ * g_game.c `G_DoCompleted` next-map selection for Doom 1.  The
+ * shareware target is episode 1 (E1M1..E1M9, E1M9 = the secret
+ * level).  Transcribed faithfully from g_game.c:
+ *
+ *   - A secret exit on any map → the episode secret level (map 9).
+ *   - E1M9 (the secret level) normal exit → E1M4
+ *     (`if (gamemap == 9) gamemap = 4;` for episode 1, the
+ *     `wminfo.next` fix-ups in `G_DoCompleted`).
+ *   - E1M8 normal exit → the episode is over: `F_StartFinale`
+ *     (`if (gamemap == 8) gameaction = ga_victory`).
+ *   - Any other normal exit → the next sequential map (`gamemap+1`).
+ *
+ * Returns the next `E#M#` name, or `null` when the exit ends the
+ * episode (caller routes to the finale).
+ */
+function nextMapName(episode: number, map: number, secret: boolean): string | null {
+  if (secret) {
+    // G_SecretExitLevel: episode secret level is map 9 (Doom 1).
+    return `E${episode}M9`;
+  }
+  if (map === 9) {
+    // g_game.c: the secret level returns to map 4 for episode 1.
+    return `E${episode}M4`;
+  }
+  if (map === 8) {
+    // E#M8 normal exit ends the episode → finale.
+    return null;
+  }
+  return `E${episode}M${map + 1}`;
+}
+
+/** Parse an `E#M#` map name into 1-based episode/map (or null). */
+function parseMap(mapName: string): { episode: number; map: number } | null {
+  const match = /^E(\d)M(\d)$/i.exec(mapName);
+  if (match === null) return null;
+  return { episode: Number(match[1]), map: Number(match[2]) };
+}
 
 /** High-level held-input snapshot for one game tic. */
 export interface GameHostInput {
@@ -90,6 +144,13 @@ export interface GameHost {
   phase: GameHostPhase;
   readonly menu: MenuState;
   selectedEpisode: number;
+  /**
+   * The skill the current game was started at (`G_InitNew` `gameskill`).
+   * Vanilla carries `gameskill` across `G_DoWorldDone`, so the next
+   * map in the episode spawns at the same difficulty.  Defaults to 2
+   * (Hurt Me Plenty) until a skill is chosen / a map booted directly.
+   */
+  lastSkill: number;
   runtime: GameRuntime | null;
   /**
    * Live audio host, or `null` for the silent front-end (every
@@ -98,6 +159,29 @@ export interface GameHost {
    * bridge into the spawned {@link GameRuntime} so gameplay sounds.
    */
   readonly audio: GameHostAudio | null;
+  /**
+   * The wi_stuff.c single-player intermission state.  Non-null only
+   * while `phase === 'intermission'` (cleared back to `null` when the
+   * next map / finale starts).  Exposed so the test suite can assert
+   * the captured stats / round without reaching into the compositor.
+   */
+  intermission: IntermissionState | null;
+  /**
+   * The f_finale.c finale state.  Non-null only while
+   * `phase === 'finale'`.
+   */
+  finale: FinaleState | null;
+  /**
+   * The map the intermission is travelling TO (the `G_DoCompleted`
+   * `wminfo.next`).  `null` means the exit ended the episode (the
+   * intermission's ShowNextLoc → finale).  Internal to the phase
+   * machine; surfaced for deterministic-flow assertions.
+   */
+  pendingNextMap: string | null;
+  /** The intermission/finale pixel compositor (lazy, IWAD-bound). */
+  readonly frontEnd: FrontEndCompositor;
+  /** Scratch 320x200 indexed frame the front-end phases composite into. */
+  readonly frontEndFramebuffer: Uint8Array;
 }
 
 /**
@@ -122,8 +206,14 @@ export function createGameHost(resources: LauncherResources, audio?: GameHostAud
     phase: 'title',
     menu: createMenuState(),
     selectedEpisode: 1,
+    lastSkill: 2,
     runtime: null,
     audio: resolvedAudio,
+    intermission: null,
+    finale: null,
+    pendingNextMap: null,
+    frontEnd: new FrontEndCompositor(resources),
+    frontEndFramebuffer: new Uint8Array(SCREENWIDTH * SCREENHEIGHT),
   };
 }
 
@@ -161,6 +251,7 @@ export function feedMenuKey(host: GameHost, doomKey: number): void {
       return;
     case 'selectSkill': {
       const gameskill = Math.max(1, action.skill);
+      host.lastSkill = gameskill;
       // s_sound.c S_Start at level setup stops the menu/title music
       // and starts the map music; createGameRuntime threads the same
       // audio bridge so monsters/weapons/specials sound in-game.
@@ -186,10 +277,169 @@ export function feedMenuKey(host: GameHost, doomKey: number): void {
 }
 
 /**
+ * Force the active level to complete, exactly as a direct
+ * `G_ExitLevel()` / `G_SecretExitLevel()` call does in vanilla (the
+ * E1M8 boss-death path, or a test driving the exit deterministically).
+ * The exit special / switch already routes through
+ * `runtime.specials` `gExitLevel`; this is the no-line-special
+ * equivalent.  No-op outside the `game` phase or with no runtime.
+ */
+export function triggerHostExit(host: GameHost, secret: boolean): void {
+  if (host.phase !== 'game' || host.runtime === null) return;
+  host.runtime.exitLevel(secret);
+}
+
+/**
+ * g_game.c `G_DoCompleted`: snapshot the finishing player's stats +
+ * the level totals into a {@link IntermissionRound} /
+ * {@link IntermissionPlayerResult}, pick the next map (or the episode
+ * finale), `WI_Start` the intermission, and flip to the
+ * `intermission` phase.  Vanilla defers this to the top of the next
+ * `G_Ticker` after `gameaction == ga_completed`; the host calls it
+ * from `tickHost` when `runtime.levelComplete` is set, matching that
+ * one-tic deferral.
+ */
+function doCompleted(host: GameHost): void {
+  const runtime = host.runtime;
+  if (runtime === null) return;
+  const completion = runtime.levelComplete;
+  if (completion === null) return;
+
+  const key = parseMap(runtime.session.mapName) ?? { episode: host.selectedEpisode, map: 1 };
+  const totals = runtime.levelTotals;
+  const player = runtime.player;
+
+  const next = nextMapName(key.episode, key.map, completion.secret);
+  host.pendingNextMap = next;
+  // wi_stuff.c wbstartstruct: `next` is the 0-based map index; for the
+  // episode-end (finale) vanilla still passes a value but the
+  // ShowNextLoc screen is skipped — clamp to map 1 so the round shape
+  // stays valid (beginIntermission requires nextMap >= 1).
+  const nextKey = next === null ? null : parseMap(next);
+  const round: IntermissionRound = {
+    episode: key.episode,
+    lastMap: key.map,
+    nextMap: nextKey?.map ?? 1,
+    maxKills: totals.totalKills,
+    maxItems: totals.totalItems,
+    maxSecrets: totals.totalSecret,
+    parTimeTics: totals.parTimeTics,
+  };
+  const result: IntermissionPlayerResult = {
+    killCount: player.killcount,
+    itemCount: player.itemcount,
+    secretCount: player.secretcount,
+    timeTics: runtime.levelTime,
+    inGame: true,
+  };
+
+  const state = createIntermissionState();
+  beginIntermission(state, round, [result]);
+  host.intermission = state;
+  host.finale = null;
+  host.phase = 'intermission';
+
+  // The finishing runtime is retired — its R_RenderPlayerView is no
+  // longer drawn (the intermission compositor owns the screen now).
+  // Restore the process-global movement-hook / AI-codepointer state
+  // it wired so the next `createGameRuntime` starts from pristine
+  // globals (the shared Bun test worker stays hermetic, and
+  // production avoids stacking hooks). The audio device is NOT closed
+  // here: vanilla `S_Start` only stops the current music — the same
+  // device carries the intermission cue and the next map's music
+  // (closing it permanently, as `runtime.dispose()` would, is wrong
+  // for map progression).
+  resetGameRuntimeGlobals();
+  host.runtime = null;
+}
+
+/**
+ * Advance the intermission one tic (wi_stuff.c `WI_Ticker`).  The
+ * player's use/attack is the single-player accelerate input; on
+ * `worldDone` the host either boots the next map (`G_DoWorldDone`) or
+ * — when the exit ended the episode — starts the finale
+ * (`F_StartFinale`).
+ */
+function tickIntermissionPhase(host: GameHost, input: GameHostInput): void {
+  const state = host.intermission;
+  if (state === null) return;
+  const result = tickIntermission(state, [{ attack: false, use: input.use }]);
+
+  if (host.audio !== null) {
+    if (result.music !== null) {
+      // mus_inter — the Doom 1 intermission track (D_INTER).
+      host.audio.startMusic('INTERMISSION');
+    }
+    for (const sound of result.sounds) {
+      const sfx = sound === 'pistol' ? SFX_PISTOL : sound === 'barexp' ? SFX_BAREXP : SFX_SGCOCK;
+      host.audio.startSfx(null, sfx);
+    }
+  }
+
+  if (!result.worldDone) return;
+
+  host.intermission = null;
+  const next = host.pendingNextMap;
+  host.pendingNextMap = null;
+
+  if (next === null) {
+    // g_game.c `gameaction = ga_victory` → F_StartFinale: E#M8
+    // normal exit ends the episode with the finale text screen.
+    const finale = createFinaleState();
+    const start = startFinale(finale, { episode: host.selectedEpisode });
+    host.finale = finale;
+    host.phase = 'finale';
+    if (host.audio !== null) {
+      // F_StartFinale: S_ChangeMusic(mus_victor, true).
+      host.audio.startMusic(start.music === 'mus_bunny' ? 'BUNNY' : 'VICTORY');
+    }
+    return;
+  }
+
+  // G_DoWorldDone: load the next map into a fresh runtime.
+  host.runtime = createGameRuntime(host.resources, {
+    mapName: next,
+    skill: host.lastSkill,
+    audio: host.audio,
+  });
+  host.phase = 'game';
+}
+
+/**
+ * Advance the finale one tic (f_finale.c `F_Ticker`).  On the Doom 1
+ * shareware target the only outcome is the automatic TEXT → ARTSCREEN
+ * transition; there is no responder, so the screen holds.  When the
+ * finale signals `worldDone` (commercial skip — never on shareware)
+ * the host returns to the title attract loop.
+ */
+function tickFinalePhase(host: GameHost, input: GameHostInput): void {
+  const state = host.finale;
+  if (state === null) return;
+  const result = tickFinale(state, {
+    anyButtonPressed: input.use || input.forward || input.backward || input.turnLeft || input.turnRight,
+    gameMode: 'shareware',
+    mapNumber: 8,
+  });
+  if (host.audio !== null && result.music !== null) {
+    host.audio.startMusic(result.music === 'mus_bunny' ? 'BUNNY' : 'VICTORY');
+  }
+  if (result.worldDone) {
+    // d_main.c D_StartTitle: back to the attract loop. Shareware
+    // never hits this (no Doom 1 finale responder); kept for parity.
+    host.finale = null;
+    host.phase = 'title';
+    host.menu.active = false;
+    if (host.audio !== null) host.audio.startMusic('TITLE');
+  }
+}
+
+/**
  * Advance the host by one 35 Hz tic. In gameplay this builds a vanilla
  * ticcmd from the held input (same FORWARD/SIDE/ANGLE tables and run
  * gating as the launcher session) and drives {@link tickGame}; on the
- * title/menu screens it ticks the menu skull animation.
+ * title/menu screens it ticks the menu skull animation; on the
+ * intermission/finale it advances those state machines and performs
+ * the `G_DoCompleted` / `G_DoWorldDone` / `F_StartFinale` transitions.
  */
 export function tickHost(host: GameHost, input: GameHostInput): void {
   if (host.phase === 'game' && host.runtime !== null) {
@@ -199,19 +449,47 @@ export function tickHost(host: GameHost, input: GameHostInput): void {
     const sideMove = input.strafeRight && !input.strafeLeft ? SIDE_MOVE[speedIndex]! : input.strafeLeft && !input.strafeRight ? -SIDE_MOVE[speedIndex]! : 0;
     const buttons = input.use ? BT_USE : 0;
     tickGame(host.runtime, packTicCommand(forwardMove, sideMove, angleTurn, buttons, 0, 0));
+
+    // G_Ticker: a level marked complete (the exit special set
+    // `gameaction = ga_completed`) runs `G_DoCompleted` at the top of
+    // the NEXT tic. Mirror that one-tic deferral here.
+    if (host.runtime !== null && host.runtime.levelComplete !== null) {
+      doCompleted(host);
+    }
     return;
   }
+
+  if (host.phase === 'intermission') {
+    tickIntermissionPhase(host, input);
+    return;
+  }
+
+  if (host.phase === 'finale') {
+    tickFinalePhase(host, input);
+    return;
+  }
+
   tickMenu(host.menu);
 }
 
 /**
  * The composed framebuffer for the current phase. Gameplay returns the
- * bit-exact R_RenderPlayerView; title/menu return `null` (the Win32
- * shell composites those from the WAD patches).
+ * bit-exact R_RenderPlayerView; the intermission/finale return their
+ * composited 320x200 frame (the Win32 shell blits any non-null frame
+ * directly and only menu-composites when this is `null`); title/menu
+ * return `null` (the shell composites those from the WAD patches).
  */
 export function renderHost(host: GameHost): Uint8Array | null {
   if (host.phase === 'game' && host.runtime !== null) {
     return renderGame(host.runtime);
+  }
+  if (host.phase === 'intermission' && host.intermission !== null) {
+    host.frontEnd.composeIntermission(host.intermission, host.frontEndFramebuffer);
+    return host.frontEndFramebuffer;
+  }
+  if (host.phase === 'finale' && host.finale !== null) {
+    host.frontEnd.composeFinale(host.finale, host.frontEndFramebuffer);
+    return host.frontEndFramebuffer;
   }
   return null;
 }
@@ -224,6 +502,9 @@ export function renderHost(host: GameHost): Uint8Array | null {
  */
 export function disposeGameHost(host: GameHost): void {
   host.runtime = null;
+  host.intermission = null;
+  host.finale = null;
+  host.pendingNextMap = null;
   if (host.audio !== null) {
     try {
       host.audio.shutdown();

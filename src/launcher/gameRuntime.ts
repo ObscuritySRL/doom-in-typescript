@@ -65,7 +65,7 @@ import { setProjectileContext, wireProjectileActions } from '../player/projectil
 import { dropWeapon } from '../player/weaponStates.ts';
 import { pCrossSpecialLine, pUseSpecialLine } from '../specials/lineTriggers.ts';
 import { buildSpecialsModel } from '../specials/specialsLevel.ts';
-import type { SpecialsModel } from '../specials/specialsLevel.ts';
+import type { PendingLevelCompletion, SpecialsModel } from '../specials/specialsLevel.ts';
 import { rPointToAngle2 } from '../render/wallScaleMath.ts';
 import { computeStatusBarValues, createStatusBarState, tickStatusBar } from '../ui/statusBar.ts';
 import type { StatusBarState } from '../ui/statusBar.ts';
@@ -74,7 +74,7 @@ import type { StatusBarRenderer } from '../ui/statusBarDraw.ts';
 import { LumpLookup } from '../wad/lumpLookup.ts';
 import { clearDamageContext, damageMobj, setDamageContext } from '../world/damage.ts';
 import { makeHitscanPrimitives } from '../world/hitscanAttack.ts';
-import { MF_COUNTKILL, MF_SKULLFLY, MOBJINFO, Mobj, MobjType, ONCEILINGZ, ONFLOORZ, STATES, StateNum, setMobjMovementHook, setMobjState, spawnMobj } from '../world/mobj.ts';
+import { MF_COUNTITEM, MF_COUNTKILL, MF_SKULLFLY, MOBJINFO, Mobj, MobjType, ONCEILINGZ, ONFLOORZ, STATES, StateNum, setMobjMovementHook, setMobjState, spawnMobj } from '../world/mobj.ts';
 import { radiusAttack } from '../world/radiusAttack.ts';
 import { REMOVED } from '../world/thinkers.ts';
 import { tryMove } from '../world/tryMove.ts';
@@ -100,6 +100,60 @@ export interface GameAudioBridge {
   startSfx(origin: { readonly originId: number | null; readonly x: number; readonly y: number } | null, sfxId: number): unknown;
   startMusic(mapName: string): void;
   shutdown(): void;
+}
+
+/**
+ * Level intermission totals (vanilla `totalkills`/`totalitems`/
+ * `totalsecret` + the g_game.c par time for this episode/map).
+ */
+export interface LevelTotals {
+  readonly totalKills: number;
+  readonly totalItems: number;
+  readonly totalSecret: number;
+  /** g_game.c `pars[episode][map]` seconds × TICRATE, or 0 if none. */
+  readonly parTimeTics: number;
+}
+
+/** TICRATE — 35 tics per second (d_main.c). */
+const TICRATE = 35;
+
+/**
+ * Vanilla g_game.c `pars[4][10]` par times in seconds.  Index 0 is
+ * the unused `{0}` row; rows 1-3 are episodes 1-3 (Doom 1).  Episode
+ * 1 (Knee-Deep in the Dead) is `{0,30,75,120,90,90,165,180,180,165}`
+ * — index `[ep][map]`, map 1-9.  The Ultimate-DOOM episode-4 table is
+ * a separate `cpars`-style array vanilla does not include here; the
+ * C1 shareware target is episode 1 only, so episode 4 falls through
+ * to 0 (no par shown), exactly as a missing entry would.
+ */
+const PARS: readonly (readonly number[])[] = Object.freeze([
+  Object.freeze([0]),
+  Object.freeze([0, 30, 75, 120, 90, 90, 165, 180, 180, 165]),
+  Object.freeze([0, 90, 90, 90, 120, 90, 360, 240, 170, 180]),
+  Object.freeze([0, 90, 45, 90, 150, 90, 90, 165, 30, 135]),
+]);
+
+/** Parse an `E#M#` map name into 1-based episode/map, or null. */
+function parseEpisodeMap(mapName: string): { episode: number; map: number } | null {
+  const match = /^E(\d)M(\d)$/i.exec(mapName);
+  if (match === null) return null;
+  return { episode: Number(match[1]), map: Number(match[2]) };
+}
+
+/**
+ * g_game.c `G_DoCompleted` par lookup: `wminfo.partime = TICRATE *
+ * pars[gameepisode][gamemap]`.  Returns 0 when the episode/map has no
+ * par entry (vanilla guards the table read with the episode/map
+ * range; out-of-range is treated as no par for the C1 target).
+ */
+function parTimeTicsFor(mapName: string): number {
+  const key = parseEpisodeMap(mapName);
+  if (key === null) return 0;
+  const row = PARS[key.episode];
+  if (row === undefined) return 0;
+  const seconds = row[key.map];
+  if (seconds === undefined) return 0;
+  return TICRATE * seconds;
 }
 
 /** Options for {@link createGameRuntime}. */
@@ -141,6 +195,32 @@ export interface GameRuntime {
    * stays hermetic without a reset hook.
    */
   readonly statusBar: StatusBarState;
+  /**
+   * The level's intermission totals, captured at level setup exactly
+   * as vanilla `P_SetupLevel` resets `totalkills/totalitems/
+   * totalsecret = 0` then `P_SpawnMapThing` increments
+   * `totalkills`/`totalitems` per MF_COUNTKILL/MF_COUNTITEM thing and
+   * `P_SpawnSpecials` increments `totalsecret` per sector special 9.
+   * `parTimeTics` is the g_game.c `pars[episode][map]` value (seconds
+   * × TICRATE), or 0 for maps without a par entry.
+   */
+  readonly levelTotals: LevelTotals;
+  /**
+   * The pending level completion latched by the exit special
+   * (vanilla `gameaction == ga_completed` with `secretexit`), or
+   * `null` while the level is still in play.  The host reads this each
+   * tic and runs the `G_DoCompleted` → intermission transition.
+   */
+  readonly levelComplete: PendingLevelCompletion | null;
+  /**
+   * Force a level completion, exactly as the boss-death `A_BossDeath`
+   * tag-666 path or a direct `G_ExitLevel`/`G_SecretExitLevel` call
+   * does in vanilla (the E1M8 baron death calls `G_ExitLevel()` with
+   * no line special).  `secret` selects the secret-exit route.
+   * Idempotent — the first completion this level wins (vanilla's
+   * single `gameaction` slot).
+   */
+  exitLevel(secret: boolean): void;
   /** Enumerate every live mobj on the thinker list (spawn order). */
   allMobjs(): Mobj[];
   /**
@@ -659,6 +739,40 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
   const statusBarRenderer = createStatusBarRenderer(new LumpLookup(resources.directory), resources.wadBuffer);
   const statusBarPointToAngle2 = (x1: Fixed, y1: Fixed, x2: Fixed, y2: Fixed): Angle => rPointToAngle2(x1, y1, x2, y2) >>> 0;
 
+  // P_SetupLevel resets totalkills/totalitems/totalsecret = 0; the
+  // map-thing spawn loop then increments totalkills per MF_COUNTKILL
+  // thing and totalitems per MF_COUNTITEM thing, and P_SpawnSpecials
+  // increments totalsecret per sector special 9. The session already
+  // ran the (skill/single-player-filtered, vanilla-faithful) spawn
+  // loop, so counting the just-spawned mobj flags here is the exact
+  // equivalent. Captured ONCE at level setup before any tic mutates
+  // the secret-sector specials or kills a monster.
+  let totalKills = 0;
+  let totalItems = 0;
+  session.thinkerList.forEach((thinker) => {
+    if (!(thinker instanceof Mobj) || thinker === session.player.mo) return;
+    if ((thinker.flags & MF_COUNTKILL) !== 0) totalKills += 1;
+    if ((thinker.flags & MF_COUNTITEM) !== 0) totalItems += 1;
+  });
+  let totalSecret = 0;
+  for (const sector of session.mapData.sectors) {
+    if (sector.special === 9) totalSecret += 1;
+  }
+  const levelTotals: LevelTotals = Object.freeze({
+    totalKills,
+    totalItems,
+    totalSecret,
+    parTimeTics: parTimeTicsFor(session.mapName),
+  });
+
+  // The boss-death (`A_BossDeath` tag-666) path calls `G_ExitLevel()`
+  // with NO line special, so it cannot route through the specials
+  // dispatcher's exit callbacks. A runtime-owned latch covers that
+  // case; `levelComplete` reports whichever fired first (the specials
+  // exit-switch/line OR this explicit one) with the same vanilla
+  // "first gameaction wins" idempotence.
+  let explicitCompletion: PendingLevelCompletion | null = null;
+
   const runtime: GameRuntime = {
     session,
     get player(): Player {
@@ -672,6 +786,14 @@ export function createGameRuntime(resources: LauncherResources, options: GameRun
     },
     specials,
     statusBar,
+    levelTotals,
+    get levelComplete(): PendingLevelCompletion | null {
+      return specials.levelComplete ?? explicitCompletion;
+    },
+    exitLevel(secret: boolean): void {
+      if (specials.levelComplete !== null || explicitCompletion !== null) return;
+      explicitCompletion = { secret };
+    },
     allMobjs(): Mobj[] {
       const mobjs: Mobj[] = [];
       session.thinkerList.forEach((thinker) => {
